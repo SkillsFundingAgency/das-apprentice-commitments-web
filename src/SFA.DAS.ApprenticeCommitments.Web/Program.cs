@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using NLog.Web;
 using SFA.DAS.ApprenticeCommitments.Web.StartupConfiguration;
-using SFA.DAS.Configuration.AzureTableStorage;
-using System;
 
 namespace SFA.DAS.ApprenticeCommitments.Web
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
+            NLogStartup.ConfigureNLog();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -19,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseNLog();
     }
 }
