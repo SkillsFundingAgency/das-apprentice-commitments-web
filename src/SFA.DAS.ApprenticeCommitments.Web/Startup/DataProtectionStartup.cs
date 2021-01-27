@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.StartupConfiguration
+namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
-    public static class DataProtectionStartupExtensions
+    public static class DataProtectionStartup
     {
         public static IServiceCollection AddDataProtection(
             this IServiceCollection services,

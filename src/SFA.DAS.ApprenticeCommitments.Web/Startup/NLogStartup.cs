@@ -1,7 +1,7 @@
 ﻿using NLog.Web;
 using System;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.StartupConfiguration
+namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
     public static class NLogStartup
     {

@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.Configuration.AzureTableStorage;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.StartupConfiguration
+namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
-    public static class Configuration
+    public static class ConfigurationStartup
     {
         public static IHostBuilder ConfigureAzureTableConfiguration(this IHostBuilder hostBuilder)
         {
