@@ -2,56 +2,184 @@
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "resourceEnvironmentName": {
+        "resourceGroupLocation": {
             "type": "string"
         },
-        "environmentName": {
+        "tags": {
+            "type": "object"
+        },
+        "resourceEnvironmentName": {
             "type": "string"
         },
         "serviceName": {
             "type": "string"
         },
-        "configNames": {
-            "type": "string",
-            "defaultValue": "__SolutionBaseName__"
-        },
-        "version": {
-            "type": "string",
-            "defaultValue": "1.0"
-        },
-        "tags": {
-            "type": "object"
-        },
-        "resourceGroupLocation": {
+        "environmentName": {
             "type": "string"
-        },        
+        },
+        "sharedFrontendAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedFrontEndSubnetResourceId": {
+            "type": "string"
+        },
+        "sharedEnvResourceGroup": {
+            "type": "string"
+        },
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
+        "sharedManagementResourceGroup": {
+            "type": "string"
+        },
+        "customHostName": {
+            "type": "string"
+        },
+        "keyVaultCertificateName": {
+            "type": "string"
+        },
         "loggingRedisConnectionString": {
             "type": "securestring"
+        },
+        "sharedKeyVaultName": {
+            "type": "string"
         }
     },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
-        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]"
+        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
+        "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]"
     },
     "resources": [
         {
+            "type": "Microsoft.Resources/resourceGroups",
             "apiVersion": "2020-06-01",
             "name": "[variables('resourceGroupName')]",
-            "type": "Microsoft.Resources/resourceGroups",
             "location": "[parameters('resourceGroupLocation')]",
             "tags": "[parameters('tags')]",
+            "properties": {}
+
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "app-service-certificate",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
             "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-certificate.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultCertificateName": {
+                        "value": "[parameters('keyVaultCertificateName')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('sharedKeyVaultName')]"
+                    },
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('sharedManagementResourceGroup')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "application-insights",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[variables('appServiceName')]"
+                    },
+                    "attachedService": {
+                        "value": "[variables('appServiceName')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "app-service",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-v2.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[variables('appServiceName')]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[parameters('sharedFrontendAppServicePlanName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[parameters('sharedEnvResourceGroup')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
+                    },
+                    "appServiceAppSettings": {
+                        "value": {
+                            "array": [
+                                {
+                                    "name": "EnvironmentName",
+                                    "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ConfigurationStorageConnectionString",
+                                    "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                    "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
+                                },
+                                {
+                                    "name": "ASPNETCORE_ENVIRONMENT",
+                                    "value": "[toUpper(parameters('environmentName'))]"
+                                },
+                                {
+                                    "name": "WEBSITE_LOAD_CERTIFICATES",
+                                    "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                                }
+                            ]
+                        }
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": {
+                            "array": [
+                                {
+                                    "name": "Redis",
+                                    "connectionString": "[parameters('loggingRedisConnectionString')]",
+                                    "type": "Custom"
+                                }
+                            ]
+                        }
+                    }
+                }
             }
         }
     ],
-    "outputs": {
+    "outputs": 
+    {
         "ResourceGroupName": {
             "type": "string",
             "value": "[variables('resourceGroupName')]"
+        },
+        "AppServiceName": {
+            "type": "string",
+            "value": "[variables('appServiceName')]"
         }
     }
 }
