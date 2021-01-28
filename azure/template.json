@@ -148,10 +148,6 @@
                                 {
                                     "name": "ASPNETCORE_ENVIRONMENT",
                                     "value": "[toUpper(parameters('environmentName'))]"
-                                },
-                                {
-                                    "name": "WEBSITE_LOAD_CERTIFICATES",
-                                    "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
                                 }
                             ]
                         }
