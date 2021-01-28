@@ -70,7 +70,6 @@
             "location": "[parameters('resourceGroupLocation')]",
             "tags": "[parameters('tags')]",
             "properties": {}
-
         },
         {
             "apiVersion": "2020-06-01",
