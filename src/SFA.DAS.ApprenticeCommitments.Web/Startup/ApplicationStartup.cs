@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using SFA.DAS.ApprenticeCommitments.Web.Startup;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -22,6 +20,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddApplicationInsightsTelemetry()
                 .AddDataProtection(_Configuration, _Environment)
                 .AddRazorPages();
         }

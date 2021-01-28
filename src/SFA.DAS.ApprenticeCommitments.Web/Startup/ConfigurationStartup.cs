@@ -7,7 +7,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
     public static class ConfigurationStartup
     {
-        public static IHostBuilder ConfigureAzureTableConfiguration(this IHostBuilder hostBuilder)
+        public static IWebHostBuilder ConfigureAzureTableConfiguration(this IWebHostBuilder hostBuilder)
         {
             hostBuilder.ConfigureAppConfiguration((hostingContext, configBuilder) =>
             {
