@@ -29,6 +29,14 @@
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
+        "configNames": {
+            "type": "string",
+            "defaultValue": "SFA.DAS.ApprenticeCommitments"
+        },
+        "version": {
+            "type": "string",
+            "defaultValue": "1.0"
+        },
         "sharedManagementResourceGroup": {
             "type": "string"
         },
@@ -40,6 +48,9 @@
         },
         "loggingRedisConnectionString": {
             "type": "securestring"
+        },
+        "loggingRedisKey": {
+            "type": "string"
         },
         "sharedKeyVaultName": {
             "type": "string"
@@ -142,19 +153,24 @@
                                     "value": "[parameters('configurationStorageConnectionString')]"
                                 },
                                 {
+                                    "name": "ConfigNames",
+                                    "value": "[parameters('configNames')]"
+                                },
+                                {
+                                    "name": "Version",
+                                    "value": "[parameters('version')]"
+                                },
+                                {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                     "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
-                                }
-                            ]
-                        }
-                    },
-                    "appServiceConnectionStrings": {
-                        "value": {
-                            "array": [
+                                },
                                 {
-                                    "name": "Redis",
-                                    "connectionString": "[parameters('loggingRedisConnectionString')]",
-                                    "type": "Custom"
+                                    "name": "LoggingRedisConnectionString",
+                                    "value": "[parameters('loggingRedisConnectionString')]"
+                                },
+                                {
+                                    "name": "LoggingRedisKey",
+                                    "value": "[parameters('loggingRedisKey')]"
                                 }
                             ]
                         }
