@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeCommitments.Web.MockServer", "SFA.DAS.ApprenticeCommitments.Web.MockServer\SFA.DAS.ApprenticeCommitments.Web.MockServer.csproj", "{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,14 +24,16 @@ Global
 		{11B88973-87E0-4E75-800D-15B6014B76FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B88973-87E0-4E75-800D-15B6014B76FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B88973-87E0-4E75-800D-15B6014B76FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{953C7886-A82B-476E-85A9-98FFC63EA630} = {54740526-2C95-4AC5-9CD1-F9B08732303D}
-		{C52AE751-AB51-4BBF-94EF-23CD28825ECE} = {54740526-2C95-4AC5-9CD1-F9B08732303D}
-		{6E9B7984-FDA1-4195-86C7-07B018A1B4E3} = {54740526-2C95-4AC5-9CD1-F9B08732303D}
+		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC} = {54740526-2C95-4AC5-9CD1-F9B08732303D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0418A206-40C3-495B-87D8-B14291705DEC}
