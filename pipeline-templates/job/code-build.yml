@@ -1,7 +1,5 @@
 jobs:
 - job: CodeBuild
-  pool:
-    name: DAS - Continuous Integration
   variables:
   - group: BUILD Management Resources
   steps:
@@ -21,24 +19,24 @@ jobs:
     - template: azure-pipelines-templates/build/step/dependency-check.yml@das-platform-building-blocks
 
     - task: DotNetCoreCLI@2
-      displayName: "Publish - dotnet publish $(SolutionBaseName)"
+      displayName: Publish - dotnet publish $(SolutionBaseName)
       inputs:
         command: publish
         publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
-        projects: "src/$(SolutionBaseName)/$(SolutionBaseName).csproj"
-        arguments: "-o $(build.artifactstagingdirectory)/publish -c $(BuildConfiguration) --no-build"
+        projects: src/$(SolutionBaseName)/$(SolutionBaseName).csproj
+        arguments: -o $(build.artifactstagingdirectory)/publish -c $(BuildConfiguration) --no-build
         modifyOutputPath: true
 
     - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)/publish'
+      displayName: Copy Files to $(build.artifactstagingdirectory)/publish
       inputs:
         Contents: |
           azure/**
-        TargetFolder: '$(build.artifactstagingdirectory)/publish'
+        TargetFolder: $(build.artifactstagingdirectory)/publish
         OverWrite: true
     
     - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact: drop'
+      displayName: Publish Artifact drop
       inputs:
         targetPath: $(build.artifactstagingdirectory)/publish
         artifactName: drop
