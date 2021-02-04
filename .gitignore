@@ -353,3 +353,4 @@ appsettings.Development.json
 
 *-nlog.txt
 
+*.feature.cs

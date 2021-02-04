@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeCommitments.Web.MockServer", "SFA.DAS.ApprenticeCommitments.Web.MockServer\SFA.DAS.ApprenticeCommitments.Web.MockServer.csproj", "{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests", "SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests\SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.csproj", "{5647948E-A004-4963-AB63-A244825A86A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,12 +30,17 @@ Global
 		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5647948E-A004-4963-AB63-A244825A86A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5647948E-A004-4963-AB63-A244825A86A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5647948E-A004-4963-AB63-A244825A86A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5647948E-A004-4963-AB63-A244825A86A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DB8C2639-7CA6-4A71-9405-9C7C4DE6B7BC} = {54740526-2C95-4AC5-9CD1-F9B08732303D}
+		{5647948E-A004-4963-AB63-A244825A86A1} = {54740526-2C95-4AC5-9CD1-F9B08732303D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0418A206-40C3-495B-87D8-B14291705DEC}
