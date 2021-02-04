@@ -7,10 +7,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public void OnGet()
         {
             ViewData["Title"] = "Confirm your identity";
-
         }
     }
-
-
-
 }

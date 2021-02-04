@@ -21,7 +21,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
             _actionResultHook = actionResultHook;
         }
 
-
         protected override IHostBuilder CreateHostBuilder()
         {
             var builder = Host.CreateDefaultBuilder()

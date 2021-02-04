@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
         }
 
         [AfterScenario()]
-        public static void CleanUp()
+        public void CleanUp()
         {
             Client?.Reset();
         }

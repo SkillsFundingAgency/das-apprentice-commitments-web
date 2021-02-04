@@ -34,9 +34,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 ActionResultHook = new Hook<IActionResult>();
                 Factory = new LocalWebApplicationFactory<ApplicationStartup>(config, ActionResultHook);
                 Client = Factory.CreateClient();
-                
             }
-
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);
         }
 
