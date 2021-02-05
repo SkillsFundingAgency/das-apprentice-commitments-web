@@ -1,23 +1,24 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NUnit.Framework;
+using SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdentity
 {
     public class WhenEnteringIdentityInformation
     {
-        [Test, MoqAutoData]
+        [Test, PageAutoData]
         public void Shows_no_errors_when_all_fields_are_entered(ConfirmYourIdentityModel sut)
         {
             Validate(sut);
             sut.ModelState.IsValid.Should().BeTrue();
         }
 
-        [Test, MoqAutoData]
+        [Test, PageAutoData]
         public void Shows_error_when_first_name_is_not_entered(ConfirmYourIdentityModel sut)
         {
             // Assemble
@@ -35,7 +36,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             });
         }
 
-        [Test, MoqAutoData]
+        [Test, PageAutoData]
         public void Shows_error_when_last_name_is_not_entered(ConfirmYourIdentityModel sut)
         {
             // Assemble
@@ -53,7 +54,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             });
         }
 
-        [Test, MoqAutoData]
+        [Test, PageAutoData]
         public void Shows_error_when_national_insurance_number_is_not_entered(ConfirmYourIdentityModel sut)
         {
             // Assemble

@@ -2,13 +2,14 @@
 using AutoFixture.AutoMoq;
 using AutoFixture.NUnit3;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using System.Linq;
+using System.Security.Claims;
 
-namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations
 {
-
-    public class MoqAutoDataAttribute : AutoDataAttribute
+    public class PageAutoDataAttribute : AutoDataAttribute
     {
-        public MoqAutoDataAttribute() : base(() => CreateFixture())
+        public PageAutoDataAttribute() : base(() => CreateFixture())
         { }
 
         private static IFixture CreateFixture()
