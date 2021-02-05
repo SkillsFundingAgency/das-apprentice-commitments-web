@@ -32,3 +32,4 @@ stages:
   - template: pipeline-templates/job/code-build.yml
     parameters:
       SolutionBaseName: $(SolutionBaseName)
+      BuildConfiguration: $(BuildConfiguration)
