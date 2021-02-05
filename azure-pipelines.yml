@@ -8,7 +8,7 @@ pr: none
 
 variables:
 - name: SolutionBaseName
-  value: SFA.DAS.ApprenticeCommitments.Web
+  value: SFA.DAS.ApprenticeCommitments
 - name: BuildPlatform
   value : any cpu
 - name: BuildConfiguration
@@ -30,3 +30,5 @@ stages:
 - stage: Build
   jobs:
   - template: pipeline-templates/job/code-build.yml
+    parameters:
+      SolutionBaseName: $(SolutionBaseName)
