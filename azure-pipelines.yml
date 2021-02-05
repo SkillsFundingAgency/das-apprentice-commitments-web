@@ -8,7 +8,7 @@ pr: none
 
 variables:
 - name: SolutionBaseName
-  value: SFA.DAS.ApprenticeCommitments
+  value: SFA.DAS.ApprenticeCommitments.Web
 - name: BuildPlatform
   value : any cpu
 - name: BuildConfiguration
