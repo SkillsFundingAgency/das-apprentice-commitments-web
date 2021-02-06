@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -9,19 +11,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     {
         public ApplicationStartup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            _Configuration = configuration;
-            _Environment = environment;
+            Configuration = configuration;
+            Environment = environment;
         }
 
-        public IConfiguration _Configuration { get; }
-        public IWebHostEnvironment _Environment { get; }
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<OuterApiConfig>(Configuration.GetSection("OuterApiConfig"));
+            services.AddSingleton(s => s.GetRequiredService<IOptions<OuterApiConfig>>().Value);
+
             services
                 .AddApplicationInsightsTelemetry()
-                .AddDataProtection(_Configuration, _Environment)
+                .AddDataProtection(Configuration, Environment)
+                .RegisterServices(Configuration)
                 .AddRazorPages();
         }
 

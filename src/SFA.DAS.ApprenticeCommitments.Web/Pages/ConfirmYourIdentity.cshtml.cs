@@ -1,11 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
     public class ConfirmYourIdentityModel : PageModel
     {
+        private readonly RegistrationsService _registrations;
+
+        public ConfirmYourIdentityModel(RegistrationsService api) => _registrations = api;
+
+        public string EmailAddress { get; set; }
+
         [BindProperty]
         [Required(
             AllowEmptyStrings = false,
@@ -28,14 +37,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             ErrorMessage = "Please enter your national insurance number")]
         public string NationalInsuranceNumber{ get; set; }
 
-        public void OnGet(
-            string firstName,
-            string lastName,
-            string nationalInsuranceNumber)
+        public async Task OnGetAsync(
+            string firstName = null,
+            string lastName = null,
+            string nationalInsuranceNumber = null)
         {
+            // Post, Redirect, Get
             FirstName = firstName;
             LastName = lastName;
             NationalInsuranceNumber = nationalInsuranceNumber;
+
+            Guid.TryParse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "", out var regId);
+            var reg = await _registrations.GetRegistration(regId);
+            EmailAddress = reg?.EmailAddress;
         }
 
         public IActionResult OnPost()

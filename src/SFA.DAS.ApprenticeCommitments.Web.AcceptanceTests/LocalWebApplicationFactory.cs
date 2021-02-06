@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+using SFA.DAS.ApprenticeCommitments.Web.Startup;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 {
@@ -13,12 +14,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
     {
         private readonly Dictionary<string, string> _config;
         private readonly IHook<IActionResult> _actionResultHook;
+        private readonly TestContext _testContext;
 
-
-        public LocalWebApplicationFactory(Dictionary<string, string> config, IHook<IActionResult> actionResultHook)
+        public LocalWebApplicationFactory(TestContext testContext, Dictionary<string, string> config, IHook<IActionResult> actionResultHook)
         {
             _config = config;
             _actionResultHook = actionResultHook;
+            _testContext = testContext;
         }
 
         protected override IHostBuilder CreateHostBuilder()
@@ -26,6 +28,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
             var builder = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(x =>
                 {
+                    x.ConfigureServices(s =>
+                        s.Configure<OuterApiConfig>(a => a.BaseUrl = _testContext.OuterApi.BaseAddress.ToString()));
                     x.UseStartup<TEntryPoint>();
                 });
             return builder;

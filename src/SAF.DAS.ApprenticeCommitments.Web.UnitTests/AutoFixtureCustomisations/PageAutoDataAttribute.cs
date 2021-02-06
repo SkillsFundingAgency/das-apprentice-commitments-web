@@ -1,8 +1,10 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.NUnit3;
-using SFA.DAS.ApprenticeCommitments.Web.Pages;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations
@@ -15,7 +17,11 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations
         private static IFixture CreateFixture()
         {
             var fixture = new Fixture();
-            fixture.Customize<ConfirmYourIdentityModel>(c => c.Without(m => m.PageContext));
+            fixture.Register((ClaimsPrincipal claims) =>
+                new DefaultHttpContext { User = claims });
+            fixture.Register((DefaultHttpContext http, RouteData route) =>
+                new ActionContext(http, route, new PageActionDescriptor()));
+            fixture.Register((ActionContext a) => new PageContext(a));
             fixture.Customize(new AutoMoqCustomization());
             return fixture;
         }

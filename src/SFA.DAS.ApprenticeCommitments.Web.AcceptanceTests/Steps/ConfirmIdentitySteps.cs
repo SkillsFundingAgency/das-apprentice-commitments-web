@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FluentAssertions;
+using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using System;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using FluentAssertions;
 using TechTalk.SpecFlow;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
 {
@@ -28,6 +29,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         [Given(@"the apprentice has not verified his identity")]
         public void GivenTheApprenticeHasNotVerifiedHisIdentity()
         {
+            _context.OuterApi.MockServer.Given(
+               Request.Create()
+                   .UsingGet()
+                   //.WithUrl("/registrations/*")
+                   )
+               .RespondWith(Response.Create()
+                   .WithStatusCode(200)
+                   .WithBodyAsJson(new
+                   {
+                       Id = Guid.NewGuid(),
+                       EmailAddress = "bob",
+                   }));
         }
 
         [When(@"first accessing the commitment statement website")]
@@ -36,8 +49,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             var request = new HttpRequestMessage(
                 HttpMethod.Get,
                 "account");
-           await _context.Web.Get("account");
-
+            await _context.Web.Get("ConfirmYourIdentity");
         }
 
         [Then(@"the response status code should be Ok")]
@@ -50,10 +62,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         public void ThenTheApprenticeShouldSeeTheVerifyIdentityPage()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().NotBeNull();
-            page.ViewData.Count.Should().Be(1);
-            page.ViewData["Title"].As<string>().Should().Be("Confirm your identity");
+            page.Model.Should().BeOfType<ConfirmYourIdentityModel>().Which.EmailAddress.Should().Be("bob");
         }
-
     }
 }

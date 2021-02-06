@@ -1,4 +1,5 @@
-﻿Feature: ConfirmIdentity
+﻿@outerApi
+Feature: ConfirmIdentity
 	As a apprentice who wants to view his commitment statements
 	If he hasn't confirmed his identity
 
