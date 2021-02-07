@@ -21,8 +21,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web
 
     public interface ApiClient
     {
-        [Get]
-        Task<Registration> GetRegistration(Guid id);
+        [Get("/registrations/{id}")]
+        Task<Registration> GetRegistration([Path] Guid id);
     }
 
     public class Registration
