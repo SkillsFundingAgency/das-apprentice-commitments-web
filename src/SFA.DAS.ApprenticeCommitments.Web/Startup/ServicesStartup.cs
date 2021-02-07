@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase.HttpClientFactory;
+using SFA.DAS.ApprenticeCommitments.Web.Api;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {

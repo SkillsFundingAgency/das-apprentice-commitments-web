@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SFA.DAS.ApprenticeCommitments.Web.Api;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -44,11 +45,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             string lastName = null,
             string nationalInsuranceNumber = null)
         {
-            // Post, Redirect, Get
             FirstName = firstName;
             LastName = lastName;
             NationalInsuranceNumber = nationalInsuranceNumber;
 
+            // TODO - rework based on outcome of CS-213
             Guid.TryParse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "", out var regId);
             var reg = await _registrations.GetRegistration(regId);
 
