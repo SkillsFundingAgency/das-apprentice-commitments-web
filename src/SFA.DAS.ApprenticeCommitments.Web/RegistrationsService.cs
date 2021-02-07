@@ -28,6 +28,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web
     public class Registration
     {
         public Guid Id { get; set; }
+        public int? UserId { get; set; }
+
         public string RegistrationId = "";
         public string EmailAddress = "";
     }

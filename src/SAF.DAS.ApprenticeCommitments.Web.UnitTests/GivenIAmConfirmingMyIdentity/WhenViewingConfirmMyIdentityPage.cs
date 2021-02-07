@@ -23,6 +23,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
             {
                 new Claim("sub", registration.Id.ToString())
             }));
+            registration.UserId = null;
             api.Setup(x => x.GetRegistration(registration.Id)).Returns(Task.FromResult(registration));
 
             await sut.OnGetAsync();

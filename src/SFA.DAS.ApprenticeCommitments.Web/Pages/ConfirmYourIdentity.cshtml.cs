@@ -39,7 +39,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             ErrorMessage = "Please enter your national insurance number")]
         public string NationalInsuranceNumber{ get; set; }
 
-        public async Task OnGetAsync(
+        public async Task<IActionResult> OnGetAsync(
             string firstName = null,
             string lastName = null,
             string nationalInsuranceNumber = null)
@@ -51,7 +51,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
             Guid.TryParse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "", out var regId);
             var reg = await _registrations.GetRegistration(regId);
+
+            if (reg.UserId != null) return RedirectToPage("overview");
+
             EmailAddress = reg?.EmailAddress;
+
+            return Page();
         }
 
         public IActionResult OnPost()

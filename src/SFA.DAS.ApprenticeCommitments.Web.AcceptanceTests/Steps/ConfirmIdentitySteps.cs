@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
 using System.Net;
@@ -36,8 +37,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                 new AuthenticationHeaderValue(_registrationId.ToString());
         }
 
-        [Given("the apprentice has not verified his identity")]
-        public void GivenTheApprenticeHasNotVerifiedHisIdentity()
+        [Given("the apprentice has not verified their identity")]
+        public void GivenTheApprenticeHasNotVerifiedTheirIdentity()
         {
             _context.OuterApi.MockServer.Given(
                 Request.Create()
@@ -53,13 +54,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                     }));
         }
 
-        [When("first accessing the commitment statement website")]
-        public async Task WhenFirstAccessingTheCommitmentStatementWebsite()
+        [When(@"accessing the ""(.*)"" page")]
+        public async Task WhenAccessingThePage(string page)
         {
-            var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                "account");
-            await _context.Web.Get("ConfirmYourIdentity");
+            await _context.Web.Get(page);
         }
 
         [Then("the response status code should be Ok")]
@@ -73,6 +71,31 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<ConfirmYourIdentityModel>().Which.EmailAddress.Should().Be("bob");
+        }
+
+        [Given("the apprentice has verified their identity")]
+        public void GivenTheApprenticeHasVerifiedTheirIdentity()
+        {
+            _context.OuterApi.MockServer.Given(
+               Request.Create()
+                   .UsingGet()
+                   .WithUrl(_context.OuterApi.UrlPath($"registrations/{_registrationId}"))
+                   )
+               .RespondWith(Response.Create()
+                   .WithStatusCode(200)
+                   .WithBodyAsJson(new
+                   {
+                       Id = _registrationId,
+                       EmailAddress = "bob",
+                       UserId = 12,
+                   }));
+        }
+
+        [When(@"the apprentice should be shown the ""(.*)"" page")]
+        public void WhenTheApprenticeShouldBeShownThePage(string page)
+        {
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<OverviewModel>();
         }
     }
 }
