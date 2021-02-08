@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+using SFA.DAS.ApprenticeCommitments.Web.Startup;
+using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 {
@@ -13,12 +16,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
     {
         private readonly Dictionary<string, string> _config;
         private readonly IHook<IActionResult> _actionResultHook;
+        private readonly TestContext _testContext;
 
-
-        public LocalWebApplicationFactory(Dictionary<string, string> config, IHook<IActionResult> actionResultHook)
+        public LocalWebApplicationFactory(TestContext testContext, Dictionary<string, string> config, IHook<IActionResult> actionResultHook)
         {
             _config = config;
             _actionResultHook = actionResultHook;
+            _testContext = testContext;
         }
 
         protected override IHostBuilder CreateHostBuilder()
@@ -26,6 +30,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
             var builder = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(x =>
                 {
+                    x.ConfigureServices(s =>
+                        s.Configure<OuterApiConfig>(a => a.BaseUrl = _testContext.OuterApi.BaseAddress.ToString()));
                     x.UseStartup<TEntryPoint>();
                 });
             return builder;
@@ -33,6 +39,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.ConfigureTestServices(services =>
+            {
+                services
+                    .AddAuthentication("TestScheme")
+                    .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", _ => { });
+            });
+
             builder.ConfigureServices(s =>
             {
                 s.AddControllersWithViews(options =>

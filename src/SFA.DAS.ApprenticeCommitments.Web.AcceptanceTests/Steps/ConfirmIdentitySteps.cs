@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using System;
 using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using FluentAssertions;
 using TechTalk.SpecFlow;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
 {
@@ -14,46 +17,85 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
     public class ConfirmIdentitySteps : StepsBase
     {
         private readonly TestContext _context;
+        private Guid _registrationId = Guid.NewGuid();
 
         public ConfirmIdentitySteps(TestContext context) : base(context)
         {
             _context = context;
         }
 
-        [Given(@"the apprentice has logged in")]
+        [Given("the apprentice has not logged in")]
+        public void GivenTheApprenticeHasNotLoggedIn()
+        {
+        }
+
+        [Given("the apprentice has logged in")]
         public void GivenTheApprenticeHasLoggedIn()
         {
+            TestAuthenticationHandler.AddUser(_registrationId);
+            _context.Web.Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(_registrationId.ToString());
         }
 
-        [Given(@"the apprentice has not verified his identity")]
-        public void GivenTheApprenticeHasNotVerifiedHisIdentity()
+        [Given("the apprentice has not verified their identity")]
+        public void GivenTheApprenticeHasNotVerifiedTheirIdentity()
         {
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/registrations/{_registrationId}")
+                    )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new
+                    {
+                        Id = _registrationId,
+                        EmailAddress = "bob",
+                    }));
         }
 
-        [When(@"first accessing the commitment statement website")]
-        public async Task WhenFirstAccessingTheCommitmentStatementWebsite()
+        [When(@"accessing the ""(.*)"" page")]
+        public async Task WhenAccessingThePage(string page)
         {
-            var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                "account");
-           await _context.Web.Get("account");
-
+            await _context.Web.Get(page);
         }
 
-        [Then(@"the response status code should be Ok")]
+        [Then("the response status code should be Ok")]
         public void ThenTheResponseStatusCodeShouldBeOk()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Then(@"the apprentice should see the verify identity page")]
+        [Then("the apprentice should see the verify identity page")]
         public void ThenTheApprenticeShouldSeeTheVerifyIdentityPage()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().NotBeNull();
-            page.ViewData.Count.Should().Be(1);
-            page.ViewData["Title"].As<string>().Should().Be("Confirm your identity");
+            page.Model.Should().BeOfType<ConfirmYourIdentityModel>().Which.EmailAddress.Should().Be("bob");
         }
 
+        [Given("the apprentice has verified their identity")]
+        public void GivenTheApprenticeHasVerifiedTheirIdentity()
+        {
+            _context.OuterApi.MockServer.Given(
+               Request.Create()
+                   .UsingGet()
+                   .WithPath($"/registrations/{_registrationId}")
+                   )
+               .RespondWith(Response.Create()
+                   .WithStatusCode(200)
+                   .WithBodyAsJson(new
+                   {
+                       Id = _registrationId,
+                       EmailAddress = "bob",
+                       UserId = 12,
+                   }));
+        }
+
+        [When(@"the apprentice should be shown the ""(.*)"" page")]
+        public void WhenTheApprenticeShouldBeShownThePage(string page)
+        {
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<OverviewModel>();
+        }
     }
 }
