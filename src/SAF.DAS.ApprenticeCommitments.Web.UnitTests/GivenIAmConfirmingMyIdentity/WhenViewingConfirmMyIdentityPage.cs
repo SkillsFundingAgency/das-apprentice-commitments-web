@@ -15,7 +15,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
     {
         [Test, PageAutoData]
         public async Task The_page_shows_my_email_address(
-            [Frozen] Mock<ApiClient> api,
+            [Frozen] Mock<IApiClient> api,
             [Frozen] ClaimsPrincipal user,
             ConfirmYourIdentityModel sut,
             Registration registration)

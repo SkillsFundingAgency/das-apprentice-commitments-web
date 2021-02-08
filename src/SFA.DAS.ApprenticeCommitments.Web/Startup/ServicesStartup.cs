@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
             var outerApiConfig = services.BuildServiceProvider().GetRequiredService<OuterApiConfig>();
             var url = outerApiConfig.BaseUrl;
-            services.AddRestEaseClient<ApiClient>(url);
+            services.AddRestEaseClient<IApiClient>(url);
 
             return services;
         }

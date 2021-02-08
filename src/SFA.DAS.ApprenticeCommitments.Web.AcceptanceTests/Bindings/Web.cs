@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
     {
         public static HttpClient Client { get; set; }
         public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
-        public Hook<IActionResult>  ActionResultHook;
+        public static Hook<IActionResult>  ActionResultHook;
 
         private readonly TestContext _context;
 

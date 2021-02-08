@@ -43,7 +43,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithUrl(_context.OuterApi.UrlPath($"registrations/{_registrationId}"))
+                    .WithPath($"/registrations/{_registrationId}")
                     )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
@@ -79,7 +79,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             _context.OuterApi.MockServer.Given(
                Request.Create()
                    .UsingGet()
-                   .WithUrl(_context.OuterApi.UrlPath($"registrations/{_registrationId}"))
+                   .WithPath($"/registrations/{_registrationId}")
                    )
                .RespondWith(Response.Create()
                    .WithStatusCode(200)

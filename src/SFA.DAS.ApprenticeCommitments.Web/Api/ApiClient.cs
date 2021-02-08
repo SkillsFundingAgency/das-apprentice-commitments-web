@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Api
 {
-    public interface ApiClient
+    public interface IApiClient
     {
         [Get("/registrations/{id}")]
         Task<Registration> GetRegistration([Path] Guid id);
