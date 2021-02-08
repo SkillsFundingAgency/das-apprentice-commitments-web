@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
-using System.Collections.Generic;
-using System.Net.Http;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
@@ -10,9 +10,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
     [Binding]
     public class Web
     {
-        public HttpClient Client { get; set; }
-        public LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
-        public Hook<IActionResult> ActionResultHook;
+        public static HttpClient Client { get; set; }
+        public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
+        public Hook<IActionResult>  ActionResultHook;
 
         private readonly TestContext _context;
 
@@ -21,7 +21,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
             _context = context;
         }
 
-        [BeforeScenario]
+        [BeforeScenario()]
         public void Initialise()
         {
             if (Client == null)
@@ -38,14 +38,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);
         }
 
-        [AfterScenario]
+        [AfterScenario()]
         public void CleanUpScenario()
         {
             _context?.Web?.Dispose();
+        }
+
+        [AfterFeature()]
+        public static void CleanUpFeature()
+        {
             Client?.Dispose();
             Factory?.Dispose();
             Client = null;
-            Factory = null;
         }
     }
 }
