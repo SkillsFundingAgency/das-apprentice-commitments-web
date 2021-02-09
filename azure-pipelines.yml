@@ -16,6 +16,8 @@ variables:
 
 pool:
   name: DAS - Continuous Integration
+  workspace:
+    clean: all
 
 resources:
   repositories:

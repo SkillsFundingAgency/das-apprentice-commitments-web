@@ -2,9 +2,6 @@ parameters:
   SolutionBaseName:
   BuildConfiguration:
 
-workspace:
-  clean: all
-
 jobs:
 - job: CodeBuild
   variables:
