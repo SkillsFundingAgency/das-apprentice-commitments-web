@@ -2,17 +2,20 @@ parameters:
   SolutionBaseName:
   BuildConfiguration:
 
+workspace:
+  clean: all
+
 jobs:
 - job: CodeBuild
   variables:
   - group: BUILD Management Resources
   steps:
-    - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+    - task: gitversion/setup@0
       displayName: gitversion/setup
       inputs:
         versionSpec: 5.x
 
-    - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+    - task: gitversion/execute@0
       displayName: gitversion/execute
       inputs:
         useConfigFile: true
