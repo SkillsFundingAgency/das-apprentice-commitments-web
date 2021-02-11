@@ -11,5 +11,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
         public RegistrationsService(IApiClient client) => _client = client;
 
         public Task<Registration> GetRegistration(Guid id) => _client.GetRegistration(id);
+
+        internal Task Validate(VerifyRegistrationCommand verification) =>
+            _client.Validate(verification.RegistrationId, verification);
     }
 }

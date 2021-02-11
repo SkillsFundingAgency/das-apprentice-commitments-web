@@ -9,5 +9,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
     {
         [Get("/registrations/{id}")]
         Task<Registration> GetRegistration([Path] Guid id);
+
+        [Post("/registrations/{id}")]
+        Task Validate([Path] Guid id, [Body] VerifyRegistrationCommand verification);
     }
 }

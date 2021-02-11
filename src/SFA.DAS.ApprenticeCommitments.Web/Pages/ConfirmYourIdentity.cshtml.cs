@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Api;
+using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -60,8 +61,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
+            Guid.TryParse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "", out var regId);
+            await _registrations.Validate(new VerifyRegistrationCommand
+            {
+                RegistrationId = regId,
+                FirstName = FirstName,
+                LastName = LastName,
+                NationalInsuranceNumber = NationalInsuranceNumber,
+            });
+
             return RedirectToPage("/ConfirmYourIdentity", new
             {
                 FirstName,
