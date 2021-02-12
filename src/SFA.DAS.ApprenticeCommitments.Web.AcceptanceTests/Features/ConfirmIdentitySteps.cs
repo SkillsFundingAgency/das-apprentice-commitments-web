@@ -55,7 +55,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                     .WithBodyAsJson(new
                     {
                         Id = _registrationId,
-                        EmailAddress = "bob",
+                        Email = "bob",
                     }));
         }
 
@@ -91,7 +91,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                     .WithBodyAsJson(new
                     {
                         Id = _registrationId,
-                        EmailAddress = "bob",
+                        Email = "bob",
                         UserId = 12,
                     }));
         }

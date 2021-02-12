@@ -6,6 +6,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api.Models
     {
         public Guid Id { get; set; }
         public int? UserId { get; set; }
-        public string EmailAddress { get; set; }
+        public string Email { get; set; }
     }
 }

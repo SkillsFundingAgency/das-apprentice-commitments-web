@@ -30,7 +30,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
 
             await sut.OnGetAsync(new RegistrationUser(user));
 
-            sut.EmailAddress.Should().Be(registration.EmailAddress);
+            sut.EmailAddress.Should().Be(registration.Email);
         }
 
         [Test, PageAutoData]

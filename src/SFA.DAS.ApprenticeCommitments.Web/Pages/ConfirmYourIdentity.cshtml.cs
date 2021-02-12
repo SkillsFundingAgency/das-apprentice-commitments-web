@@ -54,7 +54,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
             if (reg.UserId != null) return RedirectToPage("overview");
 
-            EmailAddress = reg?.EmailAddress;
+            EmailAddress = reg?.Email;
 
             return Page();
         }
