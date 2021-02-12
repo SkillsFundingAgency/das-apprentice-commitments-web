@@ -19,20 +19,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
         }
 
-        public DateModel(int year, int month, int day) => (Year, Month, Day) = (year, month, day);
+        public DateModel(int year, int month, int day) =>
+            (Year, Month, Day) = (year, month, day);
 
         public virtual int Day { get; set; }
         public virtual int Month { get; set; }
         public virtual int Year { get; set; }
 
-        public DateTime Date
-        {
-            get
-            {
-                EnsureValid();
-                return new DateTime(Year, Month, Day);
-            }
-        }
+        public DateTime Date =>
+            IsValid ? new DateTime(Year, Month, Day) : default;
 
         public bool IsValid => Validate() == null;
 
@@ -44,9 +39,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         private Exception Validate()
         {
-            if (!IsValidDay) return new ArgumentException($"`{Day:00}` is not a valid day");
-            if (!IsValidMonth) return new ArgumentException($"`{Month:00}` is not a valid month");
-            if (!IsValidYear) return new ArgumentException($"`{Year:0000}` is not a valid year");
+            if (!IsValidDay)
+                return new ArgumentException($"`{Day:00}` is not a valid day");
+            if (!IsValidMonth)
+                return new ArgumentException($"`{Month:00}` is not a valid month");
+            if (!IsValidYear)
+                return new ArgumentException($"`{Year:0000}` is not a valid year");
             if (Day > DateTime.DaysInMonth(Year, Month))
                 return new ArgumentException($"`{Day}` is not a valid day in `{Year}-{Month:00}`");
             return null;

@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Api;
 using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
@@ -20,36 +18,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public string EmailAddress { get; set; }
 
         [BindProperty]
-        [Required(
-            AllowEmptyStrings = false,
-            ErrorMessage = "Please enter your first name")]
         public string FirstName { get; set; }
 
         [BindProperty]
-        [Required(
-            AllowEmptyStrings = false,
-            ErrorMessage = "Please enter your last name")]
         public string LastName { get; set; }
 
         [BindProperty]
         public DateModel DateOfBirth { get; set; }
 
         [BindProperty]
-        [Required(
-            AllowEmptyStrings = false,
-            ErrorMessage = "Please enter your national insurance number")]
         public string NationalInsuranceNumber { get; set; }
 
         public async Task<IActionResult> OnGetAsync(
-            [FromServices] AuthenticatedUser user,
-            string firstName = null,
-            string lastName = null,
-            string nationalInsuranceNumber = null)
+            [FromServices] AuthenticatedUser user)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            NationalInsuranceNumber = nationalInsuranceNumber;
-
             var reg = await _registrations.GetRegistration(user);
 
             if (reg.UserId != null) return RedirectToPage("overview");
@@ -69,7 +51,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     FirstName = FirstName,
                     LastName = LastName,
                     NationalInsuranceNumber = NationalInsuranceNumber,
-                    DateOfBirth = DateOfBirth.Date,
+                    DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
                     UserIdentityId = Guid.NewGuid(),
                     Email = EmailAddress,
                 });
@@ -80,6 +62,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 foreach(var e in exception.Errors)
                 {
+                    ModelState.AddModelError("DateOfBirth", "your dob is wrong");
                     ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
                 }
                 return Page();
