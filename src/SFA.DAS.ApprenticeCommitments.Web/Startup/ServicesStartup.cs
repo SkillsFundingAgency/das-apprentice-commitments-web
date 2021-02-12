@@ -1,30 +1,16 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeCommitments.Web.Api;
-using SFA.DAS.ApprenticeCommitments.Web.Pages;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
     public static class ServicesStartup
     {
         public static IServiceCollection RegisterServices(
-            this IServiceCollection services,
-            IWebHostEnvironment environment)
+            this IServiceCollection services)
         {
             services.AddTransient<RegistrationsService>();
-            services.AddScoped<AuthenticatedUser>();
-            services.AddScoped(s => s.GetRequiredService<IHttpContextAccessor>().HttpContext.User);
-
-
-            if(environment.IsDevelopment())
-            {
-                services.AddScoped(_ => AuthenticatedUser.FakeUser);
-                //services.AddScoped(_ => AuthenticatedUser.FakeUserClaim);
-            }
-
             return services;
         }
 
