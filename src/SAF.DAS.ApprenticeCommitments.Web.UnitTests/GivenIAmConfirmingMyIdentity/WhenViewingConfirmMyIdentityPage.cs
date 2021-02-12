@@ -28,7 +28,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
             registration.UserId = null;
             api.Setup(x => x.GetRegistration(registration.Id)).Returns(Task.FromResult(registration));
 
-            await sut.OnGetAsync(new RegistrationUser(user));
+            await sut.OnGetAsync(new AuthenticatedUser(user));
 
             sut.EmailAddress.Should().Be(registration.Email);
         }
@@ -38,7 +38,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
             ConfirmYourIdentityModel sut,
             ClaimsPrincipal user)
         {
-            sut.Invoking(x => x.OnGetAsync(new RegistrationUser(user)))
+            sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
                 .Should().Throw<Exception>().WithMessage("There is no `registration_id` claim.");
         }
 
@@ -53,7 +53,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
                 new Claim("registration_id", notAGuid)
             }));
 
-            sut.Invoking(x => x.OnGetAsync(new RegistrationUser(user)))
+            sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
                 .Should().Throw<Exception>()
                 .WithMessage($"`{notAGuid}` in claim `registration_id` is not a valid identifier");
         }

@@ -17,14 +17,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
 
         public Task<Registration> GetRegistration(Guid id) => _client.GetRegistration(id);
 
-        internal Task<Registration> GetRegistration(RegistrationUser user) =>
+        internal Task<Registration> GetRegistration(AuthenticatedUser user) =>
             GetRegistration(user.RegistrationId);
 
         internal async Task VerifyRegistration(VerifyRegistrationCommand verification)
         {
             try
             {
-                await _client.VerifyRegistration(verification.RegistrationId, verification);
+                await _client.VerifyRegistration(verification);
             }
             catch (ApiException ex)
             {

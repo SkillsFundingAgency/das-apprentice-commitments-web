@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
-    [Authorize]
     public class ConfirmYourIdentityModel : PageModel
     {
         private readonly RegistrationsService _registrations;
 
         public ConfirmYourIdentityModel(RegistrationsService api) => _registrations = api;
 
+        [BindProperty]
+        [HiddenInput]
         public string EmailAddress { get; set; }
 
         [BindProperty]
@@ -40,7 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public string NationalInsuranceNumber { get; set; }
 
         public async Task<IActionResult> OnGetAsync(
-            [FromServices] RegistrationUser user,
+            [FromServices] AuthenticatedUser user,
             string firstName = null,
             string lastName = null,
             string nationalInsuranceNumber = null)
@@ -58,7 +59,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPost([FromServices] RegistrationUser user)
+        public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user)
         {
             try
             {
@@ -70,15 +71,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     NationalInsuranceNumber = NationalInsuranceNumber,
                     DateOfBirth = DateOfBirth.Date,
                     UserIdentityId = Guid.NewGuid(),
-                    Email = "ben@arnoldfamily.me.uk",
+                    Email = EmailAddress,
                 });
 
-                return RedirectToPage("/ConfirmYourIdentity", new
-                {
-                    FirstName,
-                    LastName,
-                    NationalInsuranceNumber,
-                });
+                return RedirectToPage("/Overview");
             }
             catch (DomainValidationException exception)
             {

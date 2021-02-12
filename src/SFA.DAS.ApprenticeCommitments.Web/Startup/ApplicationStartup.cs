@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -26,8 +28,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddDataProtection(appConfig.ConnectionStrings, Environment)
                 .AddAuthentication(appConfig.Authentication)
                 .AddOuterApi(appConfig.Api)
-                .RegisterServices()
+                .RegisterServices(Environment)
                 .AddRazorPages();
+
+            services.AddMvc(o =>
+            {
+                if (!Environment.IsDevelopment())
+                    o.Filters.Add(new AuthorizeFilter());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
