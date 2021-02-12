@@ -28,12 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
         protected override IHostBuilder CreateHostBuilder()
         {
             var builder = Host.CreateDefaultBuilder()
-                .ConfigureWebHostDefaults(x =>
-                {
-                    x.ConfigureServices(s =>
-                        s.Configure<OuterApiConfig>(a => a.BaseUrl = _testContext.OuterApi.BaseAddress.ToString()));
-                    x.UseStartup<TEntryPoint>();
-                });
+                .ConfigureWebHostDefaults(x => x.UseStartup<TEntryPoint>());
             return builder;
         }
 
@@ -56,7 +51,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 
             builder.ConfigureAppConfiguration(a =>
             {
-                a.Sources.Clear();
                 a.AddInMemoryCollection(_config);
             });
             builder.UseEnvironment("LOCAL");
