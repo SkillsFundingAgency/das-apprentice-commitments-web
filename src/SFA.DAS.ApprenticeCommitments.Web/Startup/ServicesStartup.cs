@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeCommitments.Web.Api;
@@ -10,22 +9,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     public static class ServicesStartup
     {
         public static IServiceCollection RegisterServices(
-            this IServiceCollection services,
-            IConfiguration configuration)
+            this IServiceCollection services)
         {
             services.AddTransient<RegistrationsService>();
             services.AddScoped<RegistrationUser>();
             services.AddScoped(s => s.GetRequiredService<IHttpContextAccessor>().HttpContext.User);
+            return services;
+        }
 
-            var outerApiConfig = services.BuildServiceProvider().GetRequiredService<OuterApiConfig>();
-            var url = outerApiConfig.BaseUrl;
-            services.AddRestEaseClient<IApiClient>(url);
-
+        public static IServiceCollection AddOuterApi(
+            this IServiceCollection services,
+            OuterApiConfiguration configuration)
+        {
+            services.AddRestEaseClient<IApiClient>(configuration.BaseUrl);
             return services;
         }
     }
 
-    public class OuterApiConfig
+    public class OuterApiConfiguration
     {
         public string BaseUrl { get; set; }
     }
