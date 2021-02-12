@@ -5,7 +5,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api.Models
     public class VerifyRegistrationCommand
     {
         public Guid RegistrationId { get; set; }
-        public Guid UserId { get; set; }
+        public Guid UserIdentityId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

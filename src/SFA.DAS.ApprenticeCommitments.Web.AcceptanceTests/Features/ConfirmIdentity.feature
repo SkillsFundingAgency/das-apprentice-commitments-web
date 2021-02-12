@@ -19,10 +19,23 @@ Scenario: The apprentice is authenticated and should be redirected to the overvi
 Scenario: The apprentice enters valid identity information
 	Given the apprentice has logged in
 	And the apprentice has not verified their identity
+	And the API will accept the identity
 	When the apprentice verifies their identity with
 	| First name | Last name  | Date of Birth | National Insurance Number |
 	| Bob        | bobbertson | 2000-01-30    | AB123456C                 |
+	Then verification is successful
+	#And the apprentice should see the verify identity page
 
-	Then verification is successfull
+
+Scenario: The apprentice enters invalid identity information
+	Given the apprentice has logged in
+	And the apprentice has not verified their identity
+	And the API will reject the identity with the following errors
+	| Property Name           | Error Message |
+	| NationalInsuranceNumber | not valid     |
+	When the apprentice verifies their identity with
+	| First name | Last name  | Date of Birth | National Insurance Number |
+	| Bob        | bobbertson | 2000-01-01    | lars                      |
+	Then verification is not successful
 	#And the apprentice should see the verify identity page
 

@@ -21,7 +21,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             this IServiceCollection services,
             OuterApiConfiguration configuration)
         {
-            services.AddRestEaseClient<IApiClient>(configuration.BaseUrl);
+            services.AddTransient<InvalidContentHandler>();
+
+            services
+                .AddRestEaseClient<IApiClient>(configuration.BaseUrl)
+                .AddHttpMessageHandler<InvalidContentHandler>();
             return services;
         }
     }

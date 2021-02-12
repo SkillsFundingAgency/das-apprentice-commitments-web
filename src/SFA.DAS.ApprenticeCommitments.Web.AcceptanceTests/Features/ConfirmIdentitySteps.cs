@@ -1,5 +1,6 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Newtonsoft.Json;
+using SFA.DAS.ApprenticeCommitments.Web.Api;
 using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
@@ -106,10 +107,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         [When("the apprentice verifies their identity with")]
         public async Task WhenTheApprenticeVerifiesTheirIdentityWith(Table table)
         {
-            _context.OuterApi.MockServer
-                .Given(Request.Create().WithPath("/registrations*"))
-                .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
-
             _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
             _postedRegistration.DateOfBirth = 
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
@@ -130,11 +127,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             await _context.Web.Send(request);
         }
 
-        [Then("verification is successfull")]
-        public void ThenTheVerificationIsSuccessfull()
+        [Then("verification is successful")]
+        public void ThenTheVerificationIsSuccessful()
         {
             ThenTheResponseStatusCodeShouldBeOk();
-            var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
+
+        }
+         
+        [Then("verification is sent to the API")]
+        public void ThenTheVerificationIsSuccessfulSent()
+        {
+                var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
                     .WithPath($"/registrations*")
                     .UsingPost()
@@ -144,7 +147,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
 
             var post = registrationPosts.First();
 
-            post.RequestMessage.Path.Should().Be($"/registrations/{_registrationId}");
+            post.RequestMessage.Path.Should().Be("/registrations");
             var reg = JsonConvert.DeserializeObject<VerifyRegistrationCommand>(post.RequestMessage.Body);
             reg.Should().BeEquivalentTo(new VerifyRegistrationCommand
             {
@@ -155,5 +158,55 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                 DateOfBirth = _postedRegistration.DateOfBirth.Date,
             });
         }
+
+        [Given("the API will accept the identity")]
+        public void WhenTheApiAcceptsTheIdentityAsForInvalidData()
+        {
+            _context.OuterApi.MockServer
+                .Given(Request.Create().WithPath("/registrations*"))
+                .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
+        }
+
+        [Given("the API will reject the identity with the following errors")]
+        public void WhenTheApiRejectsTheIdentity(Table table)
+        {
+            var errors = table.CreateSet<ErrorItem>();
+
+            _context.OuterApi.MockServer
+                .Given(Request.Create().WithPath("/registrations*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(HttpStatusCode.BadRequest)
+                    .WithBodyAsJson(errors));
+        }
+
+        [Then("verification is not successful")]
+        public void ThenTheVerificationIsNotSuccessful()
+        {
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmYourIdentityModel>()
+                .Which.ModelState.IsValid.Should().BeFalse();
+
+            _context.ActionResult.LastPageResult
+                .Model.As<ConfirmYourIdentityModel>()
+                .ModelState["NationalInsuranceNumber"]
+                .Errors.Should().ContainEquivalentOf(new { ErrorMessage = "not valid" } );
+        }
     }
 }
+
+
+/*
+[
+  {
+    "PropertyName": "UserIdentityId",
+    "ErrorMessage": "The User Identity Id must be valid"
+  },
+  {
+    "PropertyName": "Email",
+    "ErrorMessage": "'Email' must not be empty."
+  },
+  {
+    "PropertyName": "NationalInsuranceNumber",
+    "ErrorMessage": "National insurance number is required"
+  }
+]
+*/

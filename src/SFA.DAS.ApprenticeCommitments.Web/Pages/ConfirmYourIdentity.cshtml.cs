@@ -5,7 +5,6 @@ using SFA.DAS.ApprenticeCommitments.Web.Api;
 using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
@@ -61,21 +60,34 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public async Task<IActionResult> OnPost([FromServices] RegistrationUser user)
         {
-            await _registrations.Validate(new VerifyRegistrationCommand
+            try
             {
-                RegistrationId = user.RegistrationId,
-                FirstName = FirstName,
-                LastName = LastName,
-                NationalInsuranceNumber = NationalInsuranceNumber,
-                DateOfBirth = DateOfBirth.Date,
-            });
+                await _registrations.VerifyRegistration(new VerifyRegistrationCommand
+                {
+                    RegistrationId = user.RegistrationId,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    NationalInsuranceNumber = NationalInsuranceNumber,
+                    DateOfBirth = DateOfBirth.Date,
+                    UserIdentityId = Guid.NewGuid(),
+                    Email = "ben@arnoldfamily.me.uk",
+                });
 
-            return RedirectToPage("/ConfirmYourIdentity", new
+                return RedirectToPage("/ConfirmYourIdentity", new
+                {
+                    FirstName,
+                    LastName,
+                    NationalInsuranceNumber,
+                });
+            }
+            catch (DomainValidationException exception)
             {
-                FirstName,
-                LastName,
-                NationalInsuranceNumber,
-            });
+                foreach(var e in exception.Errors)
+                {
+                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                }
+                return Page();
+            }
         }
     }
 }

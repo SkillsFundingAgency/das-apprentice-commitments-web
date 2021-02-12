@@ -1,6 +1,10 @@
-﻿using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
+﻿using Newtonsoft.Json;
+using RestEase;
+using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Api
@@ -16,7 +20,57 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
         internal Task<Registration> GetRegistration(RegistrationUser user) =>
             GetRegistration(user.RegistrationId);
 
-        internal Task Validate(VerifyRegistrationCommand verification) =>
-            _client.Validate(verification.RegistrationId, verification);
+        internal async Task VerifyRegistration(VerifyRegistrationCommand verification)
+        {
+            try
+            {
+                await _client.VerifyRegistration(verification.RegistrationId, verification);
+            }
+            catch (ApiException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content);
+
+                    throw new DomainValidationException(errors);
+                }
+
+                throw;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+    }
+
+    [Serializable]
+    internal class DomainValidationException : Exception
+    {
+        public List<ErrorItem> Errors { get; }
+
+        public DomainValidationException()
+        {
+        }
+
+        public DomainValidationException(List<ErrorItem> errors) => Errors = errors;
+
+        public DomainValidationException(string message) : base(message)
+        {
+        }
+
+        public DomainValidationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected DomainValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+
+    public class ErrorItem
+    {
+        public string PropertyName { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
