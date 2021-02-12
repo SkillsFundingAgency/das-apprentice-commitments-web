@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -105,38 +106,64 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         }
 
         [When(@"the apprentice verifies their identity with")]
-        public async Task GivenTheApprenticeVerifiesTheirIdentityWith(Table table)
+        public async Task WhenTheApprenticeVerifiesTheirIdentityWith(Table table)
         {
+
             _context.OuterApi.MockServer
                 .Given(Request.Create().WithPath("/registrations*"))
                 .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
 
             _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
 
-            var get = await _context.Web.Get("ConfirmYourIdentity");
-            using var content = await HtmlHelpers.GetDocumentAsync(get);
-
-            var form = (IHtmlFormElement)content.QuerySelector("form");
-            (form["FirstName"] as IHtmlInputElement).Value = _postedRegistration.FirstName;
-            (form["LastName"] as IHtmlInputElement).Value = _postedRegistration.LastName;
-            (form["NationalInsuranceNumber"] as IHtmlInputElement).Value = _postedRegistration.NationalInsuranceNumber;
-
-            var button = (IHtmlButtonElement)content.QuerySelector("button");
-            var formSubmission = form.GetSubmission(button);
-
-            var target = (Uri)formSubmission.Target;
-
-            var submitted = new StreamReader(formSubmission.Body).ReadToEnd();
-
-            var request = new HttpRequestMessage(new HttpMethod(formSubmission.Method.ToString()), target)
+            var url = $"ConfirmYourIdentity";
+            var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
-                Content = new StreamContent(formSubmission.Body)
+                Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("FirstName", _postedRegistration.FirstName),
+                    new KeyValuePair<string, string>("LastName", _postedRegistration.LastName),
+                    new KeyValuePair<string, string>("NationalInsuranceNumber", _postedRegistration.NationalInsuranceNumber)
+                })
             };
 
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+           await _context.Web.Send(request);
 
-            await _context.Web.Client.SendAsync(request);
         }
+
+
+        //[When(@"the apprentice verifies their identity with")]
+        //public async Task GivenTheApprenticeVerifiesTheirIdentityWith(Table table)
+        //{
+        //    _context.OuterApi.MockServer
+        //        .Given(Request.Create().WithPath("/registrations*"))
+        //        .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
+
+        //    _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
+
+        //    var get = await _context.Web.Get("ConfirmYourIdentity");
+        //    using var content = await HtmlHelpers.GetDocumentAsync(get);
+
+        //    var form = (IHtmlFormElement)content.QuerySelector("form");
+        //    (form["FirstName"] as IHtmlInputElement).Value = _postedRegistration.FirstName;
+        //    (form["LastName"] as IHtmlInputElement).Value = _postedRegistration.LastName;
+        //    (form["NationalInsuranceNumber"] as IHtmlInputElement).Value = _postedRegistration.NationalInsuranceNumber;
+
+        //    var button = (IHtmlButtonElement)content.QuerySelector("button");
+        //    var formSubmission = form.GetSubmission(button);
+
+        //    var target = (Uri)formSubmission.Target;
+
+        //    var submitted = new StreamReader(formSubmission.Body).ReadToEnd();
+
+        //    var request = new HttpRequestMessage(new HttpMethod(formSubmission.Method.ToString()), target)
+        //    {
+        //        Content = new StreamContent(formSubmission.Body)
+        //    };
+
+        //    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+        //    await _context.Web.Client.SendAsync(request);
+        //}
 
         [Then("verification is successfull")]
         public void ThenTheVerificationIsSuccessfull()

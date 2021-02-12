@@ -52,6 +52,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
                 {
                     options.Filters.Add(new ActionResultFilter(_actionResultHook));
                 });
+
+                s.AddMvc().AddRazorPagesOptions(o =>
+                {
+                    o.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                });
+
             });
 
             builder.ConfigureAppConfiguration(a =>
