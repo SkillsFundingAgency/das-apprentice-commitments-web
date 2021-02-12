@@ -31,15 +31,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             ErrorMessage = "Please enter your last name")]
         public string LastName { get; set; }
 
-        public int DayOfBirth { get; set; }
-        public int MonthOfBirth { get; set; }
-        public int YearOfBirth { get; set; }
+        [BindProperty]
+        public DateModel DateOfBirth { get; set; }
 
         [BindProperty]
         [Required(
             AllowEmptyStrings = false,
             ErrorMessage = "Please enter your national insurance number")]
-        public string NationalInsuranceNumber{ get; set; }
+        public string NationalInsuranceNumber { get; set; }
 
         public async Task<IActionResult> OnGetAsync(
             string firstName = null,
@@ -70,6 +69,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                 FirstName = FirstName,
                 LastName = LastName,
                 NationalInsuranceNumber = NationalInsuranceNumber,
+                DateOfBirth = DateOfBirth.Date,
             });
 
             return RedirectToPage("/ConfirmYourIdentity", new

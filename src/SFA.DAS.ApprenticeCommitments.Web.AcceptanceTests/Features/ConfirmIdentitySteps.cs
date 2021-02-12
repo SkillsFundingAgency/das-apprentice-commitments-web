@@ -112,6 +112,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                 .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
 
             _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
+            var dob = table.Rows[0]["Date of Birth"];
+            _postedRegistration.DateOfBirth = new DateModel(DateTime.Parse(dob));
 
             var get = await _context.Web.Get("ConfirmYourIdentity");
             using var content = await HtmlHelpers.GetDocumentAsync(get);
@@ -120,6 +122,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             (form["FirstName"] as IHtmlInputElement).Value = _postedRegistration.FirstName;
             (form["LastName"] as IHtmlInputElement).Value = _postedRegistration.LastName;
             (form["NationalInsuranceNumber"] as IHtmlInputElement).Value = _postedRegistration.NationalInsuranceNumber;
+            (form["DateOfBirth.Day"] as IHtmlInputElement).Value = _postedRegistration.DateOfBirth.Day.ToString();
+            (form["DateOfBirth.Month"] as IHtmlInputElement).Value = _postedRegistration.DateOfBirth.Month.ToString();
+            (form["DateOfBirth.Year"] as IHtmlInputElement).Value = _postedRegistration.DateOfBirth.Year.ToString();
 
             var button = (IHtmlButtonElement)content.QuerySelector("button");
             var formSubmission = form.GetSubmission(button);
@@ -145,8 +150,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
                     .WithPath($"/registrations*")
-                    .UsingPost()
-                                                                               );
+                    .UsingPost());
 
             registrationPosts.Should().NotBeEmpty();
 
@@ -160,6 +164,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                 FirstName = _postedRegistration.FirstName,
                 LastName = _postedRegistration.LastName,
                 NationalInsuranceNumber = _postedRegistration.NationalInsuranceNumber,
+                DateOfBirth = _postedRegistration.DateOfBirth.Date,
             });
         }
     }
