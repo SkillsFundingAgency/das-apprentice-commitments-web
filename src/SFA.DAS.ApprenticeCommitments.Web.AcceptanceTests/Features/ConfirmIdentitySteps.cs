@@ -1,11 +1,9 @@
-﻿using AngleSharp.Html.Dom;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -105,65 +103,32 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             _context.ActionResult.LastPageResult.Model.Should().BeOfType<OverviewModel>();
         }
 
-        [When(@"the apprentice verifies their identity with")]
+        [When("the apprentice verifies their identity with")]
         public async Task WhenTheApprenticeVerifiesTheirIdentityWith(Table table)
         {
-
             _context.OuterApi.MockServer
                 .Given(Request.Create().WithPath("/registrations*"))
                 .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
 
             _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
+            _postedRegistration.DateOfBirth = 
+                new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            var url = $"ConfirmYourIdentity";
-            var request = new HttpRequestMessage(HttpMethod.Post, url)
+            var request = new HttpRequestMessage(HttpMethod.Post, "ConfirmYourIdentity")
             {
-                Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    new KeyValuePair<string, string>("FirstName", _postedRegistration.FirstName),
-                    new KeyValuePair<string, string>("LastName", _postedRegistration.LastName),
-                    new KeyValuePair<string, string>("NationalInsuranceNumber", _postedRegistration.NationalInsuranceNumber)
-                })
+                    { "FirstName", _postedRegistration.FirstName },
+                    { "LastName", _postedRegistration.LastName },
+                    { "NationalInsuranceNumber", _postedRegistration.NationalInsuranceNumber },
+                    { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
+                    { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
+                    { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
+                }),
             };
 
-           await _context.Web.Send(request);
-
+            await _context.Web.Send(request);
         }
-
-
-        //[When(@"the apprentice verifies their identity with")]
-        //public async Task GivenTheApprenticeVerifiesTheirIdentityWith(Table table)
-        //{
-        //    _context.OuterApi.MockServer
-        //        .Given(Request.Create().WithPath("/registrations*"))
-        //        .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
-
-        //    _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
-
-        //    var get = await _context.Web.Get("ConfirmYourIdentity");
-        //    using var content = await HtmlHelpers.GetDocumentAsync(get);
-
-        //    var form = (IHtmlFormElement)content.QuerySelector("form");
-        //    (form["FirstName"] as IHtmlInputElement).Value = _postedRegistration.FirstName;
-        //    (form["LastName"] as IHtmlInputElement).Value = _postedRegistration.LastName;
-        //    (form["NationalInsuranceNumber"] as IHtmlInputElement).Value = _postedRegistration.NationalInsuranceNumber;
-
-        //    var button = (IHtmlButtonElement)content.QuerySelector("button");
-        //    var formSubmission = form.GetSubmission(button);
-
-        //    var target = (Uri)formSubmission.Target;
-
-        //    var submitted = new StreamReader(formSubmission.Body).ReadToEnd();
-
-        //    var request = new HttpRequestMessage(new HttpMethod(formSubmission.Method.ToString()), target)
-        //    {
-        //        Content = new StreamContent(formSubmission.Body)
-        //    };
-
-        //    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
-        //    await _context.Web.Client.SendAsync(request);
-        //}
 
         [Then("verification is successfull")]
         public void ThenTheVerificationIsSuccessfull()
@@ -187,6 +152,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
                 FirstName = _postedRegistration.FirstName,
                 LastName = _postedRegistration.LastName,
                 NationalInsuranceNumber = _postedRegistration.NationalInsuranceNumber,
+                DateOfBirth = _postedRegistration.DateOfBirth.Date,
             });
         }
     }

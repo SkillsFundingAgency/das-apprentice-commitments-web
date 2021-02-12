@@ -20,8 +20,8 @@ Scenario: The apprentice enters valid identity information
 	Given the apprentice has logged in
 	And the apprentice has not verified their identity
 	When the apprentice verifies their identity with
-	| First name | Last name  | National Insurance Number |
-	| Bob        | bobbertson | AB123456C |
+	| First name | Last name  | Date of Birth | National Insurance Number |
+	| Bob        | bobbertson | 2000-01-30    | AB123456C                 |
 
 	Then verification is successfull
 	#And the apprentice should see the verify identity page
