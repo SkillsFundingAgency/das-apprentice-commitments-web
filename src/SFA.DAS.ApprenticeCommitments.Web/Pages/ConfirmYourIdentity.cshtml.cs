@@ -41,6 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public string NationalInsuranceNumber { get; set; }
 
         public async Task<IActionResult> OnGetAsync(
+            [FromServices] RegistrationUser user,
             string firstName = null,
             string lastName = null,
             string nationalInsuranceNumber = null)
@@ -49,9 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             LastName = lastName;
             NationalInsuranceNumber = nationalInsuranceNumber;
 
-            // TODO - rework based on outcome of CS-213
-            Guid.TryParse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "", out var regId);
-            var reg = await _registrations.GetRegistration(regId);
+            var reg = await _registrations.GetRegistration(user);
 
             if (reg.UserId != null) return RedirectToPage("overview");
 
@@ -60,12 +59,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost([FromServices] RegistrationUser user)
         {
-            Guid.TryParse(User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? "", out var regId);
             await _registrations.Validate(new VerifyRegistrationCommand
             {
-                RegistrationId = regId,
+                RegistrationId = user.RegistrationId,
                 FirstName = FirstName,
                 LastName = LastName,
                 NationalInsuranceNumber = NationalInsuranceNumber,
