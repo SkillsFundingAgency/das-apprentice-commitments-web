@@ -28,32 +28,31 @@
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint date-of-birth-error">
-                    <fieldset class="govuk-fieldset" role="group" aria-describedby="passport-issued-hint passport-issued-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">
-                                When was your passport issued?
+                                What is your date of birth?
                             </h1>
                         </legend>
-                        <div id="passport-issued-hint" class="govuk-hint">
+                        <div id="date-of-birth-hint" class="govuk-hint">
                             For example, 12 11 2007
                         </div>
-                        <div class="govuk-date-input" id="passport-issued">
+                        <div class="govuk-date-input" id="date-of-birth">
                             <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Day">Day</label>
-                                    <input class="govuk-input govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Day">
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Day" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric">
                                 </div>
                             </div>
                             <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Month">Month</label>
-                                    <input class="govuk-input govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Month">
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Month" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric">
                                 </div>
                             </div>
                             <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Year">Year</label>
-                                    <input class="govuk-input govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Year">
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Year" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric">
                                 </div>
                             </div>
                         </div>
