@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourIdentityModel
 @{
     ViewData["Title"] = "Confirm your identity";
@@ -14,22 +14,6 @@
             <form method="post" action="" class="check-answers-page" id="identity-assurance">
                 @Html.ValidationSummary()
 
-                <input asp-for="EmailAddress" />
-
-                <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            <h1 class="govuk-fieldset__heading">Confirm your email address</h1>
-                        </legend>
-                        <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-checkboxes__input" id="contact" name="contact" type="checkbox" value="email" data-aria-controls="conditional-contact">
-                                <label class="govuk-label govuk-checkboxes__label " for="contact">Confirm that <strong>@Model.EmailAddress</strong> is your email address.</label>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" asp-for="FirstName">Enter your First Name</label>
                     <span asp-validation-for="FirstName" class="govuk-error-message"></span>
@@ -43,8 +27,7 @@
                 </div>
 
                 <div class="govuk-form-group">
-                    <span asp-validation-for="DateOfBirth" class="govuk-error-message"></span>
-
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint date-of-birth-error">
                     <fieldset class="govuk-fieldset" role="group" aria-describedby="passport-issued-hint passport-issued-error">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">

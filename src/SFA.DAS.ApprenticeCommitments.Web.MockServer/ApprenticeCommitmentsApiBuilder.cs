@@ -52,25 +52,27 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .WithPath("/registrations")
                     .UsingPost()
-                    .WithBody(new JmesPathMatcher("contains(Email, '@')")))
-                .RespondWith(
-                    Response.Create()
-                        .WithStatusCode(HttpStatusCode.OK));
-
-            _server.Given(
-                Request.Create()
-                    .WithPath("/registrations")
-                    .UsingPost()
-                    .WithBody(new JmesPathMatcher("!contains(Email, '@')")))
+                    .WithBody(new JmesPathMatcher("contains(FirstName, 'Error')")))
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(HttpStatusCode.BadRequest)
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyAsJson(new[]
                         {
+                            new { PropertyName = "FirstName", ErrorMessage = "Invalid FirstName" },
+                            new { PropertyName = "LastName", ErrorMessage = "Invalid LastName" },
+                            new { PropertyName = "DateOfBirth", ErrorMessage = "Invalid DateOfBirth" },
+                            new { PropertyName = "NationalInsuranceNumber", ErrorMessage = "Invalid NationalInsuranceNumber" },
                             new { PropertyName = "Email", ErrorMessage = "Invalid email" },
-                        })
-                            );
+                        }));
+
+            _server.Given(
+                Request.Create()
+                    .WithPath("/registrations")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(HttpStatusCode.OK));
 
             return this;
         }

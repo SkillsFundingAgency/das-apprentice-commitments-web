@@ -62,7 +62,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 foreach(var e in exception.Errors)
                 {
-                    ModelState.AddModelError("DateOfBirth", "your dob is wrong");
                     ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
                 }
                 return Page();
