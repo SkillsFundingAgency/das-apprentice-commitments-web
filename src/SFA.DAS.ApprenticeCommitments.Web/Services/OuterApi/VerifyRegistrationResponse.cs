@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Api.Models
+namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
-    public class Registration
+    public class VerifyRegistrationResponse
     {
         public Guid Id { get; set; }
         public int? UserId { get; set; }

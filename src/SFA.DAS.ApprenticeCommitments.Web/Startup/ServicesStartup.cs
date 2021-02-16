@@ -1,8 +1,7 @@
-using System.Net;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase.HttpClientFactory;
-using SFA.DAS.ApprenticeCommitments.Web.Api;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
@@ -25,10 +24,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             services.AddTransient<Http.MessageHandlers.ApimHeadersHandler>();
 
             services
-                .AddRestEaseClient<IApiClient>(configuration.ApiBaseUrl)
+                .AddRestEaseClient<IOuterApiClient>(configuration.ApiBaseUrl)
                 .AddHttpMessageHandler<Http.MessageHandlers.DefaultHeadersHandler>()
                 .AddHttpMessageHandler<Http.MessageHandlers.ApimHeadersHandler>()
                 .AddHttpMessageHandler<Http.MessageHandlers.LoggingMessageHandler>();
+
+            services.AddTransient<IApimClientConfiguration>((_) => configuration);
 
             return services;
         }

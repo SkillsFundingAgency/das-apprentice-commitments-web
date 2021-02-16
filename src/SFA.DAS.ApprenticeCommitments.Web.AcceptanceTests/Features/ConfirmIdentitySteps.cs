@@ -1,7 +1,5 @@
 using FluentAssertions;
 using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.Api;
-using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
 using System.Collections.Generic;
@@ -10,6 +8,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using WireMock.RequestBuilders;
@@ -148,8 +148,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
             var post = registrationPosts.First();
 
             post.RequestMessage.Path.Should().Be("/registrations");
-            var reg = JsonConvert.DeserializeObject<VerifyRegistrationCommand>(post.RequestMessage.Body);
-            reg.Should().BeEquivalentTo(new VerifyRegistrationCommand
+            var reg = JsonConvert.DeserializeObject<VerifyRegistrationRequest>(post.RequestMessage.Body);
+            reg.Should().BeEquivalentTo(new VerifyRegistrationRequest
             {
                 RegistrationId = _registrationId,
                 FirstName = _postedRegistration.FirstName,

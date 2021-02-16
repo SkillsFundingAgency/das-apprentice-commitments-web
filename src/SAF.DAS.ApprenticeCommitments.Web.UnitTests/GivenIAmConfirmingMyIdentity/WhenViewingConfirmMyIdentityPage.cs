@@ -3,12 +3,11 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations;
-using SFA.DAS.ApprenticeCommitments.Web.Api;
-using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdentity
 {
@@ -16,10 +15,10 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
     {
         [Test, PageAutoData]
         public async Task The_page_shows_my_email_address(
-            [Frozen] Mock<IApiClient> api,
+            [Frozen] Mock<IOuterApiClient> api,
             ConfirmYourIdentityModel sut,
             ClaimsPrincipal user,
-            Registration registration)
+            VerifyRegistrationResponse registration)
         {
             user.AddIdentity(new ClaimsIdentity(new[]
             {

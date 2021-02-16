@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SFA.DAS.ApprenticeCommitments.Web.Api;
-using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using System;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
@@ -11,7 +11,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     {
         private readonly RegistrationsService _registrations;
 
-        public ConfirmYourIdentityModel(RegistrationsService api) => _registrations = api;
+        public ConfirmYourIdentityModel(RegistrationsService api)
+        {
+            _registrations = api;
+        }
 
         [BindProperty]
         [HiddenInput]
@@ -45,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             try
             {
-                await _registrations.VerifyRegistration(new VerifyRegistrationCommand
+                await _registrations.VerifyRegistration(new VerifyRegistrationRequest
                 {
                     RegistrationId = user.RegistrationId,
                     FirstName = FirstName,

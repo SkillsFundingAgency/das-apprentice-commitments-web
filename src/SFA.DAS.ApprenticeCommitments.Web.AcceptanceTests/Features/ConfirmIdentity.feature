@@ -26,7 +26,6 @@ Scenario: The apprentice enters valid identity information
 	Then verification is successful
 	#And the apprentice should see the verify identity page
 
-
 Scenario: The apprentice enters invalid identity information
 	Given the apprentice has logged in
 	And the apprentice has not verified their identity

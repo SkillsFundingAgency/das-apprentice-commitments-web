@@ -1,26 +1,28 @@
-﻿using Newtonsoft.Json;
-using RestEase;
-using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
-using SFA.DAS.ApprenticeCommitments.Web.Pages;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RestEase;
+using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Api
+namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
     public class RegistrationsService
     {
-        private readonly IApiClient _client;
+        private readonly IOuterApiClient _client;
 
-        public RegistrationsService(IApiClient client) => _client = client;
+        public RegistrationsService(IOuterApiClient client)
+        {
+            _client = client;
+        }
 
-        public Task<Registration> GetRegistration(Guid id) => _client.GetRegistration(id);
+        public Task<VerifyRegistrationResponse> GetRegistration(Guid id) => _client.GetRegistration(id);
 
-        internal Task<Registration> GetRegistration(AuthenticatedUser user) =>
+        internal Task<VerifyRegistrationResponse> GetRegistration(AuthenticatedUser user) =>
             GetRegistration(user.RegistrationId);
 
-        internal async Task VerifyRegistration(VerifyRegistrationCommand verification)
+        internal async Task VerifyRegistration(VerifyRegistrationRequest verification)
         {
             try
             {
@@ -38,9 +40,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
     {
         public List<ErrorItem> Errors { get; }
 
-        public DomainValidationException(List<ErrorItem> errors) => Errors = errors;
+        public DomainValidationException(List<ErrorItem> errors) : base("DomainValidation Exception")
+        {
+            Errors = errors;
+        }
 
-        public DomainValidationException(string message) : base(message)
+        public DomainValidationException(string message) : this(new List<ErrorItem>{new ErrorItem { ErrorMessage = message}})
         {
         }
 

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using System;
 using System.Net;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
         public ApprenticeCommitmentsApiBuilder WithUsersFirstLogin()
         {
-            var data = new Registration { Email = "bob@example.com", Id = Guid.NewGuid() };
+            var data = new VerifyRegistrationResponse { Email = "bob@example.com", Id = Guid.NewGuid() };
             var response = JsonConvert.SerializeObject(data, DefaultSerializerSettings);
 
             _server.Given(
