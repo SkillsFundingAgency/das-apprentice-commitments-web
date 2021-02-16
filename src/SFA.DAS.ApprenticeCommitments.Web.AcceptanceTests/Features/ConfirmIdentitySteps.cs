@@ -192,21 +192,3 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         }
     }
 }
-
-
-/*
-[
-  {
-    "PropertyName": "UserIdentityId",
-    "ErrorMessage": "The User Identity Id must be valid"
-  },
-  {
-    "PropertyName": "Email",
-    "ErrorMessage": "'Email' must not be empty."
-  },
-  {
-    "PropertyName": "NationalInsuranceNumber",
-    "ErrorMessage": "National insurance number is required"
-  }
-]
-*/

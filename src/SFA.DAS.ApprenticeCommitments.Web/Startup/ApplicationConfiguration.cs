@@ -4,6 +4,6 @@
     {
         public AuthenticationServiceConfiguration Authentication { get; set; }
         public DataProtectionConnectionStrings ConnectionStrings { get; set; }
-        public OuterApiConfiguration Api { get; set; }
+        public OuterApiConfiguration ApprenticeCommitmentsApi { get; set; }
     }
 }

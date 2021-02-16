@@ -26,32 +26,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
             {
                 await _client.VerifyRegistration(verification);
             }
-            catch (ApiException ex)
+            catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content);
-
-                    throw new DomainValidationException(errors);
-                }
-
-                throw;
-            }
-            catch
-            {
-                throw;
+                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content);
+                throw new DomainValidationException(errors);
             }
         }
     }
 
-    [Serializable]
     internal class DomainValidationException : Exception
     {
         public List<ErrorItem> Errors { get; }
-
-        public DomainValidationException()
-        {
-        }
 
         public DomainValidationException(List<ErrorItem> errors) => Errors = errors;
 
@@ -60,10 +45,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Api
         }
 
         public DomainValidationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected DomainValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

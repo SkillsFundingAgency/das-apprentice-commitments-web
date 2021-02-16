@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 var config = new Dictionary<string, string>
                 {
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
-                    {"Api:BaseUrl", _context.OuterApi.BaseAddress},
+                    { OuterApiConfigName, _context.OuterApi.BaseAddress},
                 };
 
                 ActionResultHook = new Hook<IActionResult>();
@@ -38,6 +38,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
             }
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);
         }
+
+        private static string OuterApiConfigName =>
+            $"{nameof(ApplicationConfiguration.ApprenticeCommitmentsApi)}:{nameof(OuterApiConfiguration.ApiBaseUrl)}";
 
         [AfterScenario()]
         public void CleanUpScenario()
