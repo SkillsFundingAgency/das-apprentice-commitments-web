@@ -1,6 +1,8 @@
 using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using SFA.DAS.ApprenticeCommitments.Web.Services;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using WireMock.RequestBuilders;
@@ -108,7 +108,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         public async Task WhenTheApprenticeVerifiesTheirIdentityWith(Table table)
         {
             _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
-            _postedRegistration.DateOfBirth = 
+            _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
             var request = new HttpRequestMessage(HttpMethod.Post, "ConfirmYourIdentity")
@@ -131,16 +131,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         public void ThenTheVerificationIsSuccessful()
         {
             ThenTheResponseStatusCodeShouldBeOk();
-
         }
-         
+
         [Then("verification is sent to the API")]
         public void ThenTheVerificationIsSuccessfulSent()
         {
-                var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
-                Request.Create()
-                    .WithPath($"/registrations*")
-                    .UsingPost()
+            var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
+            Request.Create()
+                .WithPath($"/registrations*")
+                .UsingPost()
                                                                                );
 
             registrationPosts.Should().NotBeEmpty();
@@ -184,11 +183,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
         {
             _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmYourIdentityModel>()
                 .Which.ModelState.IsValid.Should().BeFalse();
+        }
 
-            _context.ActionResult.LastPageResult
-                .Model.As<ConfirmYourIdentityModel>()
-                .ModelState["NationalInsuranceNumber"]
-                .Errors.Should().ContainEquivalentOf(new { ErrorMessage = "not valid" } );
+        [Then("the apprentice should see the following error messages")]
+        public void ThenTheApprenticeShouldSeeTheFollowingErrorMessages(Table table)
+        {
+            var messages = table.CreateSet<(string PropertyName, string ErrorMessage)>();
+
+            foreach (var (PropertyName, ErrorMessage) in messages)
+            {
+                _context.ActionResult.LastPageResult
+                    .Model.As<ConfirmYourIdentityModel>()
+                    .ModelState[PropertyName]
+                    .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
+            }
         }
     }
 }
