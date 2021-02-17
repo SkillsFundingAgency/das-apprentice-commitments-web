@@ -64,11 +64,26 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             }
             catch (DomainValidationException exception)
             {
-                foreach(var e in exception.Errors)
-                {
-                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
-                }
+                AddErrors(exception);
                 return Page();
+            }
+        }
+
+        private void AddErrors(DomainValidationException exception)
+        {
+            ModelState.ClearValidationState(nameof(DateOfBirth));
+
+            foreach (var e in exception.Errors)
+            {
+                var (p, m) = e.PropertyName switch
+                {
+                    nameof(FirstName) => (e.PropertyName, "Enter your first name"),
+                    nameof(LastName) => (e.PropertyName, "Enter your last name"),
+                    nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
+                    nameof(NationalInsuranceNumber) => (e.PropertyName, "Enter your National Insurance Number"),
+                    _ => (e.PropertyName, "Something went wrong"),
+                };
+                ModelState.AddModelError(p, m);
             }
         }
     }
