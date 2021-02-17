@@ -217,10 +217,7 @@
                         "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
                     }
                 }
-            },
-            "dependsOn": [
-                "[variables('resourceGroupName')]"
-            ]
+            }
         }
     ],
     "outputs": 
