@@ -29,6 +29,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 var config = new Dictionary<string, string>
                 {
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
+                    {"Authentication:MetadataAddress", "https://localhost"},
+                    {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi.BaseAddress},
+                    {"ApprenticeCommitmentsApi:SubscriptionKey", ""}
                 };
 
                 ActionResultHook = new Hook<IActionResult>();

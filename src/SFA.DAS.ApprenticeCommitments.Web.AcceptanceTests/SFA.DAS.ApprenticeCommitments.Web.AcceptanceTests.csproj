@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -13,10 +13,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="WireMock.Net" Version="1.4.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Drivers\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
-            var apprenticeCommitmentsApi = ApprenticeCommitmentsApiBuilder.Create(8088)
+            var apprenticeCommitmentsApi = ApprenticeCommitmentsApiBuilder.Create(5121)
                 .WithUsersFirstLogin()
                 .Build();
 

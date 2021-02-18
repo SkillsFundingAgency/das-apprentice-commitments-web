@@ -43,7 +43,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, "Test user"),
-                new Claim("sub", guid.ToString()),
+                new Claim("registration_id", guid.ToString()),
             };
             var identity = new ClaimsIdentity(claims, "Test1");
             var principal = new ClaimsPrincipal(identity);

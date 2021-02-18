@@ -22,10 +22,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
             ActionResultHook = actionResultHook;
         }
 
-        public async Task Get(string url)
+        public async Task<HttpResponseMessage> Get(string url)
         {
             Response?.Dispose();
-            Response = await Client.GetAsync(url);
+            return Response = await Client.GetAsync(url);
+        }
+
+        public async Task<HttpResponseMessage> Send(HttpRequestMessage message)
+        {
+            Response?.Dispose();
+            return Response = await Client.SendAsync(message);
         }
 
         public void Dispose()

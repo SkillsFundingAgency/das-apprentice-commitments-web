@@ -2,6 +2,13 @@
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourIdentityModel
 @{
     ViewData["Title"] = "Confirm your identity";
+
+    bool IsInvalid(string propertyName) =>
+        ViewData.ModelState["FirstName"]?.ValidationState ==
+        Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
+
+    string FormGroupValidationClass(string propertyName)
+        => IsInvalid(propertyName) ? "govuk-form-group--error" : "";
 }
 
 <div class="govuk-width-container">
@@ -11,48 +18,66 @@
 
             <h1 class="govuk-heading-xl">Confirm your identity</h1>
 
-            <form method="post" action="" class="check-answers-page" id="identity-assurance">
-                @Html.ValidationSummary()
+            <partial name="ValidationSummary" />
 
-                <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                            <h1 class="govuk-fieldset__heading">Confirm your email address</h1>
-                        </legend>
-                        <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-checkboxes__input" id="contact" name="contact" type="checkbox" value="email" data-aria-controls="conditional-contact">
-                                <label class="govuk-label govuk-checkboxes__label " for="contact">Confirm that <strong>joe.bloggs@hotmail.co.uk</strong> is your email address.</label>
+            <form method="post" action="" class="check-answers-page" id="identity-assurance">
+                <input asp-for="EmailAddress">
+
+                <div id="FirstName" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                    <label class="govuk-label govuk-label--m" asp-for="FirstName">First Name</label>
+                    <span asp-validation-for="FirstName" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-20" asp-for="FirstName">
+                </div>
+
+                <div id="LastName" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                    <label class="govuk-label govuk-label--m" asp-for="LastName">Last Name</label>
+                    <span asp-validation-for="LastName" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-20" asp-for="LastName">
+                </div>
+
+                <div id="DateOfBirth" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint date-of-birth-error">
+                        <label class="govuk-label govuk-label--m" asp-for="DateOfBirth">
+                            Date of birth
+                        </label>
+                        <div id="date-of-birth-hint" class="govuk-hint">
+                            For example, 12 11 2007
+                        </div>
+                        <span asp-validation-for="DateOfBirth" class="govuk-error-message"></span>
+                        <div class="govuk-date-input" id="date-of-birth">
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Day">Day</label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Day" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric">
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Month">Month</label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" asp-for="DateOfBirth.Month" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric">
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Year">Year</label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" asp-for="DateOfBirth.Year" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric">
+                                </div>
                             </div>
                         </div>
                     </fieldset>
                 </div>
 
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" asp-for="FirstName">Enter your First Name</label>
-                    <span asp-validation-for="FirstName" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-input--width-20" asp-for="FirstName">
-                </div>
-
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" asp-for="LastName">Enter your Last Name</label>
-                    <span asp-validation-for="LastName" class="govuk-error-message"></span>
-                    <input class="govuk-input govuk-input--width-20" asp-for="LastName">
-                </div>
-
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" asp-for="NationalInsuranceNumber">Enter your National Insurance Number</label>
+                <div id="NationalInsuranceNumber" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                    <label class="govuk-label govuk-label--m" asp-for="NationalInsuranceNumber">National Insurance Number</label>
                     <div id="event-name-hint" class="govuk-hint">You can find this on your National Insurance card, benefit letter, payslip or P60. For example, 'QQ 12 34 56 C'.</div>
-                    <input  class="govuk-input govuk-input--width-20" asp-for="NationalInsuranceNumber" />
+                    <span asp-validation-for="NationalInsuranceNumber" class="govuk-error-message"></span>
+                    <input class="govuk-input govuk-input--width-20" asp-for="NationalInsuranceNumber" />
                 </div>
 
                 <br>
 
                 <button class="govuk-button" data-module="govuk-button" id="identity-assurance-btn">Continue</button>
-
             </form>
-
         </div>
     </div>
-
 </div>
