@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
-using System.Linq;
+﻿using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps
+namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 {
     public class StepsBase
     {

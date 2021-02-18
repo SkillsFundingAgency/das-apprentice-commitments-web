@@ -38,6 +38,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .UseHsts(env)
                 .UseHttpsRedirection()
                 .UseStaticFiles()
+                .UseHealthChecks()
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()
