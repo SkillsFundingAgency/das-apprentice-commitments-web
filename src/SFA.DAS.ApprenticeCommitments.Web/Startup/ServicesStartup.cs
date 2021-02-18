@@ -19,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             this IServiceCollection services,
             OuterApiConfiguration configuration)
         {
+            services.AddHealthChecks();
             services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();
             services.AddTransient<Http.MessageHandlers.LoggingMessageHandler>();
             services.AddTransient<Http.MessageHandlers.ApimHeadersHandler>();

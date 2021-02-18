@@ -30,7 +30,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 {
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
                     {"Authentication:MetadataAddress", "https://localhost"},
-                    {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi.BaseAddress},
+                    {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""}
                 };
 

@@ -1,3 +1,8 @@
+using FluentAssertions;
+using Newtonsoft.Json;
+using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
+using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,12 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using FluentAssertions;
-using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Steps;
-using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
-using SFA.DAS.ApprenticeCommitments.Web.Pages;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using WireMock.RequestBuilders;
@@ -19,7 +18,6 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 {
     [Binding]
-    [Scope(Feature = "ConfirmIdentity")]
     public class ConfirmIdentitySteps : StepsBase
     {
         private readonly TestContext _context;
