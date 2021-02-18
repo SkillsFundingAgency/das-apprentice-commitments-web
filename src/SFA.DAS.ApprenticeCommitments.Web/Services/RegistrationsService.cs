@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RestEase;
+using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
+using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+
+namespace SFA.DAS.ApprenticeCommitments.Web.Services
+{
+    public class RegistrationsService
+    {
+        private readonly IOuterApiClient _client;
+
+        public RegistrationsService(IOuterApiClient client)
+        {
+            _client = client;
+        }
+
+        internal Task<VerifyRegistrationResponse> GetRegistration(AuthenticatedUser user) =>
+            _client.GetRegistration(user.RegistrationId);
+
+        internal async Task VerifyRegistration(VerifyRegistrationRequest verification)
+        {
+            try
+            {
+                await _client.VerifyRegistration(verification);
+            }
+            catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
+                throw new DomainValidationException(errors);
+            }
+        }
+    }
+}

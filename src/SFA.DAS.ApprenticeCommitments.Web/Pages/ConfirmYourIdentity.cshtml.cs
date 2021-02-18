@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SFA.DAS.ApprenticeCommitments.Web.Api;
-using SFA.DAS.ApprenticeCommitments.Web.Api.Models;
 using System;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
@@ -11,7 +12,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     {
         private readonly RegistrationsService _registrations;
 
-        public ConfirmYourIdentityModel(RegistrationsService api) => _registrations = api;
+        public ConfirmYourIdentityModel(RegistrationsService api)
+        {
+            _registrations = api;
+        }
 
         [BindProperty]
         [HiddenInput]
@@ -45,7 +49,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             try
             {
-                await _registrations.VerifyRegistration(new VerifyRegistrationCommand
+                await _registrations.VerifyRegistration(new VerifyRegistrationRequest
                 {
                     RegistrationId = user.RegistrationId,
                     FirstName = FirstName,
@@ -60,11 +64,26 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             }
             catch (DomainValidationException exception)
             {
-                foreach(var e in exception.Errors)
-                {
-                    ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
-                }
+                AddErrors(exception);
                 return Page();
+            }
+        }
+
+        private void AddErrors(DomainValidationException exception)
+        {
+            ModelState.ClearValidationState(nameof(DateOfBirth));
+
+            foreach (var e in exception.Errors)
+            {
+                var (p, m) = e.PropertyName switch
+                {
+                    nameof(FirstName) => (e.PropertyName, "Enter your first name"),
+                    nameof(LastName) => (e.PropertyName, "Enter your last name"),
+                    nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
+                    nameof(NationalInsuranceNumber) => (e.PropertyName, "Enter your National Insurance Number"),
+                    _ => (e.PropertyName, "Something went wrong"),
+                };
+                ModelState.AddModelError(p, m);
             }
         }
     }
