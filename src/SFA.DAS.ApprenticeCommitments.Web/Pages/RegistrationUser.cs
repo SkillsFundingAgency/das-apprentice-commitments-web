@@ -1,0 +1,40 @@
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+
+namespace SFA.DAS.ApprenticeCommitments.Web.Pages
+{
+    public class AuthenticatedUser
+    {
+        public AuthenticatedUser(ClaimsPrincipal user)
+        {
+            var claim = user.Claims.FirstOrDefault(c => c.Type == "registration_id")
+                ?? throw new Exception("There is no `registration_id` claim.");
+
+            if (!Guid.TryParse(claim.Value, out var registrationId))
+                throw new Exception($"`{claim.Value}` in claim `registration_id` is not a valid identifier");
+
+            RegistrationId = registrationId;
+        }
+
+        public static AuthenticatedUser FakeUser
+        {
+            get
+            {
+                return new AuthenticatedUser(FakeUserClaim);
+            }
+        }
+
+        public static ClaimsPrincipal FakeUserClaim =>
+            new ClaimsPrincipal(new[]
+            {
+                new ClaimsIdentity(new []
+                {
+                    new Claim("registration_id", Guid.NewGuid().ToString()),
+                    new Claim("sub", Guid.NewGuid().ToString()),
+                })
+            });
+
+        public Guid RegistrationId { get; }
+    }
+}

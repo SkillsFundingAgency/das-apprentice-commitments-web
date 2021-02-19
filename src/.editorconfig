@@ -1,7 +1,7 @@
 ﻿[*.cs]
 
 # Try not to have lines over 120 characters
-guidelines = 120
+guidelines = 100
 
 # RCS1090: Add call to 'ConfigureAwait' (or vice versa).
 dotnet_diagnostic.RCS1090.severity = none

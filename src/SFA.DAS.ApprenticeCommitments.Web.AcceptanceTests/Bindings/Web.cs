@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
     {
         public static HttpClient Client { get; set; }
         public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
-        public Hook<IActionResult>  ActionResultHook;
+        public static Hook<IActionResult>  ActionResultHook;
 
         private readonly TestContext _context;
 
@@ -29,10 +29,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 var config = new Dictionary<string, string>
                 {
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
+                    {"Authentication:MetadataAddress", "https://localhost"},
+                    {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
+                    {"ApprenticeCommitmentsApi:SubscriptionKey", ""}
                 };
 
                 ActionResultHook = new Hook<IActionResult>();
-                Factory = new LocalWebApplicationFactory<ApplicationStartup>(config, ActionResultHook);
+                Factory = new LocalWebApplicationFactory<ApplicationStartup>(_context, config, ActionResultHook);
                 Client = Factory.CreateClient();
             }
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);

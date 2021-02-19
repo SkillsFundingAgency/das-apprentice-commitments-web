@@ -26,6 +26,12 @@ Create your local `appsettings.Development.json` with:
       },
       "cdn": {
         "url": "https://das-prd-frnt-end.azureedge.net"
+      },
+      "Authentication": {
+        "MetadataAddress": "https://localhost:5001/"
+      },
+      "Api": {
+        "BaseUrl":  "https://localhost:8088"
       }
     }
 

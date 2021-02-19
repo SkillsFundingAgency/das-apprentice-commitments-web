@@ -9,19 +9,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     {
         public ApplicationStartup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            _Configuration = configuration;
-            _Environment = environment;
+            Configuration = configuration;
+            Environment = environment;
         }
 
-        public IConfiguration _Configuration { get; }
-        public IWebHostEnvironment _Environment { get; }
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var appConfig = Configuration.Get<ApplicationConfiguration>();
+
             services
                 .AddApplicationInsightsTelemetry()
-                .AddDataProtection(_Configuration, _Environment)
+                .AddDataProtection(appConfig.ConnectionStrings, Environment)
+                .AddAuthentication(appConfig.Authentication, Environment)
+                .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
+                .RegisterServices()
                 .AddRazorPages();
         }
 
@@ -33,7 +38,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .UseHsts(env)
                 .UseHttpsRedirection()
                 .UseStaticFiles()
+                .UseHealthChecks()
                 .UseRouting()
+                .UseAuthentication()
+                .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapRazorPages());
         }
     }

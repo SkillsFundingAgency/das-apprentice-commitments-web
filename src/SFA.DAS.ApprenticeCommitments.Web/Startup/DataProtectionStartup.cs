@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
@@ -11,19 +10,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     {
         public static IServiceCollection AddDataProtection(
             this IServiceCollection services,
-            IConfiguration configuration,
+            DataProtectionConnectionStrings configuration,
             IWebHostEnvironment environment)
         {
             if (!environment.IsDevelopment())
             {
-                var redisConfiguration = configuration
-                    .GetSection("ConnectionStrings")
-                    .Get<DataProtectionConnectionStrings>();
-
-                if (redisConfiguration != null)
+                if (configuration != null)
                 {
-                    var redisConnectionString = redisConfiguration.RedisConnectionString;
-                    var dataProtectionKeysDatabase = redisConfiguration.DataProtectionKeysDatabase;
+                    var redisConnectionString = configuration.RedisConnectionString;
+                    var dataProtectionKeysDatabase = configuration.DataProtectionKeysDatabase;
 
                     var redis = ConnectionMultiplexer
                         .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
@@ -37,7 +32,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         }
     }
 
-    internal class DataProtectionConnectionStrings
+    public class DataProtectionConnectionStrings
     {
         public string RedisConnectionString { get; set; }
         public string DataProtectionKeysDatabase { get; set; }

@@ -43,5 +43,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 
             _isDisposed = true;
         }
+
+        internal string UrlPath(string path) => $"{MockServer.Urls[0]}/{path}";
     }
 }
