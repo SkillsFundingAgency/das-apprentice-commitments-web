@@ -35,6 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         {
             app
                 .UseErrorPages(env)
+                .UseStatusCodePagesWithReExecute("/Error")
                 .UseHsts(env)
                 .UseHttpsRedirection()
                 .UseStaticFiles()

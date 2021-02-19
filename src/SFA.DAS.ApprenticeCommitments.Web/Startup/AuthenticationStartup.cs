@@ -21,6 +21,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddApplicationAuthentication(config)
                 .AddApplicationAuthorisation(environment);
 
+            services.AddTransient((_) => config);
+
             return services;
         }
 
@@ -84,5 +86,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     public class AuthenticationServiceConfiguration
     {
         public string MetadataAddress { get; set; }
+        public string ChangeEmailPath { get; set; } = "/changeemail";
     }
 }
