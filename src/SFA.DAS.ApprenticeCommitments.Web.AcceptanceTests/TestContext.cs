@@ -1,5 +1,4 @@
 ﻿using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
-using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 {
@@ -8,9 +7,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
         public ApprenticeCommitmentsWeb Web { get; set; }
         public MockApi OuterApi { get; set; }
         public TestActionResult ActionResult { get; set; }
-
-        public TestContext()
-        {
-        }
+        public string IdentityServiceUrl { get; } = "https://identity";
     }
 }

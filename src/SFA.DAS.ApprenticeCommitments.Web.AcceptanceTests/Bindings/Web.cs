@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 var config = new Dictionary<string, string>
                 {
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
-                    {"Authentication:MetadataAddress", "https://localhost"},
+                    {"Authentication:MetadataAddress", _context.IdentityServiceUrl},
                     {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""}
                 };
