@@ -355,3 +355,5 @@ appsettings.Development.json
 *-nlog.txt
 
 *.feature.cs
+*.min.*
+**/wwwroot/css/site.css
