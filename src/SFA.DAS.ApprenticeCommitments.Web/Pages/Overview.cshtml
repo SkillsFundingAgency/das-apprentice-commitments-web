@@ -4,10 +4,42 @@
     ViewData["Title"] = "Apprentice Commitments";
 }
 
-<div class="govuk-width-container">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Welcome to Apprentice Commitments</h1>
+
+<div class="app-page-header">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row app-page-header__row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship(s)</h1>
+            </div>
         </div>
     </div>
+</div>
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-l">Confirming your apprenticeship</h2>
+                <p>Review all the details below to confirm your apprenticeship.</p>
+                <div class="govuk-warning-text">
+                    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                    <strong class="govuk-warning-text__text">
+                        <span class="govuk-warning-text__assistive">Warning</span>
+                        You have 14 days to confirm your apprenticeship
+                    </strong>
+                </div>
+                <ol class="govuk-list app-status-list">
+                    <li class="app-status-list__list-item">
+                        <a href="#" class="app-status-list__link">
+                            <h3 class="app-status-list__link-text">Confirm your apprenticeship details</h3>
+                        </a>
+                    </li>
+                    <li class="app-status-list__list-item">
+                        <a href="#" class="app-status-list__link">
+                            <h3 class="app-status-list__link-text">Confirm your training details</h3>
+                        </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </main>
 </div>

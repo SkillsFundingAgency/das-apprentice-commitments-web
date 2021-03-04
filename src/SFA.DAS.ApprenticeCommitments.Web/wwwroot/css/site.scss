@@ -1,3 +1,80 @@
 ﻿.das-account-header--apprentice {
     background: #1d70b9;
 }
+
+.app-page-header {
+    background: #f3f2f1;
+    background: #f0f3f7;
+    padding: 25px 0;
+}
+
+@media (min-width: 40.0625em) {
+    .app-page-header__row {
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .app-page-header__heading {
+        margin: 0;
+    }
+}
+
+.app-status-list__list-item,
+li.app-status-list__list-item {
+    margin-bottom: 15px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__list-item,
+    li.app-status-list__list-item {
+        margin-bottom: 25px;
+    }
+}
+
+.app-status-list__link {
+    display: block;
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 0 10px 0 rgba(11, 12, 12, 0.2);
+    border: 2px solid transparent;
+}
+
+.app-status-list__link:link {
+    color: #1d70b8;
+}
+
+.app-status-list__link:visited {
+    color: #4c2c92;
+}
+
+.app-status-list__link:hover {
+    color: #003078;
+}
+
+.app-status-list__link:active {
+    color: #0b0c0c;
+}
+
+.app-status-list__link:focus {
+    color: #0b0c0c;
+}
+
+.app-status-list__link:focus {
+    border-color: #ffdd00;
+    outline: 3px solid transparent;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__link {
+        padding: 25px;
+    }
+}
+
+.app-status-list__link-text {
+    color: inherit;
+    text-decoration: underline;
+    margin: 0;
+}
