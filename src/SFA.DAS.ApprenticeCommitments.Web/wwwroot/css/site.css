@@ -42,30 +42,30 @@ li.app-status-list__list-item {
     border: 2px solid transparent;
 }
 
-.app-status-list__link:link {
-    color: #1d70b8;
-}
+    .app-status-list__link:link {
+        color: #1d70b8;
+    }
 
-.app-status-list__link:visited {
-    color: #4c2c92;
-}
+    .app-status-list__link:visited {
+        color: #4c2c92;
+    }
 
-.app-status-list__link:hover {
-    color: #003078;
-}
+    .app-status-list__link:hover {
+        color: #003078;
+    }
 
-.app-status-list__link:active {
-    color: #0b0c0c;
-}
+    .app-status-list__link:active {
+        color: #0b0c0c;
+    }
 
-.app-status-list__link:focus {
-    color: #0b0c0c;
-}
+    .app-status-list__link:focus {
+        color: #0b0c0c;
+    }
 
-.app-status-list__link:focus {
-    border-color: #ffdd00;
-    outline: 3px solid transparent;
-}
+    .app-status-list__link:focus {
+        border-color: #ffdd00;
+        outline: 3px solid transparent;
+    }
 
 @media (min-width: 40.0625em) {
     .app-status-list__link {
