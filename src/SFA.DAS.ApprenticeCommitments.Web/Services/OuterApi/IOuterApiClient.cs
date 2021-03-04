@@ -11,5 +11,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 
         [Post("/registrations")]
         Task VerifyRegistration([Body] VerifyRegistrationRequest verification);
+
+        [Get("/apprentices/{id}/currentapprenticeship")]
+        Task<Apprenticeship> GetCurrentApprenticeship([Path] Guid id);
     }
 }

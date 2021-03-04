@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+using System;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
 {
@@ -8,5 +9,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
         public MockApi OuterApi { get; set; }
         public TestActionResult ActionResult { get; set; }
         public string IdentityServiceUrl { get; } = "https://identity";
+    }
+
+    public class RegisteredUserContext
+    {
+        public Guid RegistrationId { get; set; } = Guid.NewGuid();
     }
 }

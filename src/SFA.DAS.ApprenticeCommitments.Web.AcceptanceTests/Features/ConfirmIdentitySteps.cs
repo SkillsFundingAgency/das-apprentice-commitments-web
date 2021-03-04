@@ -21,12 +21,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
     public class ConfirmIdentitySteps : StepsBase
     {
         private readonly TestContext _context;
-        private Guid _registrationId = Guid.NewGuid();
+        private readonly RegisteredUserContext _userContext;
         private ConfirmYourIdentityModel _postedRegistration;
 
-        public ConfirmIdentitySteps(TestContext context) : base(context)
+        public ConfirmIdentitySteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         [Given("the apprentice has not logged in")]
@@ -37,9 +38,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Given("the apprentice has logged in")]
         public void GivenTheApprenticeHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUser(_registrationId);
+            TestAuthenticationHandler.AddUser(_userContext.RegistrationId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue(_registrationId.ToString());
+                new AuthenticationHeaderValue(_userContext.RegistrationId.ToString());
+
+            _context.OuterApi.MockServer.Given(
+               Request.Create()
+                   .UsingGet()
+                   .WithPath($"/apprentices/{_userContext.RegistrationId}/currentapprenticeship")
+                                             )
+               .RespondWith(Response.Create()
+                   .WithStatusCode(200)
+                   .WithBodyAsJson(new { ApprentishipId = 0 }));
         }
 
         [Given("the apprentice has not verified their identity")]
@@ -48,13 +58,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_registrationId}")
+                    .WithPath($"/registrations/{_userContext.RegistrationId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
                     {
-                        Id = _registrationId,
+                        Id = _userContext.RegistrationId,
                         Email = "bob",
                     }));
         }
@@ -84,13 +94,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_registrationId}")
+                    .WithPath($"/registrations/{_userContext.RegistrationId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
                     {
-                        Id = _registrationId,
+                        Id = _userContext.RegistrationId,
                         Email = "bob",
                         UserId = 12,
                     }));
@@ -149,7 +159,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             var reg = JsonConvert.DeserializeObject<VerifyRegistrationRequest>(post.RequestMessage.Body);
             reg.Should().BeEquivalentTo(new VerifyRegistrationRequest
             {
-                RegistrationId = _registrationId,
+                RegistrationId = _userContext.RegistrationId,
                 FirstName = _postedRegistration.FirstName,
                 LastName = _postedRegistration.LastName,
                 NationalInsuranceNumber = _postedRegistration.NationalInsuranceNumber,
