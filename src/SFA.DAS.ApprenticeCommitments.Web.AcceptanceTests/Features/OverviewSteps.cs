@@ -39,7 +39,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         public void ThenTheApprenticeShouldSeeTheOverviewPage()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<OverviewModel>().Which.ApprenticeshipId.Should().Be(_apprenticeshipId);
+            var hashedId = _context.Hashing.HashValue(_apprenticeshipId);
+            page.Model.Should().BeOfType<OverviewModel>().Which.ApprenticeshipId.Should().Be(hashedId);
         }
     }
 }

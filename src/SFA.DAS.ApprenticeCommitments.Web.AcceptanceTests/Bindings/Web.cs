@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
+using SFA.DAS.HashingService;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
@@ -31,7 +33,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
                     {"Authentication:MetadataAddress", _context.IdentityServiceUrl},
                     {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
-                    {"ApprenticeCommitmentsApi:SubscriptionKey", ""}
+                    {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
+                    {"Hashing:AllowedHashstringCharacters", "abcdefgh12345678"},
+                    {"Hashing:Hashstring", "testing"},
                 };
 
                 ActionResultHook = new Hook<IActionResult>();
@@ -39,6 +43,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
                 Client = Factory.CreateClient();
             }
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);
+            _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();
         }
 
         [AfterScenario()]

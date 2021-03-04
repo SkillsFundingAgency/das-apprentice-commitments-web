@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.HashingService;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
@@ -10,11 +11,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     public class OverviewModel : PageModel
     {
         private readonly IOuterApiClient _client;
+        private readonly IHashingService _hashing;
 
-        public OverviewModel(IOuterApiClient client) => _client = client;
+        public OverviewModel(IOuterApiClient client, IHashingService hashing)
+        {
+            _client = client;
+            _hashing = hashing;
+        }
 
         [BindProperty(SupportsGet = true)]
-        public long? ApprenticeshipId { get; set; }
+        public string? ApprenticeshipId { get; set; }
 
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
         {
@@ -26,7 +32,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
             var apprenticeship = await _client.GetCurrentApprenticeship(user.RegistrationId);
-            return Redirect($"/Overview/{apprenticeship.Id}");
+            var hashedId = _hashing.HashValue(apprenticeship.Id);
+            return Redirect($"/Overview/{hashedId}");
         }
     }
 }
