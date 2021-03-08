@@ -9,5 +9,4 @@ Scenario: The apprentice is authenticated and should see the verify identity pag
 	Given the apprentice has logged in
 	And there is one apprenticeship
 	When accessing the "Overview" page
-	Then the response status code should be Ok
-	And the apprentice should see the overview page for their apprenticeship
+	Then the response should Redirect the apprenticeship page

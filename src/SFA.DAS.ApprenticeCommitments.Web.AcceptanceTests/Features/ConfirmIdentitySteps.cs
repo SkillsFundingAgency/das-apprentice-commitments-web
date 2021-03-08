@@ -67,6 +67,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                         Id = _userContext.RegistrationId,
                         Email = "bob",
                     }));
+
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new[]
+                    {
+                        new { Id = 1235 },
+                    }));
         }
 
         [When(@"accessing the ""(.*)"" page")]
@@ -109,8 +120,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [When(@"the apprentice should be shown the ""(.*)"" page")]
         public void WhenTheApprenticeShouldBeShownThePage(string page)
         {
-            _context.ActionResult.LastPageResult.Should().NotBeNull();
-            _context.ActionResult.LastPageResult.Model.Should().BeOfType<OverviewModel>();
+            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+            _context.Web.Response.Headers.Location.Should().Be("/Overview");
         }
 
         [When("the apprentice verifies their identity with")]
@@ -120,9 +131,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "ConfirmYourIdentity")
-            {
-                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            await _context.Web.Post("ConfirmYourIdentity",
+                new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "FirstName", _postedRegistration.FirstName },
                     { "LastName", _postedRegistration.LastName },
@@ -130,16 +140,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                     { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
-                }),
-            };
-
-            await _context.Web.Send(request);
+                }));
         }
 
         [Then("verification is successful")]
         public void ThenTheVerificationIsSuccessful()
         {
-            ThenTheResponseStatusCodeShouldBeOk();
+            _context.Web.Response.StatusCode.As<int>().Should().BeLessThan(400);
         }
 
         [Then("verification is sent to the API")]

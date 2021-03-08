@@ -19,21 +19,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             _hashing = hashing;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public string? ApprenticeshipId { get; set; }
-
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
         {
-            return ApprenticeshipId == null
-                ? await RedirectToLatestApprenticeship(user)
-                : Page();
+            return await RedirectToLatestApprenticeship(user);
         }
 
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
-            var apprenticeship = await _client.GetCurrentApprenticeship(user.RegistrationId);
-            var hashedId = _hashing.HashValue(apprenticeship.Id);
-            return Redirect($"/Overview/{hashedId}");
+            var apprenticeship = await _client.GetApprenticeships(user.RegistrationId);
+            var firstApprenticeship = apprenticeship[0];
+            var hashedId = _hashing.HashValue(firstApprenticeship.Id);
+            return RedirectToPage("Apprenticeships", new { apprenticeshipId = hashedId });
         }
     }
 }

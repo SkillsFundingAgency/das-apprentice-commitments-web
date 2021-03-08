@@ -82,14 +82,25 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             _server.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/apprentices/*/currentapprenticeship")
-                         )
+                    .WithPath($"/apprentices/*/apprenticeships"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new
+                    .WithBodyAsJson(new[]
                     {
-                        Id = 1235,
+                        new { Id = 1235 },
                     }));
+
+            _server.Given(
+               Request.Create()
+                   .UsingGet()
+                   .WithPath($"/apprentices/*/apprenticeships/1235")
+                                             )
+               .RespondWith(Response.Create()
+                   .WithStatusCode(200)
+                   .WithBodyAsJson(new
+                   {
+                       Id = 1235,
+                   }));
 
             return this;
         }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
@@ -40,7 +41,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
 
                 ActionResultHook = new Hook<IActionResult>();
                 Factory = new LocalWebApplicationFactory<ApplicationStartup>(_context, config, ActionResultHook);
-                Client = Factory.CreateClient();
+                Client = Factory.CreateClient(new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false
+                });
             }
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);
             _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();

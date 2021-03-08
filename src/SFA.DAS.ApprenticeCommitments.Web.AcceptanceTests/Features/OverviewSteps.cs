@@ -1,5 +1,6 @@
 using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using System.Net;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -23,9 +24,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         public void GivenThereIsOneApprenticeship()
         {
             _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/{_userContext.RegistrationId}/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new[]
+                    {
+                        new { Id = 1235 },
+                    }));
+
+            _context.OuterApi.MockServer.Given(
                Request.Create()
                    .UsingGet()
-                   .WithPath($"/apprentices/{_userContext.RegistrationId}/currentapprenticeship")
+                   .WithPath($"/apprentices/{_userContext.RegistrationId}/apprenticeships/{_apprenticeshipId}")
                                              )
                .RespondWith(Response.Create()
                    .WithStatusCode(200)
@@ -35,12 +47,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                    }));
         }
 
+        [Then("the response should Redirect the apprenticeship page")]
+        public void ThenTheResponseStatusCodeShouldBeRedirect()
+        {
+            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+            _context.Web.Response.Headers.Location.Should().Be("/Apprenticeships/g3312g");
+        }
+
         [Then(@"the apprentice should see the overview page for their apprenticeship")]
         public void ThenTheApprenticeShouldSeeTheOverviewPage()
         {
             var page = _context.ActionResult.LastPageResult;
             var hashedId = _context.Hashing.HashValue(_apprenticeshipId);
-            page.Model.Should().BeOfType<OverviewModel>().Which.ApprenticeshipId.Should().Be(hashedId);
+            page.Model.Should().BeOfType<ApprenticeshipsModel>().Which.ApprenticeshipId.Should().Be(hashedId);
         }
     }
 }
