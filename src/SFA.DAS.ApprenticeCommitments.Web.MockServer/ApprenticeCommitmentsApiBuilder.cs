@@ -77,7 +77,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             return this;
         }
 
-        public ApprenticeCommitmentsApiBuilder WithUsersCurrentApprenticeship()
+        public ApprenticeCommitmentsApiBuilder WithUsersApprenticeships()
         {
             _server.Given(
                 Request.Create()

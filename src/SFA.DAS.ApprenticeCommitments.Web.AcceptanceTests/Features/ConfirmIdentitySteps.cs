@@ -41,15 +41,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             TestAuthenticationHandler.AddUser(_userContext.RegistrationId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(_userContext.RegistrationId.ToString());
-
-            _context.OuterApi.MockServer.Given(
-               Request.Create()
-                   .UsingGet()
-                   .WithPath($"/apprentices/{_userContext.RegistrationId}/currentapprenticeship")
-                                             )
-               .RespondWith(Response.Create()
-                   .WithStatusCode(200)
-                   .WithBodyAsJson(new { ApprentishipId = 0 }));
         }
 
         [Given("the apprentice has not verified their identity")]

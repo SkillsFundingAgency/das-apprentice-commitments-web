@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
     public class HashingConfiguration
     {
-        public virtual string AllowedHashstringCharacters { get; set; }
-        public virtual string Hashstring { get; set; }
+        public string AllowedHashstringCharacters { get; set; }
+        public string Hashstring { get; set; }
     }
 }
