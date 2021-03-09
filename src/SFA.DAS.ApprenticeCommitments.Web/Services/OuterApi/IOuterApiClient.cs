@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RestEase;
+using System;
 using System.Threading.Tasks;
-using RestEase;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
@@ -11,5 +11,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 
         [Post("/registrations")]
         Task VerifyRegistration([Body] VerifyRegistrationRequest verification);
+
+        [Get("/apprentices/{id}/apprenticeships")]
+        Task<Apprenticeship[]> GetApprenticeships([Path] Guid id);
     }
 }

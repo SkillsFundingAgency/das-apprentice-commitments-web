@@ -6,5 +6,5 @@
 @mytag
 Scenario: Redirect to Identity Service
 	When accessing the "ChangeYourEmailAddress" page
-	Then the result should redirect to the identity server's "bob" 
+	Then the result should redirect to the identity server's change email page
 

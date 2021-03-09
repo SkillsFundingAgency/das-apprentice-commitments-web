@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Net;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -73,6 +73,34 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(HttpStatusCode.OK));
+
+            return this;
+        }
+
+        public ApprenticeCommitmentsApiBuilder WithUsersApprenticeships()
+        {
+            _server.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new[]
+                    {
+                        new { Id = 1235 },
+                    }));
+
+            _server.Given(
+               Request.Create()
+                   .UsingGet()
+                   .WithPath($"/apprentices/*/apprenticeships/1235")
+                                             )
+               .RespondWith(Response.Create()
+                   .WithStatusCode(200)
+                   .WithBodyAsJson(new
+                   {
+                       Id = 1235,
+                   }));
 
             return this;
         }

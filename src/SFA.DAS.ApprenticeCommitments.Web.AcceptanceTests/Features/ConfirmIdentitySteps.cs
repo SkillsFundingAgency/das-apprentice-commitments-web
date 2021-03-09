@@ -21,12 +21,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
     public class ConfirmIdentitySteps : StepsBase
     {
         private readonly TestContext _context;
-        private Guid _registrationId = Guid.NewGuid();
+        private readonly RegisteredUserContext _userContext;
         private ConfirmYourIdentityModel _postedRegistration;
 
-        public ConfirmIdentitySteps(TestContext context) : base(context)
+        public ConfirmIdentitySteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         [Given("the apprentice has not logged in")]
@@ -37,9 +38,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Given("the apprentice has logged in")]
         public void GivenTheApprenticeHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUser(_registrationId);
+            TestAuthenticationHandler.AddUser(_userContext.RegistrationId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue(_registrationId.ToString());
+                new AuthenticationHeaderValue(_userContext.RegistrationId.ToString());
         }
 
         [Given("the apprentice has not verified their identity")]
@@ -48,14 +49,25 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_registrationId}")
+                    .WithPath($"/registrations/{_userContext.RegistrationId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
                     {
-                        Id = _registrationId,
+                        Id = _userContext.RegistrationId,
                         Email = "bob",
+                    }));
+
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new[]
+                    {
+                        new { Id = 1235 },
                     }));
         }
 
@@ -84,13 +96,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_registrationId}")
+                    .WithPath($"/registrations/{_userContext.RegistrationId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
                     {
-                        Id = _registrationId,
+                        Id = _userContext.RegistrationId,
                         Email = "bob",
                         UserId = 12,
                     }));
@@ -99,8 +111,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [When(@"the apprentice should be shown the ""(.*)"" page")]
         public void WhenTheApprenticeShouldBeShownThePage(string page)
         {
-            _context.ActionResult.LastPageResult.Should().NotBeNull();
-            _context.ActionResult.LastPageResult.Model.Should().BeOfType<OverviewModel>();
+            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+            _context.Web.Response.Headers.Location.Should().Be("/Apprenticeships");
         }
 
         [When("the apprentice verifies their identity with")]
@@ -110,9 +122,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "ConfirmYourIdentity")
-            {
-                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            await _context.Web.Post("ConfirmYourIdentity",
+                new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "FirstName", _postedRegistration.FirstName },
                     { "LastName", _postedRegistration.LastName },
@@ -120,16 +131,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                     { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
-                }),
-            };
-
-            await _context.Web.Send(request);
+                }));
         }
 
         [Then("verification is successful")]
         public void ThenTheVerificationIsSuccessful()
         {
-            ThenTheResponseStatusCodeShouldBeOk();
+            _context.Web.Response.StatusCode.As<int>().Should().BeLessThan(400);
         }
 
         [Then("verification is sent to the API")]
@@ -149,7 +157,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             var reg = JsonConvert.DeserializeObject<VerifyRegistrationRequest>(post.RequestMessage.Body);
             reg.Should().BeEquivalentTo(new VerifyRegistrationRequest
             {
-                RegistrationId = _registrationId,
+                RegistrationId = _userContext.RegistrationId,
                 FirstName = _postedRegistration.FirstName,
                 LastName = _postedRegistration.LastName,
                 NationalInsuranceNumber = _postedRegistration.NationalInsuranceNumber,

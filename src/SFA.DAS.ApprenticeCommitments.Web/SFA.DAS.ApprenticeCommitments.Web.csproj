@@ -29,6 +29,7 @@
     <PackageReference Include="RestEase" Version="1.5.2" />
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.2" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
+    <PackageReference Include="SFA.DAS.HashingService" Version="1.0.183" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.62" />
 
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
