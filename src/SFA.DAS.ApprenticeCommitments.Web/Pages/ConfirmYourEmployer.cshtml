@@ -1,0 +1,63 @@
+﻿@page
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourEmployerModel
+@{
+}
+
+<div class="govuk-width-container">
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <a asp-page="" class="govuk-back-link" style="margin-bottom: 48px">Back</a>
+
+            <h1 class="govuk-heading-xl">Confirm your employer</h1>
+
+            <h2 class="govuk-heading-l">Name of employer here</h2>
+
+            <div class="govuk-body">
+                <p>
+                    This is the legal name. You might know them as something else.
+                </p>
+                <div class="govuk-inset-text">
+                    <p class="govuk-body">Before starting your apprenticeship you should:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>have a copy of your signed apprenticeship agreement </li>
+                        <li>have a named day-to-day contact to answer your questions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <form id="employer-form-hide" method="post" action="">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Is this your employer?
+                            </h1>
+                        </legend>
+
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="EmployerConfirm" name="EmployerConfirm" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="EmployerConfirm">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="EmployerConfirm-2" name="EmployerConfirm" type="radio" value="no">
+                                <label class="govuk-label govuk-radios__label" for="EmployerConfirm-2">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
