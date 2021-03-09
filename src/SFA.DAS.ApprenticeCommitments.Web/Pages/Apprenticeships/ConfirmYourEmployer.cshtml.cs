@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
-    public class ConfirmYourApprenticeshipDetailsModel : PageModel
+    public class ConfirmYourEmployerModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public string? ApprenticeshipId { get; set; }
+
         public void OnGet()
         {
         }

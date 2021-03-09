@@ -8,5 +8,5 @@ Feature: Overview
 Scenario: The apprentice is authenticated and should see the verify identity page
 	Given the apprentice has logged in
 	And there is one apprenticeship
-	When accessing the "Overview" page
+	When accessing the "Apprenticeships" page
 	Then the response should Redirect the apprenticeship page

@@ -5,15 +5,15 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.HashingService;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages
+namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [Authorize]
-    public class OverviewModel : PageModel
+    public class ApprenticeshipIndexModel : PageModel
     {
         private readonly IOuterApiClient _client;
         private readonly IHashingService _hashing;
 
-        public OverviewModel(IOuterApiClient client, IHashingService hashing)
+        public ApprenticeshipIndexModel(IOuterApiClient client, IHashingService hashing)
         {
             _client = client;
             _hashing = hashing;
@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             var apprenticeship = await _client.GetApprenticeships(user.RegistrationId);
             var firstApprenticeship = apprenticeship[0];
             var hashedId = _hashing.HashValue(firstApprenticeship.Id);
-            return RedirectToPage("Apprenticeships", new { apprenticeshipId = hashedId });
+            return RedirectToPage("Confirm", new { apprenticeshipId = hashedId });
         }
     }
 }

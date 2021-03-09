@@ -1,5 +1,5 @@
-﻿@page "{apprenticeshipId:?}"
-@model SFA.DAS.ApprenticeCommitments.Web.Pages.ApprenticeshipsModel
+﻿@page "/Apprenticeships/{apprenticeshipId?}/Confirm"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @{
     ViewData["Title"] = "Apprentice Commitments";
 }
@@ -29,12 +29,12 @@
                 </div>
                 <ol class="govuk-list app-status-list">
                     <li class="app-status-list__list-item">
-                        <a asp-page="ConfirmYourEmployer" class="app-status-list__link">
+                        <a asp-page="ConfirmYourEmployer" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
                             <h3 class="app-status-list__link-text">Confirm your employer</h3>
                         </a>
                     </li>
                     <li class="app-status-list__list-item">
-                        <a asp-page="ConfirmYourTrainingProvider" class="app-status-list__link">
+                        <a asp-page="ConfirmYourTrainingProvider" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
                             <h3 class="app-status-list__link-text">Confirm your training provider</h3>
                         </a>
                     </li>

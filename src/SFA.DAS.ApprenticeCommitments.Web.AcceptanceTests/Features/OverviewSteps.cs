@@ -1,5 +1,6 @@
 using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System.Net;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -51,7 +52,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         public void ThenTheResponseStatusCodeShouldBeRedirect()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/Apprenticeships/g3312g");
+            _context.Web.Response.Headers.Location.Should().Be("/Apprenticeships/g3312g/Confirm");
         }
 
         [Then(@"the apprentice should see the overview page for their apprenticeship")]
@@ -59,7 +60,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
             var page = _context.ActionResult.LastPageResult;
             var hashedId = _context.Hashing.HashValue(_apprenticeshipId);
-            page.Model.Should().BeOfType<ApprenticeshipsModel>().Which.ApprenticeshipId.Should().Be(hashedId);
+            page.Model.Should().BeOfType<ConfirmApprenticeshipModel>().Which.ApprenticeshipId.Should().Be(hashedId);
         }
     }
 }
