@@ -1,7 +1,7 @@
 ﻿@outerApi
 Feature: ConfirmIdentity
-	As a apprentice who wants to view his commitment statements
-	If he hasn't confirmed his identity
+	As an apprentice who wants to view my commitment statements
+	If I haven't confirmed my identity
 
 Scenario: The apprentice is authenticated and should see the verify identity page
 	Given the apprentice has logged in

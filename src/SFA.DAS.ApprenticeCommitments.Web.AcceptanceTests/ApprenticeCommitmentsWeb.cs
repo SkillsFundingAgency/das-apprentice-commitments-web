@@ -28,6 +28,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
             return Response = await Client.GetAsync(url);
         }
 
+        internal async Task<HttpResponseMessage> Post(string url, HttpContent content)
+        {
+            Response?.Dispose();
+            return Response = await Client.PostAsync(url, content);
+        }
+
         public async Task<HttpResponseMessage> Send(HttpRequestMessage message)
         {
             Response?.Dispose();
