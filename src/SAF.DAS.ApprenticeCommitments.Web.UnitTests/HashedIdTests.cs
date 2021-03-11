@@ -49,6 +49,10 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
         public void Inequality_to_string(long a, string b)
             => NewHashedId(a).Should().NotBe(b);
 
+        [TestCaseSource(nameof(ValidIds))]
+        public void ToString_is_the_hashed_id(string hashedId)
+            => NewHashedId(hashedId).ToString().Should().Be(hashedId);
+
         private static readonly object[] ValidIds =
         {
             new object[] { Hashing.HashValue(1) },
