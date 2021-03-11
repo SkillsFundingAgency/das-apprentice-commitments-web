@@ -53,6 +53,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Services
 
         public override int GetHashCode() => Hashed.GetHashCode();
 
+        public override string ToString() => Hashed;
+
         public static bool operator ==(HashedId left, HashedId right) => left.Equals(right);
 
         public static bool operator !=(HashedId left, HashedId right) => !(left == right);
