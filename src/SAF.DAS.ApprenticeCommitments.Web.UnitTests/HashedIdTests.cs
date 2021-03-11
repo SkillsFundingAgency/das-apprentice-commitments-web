@@ -1,9 +1,8 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Services;
 using SFA.DAS.HashingService;
-using System;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -13,23 +12,22 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
         public static IHashingService Hashing = new HashingService(alphabet, "testing");
 
         public static HashedId NewHashedId(string value)
-            => new HashedId(value, alphabet);
+            => HashedId.Create(value, Hashing);
 
         public static HashedId NewHashedId(long value)
-            => new HashedId(Hashing.HashValue(value), alphabet);
+            => HashedId.Create(Hashing.HashValue(value), Hashing);
 
         [TestCaseSource(nameof(ValidIds))]
         public void Create(string hashedId)
             => NewHashedId(hashedId).Should().NotBeNull();
 
-        [Test]
-        public void Cannot_create_from_invalid_hash()
-        {
-            Func<HashedId> act = () => new HashedId("bob");
-            act.Should()
+        [TestCase("bob")]
+        [TestCase("53g26i")]
+        //[TestCase("4674d55438246e215317")]
+        public void Cannot_create_from_invalid_hash(string value)
+            => value.Invoking(NewHashedId).Should()
                .Throw<InvalidHashedIdException>()
-               .WithMessage($"Invalid hashed ID value 'bob'");
-        }
+               .WithMessage($"Invalid hashed ID value '{value}'");
 
         [TestCaseSource(nameof(ValidIds))]
         public void Equality(string hashedId)
@@ -53,11 +51,10 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
 
         private static readonly object[] ValidIds =
         {
+            new object[] { Hashing.HashValue(1) },
             new object[] { Hashing.HashValue(1234) },
             new object[] { Hashing.HashValue(9999) },
-            new object[] { Hashing.HashValue(0) },
-            new object[] { Hashing.HashValue(long.MaxValue) },
-            new object[] { Hashing.HashValue(long.MinValue) },
+            new object[] { Hashing.HashValue(9999999999) },
         };
     }
 }

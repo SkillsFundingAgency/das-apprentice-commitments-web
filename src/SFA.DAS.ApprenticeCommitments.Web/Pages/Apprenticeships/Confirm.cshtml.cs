@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Services;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -8,7 +9,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     public class ConfirmApprenticeshipModel : PageModel
     {
         [BindProperty(SupportsGet = true)]
-        public string? ApprenticeshipId { get; set; }
+        public HashedId ApprenticeshipId { get; set; }
 
         public void OnGet()
         {
