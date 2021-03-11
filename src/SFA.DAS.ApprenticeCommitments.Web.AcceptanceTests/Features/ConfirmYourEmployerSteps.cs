@@ -19,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         private long _apprenticeshipId;
         private string _hashedApprenticeshipId;
         private string _employerName;
+        private string _backlink;
 
         public ConfirmYourEmployerSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -27,6 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _apprenticeshipId = 1235;
             _hashedApprenticeshipId = _context.Hashing.HashValue(_apprenticeshipId);
             _employerName = "My Test Company";
+            _backlink = $"/apprenticeships/{_hashedApprenticeshipId}/confirm";
 
             _context.OuterApi.MockServer.Given(
                     Request.Create()
@@ -68,6 +70,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.EmployerName.Should().Be(_employerName);
+        }
+
+        [Then(@"the link is pointing to the confirm page")]
+        public void ThenTheLinkIsPointingToTheConfirmPage()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.Backlink.Should().Be(_backlink);
         }
     }
 }

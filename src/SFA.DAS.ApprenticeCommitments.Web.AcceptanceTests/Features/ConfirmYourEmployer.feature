@@ -9,4 +9,5 @@ Scenario: The apprentice is authenticated and should see the Employers Name
 	When accessing the ConfirmYourEmployer page
 	Then the response status code should be Ok
 	And the apprentice should see the employers name
-	#And the link is pointing to the confirm page
+	And the link is pointing to the confirm page
+

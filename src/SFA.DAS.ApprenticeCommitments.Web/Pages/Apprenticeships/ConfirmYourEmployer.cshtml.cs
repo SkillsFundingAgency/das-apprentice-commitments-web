@@ -15,6 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty(SupportsGet = true)]
         public string? ApprenticeshipId { get; set; }
         public string EmployerName { get; set; }
+        public string Backlink { get; set; }
 
         public ConfirmYourEmployerModel(IHashingService hashingService, IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
@@ -25,6 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGet()
         {
+            Backlink = $"/apprenticeships/{ApprenticeshipId}/confirm";
             var apprenticeshipId = _hashingService.DecodeValue(ApprenticeshipId);
             var apprenticeship = await _client.GetApprenticeship(_authenticatedUser.RegistrationId, apprenticeshipId);
             EmployerName = apprenticeship.EmployerName;
