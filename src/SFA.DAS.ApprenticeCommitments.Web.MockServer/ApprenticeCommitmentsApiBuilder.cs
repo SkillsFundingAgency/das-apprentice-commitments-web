@@ -87,7 +87,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     .WithStatusCode(200)
                     .WithBodyAsJson(new[]
                     {
-                        new { Id = 1235 },
+                        new { Id = 1235, EmployerName = "My Mock company" },
                     }));
 
             _server.Given(
@@ -99,7 +99,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                    .WithStatusCode(200)
                    .WithBodyAsJson(new
                    {
-                       Id = 1235,
+                       Id = 1235, EmployerName = "My Mock company"
                    }));
 
             return this;

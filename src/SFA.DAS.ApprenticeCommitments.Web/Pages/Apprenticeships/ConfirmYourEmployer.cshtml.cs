@@ -7,9 +7,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     {
         [BindProperty(SupportsGet = true)]
         public string? ApprenticeshipId { get; set; }
+        public string EmployerName { get; set; }
 
         public void OnGet()
         {
+            EmployerName = "Some organisation";
         }
     }
 }
