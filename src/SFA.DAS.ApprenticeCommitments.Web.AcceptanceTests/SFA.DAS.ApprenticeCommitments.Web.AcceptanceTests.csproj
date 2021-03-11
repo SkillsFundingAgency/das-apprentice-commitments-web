@@ -18,5 +18,4 @@
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeCommitments.Web\SFA.DAS.ApprenticeCommitments.Web.csproj" />
   </ItemGroup>
-
 </Project>

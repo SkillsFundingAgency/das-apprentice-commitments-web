@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages
+namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     public class ConfirmYourTrainingDetailsModel : PageModel
     {
