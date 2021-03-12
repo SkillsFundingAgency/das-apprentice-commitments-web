@@ -3,7 +3,7 @@ Feature: ConfirmYourEmployer
 	As an apprentice who wants to view my Employers details 
 	So I can confirm them
 
-Scenario: The apprentice is authenticated and should see the Employers Name
+Scenario: The apprentice is authenticated and should see the Employer's Name
 	Given the apprentice has logged in
 	And the apprentice has not verified their employer
 	When accessing the ConfirmYourEmployer page
