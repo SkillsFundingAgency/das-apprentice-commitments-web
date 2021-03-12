@@ -15,6 +15,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Services
         public long Id { get; }
         public string Hashed { get; }
 
+        public static HashedId Create(int id, IHashingService hashing)
+            => new HashedId(id, hashing.HashValue(id));
+
         public static HashedId Create(string hashed, IHashingService hashing)
         {
             return TryCreate(hashed, hashing, out var hashedId)

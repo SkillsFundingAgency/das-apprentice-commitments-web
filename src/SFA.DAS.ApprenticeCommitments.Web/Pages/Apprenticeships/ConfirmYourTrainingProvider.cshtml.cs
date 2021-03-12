@@ -1,19 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class ConfirmYourTrainingDetailsModel : PageModel
+    public class ConfirmYourTrainingModel : PageModel
     {
+        private readonly IOuterApiClient _client;
+        private readonly AuthenticatedUser _authenticatedUser;
+
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
 
         public string TrainingProviderName { get; private set; }
 
-        public void OnGet()
+        public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
-            TrainingProviderName = "the name of the training provider goes here";
+            _authenticatedUser = authenticatedUser;
+            _client = client;
+        }
+
+        public async Task OnGetAsync()
+        {
+            var apprenticeship = await _client
+                .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
+            TrainingProviderName = apprenticeship.TrainingProviderName;
         }
     }
 }
