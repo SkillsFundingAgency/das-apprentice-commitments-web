@@ -39,7 +39,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             switch (EmployerConfirm)
             {
                 case null:
-                    ModelState.AddModelError(nameof(EmployerConfirm), "Select yes if this is your employer or no if it's not");
+                    ModelState.AddModelError(nameof(EmployerConfirm), "Select an answer");
                     return new PageResult();
                 case true:
                     return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
