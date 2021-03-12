@@ -1,6 +1,6 @@
 using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
-                        .WithBodyAsJson( new
+                        .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
                             TrainingProviderName = _trainingProviderName

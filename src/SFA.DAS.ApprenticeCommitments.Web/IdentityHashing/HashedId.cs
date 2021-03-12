@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SFA.DAS.HashingService;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 
 #nullable enable
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Services
+namespace SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing
 {
     [ModelBinder(typeof(HashedIdModelBinder))]
     public sealed class HashedId
@@ -61,52 +58,5 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Services
         public static bool operator ==(HashedId left, HashedId right) => left.Equals(right);
 
         public static bool operator !=(HashedId left, HashedId right) => !(left == right);
-    }
-
-    public class InvalidHashedIdException : Exception
-    {
-        public InvalidHashedIdException()
-        {
-        }
-
-        public InvalidHashedIdException(string? hashValue)
-            : base($"Invalid hashed ID value '{hashValue}'")
-        {
-        }
-
-        public InvalidHashedIdException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-    }
-
-    internal sealed class HashedIdModelBinder : IModelBinder
-    {
-        private readonly IHashingService customService;
-
-        public HashedIdModelBinder(IHashingService customService)
-            => this.customService = customService;
-
-        public Task BindModelAsync(ModelBindingContext bindingContext)
-        {
-            _ = bindingContext ?? throw new ArgumentNullException(nameof(bindingContext));
-
-            var modelName = bindingContext.ModelName;
-
-            var valueProvider = bindingContext.ValueProvider.GetValue(modelName);
-            if (valueProvider == ValueProviderResult.None) return Task.CompletedTask;
-
-            var value = valueProvider.FirstValue;
-            if (HashedId.TryCreate(value, customService, out var result))
-            {
-                bindingContext.Result = ModelBindingResult.Success(result);
-                return Task.CompletedTask;
-            }
-            else
-            {
-                bindingContext.ModelState.AddModelError(modelName, "Invalid hashed ID");
-                return Task.CompletedTask;
-            }
-        }
     }
 }
