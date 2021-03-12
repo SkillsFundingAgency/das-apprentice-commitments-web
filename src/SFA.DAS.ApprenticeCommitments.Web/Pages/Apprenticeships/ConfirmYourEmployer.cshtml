@@ -9,6 +9,8 @@
 
             <a href="@Model.Backlink" class="govuk-back-link" style="margin-bottom: 48px">Back</a>
 
+            <partial name="ValidationSummary" />
+
             <h1 class="govuk-heading-xl">Confirm your employer</h1>
 
             <h2 class="govuk-heading-l">@Model.EmployerName</h2>
@@ -27,7 +29,7 @@
             </div>
 
             <form id="employer-form-hide" method="post" action="">
-                <div class="govuk-form-group">
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">
@@ -35,15 +37,17 @@
                             </h1>
                         </legend>
 
+                        <span asp-validation-for="EmployerConfirm" class="govuk-error-message"></span> 
+
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="EmployerConfirm" name="EmployerConfirm" type="radio" value="yes">
+                                <input class="govuk-radios__input" id="EmployerConfirm" name="EmployerConfirm" type="radio" value="true">
                                 <label class="govuk-label govuk-radios__label" for="EmployerConfirm">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="EmployerConfirm-2" name="EmployerConfirm" type="radio" value="no">
+                                <input class="govuk-radios__input" id="EmployerConfirm-2" name="EmployerConfirm" type="radio" value="false">
                                 <label class="govuk-label govuk-radios__label" for="EmployerConfirm-2">
                                     No
                                 </label>
@@ -53,6 +57,7 @@
                     </fieldset>
                 </div>
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+                <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
             </form>
         </div>
     </div>
