@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _apprenticeshipId = 1235;
             _hashedApprenticeshipId = _context.Hashing.HashValue(_apprenticeshipId);
             _employerName = "My Test Company";
-            _backlink = $"/apprenticeships/{_hashedApprenticeshipId}/confirm";
+            _backlink = $"/apprenticeships/{_hashedApprenticeshipId}";
 
             _context.OuterApi.MockServer.Given(
                     Request.Create()
