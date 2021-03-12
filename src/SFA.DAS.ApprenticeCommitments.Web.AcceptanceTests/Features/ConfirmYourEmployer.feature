@@ -1,6 +1,6 @@
 ﻿@outerApi
 Feature: ConfirmYourEmployer
-	As an apprentice who wants to view my Employers details 
+	As an apprentice who wants to view my Employer's details 
 	So I can confirm them
 
 Scenario: The apprentice is authenticated and should see the Employer's Name
