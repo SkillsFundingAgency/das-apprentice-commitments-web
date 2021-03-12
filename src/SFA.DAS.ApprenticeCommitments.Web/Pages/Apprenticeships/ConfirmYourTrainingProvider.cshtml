@@ -3,5 +3,61 @@
 @{
 }
 
+<div class="govuk-width-container">
 
-<h1>ConfirmYourTrainingProvider @Model.ApprenticeshipId</h1>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <a asp-page="" class="govuk-back-link" style="margin-bottom: 48px">Back</a>
+
+            <h1 class="govuk-heading-xl">Confirm your training provider</h1>
+
+            <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
+
+            <div class="govuk-body">
+                <p>
+                    This is the legal name. You might know them as something else.
+                </p>
+                <div class="govuk-inset-text">
+                    <p class="govuk-body">Before starting your apprenticeship you should:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>know if your training provider is working with other training providers on your apprenticeship</li>
+                        <li>have a named day-to-day contact to answer your questions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <form id="training-provider-form-hide" method="post" action="">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Is this your training provider?
+                            </h1>
+                        </legend>
+
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="TrainingProviderConfirm" name="TrainingProviderConfirm" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="TrainingProviderConfirm">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="TrainingProviderConfirm-2" name="TrainingProviderConfirm" type="radio" value="no">
+                                <label class="govuk-label govuk-radios__label" for="TrainingProviderConfirm-2">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <button class="govuk-button" data-module="govuk-button" id="training-provider-confirm">Confirm</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

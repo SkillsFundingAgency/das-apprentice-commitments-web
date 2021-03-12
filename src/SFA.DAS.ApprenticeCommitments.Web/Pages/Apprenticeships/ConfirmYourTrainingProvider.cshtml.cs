@@ -9,8 +9,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
 
+        public string TrainingProviderName { get; private set; }
+
         public void OnGet()
         {
+            TrainingProviderName = "the name of the training provider goes here";
         }
     }
 }
