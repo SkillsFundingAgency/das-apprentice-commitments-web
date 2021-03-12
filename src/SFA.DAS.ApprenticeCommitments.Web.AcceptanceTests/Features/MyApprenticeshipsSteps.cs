@@ -1,5 +1,4 @@
 using FluentAssertions;
-using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System.Net;
 using TechTalk.SpecFlow;
@@ -9,13 +8,13 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 {
     [Binding]
-    public class OverviewSteps : StepsBase
+    public class MyApprenticeshipsSteps : StepsBase
     {
         private readonly TestContext _context;
         private long _apprenticeshipId = 1235;
         private readonly RegisteredUserContext _userContext;
 
-        public OverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
+        public MyApprenticeshipsSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
