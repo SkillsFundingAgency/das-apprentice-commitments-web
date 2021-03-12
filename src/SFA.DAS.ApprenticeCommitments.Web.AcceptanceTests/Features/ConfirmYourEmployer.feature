@@ -8,6 +8,5 @@ Scenario: The apprentice is authenticated and should see the Employers Name
 	And the apprentice has not verified their employer
 	When accessing the ConfirmYourEmployer page
 	Then the response status code should be Ok
-	And the apprentice should see the employers name
+	And the apprentice should see the employer's name
 	And the link is pointing to the confirm page
-
