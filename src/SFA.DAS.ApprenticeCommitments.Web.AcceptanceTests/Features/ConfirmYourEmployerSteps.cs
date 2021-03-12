@@ -65,7 +65,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Then(@"the apprentice should see the employers name")]
+        [Then(@"the apprentice should see the employer's name")]
         public void ThenTheApprenticeShouldSeeTheEmployersName()
         {
             var page = _context.ActionResult.LastPageResult;
