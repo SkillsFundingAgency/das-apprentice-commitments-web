@@ -13,7 +13,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly AuthenticatedUser _authenticatedUser;
 
         [BindProperty(SupportsGet = true)]
-        public string? ApprenticeshipId { get; set; }
+        public string ApprenticeshipId { get; set; }
         [BindProperty]
         public string EmployerName { get; set; }
         [BindProperty]

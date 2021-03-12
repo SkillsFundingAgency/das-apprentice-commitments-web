@@ -37,12 +37,7 @@
                             </h1>
                         </legend>
 
-                        @if (ViewData.ModelState.ContainsKey(nameof(Model.EmployerConfirm)) && ViewData.ModelState[nameof(Model.EmployerConfirm)].Errors.Any())
-                        {
-                            <span class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.EmployerConfirm)].Errors.First().ErrorMessage
-                            </span>
-                        }
+                        <span asp-validation-for="EmployerConfirm" class="govuk-error-message"></span> 
 
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
