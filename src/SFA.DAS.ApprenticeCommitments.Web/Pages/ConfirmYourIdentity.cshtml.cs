@@ -38,7 +38,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             var reg = await _registrations.GetRegistration(user);
 
-            if (reg.UserId != null) return RedirectToPage("/Apprenticeships/Index");
+            if (reg.UserId != null) return RedirectToPage("/apprenticeships/index");
 
             EmailAddress = reg?.Email;
 
@@ -60,7 +60,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     Email = EmailAddress,
                 });
 
-                return RedirectToPage("/Apprenticeships/Index");
+                return RedirectToPage("/apprenticeships/index");
             }
             catch (DomainValidationException exception)
             {

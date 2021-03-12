@@ -3,13 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class ConfirmYourTrainingDetailsModel : PageModel
+    public class CannotConfirmApprenticeshipModel : PageModel
     {
         [BindProperty(SupportsGet = true)]
-        public string? ApprenticeshipId { get; set; }
-
-        public void OnGet()
-        {
-        }
+        public string ApprenticeshipId { get; set; }
     }
 }

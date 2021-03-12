@@ -1,4 +1,67 @@
-﻿@page "/Apprenticeships/{apprenticeshipId:?}/ConfirmYourEmployer"
-@model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourEmployerModel
-@{
-}
+﻿@page "/apprenticeships/{apprenticeshipId}/confirmyouremployer"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmYourEmployerModel
+@{ }
+
+<div class="govuk-width-container">
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <a href="@Model.Backlink" class="govuk-back-link" style="margin-bottom: 48px">Back</a>
+
+            <partial name="ValidationSummary" />
+
+            <h1 class="govuk-heading-xl">Confirm your employer</h1>
+
+            <h2 class="govuk-heading-l">@Model.EmployerName</h2>
+
+            <div class="govuk-body">
+                <p>
+                    This is the legal name. You might know them as something else.
+                </p>
+                <h3>Things you need to know</h3>
+                <div class="govuk-inset-text">
+                    <p class="govuk-body">Before starting your apprenticeship your employer should’ve given you</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>a copy of your apprenticeship agreement signed by them</li>
+                        <li>the details for a day-to-day contact; someone to answer any questions you might have</li>
+                    </ul>
+                </div>
+                <p>Your employer knows that they must let you spend <u>at least 20% of your working hours</u> with your training provider for off-the-job training.</p>
+            </div>
+
+            <form id="employer-form-hide" method="post" action="">
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Is this your employer?
+                            </h1>
+                        </legend>
+
+                        <span asp-validation-for="EmployerConfirm" class="govuk-error-message"></span> 
+
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="EmployerConfirm" name="EmployerConfirm" type="radio" value="true">
+                                <label class="govuk-label govuk-radios__label" for="EmployerConfirm">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="EmployerConfirm-2" name="EmployerConfirm" type="radio" value="false">
+                                <label class="govuk-label govuk-radios__label" for="EmployerConfirm-2">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+                <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -112,7 +112,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         public void WhenTheApprenticeShouldBeShownThePage(string page)
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/Apprenticeships");
+            _context.Web.Response.Headers.Location.Should().Be("/apprenticeships");
         }
 
         [When("the apprentice verifies their identity with")]
