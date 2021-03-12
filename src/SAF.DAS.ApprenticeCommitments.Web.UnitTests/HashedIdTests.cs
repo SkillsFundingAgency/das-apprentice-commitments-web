@@ -3,6 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.HashingService;
+using static SAF.DAS.ApprenticeCommitments.Web.UnitTests.EqualityTests;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -43,15 +44,23 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
 
         [TestCaseSource(nameof(ValidIds))]
         public void Equality(long _, string hashedId)
-            => EqualityTests.TestEqualObjects(NewHashedId(hashedId), NewHashedId(hashedId));
+            => TestEqualObjects(NewHashedId(hashedId), NewHashedId(hashedId));
 
         [Test, AutoData]
         public void Inequality(long a, long b)
-            => EqualityTests.TestUnequalObjects(NewHashedId(a), NewHashedId(b));
+            => TestUnequalObjects(NewHashedId(a), NewHashedId(b));
 
         [TestCaseSource(nameof(ValidIds))]
         public void Nullability(long _, string hashedId)
-            => EqualityTests.TestAgainstNull(NewHashedId(hashedId));
+            => TestAgainstNull(NewHashedId(hashedId));
+
+        [Test, AutoData]
+        public void EqualityTestsAgainstBuiltInClass(string value, string other)
+        {
+            TestEqualObjects(value, new string(value));
+            TestUnequalObjects(value, other);
+            TestAgainstNull(value);
+        }
 
         [TestCaseSource(nameof(ValidIds))]
         public void Equality_to_string(long _, string hashedId)

@@ -55,8 +55,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing
 
         public override string ToString() => Hashed;
 
-        public static bool operator ==(HashedId left, HashedId right) => left.Equals(right);
+        public static bool operator ==(HashedId? left, HashedId? right)
+            => (left, right) switch
+            {
+                (null, null) => true,
+                (null, _) => false,
+                _ => left!.Equals(right)
+            };
 
-        public static bool operator !=(HashedId left, HashedId right) => !(left == right);
+        public static bool operator !=(HashedId? left, HashedId? right) => !(left == right);
     }
 }

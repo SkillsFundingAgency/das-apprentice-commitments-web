@@ -72,8 +72,12 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             {
                 TestEqualsReceivingNull<T>(obj),
                 TestEqualsOfTReceivingNull<T>(obj),
+                TestEqualityOperatorWhenNull<T>(obj),
                 TestEqualityOperatorReceivingNull<T>(obj),
+                TestEqualityOperatorWhenNullReceievingNull<T>(obj),
+                TestInequalityOperatorWhenNull<T>(obj),
                 TestInequalityOperatorReceivingNull<T>(obj),
+                TestInequalityOperatorWhenNullReceivingNull<T>(obj),
             };
 
             AssertAllTestsHavePassed(testResults);
@@ -112,8 +116,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             return TestResult.CreateSuccess();
         }
 
-        private static TestResult
-            TestEqualsOfTReceivingNull<T>(T obj)
+        private static TestResult TestEqualsOfTReceivingNull<T>(T obj)
         {
             if (typeof(T).IsClass)
                 return TestEqualsOfT<T>(obj, default(T), false);
@@ -167,11 +170,24 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             });
         }
 
-        private static TestResult
-            TestEqualityOperatorReceivingNull<T>(T obj)
+        private static TestResult TestEqualityOperatorReceivingNull<T>(T obj)
         {
             if (typeof(T).IsClass)
                 return TestEqualityOperator<T>(obj, default(T), false);
+            return TestResult.CreateSuccess();
+        }
+
+        private static TestResult TestEqualityOperatorWhenNull<T>(T obj)
+        {
+            if (typeof(T).IsClass)
+                return TestEqualityOperator<T>(default(T), obj, false);
+            return TestResult.CreateSuccess();
+        }
+
+        private static TestResult TestEqualityOperatorWhenNullReceievingNull<T>(T obj)
+        {
+            if (typeof(T).IsClass)
+                return TestEqualityOperator<T>(default(T), default(T), true);
             return TestResult.CreateSuccess();
         }
 
@@ -209,11 +225,24 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             });
         }
 
-        private static TestResult
-            TestInequalityOperatorReceivingNull<T>(T obj)
+        private static TestResult TestInequalityOperatorReceivingNull<T>(T obj)
         {
             if (typeof(T).IsClass)
                 return TestInequalityOperator<T>(obj, default(T), true);
+            return TestResult.CreateSuccess();
+        }
+
+        private static TestResult TestInequalityOperatorWhenNull<T>(T obj)
+        {
+            if (typeof(T).IsClass)
+                return TestInequalityOperator<T>(default(T), obj, true);
+            return TestResult.CreateSuccess();
+        }
+
+        private static TestResult TestInequalityOperatorWhenNullReceivingNull<T>(T obj)
+        {
+            if (typeof(T).IsClass)
+                return TestInequalityOperator<T>(default(T), default(T), false);
             return TestResult.CreateSuccess();
         }
 
