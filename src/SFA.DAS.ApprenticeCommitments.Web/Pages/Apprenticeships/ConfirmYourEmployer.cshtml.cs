@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGet()
         {
-            Backlink = $"/apprenticeships/{ApprenticeshipId}/confirm";
+            Backlink = $"/apprenticeships/{ApprenticeshipId}";
             var apprenticeshipId = _hashingService.DecodeValue(ApprenticeshipId);
             var apprenticeship = await _client.GetApprenticeship(_authenticatedUser.RegistrationId, apprenticeshipId);
             EmployerName = apprenticeship.EmployerName;
