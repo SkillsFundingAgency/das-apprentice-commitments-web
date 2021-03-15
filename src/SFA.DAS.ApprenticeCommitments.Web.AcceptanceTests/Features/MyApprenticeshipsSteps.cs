@@ -1,6 +1,6 @@
 using FluentAssertions;
-using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using System.Net;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -9,16 +9,17 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 {
     [Binding]
-    public class OverviewSteps : StepsBase
+    public class MyApprenticeshipsSteps : StepsBase
     {
         private readonly TestContext _context;
-        private long _apprenticeshipId = 1235;
+        private HashedId _apprenticeshipId;
         private readonly RegisteredUserContext _userContext;
 
-        public OverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
+        public MyApprenticeshipsSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
+            _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
         }
 
         [Given(@"there is one apprenticeship")]
@@ -58,9 +59,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Then(@"the apprentice should see the overview page for their apprenticeship")]
         public void ThenTheApprenticeShouldSeeTheOverviewPage()
         {
-            var page = _context.ActionResult.LastPageResult;
-            var hashedId = _context.Hashing.HashValue(_apprenticeshipId);
-            page.Model.Should().BeOfType<ConfirmApprenticeshipModel>().Which.ApprenticeshipId.Should().Be(hashedId);
+            _context.ActionResult.LastPageResult
+                .Model.Should().BeOfType<ConfirmApprenticeshipModel>()
+                .Which.ApprenticeshipId.Should().Be(_apprenticeshipId.Hashed);
         }
     }
 }
