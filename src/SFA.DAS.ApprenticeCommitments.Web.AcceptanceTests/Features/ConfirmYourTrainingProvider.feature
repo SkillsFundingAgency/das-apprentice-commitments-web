@@ -9,5 +9,4 @@ Scenario: The apprentice is authenticated and should see the Training Provider N
 	When accessing the ConfirmYourTrainingProvider page
 	Then the response status code should be OK
 	And the apprentice should see the training provider name
-	#And the link is pointing to the confirm page
-
+	And the back link is pointing to the My Apprenticsips page

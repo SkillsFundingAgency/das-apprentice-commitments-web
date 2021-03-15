@@ -1,6 +1,7 @@
 using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using System.Net;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -21,7 +22,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context = context;
             _apprenticeshipId = HashedId.Create(1397, _context.Hashing);
             _trainingProviderName = "My Test Company";
-            //_backlink = $"/apprenticeships/{_hashedApprenticeshipId}/confirm";
 
             _context.OuterApi.MockServer.Given(
                     Request.Create()
@@ -47,6 +47,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider");
         }
 
+        [Then("the response status code should be OK")]
+        public void ThenTheResponseStatusCodeShouldBeOK()
+        {
+            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
         [Then("the apprentice should see the training provider name")]
         public void ThenTheApprenticeShouldSeeTheTrainingProviderName()
         {
@@ -56,11 +62,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 .Which.TrainingProviderName.Should().Be(_trainingProviderName);
         }
 
-        //[Then("the link is pointing to the confirm page")]
-        //public void ThenTheLinkIsPointingToTheConfirmPage()
-        //{
-        //    var page = _context.ActionResult.LastPageResult;
-        //    page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.Backlink.Should().Be(_backlink);
-        //}
+        [Then("the back link is pointing to the My Apprenticsips page")]
+        public void ThenTheBackLinkIsPointingToTheMyApprenticeshipsPage()
+        {
+            _context.ActionResult.LastPageResult
+                .Model.Should().BeOfType<ConfirmYourTrainingModel>().Which
+                .Backlink.Should().Be($"/apprenticeships/{_apprenticeshipId.Hashed}");
+        }
     }
 }

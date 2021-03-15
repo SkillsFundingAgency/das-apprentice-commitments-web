@@ -15,6 +15,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         public string TrainingProviderName { get; private set; }
+        
+        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
