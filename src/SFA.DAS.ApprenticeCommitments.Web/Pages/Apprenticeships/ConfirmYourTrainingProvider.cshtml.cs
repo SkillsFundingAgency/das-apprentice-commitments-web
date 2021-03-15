@@ -14,8 +14,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
 
+        [BindProperty]
+        public bool? ConfirmTrainingProvider { get; set; }
+
         public string TrainingProviderName { get; private set; }
-        
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -29,6 +32,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
             TrainingProviderName = apprenticeship.TrainingProviderName;
+        }
+
+        public IActionResult OnPost()
+        {
+            return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
         }
     }
 }

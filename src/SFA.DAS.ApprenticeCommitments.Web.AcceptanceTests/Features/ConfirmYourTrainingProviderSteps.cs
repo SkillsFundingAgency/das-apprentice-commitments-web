@@ -1,7 +1,10 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -16,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         private readonly TestContext _context;
         private HashedId _apprenticeshipId;
         private string _trainingProviderName;
+        private bool _trainingProviderNameConfirmed;
 
         public ConfirmYourTrainingProviderSteps(TestContext context) : base(context)
         {
@@ -41,11 +45,28 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
         }
 
+        [Given(@"the apprentice confirms their training provider")]
+        public void GivenTheApprenticeConfirmsTheirEmployer()
+        {
+            _trainingProviderNameConfirmed = true;
+        }
+
         [When(@"accessing the ConfirmYourTrainingProvider page")]
         public async Task WhenAccessingTheConfirmYourTrainingProviderPage()
         {
             await _context.Web
                 .Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider");
+        }
+
+        [When(@"submitting the ConfirmYourTrainingProvider page")]
+        public async Task WhenSubmittingTheConfirmYourTrainingProviderPage()
+        {
+            await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "EmployerName", _trainingProviderName },
+                    { "EmployerConfirm", _trainingProviderNameConfirmed.ToString() }
+                }));
         }
 
         [Then("the response status code should be OK")]
@@ -70,5 +91,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 .Model.Should().BeOfType<ConfirmYourTrainingModel>().Which
                 .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
+
+        [Then("the user should be redirected back to the My Apprenticeships page")]
+        public void ThenTheUserShouldBeRedirectedBackToTheOverviewPage()
+        {
+            var redirect = _context.ActionResult
+                .LastActionResult.Should().BeOfType<RedirectToPageResult>().Which;
+            redirect.PageName.Should().Be("Confirm");
+            redirect
+                .RouteValues.Should().ContainKey("ApprenticeshipId")
+                .WhichValue.Should().Be(_apprenticeshipId.Hashed);
+        }
+
     }
 }
