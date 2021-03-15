@@ -7,5 +7,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         [BindProperty(SupportsGet = true)]
         public string ApprenticeshipId { get; set; }
+        public string Backlink => $"/apprenticeships/{ApprenticeshipId}";
+
+        public IActionResult OnPost()
+        {
+            return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
+        }
     }
 }
