@@ -15,9 +15,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
-        public bool? ConfirmTrainingProvider { get; set; }
+        public string TrainingProviderName { get; set; }
 
-        public string TrainingProviderName { get; private set; }
+        [BindProperty]
+        public bool? ConfirmTrainingProvider { get; set; }
 
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
@@ -38,6 +39,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             switch (ConfirmTrainingProvider)
             {
+                case null:
+                    ModelState.AddModelError(nameof(ConfirmTrainingProvider), "Select an answer");
+                    return new PageResult();
+
                 case true:
                     return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
 

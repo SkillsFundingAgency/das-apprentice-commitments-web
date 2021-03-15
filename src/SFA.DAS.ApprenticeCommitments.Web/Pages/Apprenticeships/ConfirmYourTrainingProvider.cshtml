@@ -10,6 +10,8 @@
 
             <a href="@Model.Backlink" class="govuk-back-link" style="margin-bottom: 48px">Back</a>
 
+            <partial name="ValidationSummary" />
+            
             <h1 class="govuk-heading-xl">Confirm your training provider</h1>
 
             <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
@@ -36,16 +38,18 @@
                             </h1>
                         </legend>
 
+                        <span asp-validation-for="ConfirmTrainingProvider" class="govuk-error-message"></span> 
+                        
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="TrainingProviderConfirm" name="TrainingProviderConfirm" type="radio" value="yes">
-                                <label class="govuk-label govuk-radios__label" for="TrainingProviderConfirm">
+                                <input class="govuk-radios__input" asp-for="ConfirmTrainingProvider" id="confirm-yes" value="true" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="TrainingProviderConfirm-2" name="TrainingProviderConfirm" type="radio" value="no">
-                                <label class="govuk-label govuk-radios__label" for="TrainingProviderConfirm-2">
+                                <input class="govuk-radios__input" asp-for="ConfirmTrainingProvider" id="confirm-no" value="false" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="confirm-no">
                                     No
                                 </label>
                             </div>
@@ -53,6 +57,7 @@
 
                     </fieldset>
                 </div>
+                <input type="hidden" asp-for="TrainingProviderName" value="@Model.TrainingProviderName" />
                 <button class="govuk-button" data-module="govuk-button" id="training-provider-confirm">Confirm</button>
             </form>
         </div>

@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using System.Collections.Generic;
@@ -57,6 +58,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _trainingProviderNameConfirmed = false;
         }
 
+        [Given(@"the apprentice doesn't select an option")]
+        public void GivenTheApprenticeDoesnTSelectAnOption()
+        {
+            _trainingProviderNameConfirmed = null;
+        }
+
         [When("accessing the ConfirmYourTrainingProvider page")]
         public async Task WhenAccessingTheConfirmYourTrainingProviderPage()
         {
@@ -81,7 +88,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Then("the apprentice should see the training provider name")]
+        [Then("the apprentice should see the training provider's name")]
         public void ThenTheApprenticeShouldSeeTheTrainingProviderName()
         {
             var page = _context.ActionResult.LastPageResult;
@@ -119,5 +126,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 .RouteValues.Should().ContainKey("ApprenticeshipId")
                 .WhichValue.Should().Be(_apprenticeshipId.Hashed);
         }
+
+        [Then(@"the model should contain an error message")]
+        public void ThenTheModelShouldContainAnErrorMessage()
+        {
+            var model = _context.ActionResult
+                .LastActionResult.Should().BeOfType<PageResult>()
+                .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>().Subject;
+
+            model.ModelState.ContainsKey("ConfirmTrainingProvider").Should().BeTrue();
+            model.ModelState["ConfirmTrainingProvider"].Errors.Count.Should().Be(1);
+            model.ModelState["ConfirmTrainingProvider"].Errors[0].ErrorMessage.Should().Be("Select an answer");
+        }
+
     }
 }
