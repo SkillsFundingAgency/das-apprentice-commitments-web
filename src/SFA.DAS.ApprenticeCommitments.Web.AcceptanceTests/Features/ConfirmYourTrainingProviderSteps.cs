@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         private readonly TestContext _context;
         private HashedId _apprenticeshipId;
         private string _trainingProviderName;
-        private bool _trainingProviderNameConfirmed;
+        private bool? _trainingProviderNameConfirmed;
 
         public ConfirmYourTrainingProviderSteps(TestContext context) : base(context)
         {
@@ -28,9 +28,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             _trainingProviderName = "My Test Company";
 
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new
@@ -45,27 +45,33 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
         }
 
-        [Given(@"the apprentice confirms their training provider")]
+        [Given("the apprentice confirms their training provider")]
         public void GivenTheApprenticeConfirmsTheirEmployer()
         {
             _trainingProviderNameConfirmed = true;
         }
 
-        [When(@"accessing the ConfirmYourTrainingProvider page")]
+        [Given("the apprentice states this is not their training provider")]
+        public void GivenTheApprenticeStatesThisIsNotTheirTrainingProvider()
+        {
+            _trainingProviderNameConfirmed = false;
+        }
+
+        [When("accessing the ConfirmYourTrainingProvider page")]
         public async Task WhenAccessingTheConfirmYourTrainingProviderPage()
         {
             await _context.Web
                 .Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider");
         }
 
-        [When(@"submitting the ConfirmYourTrainingProvider page")]
+        [When("submitting the ConfirmYourTrainingProvider page")]
         public async Task WhenSubmittingTheConfirmYourTrainingProviderPage()
         {
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { "EmployerName", _trainingProviderName },
-                    { "EmployerConfirm", _trainingProviderNameConfirmed.ToString() }
+                    { "TrainingProviderName", _trainingProviderName },
+                    { "ConfirmTrainingProvider", _trainingProviderNameConfirmed.ToString() }
                 }));
         }
 
@@ -103,5 +109,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 .WhichValue.Should().Be(_apprenticeshipId.Hashed);
         }
 
+        [Then("the user should be redirected to the cannot confirm apprenticeship page")]
+        public void ThenTheUserShouldBeRedirectedToTheCannotConfirmApprenticeshipPage()
+        {
+            var redirect = _context.ActionResult
+                .LastActionResult.Should().BeOfType<RedirectToPageResult>().Which;
+            redirect.PageName.Should().Be("CannotConfirm");
+            redirect
+                .RouteValues.Should().ContainKey("ApprenticeshipId")
+                .WhichValue.Should().Be(_apprenticeshipId.Hashed);
+        }
     }
 }

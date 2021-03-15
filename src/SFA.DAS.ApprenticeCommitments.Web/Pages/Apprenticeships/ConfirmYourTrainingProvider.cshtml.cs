@@ -36,7 +36,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public IActionResult OnPost()
         {
-            return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
+            switch (ConfirmTrainingProvider)
+            {
+                case true:
+                    return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
+
+                default:
+                    return new RedirectToPageResult("CannotConfirm", new { ApprenticeshipId });
+            }
         }
     }
 }
