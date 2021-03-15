@@ -44,7 +44,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [When(@"accessing the ConfirmYourTrainingProvider page")]
         public async Task WhenAccessingTheConfirmYourTrainingProviderPage()
         {
-            await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider");
+            await _context.Web
+                .Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider");
         }
 
         [Then("the response status code should be OK")]
@@ -62,12 +63,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 .Which.TrainingProviderName.Should().Be(_trainingProviderName);
         }
 
-        [Then("the back link is pointing to the My Apprenticsips page")]
+        [Then("the back link is pointing to the My Apprenticships page")]
         public void ThenTheBackLinkIsPointingToTheMyApprenticeshipsPage()
         {
             _context.ActionResult.LastPageResult
                 .Model.Should().BeOfType<ConfirmYourTrainingModel>().Which
-                .Backlink.Should().Be($"/apprenticeships/{_apprenticeshipId.Hashed}");
+                .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
     }
 }
