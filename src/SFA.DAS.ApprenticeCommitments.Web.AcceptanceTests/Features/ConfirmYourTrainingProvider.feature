@@ -16,6 +16,7 @@ Scenario: The apprentice is authenticated and confirms the training provider
 	And the apprentice has not verified their training provider
 	And the apprentice confirms their training provider
 	When submitting the ConfirmYourTrainingProvider page
+	Then the apprenticeship is updated to show the confirmation
 	Then the user should be redirected back to the My Apprenticeships page
 
 Scenario: The apprentice is authenticated and states that this is not their training provider

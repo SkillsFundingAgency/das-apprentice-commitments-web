@@ -1,9 +1,12 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -42,6 +45,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                             _apprenticeshipId.Id,
                             TrainingProviderName = _trainingProviderName
                         }));
+
+            _context.OuterApi.MockServer.Given(
+                     Request.Create()
+                         .UsingAnyMethod()
+                         .WithPath("/apprentices/*/apprenticeships/*/trainingproviderconfirmation"))
+                    .RespondWith(Response.Create()
+                        .WithStatusCode(200));
         }
 
         [Given("the apprentice has not verified their training provider")]
@@ -89,6 +99,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         public void ThenTheResponseStatusCodeShouldBeOK()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Then("the apprenticeship is updated to show the confirmation")]
+        public void ThenTheApprenticeshipIsUpdatedToShowTheConfirmation()
+        {
+            var updates = _context.OuterApi.MockServer.FindLogEntries(
+                Request.Create()
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/trainingproviderconfirmation")
+                    .UsingPost());
+
+            updates.Should().HaveCount(1);
+            
+            var post = updates.First();
+
+            JsonConvert
+                .DeserializeObject<TrainingProviderConfirmationRequest>(post.RequestMessage.Body)
+                .Should().BeEquivalentTo(new { ConfirmedTrainingProvider = true, });
         }
 
         [Then("the apprentice should see the training provider's name")]
@@ -141,6 +168,5 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             model.ModelState[ModelConfirmedKey].Errors.Count.Should().Be(1);
             model.ModelState[ModelConfirmedKey].Errors[0].ErrorMessage.Should().Be("Select an answer");
         }
-
     }
 }
