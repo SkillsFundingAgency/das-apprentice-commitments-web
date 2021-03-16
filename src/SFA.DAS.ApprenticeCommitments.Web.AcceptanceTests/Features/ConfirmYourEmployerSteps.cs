@@ -9,6 +9,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 {
@@ -18,29 +19,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private ConfirmYourEmployerModel _confirmYourEmployerModel;
-        private long _apprenticeshipId;
-        private string _hashedApprenticeshipId;
+        private HashedId _apprenticeshipId;
         private string _employerName;
         private bool? _employerNameConfirmed;
-        private string _backlink;
 
         public ConfirmYourEmployerSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
-            _apprenticeshipId = 1235;
-            _hashedApprenticeshipId = _context.Hashing.HashValue(_apprenticeshipId);
+            _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
             _employerName = "My Test Company";
-            _backlink = $"/apprenticeships/{_hashedApprenticeshipId}";
 
             _context.OuterApi.MockServer.Given(
                     Request.Create()
                         .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId}"))
+                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
-                        .WithBodyAsJson( new { Id = _apprenticeshipId, EmployerName = _employerName }));
+                        .WithBodyAsJson( new { Id = _apprenticeshipId.Id, EmployerName = _employerName }));
         }
 
         [Given("the apprentice has logged in")]
@@ -77,7 +73,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [When(@"submitting the ConfirmYourEmployer page")]
         public async Task WhenSubmittingTheConfirmYourEmployerPage()
         {
-            await _context.Web.Post($"/apprenticeships/{_hashedApprenticeshipId}/confirmyouremployer",
+            await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyouremployer",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "EmployerName", _employerName },
@@ -88,7 +84,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [When(@"accessing the ConfirmYourEmployer page")]
         public async Task WhenAccessingTheConfirmYourEmployerPage()
         {
-            await _context.Web.Get($"/apprenticeships/{_hashedApprenticeshipId}/confirmyouremployer");
+            await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyouremployer");
         }
 
         [Then("the response status code should be Ok")]
@@ -107,8 +103,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Then(@"the link is pointing to the confirm page")]
         public void ThenTheLinkIsPointingToTheConfirmPage()
         {
-            var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.Backlink.Should().Be(_backlink);
+            _context.ActionResult.LastPageResult
+                .Model.Should().BeOfType<ConfirmYourEmployerModel>().Which
+                .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
 
         [Then(@"the user should be redirected back to the overview page")]
@@ -117,7 +114,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             var redirect = _context.ActionResult.LastActionResult as RedirectToPageResult;
             redirect.Should().NotBeNull();
             redirect.PageName.Should().Be("Confirm");
-            redirect.RouteValues["ApprenticeshipId"].Should().Be(_hashedApprenticeshipId);
+            redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
         [Then(@"the user should be redirected to the cannot confirm apprenticeship page")]
@@ -126,7 +123,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             var redirect = _context.ActionResult.LastActionResult as RedirectToPageResult;
             redirect.Should().NotBeNull();
             redirect.PageName.Should().Be("CannotConfirm");
-            redirect.RouteValues["ApprenticeshipId"].Should().Be(_hashedApprenticeshipId);
+            redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
         [Then(@"the model should contain an error message")]

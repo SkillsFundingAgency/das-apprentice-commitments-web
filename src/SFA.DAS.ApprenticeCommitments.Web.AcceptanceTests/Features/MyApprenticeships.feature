@@ -1,5 +1,5 @@
 ﻿@outerApi
-Feature: Overview
+Feature: MyApprenticeships
 	As an apprentice
 	I need to have a start screen showing all the steps of my commitment statement
 	So that I know what steps are involved in signing my commitment statement

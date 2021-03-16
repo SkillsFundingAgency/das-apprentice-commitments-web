@@ -99,7 +99,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                    .WithStatusCode(200)
                    .WithBodyAsJson(new
                    {
-                       Id = 1235, EmployerName = "My Mock company"
+                       Id = 1235,
+                       EmployerName = "My Mock company",
+                       TrainingProviderName = "My Mock trainer",
                    }));
 
             return this;
