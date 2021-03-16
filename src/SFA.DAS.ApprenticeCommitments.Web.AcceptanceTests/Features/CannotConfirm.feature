@@ -7,4 +7,4 @@ Scenario: The apprentice is authenticated and is on the CannotConfirm page
 	Given the apprentice has logged in
 	When accessing the CannotConfirm page
 	Then the response status code should be Ok
-	And the link is pointing to the confirm page
+	And the backlink is pointing to the confirm page
