@@ -17,6 +17,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
     [Scope(Feature = "ConfirmYourTrainingProvider")]
     public class ConfirmYourTrainingProviderSteps : StepsBase
     {
+        private const string ModelNameKey = nameof(ConfirmYourTrainingModel.TrainingProviderName);
+        private const string ModelConfirmedKey = nameof(ConfirmYourTrainingModel.ConfirmedTrainingProvider);
+
         private readonly TestContext _context;
         private HashedId _apprenticeshipId;
         private string _trainingProviderName;
@@ -77,8 +80,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { "TrainingProviderName", _trainingProviderName },
-                    { "ConfirmTrainingProvider", _trainingProviderNameConfirmed.ToString() }
+                    { ModelNameKey, _trainingProviderName },
+                    { ModelConfirmedKey, _trainingProviderNameConfirmed.ToString() }
                 }));
         }
 
@@ -102,7 +105,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
             _context.ActionResult.LastPageResult
                 .Model.Should().BeOfType<ConfirmYourTrainingModel>().Which
-                .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
+                .BackLink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
 
         [Then("the user should be redirected back to the My Apprenticeships page")]
@@ -134,9 +137,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 .LastActionResult.Should().BeOfType<PageResult>()
                 .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>().Subject;
 
-            model.ModelState.ContainsKey("ConfirmTrainingProvider").Should().BeTrue();
-            model.ModelState["ConfirmTrainingProvider"].Errors.Count.Should().Be(1);
-            model.ModelState["ConfirmTrainingProvider"].Errors[0].ErrorMessage.Should().Be("Select an answer");
+            model.ModelState.ContainsKey(ModelConfirmedKey).Should().BeTrue();
+            model.ModelState[ModelConfirmedKey].Errors.Count.Should().Be(1);
+            model.ModelState[ModelConfirmedKey].Errors[0].ErrorMessage.Should().Be("Select an answer");
         }
 
     }
