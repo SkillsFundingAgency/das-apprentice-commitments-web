@@ -12,12 +12,9 @@
             
             <h1 asp-hide="@Model.ConfirmedTrainingProvider" class="govuk-heading-xl">Confirm your training provider</h1>
 
-            <div asp-show="@Model.ConfirmedTrainingProvider" class="govuk-warning-text">
-                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                <strong class="govuk-warning-text__text">
-                    <span class="govuk-warning-text__assistive">Warning</span>
-                    You have confirmed your training provider
-                </strong>
+            <div asp-show="@Model.ConfirmedTrainingProvider" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+                <span class="app-notification-banner__icon das-text--success-icon"></span>
+                You have confirmed your training provider
             </div>
 
             <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
