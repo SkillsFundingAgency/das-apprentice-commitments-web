@@ -1,10 +1,10 @@
 ﻿@outerApi
 Feature: CannotConfirm
-	As an apprentice I want to see that I cannot confirm my apprenticeship
+	As an apprentice I want to see when I cannot confirm my apprenticeship
 	So I know what to do
 
-Scenario: 
-	Given the first number is 50
-	And the second number is 70
-	When the two numbers are added
-	Then the result should be 120
+Scenario: The apprentice is authenticated and is on the CannotConfirm page
+	Given the apprentice has logged in
+	When accessing the CannotConfirm page
+	Then the response status code should be Ok
+	And the link is pointing to the confirm page

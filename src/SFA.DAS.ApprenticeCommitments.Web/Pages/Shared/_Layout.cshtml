@@ -22,7 +22,7 @@
     <!--[if lt IE 9]>
         <script src="/html5-shiv/html5shiv.js"></script>
     <![endif]-->
-  
+
     <link href="~/css/site.css" media="screen" rel="stylesheet" no-cdn />
 
     <title>@ViewData["Title"] - Commitment Statement</title>
@@ -40,6 +40,14 @@
         <div style="position:relative">
             @RenderSection("BreadCrumbs", required: false)
         </div>
+
+        
+        @if (Model is DAS.ApprenticeCommitments.Web.Services.IBacklink backlink)
+        {
+            <a href="@backlink.Backlink" title="Apprenticeship overview page" class="govuk-back-link">Back</a>
+        }
+
+
         <main class="govuk-main-wrapper app-main-class" id="main-content" role="main">
             @RenderBody()
         </main>

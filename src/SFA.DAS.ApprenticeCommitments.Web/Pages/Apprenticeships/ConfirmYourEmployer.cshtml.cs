@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.HashingService;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class ConfirmYourEmployerModel : PageModel
+    public class ConfirmYourEmployerModel : PageModel, IBacklink
     {
         private readonly IHashingService _hashingService;
         private readonly IOuterApiClient _client;

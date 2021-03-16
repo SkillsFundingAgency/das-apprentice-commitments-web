@@ -4,25 +4,21 @@
     ViewData["Title"] = "You can’t confirm your apprenticeship yet.";
 }
 
-<div class="govuk-width-container">
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <a href="@Model.Backlink" class="govuk-back-link" style="margin-bottom: 48px">Back</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-            <h1 class="govuk-heading-xl">@ViewData["Title"] </h1>
+        <h1 class="govuk-heading-xl">@ViewData["Title"] </h1>
 
-            <p>
-                Speak to your employer and provider to fix this then come back here to continue.
-            </p>
-        </div>
+        <p>
+            Speak to your employer and provider to fix this then come back here to continue.
+        </p>
 
-        <div class="govuk-grid-column-full">
-            <form method="post">
-                <button class="govuk-button" data-module="govuk-button">
-                    Return to My Apprenticeship
-                </button>
-            </form>
-        </div>
+        <form action="@Model.Backlink">
+            <button class="govuk-button" data-module="govuk-button">
+                Return to My Apprenticeship
+            </button>
+        </form>
+
     </div>
 </div>
