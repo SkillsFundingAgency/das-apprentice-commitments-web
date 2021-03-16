@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
@@ -13,17 +14,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private readonly long _apprenticeshipId;
-        private readonly string _hashedApprenticeshipId;
+        private readonly HashedId _apprenticeshipId;
         private readonly string _backlink;
 
         public CannotConfirmSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
-            _apprenticeshipId = 1235;
-            _hashedApprenticeshipId = _context.Hashing.HashValue(_apprenticeshipId);
-            _backlink = $"/apprenticeships/{_hashedApprenticeshipId}";
+            _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
+            _backlink = $"/apprenticeships/{_apprenticeshipId.Hashed}";
         }
 
         [Given("the apprentice has logged in")]
@@ -37,7 +36,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [When(@"accessing the CannotConfirm page")]
         public async Task WhenAccessingTheCannotConfirm()
         {
-            await _context.Web.Get($"/apprenticeships/{_hashedApprenticeshipId}/cannotconfirm");
+            await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/cannotconfirm");
         }
 
         [Then("the response status code should be Ok")]
