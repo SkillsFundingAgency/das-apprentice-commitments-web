@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
 using System.Threading.Tasks;
+
+#nullable enable
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -18,14 +21,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public string TrainingProviderName { get; set; }
 
         [BindProperty]
-        public bool? ConfirmTrainingProvider { get; set; }
+        public bool? ConfirmedTrainingProvider { get; set; }
 
-        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
+        public string BackLink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
-            _authenticatedUser = authenticatedUser;
-            _client = client;
+            _authenticatedUser = authenticatedUser ?? throw new ArgumentNullException(nameof(authenticatedUser));
+            _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
         public async Task OnGetAsync()
@@ -33,14 +36,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
             TrainingProviderName = apprenticeship.TrainingProviderName;
+            ConfirmedTrainingProvider = apprenticeship.TrainingProviderConfirmed;
         }
 
         public IActionResult OnPost()
         {
-            switch (ConfirmTrainingProvider)
+            switch (ConfirmedTrainingProvider)
             {
                 case null:
-                    ModelState.AddModelError(nameof(ConfirmTrainingProvider), "Select an answer");
+                    ModelState.AddModelError(nameof(ConfirmedTrainingProvider), "Select an answer");
                     return new PageResult();
 
                 case true:
