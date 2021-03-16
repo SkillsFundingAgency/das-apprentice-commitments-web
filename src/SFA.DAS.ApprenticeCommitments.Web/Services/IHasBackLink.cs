@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
-    public interface IBacklink
+    public interface IHasBackLink
     {
         string Backlink { get; }
     }

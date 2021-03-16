@@ -7,7 +7,7 @@ using SFA.DAS.HashingService;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class ConfirmYourEmployerModel : PageModel, IBacklink
+    public class ConfirmYourEmployerModel : PageModel, IHasBackLink
     {
         private readonly IHashingService _hashingService;
         private readonly IOuterApiClient _client;
