@@ -40,20 +40,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             ConfirmedTrainingProvider = apprenticeship.TrainingProviderConfirmed;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            switch (ConfirmedTrainingProvider)
+            if (ConfirmedTrainingProvider == null)
             {
-                case null:
-                    ModelState.AddModelError(nameof(ConfirmedTrainingProvider), "Select an answer");
-                    return new PageResult();
-
-                case true:
-                    return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
-
-                default:
-                    return new RedirectToPageResult("CannotConfirm", new { ApprenticeshipId });
+                ModelState.AddModelError(nameof(ConfirmedTrainingProvider), "Select an answer");
+                return new PageResult();
             }
+
+            await _client.ConfirmTrainingProvider(
+                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                new TrainingProviderConfirmationRequest(ConfirmedTrainingProvider.Value));
+
+            var nextPage = ConfirmedTrainingProvider.Value ? "Confirm" : "CannotConfirm";
+
+            return new RedirectToPageResult(nextPage, new { ApprenticeshipId });
         }
     }
 }
