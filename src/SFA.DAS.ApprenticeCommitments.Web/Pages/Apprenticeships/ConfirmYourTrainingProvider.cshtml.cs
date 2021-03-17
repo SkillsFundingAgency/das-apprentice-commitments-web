@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class ConfirmYourTrainingModel : PageModel
+    public class ConfirmYourTrainingModel : PageModel, IHasBackLink
     {
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
