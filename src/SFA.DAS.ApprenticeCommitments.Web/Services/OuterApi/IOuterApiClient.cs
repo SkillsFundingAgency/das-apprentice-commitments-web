@@ -22,5 +22,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task ConfirmTrainingProvider(
             [Path] Guid apprenticeid, [Path] long apprenticeshipid,
             [Body] TrainingProviderConfirmationRequest confirmation);
+
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/employerconfirmation")]
+        Task ConfirmEmployer(
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Body] EmployerConfirmationRequest confirmation);
+
     }
 }

@@ -5,6 +5,8 @@ using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
+#nullable enable
+
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     public class ConfirmYourEmployerModel : PageModel, IHasBackLink
@@ -17,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public string EmployerName { get; set; }
         [BindProperty]
-        public bool? EmployerConfirm { get; set; }
+        public bool? ConfirmedEmployer { get; set; }
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourEmployerModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -28,23 +30,28 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGet()
         {
-            var apprenticeshipId = await _client
+            var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
-            EmployerName = apprenticeshipId.EmployerName;
+            EmployerName = apprenticeship.EmployerName;
+            ConfirmedEmployer = apprenticeship.EmployerConfirmed;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            switch (EmployerConfirm)
+
+            if (ConfirmedEmployer == null)
             {
-                case null:
-                    ModelState.AddModelError(nameof(EmployerConfirm), "Select an answer");
-                    return new PageResult();
-                case true:
-                    return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
-                default:
-                    return new RedirectToPageResult("CannotConfirm", new { ApprenticeshipId });
+                ModelState.AddModelError(nameof(ConfirmedEmployer), "Select an answer");
+                return new PageResult();
             }
+
+            await _client.ConfirmEmployer(
+                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                new EmployerConfirmationRequest(ConfirmedEmployer.Value));
+
+            var nextPage = ConfirmedEmployer.Value ? "Confirm" : "CannotConfirm";
+
+            return new RedirectToPageResult(nextPage, new { ApprenticeshipId });
         }
     }
 }

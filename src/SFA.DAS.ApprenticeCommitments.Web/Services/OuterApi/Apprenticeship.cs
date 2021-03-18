@@ -6,5 +6,6 @@
         public string EmployerName { get; set; }
         public string TrainingProviderName { get; set; }
         public bool? TrainingProviderConfirmed { get; set; }
+        public bool? EmployerConfirmed { get; set; }
     }
 }

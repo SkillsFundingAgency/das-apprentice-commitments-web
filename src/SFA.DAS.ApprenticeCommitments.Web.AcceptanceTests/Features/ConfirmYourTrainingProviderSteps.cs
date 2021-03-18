@@ -132,7 +132,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
             _context.ActionResult.LastPageResult
                 .Model.Should().BeOfType<ConfirmYourTrainingModel>().Which
-                .BackLink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
+                .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
 
         [Then("the user should be redirected back to the My Apprenticeships page")]
