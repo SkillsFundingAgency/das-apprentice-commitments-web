@@ -36,18 +36,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
-                         .UsingGet()
-                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
-                    .RespondWith(Response.Create()
-                        .WithStatusCode(200)
-                        .WithBodyAsJson(new
-                        {
-                            _apprenticeshipId.Id,
-                            TrainingProviderName = _trainingProviderName
-                        }));
-
-            _context.OuterApi.MockServer.Given(
-                     Request.Create()
                          .UsingAnyMethod()
                          .WithPath("/apprentices/*/apprenticeships/*/trainingproviderconfirmation"))
                     .RespondWith(Response.Create()
@@ -57,6 +45,35 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Given("the apprentice has not verified their training provider")]
         public void GivenTheApprenticeHasNotVerifiedTheirTrainingProvider()
         {
+            _context.OuterApi.MockServer.Given(
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                    .RespondWith(Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyAsJson(new
+                        {
+                            _apprenticeshipId.Id,
+                            TrainingProviderName = _trainingProviderName,
+                            trainingProviderCorrect = (bool?)null,
+                        }));
+        }
+
+        [Given(@"the apprentice has verified their training provider")]
+        public void GivenTheApprenticeHasVerifiedTheirTrainingProvider()
+        {
+            _context.OuterApi.MockServer.Given(
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                    .RespondWith(Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyAsJson(new
+                        {
+                            _apprenticeshipId.Id,
+                            TrainingProviderName = _trainingProviderName,
+                            trainingProviderCorrect = true,
+                        }));
         }
 
         [Given("the apprentice confirms their training provider")]
@@ -115,7 +132,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 
             JsonConvert
                 .DeserializeObject<TrainingProviderConfirmationRequest>(post.RequestMessage.Body)
-                .Should().BeEquivalentTo(new { ConfirmedTrainingProvider = true, });
+                .Should().BeEquivalentTo(new { TrainingProviderCorrect = true, });
         }
 
         [Then("the apprentice should see the training provider's name")]
@@ -167,6 +184,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             model.ModelState.ContainsKey(ModelConfirmedKey).Should().BeTrue();
             model.ModelState[ModelConfirmedKey].Errors.Count.Should().Be(1);
             model.ModelState[ModelConfirmedKey].Errors[0].ErrorMessage.Should().Be("Select an answer");
+        }
+
+        [Then(@"the apprentice should be able to provider a response")]
+        public void ThenTheApprenticeShouldBeAbleToProviderAResponse()
+        {
+            _context.ActionResult
+                .LastActionResult.Should().BeOfType<PageResult>()
+                .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>()
+                .Which.ConfirmedTrainingProvider.Should().NotBeNull();
         }
     }
 }
