@@ -24,7 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public bool? ConfirmedTrainingProvider { get; set; }
 
-        public string BackLink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
+        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
