@@ -1,6 +1,24 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/cannotconfirm"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.CannotConfirmApprenticeshipModel
 @{
+    ViewData["Title"] = "You can’t confirm your apprenticeship yet.";
 }
 
-<h1>You can’t confirm your apprenticeship</h1>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">@ViewData["Title"] </h1>
+
+        <p>
+            Speak to your employer and provider to fix this then come back here to continue.
+        </p>
+
+        <form action="@Model.Backlink">
+            <button class="govuk-button" data-module="govuk-button">
+                Return to My Apprenticeship
+            </button>
+        </form>
+
+    </div>
+</div>
