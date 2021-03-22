@@ -209,5 +209,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }
         }
+
+        [Then("the apprentice should see the following extra error messages")]
+        public void ThenTheApprenticeShouldSeeTheFollowingExtraErrorMessages(Table table)
+        {
+            var messages = table.Rows.Select(x => x[0]);
+
+            foreach (var ErrorMessage in messages)
+            {
+                _context.ActionResult.LastPageResult
+                    .Model.As<ConfirmYourIdentityModel>()
+                    .ModelState[""]
+                    .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
+            }
+        }
     }
 }
