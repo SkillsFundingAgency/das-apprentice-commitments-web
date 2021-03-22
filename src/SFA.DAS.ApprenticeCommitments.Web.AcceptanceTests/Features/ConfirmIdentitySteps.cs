@@ -176,7 +176,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Given("the API will reject the identity with the following errors")]
         public void WhenTheApiRejectsTheIdentity(Table table)
         {
-            var errors = table.CreateSet<ErrorItem>();
+            var errors = table.Rows.Select(row => new ErrorItem
+            {
+                PropertyName = string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
+                ErrorMessage = row["Error Message"],
+            });
 
             _context.OuterApi.MockServer
                 .Given(Request.Create().WithPath("/registrations*"))

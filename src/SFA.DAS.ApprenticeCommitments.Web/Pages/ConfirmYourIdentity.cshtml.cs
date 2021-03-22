@@ -81,7 +81,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     nameof(LastName) => (e.PropertyName, "Enter your last name"),
                     nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
                     nameof(NationalInsuranceNumber) => (e.PropertyName, "Enter your National Insurance Number"),
-                    _ => (e.PropertyName, "Something went wrong"),
+                    _ => ("", "Something went wrong"),
                 };
                 ModelState.AddModelError(p, m);
             }
