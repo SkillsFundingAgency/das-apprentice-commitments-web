@@ -1,4 +1,4 @@
-﻿@page "/apprenticeships/{apprenticeshipid:HashedId}/confirmyourtrainingprovider"
+@page "/apprenticeships/{apprenticeshipid:HashedId}/confirmyourtrainingprovider"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmYourTrainingModel
 @{
 }
@@ -10,7 +10,12 @@
 
             <partial name="ValidationSummary" />
             
-            <h1 class="govuk-heading-xl">Confirm your training provider</h1>
+            <h1 asp-hide="@Model.ConfirmedTrainingProvider" class="govuk-heading-xl">Confirm your training provider</h1>
+
+            <div asp-show="@Model.ConfirmedTrainingProvider" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+                <span class="app-notification-banner__icon das-text--success-icon"></span>
+                You have confirmed your training provider
+            </div>
 
             <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
 
@@ -30,7 +35,7 @@
                 <p>You’ll spend at <u>least 20% of your working hours</u> doing off-the-job training with your training provider.</p>
             </div>
 
-            <form id="training-provider-form-hide" method="post" action="">
+            <form asp-hide="@Model.ConfirmedTrainingProvider" id="training-provider-form-hide" method="post" action="">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -39,17 +44,17 @@
                             </h1>
                         </legend>
 
-                        <span asp-validation-for="ConfirmTrainingProvider" class="govuk-error-message"></span> 
-                        
+                        <span asp-validation-for="ConfirmedTrainingProvider" class="govuk-error-message"></span>
+
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" asp-for="ConfirmTrainingProvider" id="confirm-yes" value="true" type="radio" />
+                                <input class="govuk-radios__input" asp-for="ConfirmedTrainingProvider" id="confirm-yes" value="true" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="confirm-yes">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" asp-for="ConfirmTrainingProvider" id="confirm-no" value="false" type="radio" />
+                                <input class="govuk-radios__input" asp-for="ConfirmedTrainingProvider" id="confirm-no" value="false" type="radio" />
                                 <label class="govuk-label govuk-radios__label" for="confirm-no">
                                     No
                                 </label>
@@ -61,6 +66,11 @@
                 <input type="hidden" asp-for="TrainingProviderName" value="@Model.TrainingProviderName" />
                 <button class="govuk-button" data-module="govuk-button" id="training-provider-confirm">Confirm</button>
             </form>
+
+            <form asp-show="@Model.ConfirmedTrainingProvider" action="@Model.Backlink">
+                <button class="govuk-button">Continue</button>
+            </form>
+
         </div>
     </div>
 </div>

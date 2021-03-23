@@ -16,6 +16,7 @@ Scenario: The apprentice is authenticated and confirms the training provider
 	And the apprentice has not verified their training provider
 	And the apprentice confirms their training provider
 	When submitting the ConfirmYourTrainingProvider page
+	Then the apprenticeship is updated to show the confirmation
 	Then the user should be redirected back to the My Apprenticeships page
 
 Scenario: The apprentice is authenticated and states that this is not their training provider
@@ -34,3 +35,11 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the model should contain an error message
 	And the apprentice should see the training provider's name
 	And the back link is pointing to the My Apprenticships page
+
+Scenario: The apprentice has previously confirmed their training provider
+	Given the apprentice has logged in
+	And the apprentice has verified their training provider
+	When accessing the ConfirmYourTrainingProvider page
+	Then the response status code should be OK
+	And the apprentice should see the training provider's name
+	And the apprentice should be able to provider a response

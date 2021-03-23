@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
 using System.Threading.Tasks;
+
+#nullable enable
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -19,14 +22,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public string TrainingProviderName { get; set; }
 
         [BindProperty]
-        public bool? ConfirmTrainingProvider { get; set; }
+        public bool? ConfirmedTrainingProvider { get; set; }
 
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
-            _authenticatedUser = authenticatedUser;
-            _client = client;
+            _authenticatedUser = authenticatedUser ?? throw new ArgumentNullException(nameof(authenticatedUser));
+            _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
         public async Task OnGetAsync()
@@ -34,22 +37,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
             TrainingProviderName = apprenticeship.TrainingProviderName;
+            ConfirmedTrainingProvider = apprenticeship.TrainingProviderCorrect;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            switch (ConfirmTrainingProvider)
+            if (ConfirmedTrainingProvider == null)
             {
-                case null:
-                    ModelState.AddModelError(nameof(ConfirmTrainingProvider), "Select an answer");
-                    return new PageResult();
-
-                case true:
-                    return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
-
-                default:
-                    return new RedirectToPageResult("CannotConfirm", new { ApprenticeshipId });
+                ModelState.AddModelError(nameof(ConfirmedTrainingProvider), "Select an answer");
+                return new PageResult();
             }
+
+            await _client.ConfirmTrainingProvider(
+                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                new TrainingProviderConfirmationRequest(ConfirmedTrainingProvider.Value));
+
+            var nextPage = ConfirmedTrainingProvider.Value ? "Confirm" : "CannotConfirm";
+
+            return new RedirectToPageResult(nextPage, new { ApprenticeshipId });
         }
     }
 }
