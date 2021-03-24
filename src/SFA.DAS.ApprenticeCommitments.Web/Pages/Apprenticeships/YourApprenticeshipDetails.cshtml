@@ -1,0 +1,78 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
+@{
+    ViewData["Title"] = "Your Apprenticeship Details";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">@ViewData["Title"] </h1>
+
+        <div class="govuk-body">
+            
+            <table class="govuk-table data-table">
+                <tbody class="govuk-table__body">
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Apprenticeship</th>
+                        <td class="govuk-table__cell">Military Engineering Construction Technicion</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Level</th>
+                        <td class="govuk-table__cell">3</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Option</th>
+                        <td class="govuk-table__cell">1.2</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Duration</th>
+                        <td class="govuk-table__cell">1 Year</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned start date</th>
+                        <td class="govuk-table__cell">March 2021</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned end date</th>
+                        <td class="govuk-table__cell">March 2022</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <form id="training-provider-form-hide" method="post" action="">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Are these details correct?
+                            </h1>
+                        </legend>
+
+                        <span asp-validation-for="ComfirmApprenticeshipDetails" class="govuk-error-message"></span>
+
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" asp-for="ComfirmApprenticeshipDetails" id="confirm-yes" value="true" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" asp-for="ComfirmApprenticeshipDetails" id="confirm-no" value="false" type="radio" />
+                                <label class="govuk-label govuk-radios__label" for="confirm-no">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <input type="hidden" asp-for="ComfirmApprenticeshipDetails" value="" />
+                <button class="govuk-button" data-module="govuk-button" id="apprenticeship-details-confirm">Confirm</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
