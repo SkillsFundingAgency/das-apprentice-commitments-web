@@ -2,11 +2,11 @@
 {
     public class EmployerConfirmationRequest
     {
-        public EmployerConfirmationRequest(bool confirmedEmployer)
+        public EmployerConfirmationRequest(bool employerCorrect)
         {
-            ConfirmedEmployer = confirmedEmployer;
+            EmployerCorrect = employerCorrect;
         }
 
-        public bool ConfirmedEmployer { get; }
+        public bool EmployerCorrect { get; }
     }
 }

@@ -10,6 +10,13 @@
             <partial name="ValidationSummary" />
 
             <h1 class="govuk-heading-xl">Confirm your employer</h1>
+            
+            <h1 asp-hide="@Model.ConfirmedEmployer" class="govuk-heading-xl">Confirm your employer</h1>
+
+            <div asp-show="@Model.ConfirmedEmployer" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+                <span class="app-notification-banner__icon das-text--success-icon"></span>
+                You have confirmed your employer
+            </div>
 
             <h2 class="govuk-heading-l">@Model.EmployerName</h2>
 

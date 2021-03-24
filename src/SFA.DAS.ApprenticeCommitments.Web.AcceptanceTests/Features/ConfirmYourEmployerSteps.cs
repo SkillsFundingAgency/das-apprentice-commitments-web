@@ -140,7 +140,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             var post = updates.First();
 
             JsonConvert.DeserializeObject<EmployerConfirmationRequest>(post.RequestMessage.Body)
-                .Should().BeEquivalentTo(new { ConfirmedEmployer = confirm });
+                .Should().BeEquivalentTo(new { EmployerCorrect = confirm });
         }
 
 
