@@ -37,7 +37,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
             TrainingProviderName = apprenticeship.TrainingProviderName;
-            ConfirmedTrainingProvider = apprenticeship.TrainingProviderConfirmed;
+            ConfirmedTrainingProvider = apprenticeship.TrainingProviderCorrect;
         }
 
         public async Task<IActionResult> OnPost()

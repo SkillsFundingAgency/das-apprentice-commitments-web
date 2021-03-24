@@ -2,9 +2,9 @@
 {
     public class TrainingProviderConfirmationRequest
     {
-        public TrainingProviderConfirmationRequest(bool confirmedTrainingProvider)
-            => ConfirmedTrainingProvider = confirmedTrainingProvider;
+        public TrainingProviderConfirmationRequest(bool trainingProviderCorrect)
+            => TrainingProviderCorrect = trainingProviderCorrect;
 
-        public bool ConfirmedTrainingProvider { get; }
+        public bool TrainingProviderCorrect { get; }
     }
 }

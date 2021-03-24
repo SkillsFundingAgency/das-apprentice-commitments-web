@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
             EmployerName = apprenticeship.EmployerName;
-            ConfirmedEmployer = apprenticeship.EmployerConfirmed;
+            ConfirmedEmployer = apprenticeship.EmployerCorrect;
         }
 
         public async Task<IActionResult> OnPost()

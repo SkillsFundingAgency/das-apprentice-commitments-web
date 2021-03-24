@@ -5,7 +5,7 @@
         public long Id { get; set; }
         public string EmployerName { get; set; }
         public string TrainingProviderName { get; set; }
-        public bool? TrainingProviderConfirmed { get; set; }
-        public bool? EmployerConfirmed { get; set; }
+        public bool? EmployerCorrect { get; set; }
+        public bool? TrainingProviderCorrect { get; set; }
     }
 }

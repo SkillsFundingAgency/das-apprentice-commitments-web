@@ -35,3 +35,11 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the model should contain an error message
 	And the apprentice should see the training provider's name
 	And the back link is pointing to the My Apprenticships page
+
+Scenario: The apprentice has previously confirmed their training provider
+	Given the apprentice has logged in
+	And the apprentice has verified their training provider
+	When accessing the ConfirmYourTrainingProvider page
+	Then the response status code should be OK
+	And the apprentice should see the training provider's name
+	And the apprentice should be able to provider a response
