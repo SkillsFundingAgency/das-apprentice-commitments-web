@@ -9,7 +9,12 @@
 
             <partial name="ValidationSummary" />
 
-            <h1 class="govuk-heading-xl">Confirm your employer</h1>
+            <h1 asp-hide="@Model.ConfirmedEmployer" class="govuk-heading-xl">Confirm your employer</h1>
+
+            <div asp-show="@Model.ConfirmedEmployer" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+                <span class="app-notification-banner__icon das-text--success-icon"></span>
+                You have confirmed your employer
+            </div>
 
             <h2 class="govuk-heading-l">@Model.EmployerName</h2>
 
@@ -28,7 +33,7 @@
                 <p>Your employer knows that they must let you spend <u>at least 20% of your working hours</u> with your training provider for off-the-job training.</p>
             </div>
 
-            <form id="employer-form-hide" method="post" action="">
+            <form asp-hide="@Model.ConfirmedEmployer" id="employer-form-hide" method="post" action="">
                 <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -37,18 +42,18 @@
                             </h1>
                         </legend>
 
-                        <span asp-validation-for="EmployerConfirm" class="govuk-error-message"></span> 
+                        <span asp-validation-for="ConfirmedEmployer" class="govuk-error-message"></span>
 
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="EmployerConfirm" name="EmployerConfirm" type="radio" value="true">
-                                <label class="govuk-label govuk-radios__label" for="EmployerConfirm">
+                                <input class="govuk-radios__input" id="confirm-yes" name="ConfirmedEmployer" type="radio" value="true">
+                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="EmployerConfirm-2" name="EmployerConfirm" type="radio" value="false">
-                                <label class="govuk-label govuk-radios__label" for="EmployerConfirm-2">
+                                <input class="govuk-radios__input" id="confirm-no" name="ConfirmedEmployer" type="radio" value="false">
+                                <label class="govuk-label govuk-radios__label" for="confirm-no">
                                     No
                                 </label>
                             </div>
@@ -58,6 +63,10 @@
                 </div>
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
                 <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
+            </form>
+
+            <form asp-show="@Model.ConfirmedEmployer" action="@Model.Backlink">
+                <button class="govuk-button">Continue</button>
             </form>
         </div>
     </div>

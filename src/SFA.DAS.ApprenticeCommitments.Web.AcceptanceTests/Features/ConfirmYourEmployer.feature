@@ -16,14 +16,16 @@ Scenario: The apprentice is authenticated and confirms the employer
 	And the apprentice has not verified their employer
 	And the apprentice confirms their employer
 	When submitting the ConfirmYourEmployer page
-	Then the user should be redirected back to the overview page
+	Then the apprenticeship is updated to show the a 'true' confirmation
+	And the user should be redirected back to the overview page
 
 Scenario: The apprentice is authenticated and states that this is not their employer
 	Given the apprentice has logged in
 	And the apprentice has not verified their employer
 	And the apprentice states this is not their employer
 	When submitting the ConfirmYourEmployer page
-	Then the user should be redirected to the cannot confirm apprenticeship page
+	Then the apprenticeship is updated to show the a 'false' confirmation
+	And the user should be redirected to the cannot confirm apprenticeship page
 
 Scenario: The apprentice is authenticated and presses the Confirm actions without select yes or no
 	Given the apprentice has logged in

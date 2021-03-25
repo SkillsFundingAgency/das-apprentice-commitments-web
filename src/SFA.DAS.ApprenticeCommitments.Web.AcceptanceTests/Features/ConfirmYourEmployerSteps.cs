@@ -1,15 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
 {
@@ -37,6 +40,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson( new { Id = _apprenticeshipId.Id, EmployerName = _employerName }));
+
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingAnyMethod()
+                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/employerconfirmation"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
         }
 
         [Given("the apprentice has logged in")]
@@ -77,7 +87,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "EmployerName", _employerName },
-                    { "EmployerConfirm", _employerNameConfirmed.ToString() }
+                    { "ConfirmedEmployer", _employerNameConfirmed.ToString() }
                 }));
         }
 
@@ -117,6 +127,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
+        [Then(@"the apprenticeship is updated to show the a '(.*)' confirmation")]
+        public void ThenTheApprenticeshipIsUpdatedToShowTheAConfirmation(bool confirm)
+        {
+            var updates = _context.OuterApi.MockServer.FindLogEntries(
+                Request.Create()
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/employerconfirmation")
+                    .UsingPost());
+
+            updates.Should().HaveCount(1);
+
+            var post = updates.First();
+
+            JsonConvert.DeserializeObject<EmployerConfirmationRequest>(post.RequestMessage.Body)
+                .Should().BeEquivalentTo(new { EmployerCorrect = confirm });
+        }
+
+
         [Then(@"the user should be redirected to the cannot confirm apprenticeship page")]
         public void ThenTheUserShouldBeRedirectedToTheCannotConfirmApprenticeshipPage()
         {
@@ -131,7 +158,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmYourEmployerModel>();
             model.Should().NotBeNull();
-            model.ModelState["EmployerConfirm"].Errors.Count.Should().Be(1);
+            model.ModelState["ConfirmedEmployer"].Errors.Count.Should().Be(1);
         }
     }
 }
