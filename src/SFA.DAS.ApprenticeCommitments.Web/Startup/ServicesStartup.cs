@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
@@ -20,6 +21,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             OuterApiConfiguration configuration)
         {
             services.AddHealthChecks();
+            services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();
             services.AddTransient<Http.MessageHandlers.LoggingMessageHandler>();
             services.AddTransient<Http.MessageHandlers.ApimHeadersHandler>();

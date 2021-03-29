@@ -11,6 +11,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
 
+        public bool? EmployerConfirmation { get; set; } = true;
+        public bool? TrainingProviderConfirmation { get; set; } = false;
+        public bool? ApprenticeshipConfirmation { get; set; } = null;
+
         public void OnGet()
         {
         }
