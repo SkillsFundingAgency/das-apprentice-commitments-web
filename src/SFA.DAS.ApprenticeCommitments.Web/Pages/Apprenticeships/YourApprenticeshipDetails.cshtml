@@ -28,13 +28,16 @@
                         <th scope="row" class="govuk-table__header">Level</th>
                         <td class="govuk-table__cell">@Model.CourseLevel</td>
                     </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Option</th>
-                        <td class="govuk-table__cell">@Model.CourseOption</td>
-                    </tr>
+                    @if (Model.CourseOption != null)
+                    {
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Option</th>
+                            <td class="govuk-table__cell">@Model.CourseOption</td>
+                        </tr>
+                    }
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Duration</th>
-                        <td class="govuk-table__cell">@Model.DurationInMonths Months</td>
+                        <td class="govuk-table__cell">@Model.DurationInMonths months</td>
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Planned start date</th>
