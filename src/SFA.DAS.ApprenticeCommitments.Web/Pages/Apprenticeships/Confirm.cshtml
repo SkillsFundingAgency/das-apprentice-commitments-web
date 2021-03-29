@@ -27,6 +27,9 @@
                         You have 14 days to confirm your apprenticeship
                     </strong>
                 </div>
+                <p>We want to make sure you have everything you need for a successful apprenticeship.</p>
+                <p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
+                <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
                 <ol class="govuk-list app-status-list">
                     <li class="app-status-list__list-item">
                         <a asp-page="ConfirmYourEmployer" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
@@ -41,6 +44,16 @@
                     <li class="app-status-list__list-item">
                         <a asp-page="YourApprenticeshipDetails" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
                             <h3 class="app-status-list__link-text">Your Apprenticeship Details</h3>
+                        </a>
+                    </li>
+                    <li class="app-status-list__list-item">
+                        <a asp-page="Delivered" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
+                            <h3 class="app-status-list__link-text">How your apprenticeship will be delivered</h3>
+                        </a>
+                    </li>
+                    <li class="app-status-list__list-item">
+                        <a asp-page="RolesAndResponsibilities" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
+                            <h3 class="app-status-list__link-text">Roles and responsibilities</h3>
                         </a>
                     </li>
                 </ol>
