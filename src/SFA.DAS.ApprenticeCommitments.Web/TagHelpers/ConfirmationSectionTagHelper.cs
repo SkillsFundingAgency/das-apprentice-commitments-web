@@ -36,18 +36,36 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
             bool? state = StateOf(AspPage);
 
-            var colour = state switch
+            var linkStatusClass = state switch
             {
-                true => "red",
-                false => "blue",
-                null => "green",
+                true => "success",
+                false => "error",
+                null => "",
+            };
+
+            var tagColourClass = state switch
+            {
+                true => "green",
+                false => "red",
+                null => "yellow",
+            };
+
+            var tag = state switch
+            {
+                true => "Complete",
+                false => "Incomplete",
+                null => "Waiting for correction",
             };
 
             var content = (await output.GetChildContentAsync()).GetContent();
             var encoded =
                 $@"<a href=""{url}"" class=""app-status-list__link"">" +
-                $@"<h3 class=""app-status-list__link-text;"" style=""background-color: {colour}"">{content}</h3>" +
+                $@"<div class=""app-status-list__link-content"">" + 
+                $@"<h3 class=""app-status-list__link-text"">{content}</h3>" +
+                $@"<strong class=""app-status-list__tag govuk-tag govuk-tag--{tagColourClass}"">{tag}</strong>" +
+                "</div>" +
                 "</a>";
+                
             output.Attributes.Add("class", "app-status-list__list-item");
             output.Content.SetHtmlContent(encoded);
         }

@@ -133,10 +133,40 @@ li.app-status-list__list-item {
       .app-status-list__link:before {
         font-size: 2.5rem; } }
 
+.app-status-list__link--success {
+  border-color: #cce2d8; }
+  .app-status-list__link--success:before {
+    color: #005a30;
+    background: #cce2d8; }
+
+.app-status-list__link--error {
+  border-color: #f6d7d2; }
+  .app-status-list__link--error:before {
+    color: #942514;
+    background: #f6d7d2; }
+
+.app-status-list__link-content {
+  padding: 15px;
+  width: 100%; }
+  @media (min-width: 40.0625em) {
+    .app-status-list__link-content {
+      padding: 25px; } }
+
 .app-status-list__link-text {
   color: inherit;
   text-decoration: underline;
   margin: 0; }
+  @media (min-width: 40.0625em) {
+    .app-status-list__link-text {
+      float: left; } }
+
+.app-status-list__tag {
+  margin-top: 10px; }
+  @media (min-width: 40.0625em) {
+    .app-status-list__tag {
+      float: right;
+      margin-top: 0;
+      margin-left: 15px; } }
 
 .app-user-header {
   background-color: #1d70b8;
