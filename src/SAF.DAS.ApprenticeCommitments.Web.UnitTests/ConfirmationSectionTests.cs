@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
                 fixture.Register((DefaultHttpContext http, RouteData route) =>
                     new ActionContext(http, route, new PageActionDescriptor()));
                 fixture.Register((ActionContext a) => new PageContext(a));
+                fixture.Inject(AuthenticatedUser.FakeUser);
                 fixture.Customize(new AutoMoqCustomization());
                 return fixture;
             }

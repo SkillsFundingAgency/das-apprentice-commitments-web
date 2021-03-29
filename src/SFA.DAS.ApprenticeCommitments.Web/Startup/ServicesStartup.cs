@@ -13,6 +13,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             this IServiceCollection services)
         {
             services.AddTransient<RegistrationsService>();
+            services.AddTransient<AuthenticatedUserClient>();
+            services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             return services;
         }
 
@@ -21,7 +23,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             OuterApiConfiguration configuration)
         {
             services.AddHealthChecks();
-            services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();
             services.AddTransient<Http.MessageHandlers.LoggingMessageHandler>();
             services.AddTransient<Http.MessageHandlers.ApimHeadersHandler>();
