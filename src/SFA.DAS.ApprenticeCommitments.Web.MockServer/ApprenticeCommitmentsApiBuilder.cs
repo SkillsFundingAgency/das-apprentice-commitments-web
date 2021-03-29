@@ -138,5 +138,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
             return this;
         }
+
+        public ApprenticeCommitmentsApiBuilder WithApprenticeshipDetailsConfirmation()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingPost()
+                        .WithPath($"/apprentices/*/apprenticeships/*/apprenticeshipdetailsconfirmation"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                );
+
+            return this;
+        }
     }
 }

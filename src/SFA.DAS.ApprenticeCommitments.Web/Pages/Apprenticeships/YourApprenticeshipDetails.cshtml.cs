@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -15,8 +17,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
-        public bool? ComfirmApprenticeshipDetails { get; set; }
+        public bool? ConfirmedApprenticeshipDetails { get; set; }
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
+
+        [BindProperty]
+        public string CourseName { get; set; }
+        [BindProperty]
+        public int CourseLevel { get; set; }
+        [BindProperty]
+        public string? CourseOption { get; set; }
+        [BindProperty]
+        public int DurationInMonths { get; set; }
+        [BindProperty]
+        public DateTime PlannedStartDate { get; set; }
+        [BindProperty]
+        public DateTime PlannedEndDate { get; set; }
 
         public YourApprenticeshipDetails(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
@@ -24,18 +39,34 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             _authenticatedUser = authenticatedUser;
         }
 
-        public IActionResult OnPost()
+        public async Task OnGet()
         {
-            switch (ComfirmApprenticeshipDetails)
+            var apprenticeship = await _client
+                .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
+            CourseName = apprenticeship.CourseName;
+            CourseLevel = apprenticeship.CourseLevel;
+            CourseOption = apprenticeship.CourseOption;
+            DurationInMonths = apprenticeship.DurationInMonths;
+            PlannedStartDate = apprenticeship.PlannedStartDate;
+            PlannedEndDate = apprenticeship.PlannedEndDate;
+            ConfirmedApprenticeshipDetails = apprenticeship.ApprenticeshipDetailsCorrect;
+        }
+
+        public async Task<IActionResult> OnPost()
+        {
+            if (ConfirmedApprenticeshipDetails == null)
             {
-                case null:
-                    ModelState.AddModelError(nameof(ComfirmApprenticeshipDetails), "Select an answer");
-                    return new PageResult();
-                case true:
-                    return new RedirectToPageResult("Confirm", new { ApprenticeshipId });
-                default:
-                    return new RedirectToPageResult("CannotConfirm", new { ApprenticeshipId });
+                ModelState.AddModelError(nameof(ConfirmedApprenticeshipDetails), "Select an answer");
+                return new PageResult();
             }
+
+            await _client.ConfirmApprenticeshipDetails(
+                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                new ApprenticeshipDetailsRequest(ConfirmedApprenticeshipDetails.Value));
+
+            var nextPage = ConfirmedApprenticeshipDetails.Value ? "Confirm" : "CannotConfirm";
+
+            return new RedirectToPageResult(nextPage, new { ApprenticeshipId });
         }
     }
 }
