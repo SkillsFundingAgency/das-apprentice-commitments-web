@@ -4,7 +4,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
     public class VerifyRegistrationRequest
     {
-        public Guid RegistrationId { get; set; }
+        public Guid ApprenticeId { get; set; }
         public Guid UserIdentityId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

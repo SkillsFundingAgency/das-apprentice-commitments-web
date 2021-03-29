@@ -2,6 +2,8 @@ using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -9,6 +11,7 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
+    [Scope(Feature = "MyApprenticeships")]
     public class MyApprenticeshipsSteps : StepsBase
     {
         private readonly TestContext _context;
@@ -22,13 +25,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
         }
 
+        [Given("the apprentice has logged in")]
+        public void GivenTheApprenticeHasLoggedIn()
+        {
+            TestAuthenticationHandler.AddUser(_userContext.ApprenticeId);
+            _context.Web.Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
+        }
+
         [Given(@"there is one apprenticeship")]
         public void GivenThereIsOneApprenticeship()
         {
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/apprentices/{_userContext.RegistrationId}/apprenticeships"))
+                    .WithPath($"/apprentices/{_userContext.ApprenticeId}/apprenticeships"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new[]
@@ -39,7 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.OuterApi.MockServer.Given(
                Request.Create()
                    .UsingGet()
-                   .WithPath($"/apprentices/{_userContext.RegistrationId}/apprenticeships/{_apprenticeshipId}")
+                   .WithPath($"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId}")
                                              )
                .RespondWith(Response.Create()
                    .WithStatusCode(200)
@@ -47,6 +58,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                    {
                        Id = 1235,
                    }));
+        }
+
+        [When(@"accessing the ""(.*)"" page")]
+        public async Task WhenAccessingThePage(string page)
+        {
+            await _context.Web.Get(page);
         }
 
         [Then("the response should Redirect the apprenticeship page")]

@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
-            var apprenticeship = await _client.GetApprenticeships(user.RegistrationId);
+            var apprenticeship = await _client.GetApprenticeships(user.ApprenticeId);
             var firstApprenticeship = apprenticeship[0];
             var hashedId = _hashing.HashValue(firstApprenticeship.Id);
             return RedirectToPage("Confirm", new { apprenticeshipId = hashedId });

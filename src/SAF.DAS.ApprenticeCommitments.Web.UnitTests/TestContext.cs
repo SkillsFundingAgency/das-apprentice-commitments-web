@@ -15,6 +15,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
     public class RegisteredUserContext
     {
-        public Guid RegistrationId { get; set; } = Guid.NewGuid();
+        public Guid ApprenticeId { get; set; } = Guid.NewGuid();
     }
 }
