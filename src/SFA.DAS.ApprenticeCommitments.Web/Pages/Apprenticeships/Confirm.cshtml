@@ -17,8 +17,7 @@
     <main class="govuk-main-wrapper " id="main-content" role="main">
         <div class="govuk-grid-row">
             <div >
-                <h2 class="govuk-heading-l">Confirming your apprenticeship</h2>
-                <p>Review all the details below to confirm your apprenticeship.</p>
+                <h2 class="govuk-heading-l">Confirm your apprenticeship</h2>
                 <div class="govuk-warning-text">
                     <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
                     <strong class="govuk-warning-text__text">
@@ -31,10 +30,10 @@
                 <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
                 <ol class="govuk-list app-status-list">
                     <li confirmation-section asp-page="ConfirmYourEmployer" model="Model">
-                        Confirm your employer
+                        Your employer
                     </li>
                     <li confirmation-section asp-page="ConfirmYourTrainingProvider" model="Model">
-                        Confirm your training provider
+                        Your training provider
                     </li>
                     <li confirmation-section asp-page="YourApprenticeshipDetails" model="Model">
                         Your Apprenticeship Details
@@ -44,6 +43,9 @@
                     </li>
                     <li confirmation-section asp-page="ConfirmYourRolesAndResponsibilities" model="Model">
                         Roles and responsibilities
+                    </li>
+                    <li confirmation-section asp-page="HelpAndSupport" model="Model">
+                        Help and support
                     </li>
                 </ol>
             </div>
