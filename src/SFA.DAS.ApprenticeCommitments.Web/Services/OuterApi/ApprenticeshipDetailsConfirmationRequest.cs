@@ -1,8 +1,8 @@
 ﻿namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
-    public class ApprenticeshipDetailsRequest
+    public class ApprenticeshipDetailsConfirmationRequest
     {
-        public ApprenticeshipDetailsRequest(bool apprenticeshipDetailsCorrect)
+        public ApprenticeshipDetailsConfirmationRequest(bool apprenticeshipDetailsCorrect)
         {
             ApprenticeshipDetailsCorrect = apprenticeshipDetailsCorrect;
         }

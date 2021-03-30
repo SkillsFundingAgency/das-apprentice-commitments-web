@@ -31,7 +31,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/apprenticeshipdetailsconfirmation")]
         Task ConfirmApprenticeshipDetails(
             [Path] Guid apprenticeid, [Path] long apprenticeshipid,
-            [Body] ApprenticeshipDetailsRequest confirmation);
+            [Body] ApprenticeshipDetailsConfirmationRequest confirmation);
 
     }
 }

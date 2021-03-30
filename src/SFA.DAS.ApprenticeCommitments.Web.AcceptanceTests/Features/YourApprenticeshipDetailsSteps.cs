@@ -196,7 +196,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
             var post = updates.First();
 
             JsonConvert
-                .DeserializeObject<ApprenticeshipDetailsRequest>(post.RequestMessage.Body)
+                .DeserializeObject<ApprenticeshipDetailsConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { ApprenticeshipDetailsCorrect = confirm });
         }
 

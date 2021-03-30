@@ -62,7 +62,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             await _client.ConfirmApprenticeshipDetails(
                 _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
-                new ApprenticeshipDetailsRequest(ConfirmedApprenticeshipDetails.Value));
+                new ApprenticeshipDetailsConfirmationRequest(ConfirmedApprenticeshipDetails.Value));
 
             var nextPage = ConfirmedApprenticeshipDetails.Value ? "Confirm" : "CannotConfirm";
 
