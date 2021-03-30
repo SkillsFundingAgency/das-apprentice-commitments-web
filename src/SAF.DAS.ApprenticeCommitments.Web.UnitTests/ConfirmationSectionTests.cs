@@ -43,7 +43,8 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
 
             var result = _tagHelperOutput.Content.GetContent();
-            result.Should().Contain("background-color: red");
+            result.Should().Contain("govuk-tag--green");
+            result.Should().Contain("Complete");
         }
 
         [Test, TestCustomisation]
@@ -55,7 +56,8 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
 
             var result = _tagHelperOutput.Content.GetContent();
-            result.Should().Contain("background-color: blue");
+            result.Should().Contain("govuk-tag--red");
+            result.Should().Contain("Waiting for<br/>correction");
         }
 
         [Test, TestCustomisation]
@@ -67,7 +69,8 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
 
             var result = _tagHelperOutput.Content.GetContent();
-            result.Should().Contain("background-color: green");
+            result.Should().Contain("govuk-tag--yellow");
+            result.Should().Contain("Incomplete");
         }
 
         private readonly TagHelperContext _tagHelperContext = new TagHelperContext(
