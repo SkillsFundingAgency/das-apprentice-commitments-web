@@ -176,7 +176,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
         [Given("the API will reject the identity with the following errors")]
         public void WhenTheApiRejectsTheIdentity(Table table)
         {
-            var errors = table.CreateSet<ErrorItem>();
+            var errors = table.Rows.Select(row => new ErrorItem
+            {
+                PropertyName = string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
+                ErrorMessage = row["Error Message"],
+            });
 
             _context.OuterApi.MockServer
                 .Given(Request.Create().WithPath("/registrations*"))
@@ -202,6 +206,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
                 _context.ActionResult.LastPageResult
                     .Model.As<ConfirmYourIdentityModel>()
                     .ModelState[PropertyName]
+                    .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
+            }
+        }
+
+        [Then("the apprentice should see the following extra error messages")]
+        public void ThenTheApprenticeShouldSeeTheFollowingExtraErrorMessages(Table table)
+        {
+            var messages = table.Rows.Select(x => x[0]);
+
+            foreach (var ErrorMessage in messages)
+            {
+                _context.ActionResult.LastPageResult
+                    .Model.As<ConfirmYourIdentityModel>()
+                    .ModelState[""]
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }
         }

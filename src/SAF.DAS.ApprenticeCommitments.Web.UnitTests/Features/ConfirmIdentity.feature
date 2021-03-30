@@ -30,12 +30,13 @@ Scenario: The apprentice enters invalid identity information
 	Given the apprentice has logged in
 	And the apprentice has not verified their identity
 	And the API will reject the identity with the following errors
-	| Property Name             | Error Message |
-	| FirstName                 | not valid     |
-	| LastName                  | not valid     |
-	| DateOfBirth               | not valid     |
-	| NationalInsuranceNumber   | not valid     |
-	| SomethingWeDoNotKnowAbout | is very wrong |
+	| Property Name             | Error Message                       |
+	| FirstName                 | not valid                           |
+	| LastName                  | not valid                           |
+	| DateOfBirth               | not valid                           |
+	| NationalInsuranceNumber   | not valid                           |
+	| SomethingWeDoNotKnowAbout | is very wrong                       |
+	|                           | errors can have null property names |
 	When the apprentice verifies their identity with
 	| First name | Last name  | Date of Birth | National Insurance Number |
 	| Bob        | bobbertson | 2000-01-01    | lars                      |
@@ -46,4 +47,4 @@ Scenario: The apprentice enters invalid identity information
 	| LastName                | Enter your last name                 |
 	| DateOfBirth             | Enter your date of birth             |
 	| NationalInsuranceNumber | Enter your National Insurance Number |
-
+	|                         | Something went wrong                 |
