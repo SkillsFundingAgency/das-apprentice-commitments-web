@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class ApprenticeCommitmentsWeb : IDisposable
     {

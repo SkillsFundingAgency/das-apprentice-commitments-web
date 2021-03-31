@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
 {
     public class Hook<T> : IHook<T>
     {

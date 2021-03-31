@@ -6,7 +6,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
     [Scope(Feature = "CannotConfirm")]
