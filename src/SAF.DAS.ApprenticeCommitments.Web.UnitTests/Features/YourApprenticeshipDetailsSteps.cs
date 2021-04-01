@@ -112,8 +112,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { "CourseLevel" , _courseLevel.ToString() },
                     { "CourseOption" , _courseOption },
                     { "DurationInMonths" , _durationInMonths.ToString() },
-                    { "PlannedStartDate" , _plannedStartDate.ToString("o")},
-                    { "PlannedEndDate" , _plannedEndDate.ToString("o") },
+                    { "PlannedStartDate" , _plannedStartDate.ToString()},
+                    { "PlannedEndDate" , _plannedEndDate.ToString() },
                     { "ConfirmedApprenticeshipDetails", _confirmedApprenticeshipDetails.ToString() }
                 }));
         }
