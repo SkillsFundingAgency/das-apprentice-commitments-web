@@ -9,9 +9,9 @@
 
         <partial name="ValidationSummary" />
 
-        <h1 asp-hide="@Model.ConfirmedApprenticeshipDetails" class="govuk-heading-xl">@ViewData["Title"] </h1>
+        <h1 asp-hide="@Model.ConfirmedApprenticeshipDetails.HasValue" class="govuk-heading-xl">@ViewData["Title"] </h1>
 
-        <div asp-show="@Model.ConfirmedApprenticeshipDetails" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+        <div asp-show="@Model.ConfirmedApprenticeshipDetails.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
             <span class="app-notification-banner__icon das-text--success-icon"></span>
             You have confirmed your apprenticeship details
         </div>
@@ -47,7 +47,7 @@
                 </tbody>
             </table>
 
-            <form asp-hide="@Model.ConfirmedApprenticeshipDetails" id="apprenticeship-details-form-hide" method="post" action="">
+            <form asp-hide="@Model.ConfirmedApprenticeshipDetails.HasValue" id="apprenticeship-details-form-hide" method="post" action="">
                 <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")"
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -84,7 +84,7 @@
                 <input type="hidden" name="PlannedEndDate" value="@Model.PlannedEndDate" />
             </form>
 
-            <form asp-show="@Model.ConfirmedApprenticeshipDetails" action="@Model.Backlink">
+            <form asp-show="@Model.ConfirmedApprenticeshipDetails.HasValue" action="@Model.Backlink">
                 <button class="govuk-button">Continue</button>
             </form>
 
