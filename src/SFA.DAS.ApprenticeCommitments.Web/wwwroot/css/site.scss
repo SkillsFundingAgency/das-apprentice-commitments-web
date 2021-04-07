@@ -1,0 +1,284 @@
+﻿.app-notification-banner {
+    font-family: "GDS Transport", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #0b0c0c;
+    padding: 20px;
+    margin-bottom: 20px;
+    clear: both;
+    border-left: 10px solid #b1b4b6;
+    font-weight: 700;
+    background: #f3f2f1;
+    position: relative;
+}
+
+@media print {
+    .app-notification-banner {
+        font-family: sans-serif;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .app-notification-banner {
+        font-size: 19px;
+        font-size: 1.1875rem;
+        line-height: 1.31579;
+    }
+}
+
+@media print {
+    .app-notification-banner {
+        font-size: 14pt;
+        line-height: 1.15;
+    }
+}
+
+@media print {
+    .app-notification-banner {
+        color: #000000;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .app-notification-banner {
+        margin-bottom: 30px;
+    }
+}
+
+.app-notification-banner:first-child {
+    margin-top: 0;
+}
+
+.app-notification-banner:only-child, .app-notification-banner:last-child {
+    margin-bottom: 0;
+}
+
+.app-notification-banner--with-icon {
+    position: relative;
+    padding-left: 65px;
+}
+
+.app-notification-banner--success {
+    border-left-color: #00703c;
+}
+
+.app-notification-banner__icon {
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+    left: 20px;
+    min-width: 35px;
+    min-height: 35px;
+    margin-top: -7px;
+    border: 3px solid #0b0c0c;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 30px;
+    line-height: 29px;
+    background-position: center;
+    background-size: 20px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-notification-banner__icon {
+        margin-top: -5px;
+    }
+}
+
+.app-notification-banner--success > .app-notification-banner__icon {
+    border-color: #00703c;
+}
+
+.app-page-header {
+    background: #f0f3f7;
+    padding: 25px 0;
+}
+
+@media (min-width: 40.0625em) {
+    .app-page-header__row {
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .app-page-header__heading {
+        margin: 0;
+    }
+}
+
+.app-page-header__highlight {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.app-page-header__commitment-link {
+    display: block;
+}
+
+.app-status-list {
+    counter-reset: number;
+}
+
+.app-status-list__list-item,
+li.app-status-list__list-item {
+    margin-bottom: 15px;
+    counter-increment: number;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__list-item,
+    li.app-status-list__list-item {
+        margin-bottom: 25px;
+    }
+}
+
+.app-status-list__link {
+    display: flex;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 0 10px 0 rgba(11, 12, 12, 0.2);
+    border: 2px solid #f9f8f8;
+}
+
+.app-status-list__link:link,
+.app-status-list__link:visited,
+.app-status-list__link:hover,
+.app-status-list__link:active,
+.app-status-list__link:focus {
+    color: #1d70b8;
+}
+
+.app-status-list__link:focus {
+    border-color: #ffdd00;
+    outline: 3px solid transparent;
+}
+
+.app-status-list__link:before {
+    content: counter(number);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background: #f9f8f8;
+    color: #505a5f;
+    width: 1.85em;
+    border-radius: 9px 0 0 9px;
+    font-size: 1.5rem;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__link:before {
+        font-size: 2.5rem;
+    }
+}
+
+.app-status-list__list-item > a:hover, .app-status-list__list-item > a:focus {
+    background: white;
+    transition: all .3s ease;
+    transform: scale(1.05);
+}
+
+.app-status-list__list-item > a:active, .app-status-list__list-item > a:focus {
+    border-color: #ffdd00;
+    outline: 3px solid transparent;
+    box-shadow: 0 2px 0 #0b0c0c;
+    transition: all 0s;
+}
+
+.app-status-list__link.complete {
+    border-color: #cce2d8;
+}
+
+.app-status-list__link.complete:before {
+    color: #005a30;
+    background: #cce2d8;
+}
+
+.app-status-list__link.incorrect {
+    border-color: #f6d7d2;
+}
+
+.app-status-list__link.incorrect:before {
+    color: #942514;
+    background: #f6d7d2;
+}
+
+.app-status-list__link-content {
+    padding: 15px;
+    width: 100%;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__link-content {
+        padding: 25px;
+    }
+}
+
+.app-status-list__link-text {
+    color: inherit;
+    text-decoration: underline;
+    margin: 0;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__link-text {
+        float: left;
+    }
+}
+
+.app-status-list__tag {
+    margin-top: 10px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-status-list__tag {
+        float: right;
+        margin-top: 0;
+        margin-left: 15px;
+    }
+}
+
+.app-user-header {
+    background-color: #1d70b8;
+    margin-top: -10px;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+.app-user-header__name {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-user-header__name {
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .app-user-header__link {
+        float: right;
+        margin-top: 5px;
+    }
+}
+
+.app-user-header__link:link,
+.app-user-header__link:visited {
+    color: #fff;
+}
+
+.app-user-header__link:active,
+.app-user-header__link:focus {
+    color: #0b0c0c;
+}
+
+.app-user-header__border-override {
+    border-color: #134273;
+}
