@@ -1,4 +1,4 @@
-﻿.app-notification-banner {
+.app-notification-banner {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -105,14 +105,15 @@ li.app-status-list__list-item {
   text-decoration: none;
   box-shadow: 0 0 10px 0 rgba(11, 12, 12, 0.2);
   border: 2px solid #f9f8f8; }
-  .app-status-list__link:link {
+  .app-status-list__link:link,
+  .app-status-list__link:visited,
+  .app-status-list__link:hover,
+  .app-status-list__link:active,
+  .app-status-list__link:focus {
     color: #1d70b8; }
-  .app-status-list__link:visited {
-    color: #4c2c92; }
-  .app-status-list__link:hover {
-    color: #003078; }
-  .app-status-list__link:active {
-    color: #0b0c0c; }
+  .app-status-list__link:focus {
+    border-color: #ffdd00;
+    outline: 3px solid transparent; }
   .app-status-list__link:before {
     content: counter(number);
     display: flex;
@@ -127,6 +128,19 @@ li.app-status-list__list-item {
     @media (min-width: 40.0625em) {
       .app-status-list__link:before {
         font-size: 2.5rem; } }
+
+.app-status-list__list-item > a:hover, .app-status-list__list-item > a:focus {
+    background: white;
+    transition: all .3s ease;
+    transform: scale(1.05);
+}
+
+.app-status-list__list-item > a:active, .app-status-list__list-item > a:focus {
+    border-color: #ffdd00;
+    outline: 3px solid transparent;
+    box-shadow: 0 2px 0 #0b0c0c;
+    transition: all 0s;
+}
 
 .app-status-list__link.complete {
   border-color: #cce2d8; }
@@ -148,6 +162,7 @@ li.app-status-list__list-item {
       padding: 25px; } }
 
 .app-status-list__link-text {
+  color: inherit;
   text-decoration: underline;
   margin: 0; }
   @media (min-width: 40.0625em) {
