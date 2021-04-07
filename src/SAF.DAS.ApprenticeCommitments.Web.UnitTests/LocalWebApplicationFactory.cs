@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
 using System.Collections.Generic;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class LocalWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
     {

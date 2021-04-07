@@ -1,8 +1,8 @@
-﻿using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+﻿using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
 using System;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class TestContext
     {

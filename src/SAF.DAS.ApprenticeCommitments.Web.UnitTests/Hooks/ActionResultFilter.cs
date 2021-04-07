@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
 {
     public class ActionResultFilter : IAsyncAlwaysRunResultFilter
     {

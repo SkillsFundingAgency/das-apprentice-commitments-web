@@ -14,7 +14,7 @@ using WireMock.ResponseBuilders;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
     [Scope(Feature = "ConfirmYourEmployer")]
