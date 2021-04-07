@@ -11,6 +11,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 .WithUsersApprenticeships()
                 .WithEmployerConfirmation()
                 .WithTrainingProviderConfirmation()
+                .WithApprenticeshipDetailsConfirmation()
                 .WithHowApprenticeshipWillBeDeliveredConfirmation()
                 .Build();
 

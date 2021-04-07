@@ -103,6 +103,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                        Id = 1235,
                        EmployerName = "My Mock company",
                        TrainingProviderName = "My Mock trainer",
+                       CourseName = "My mock apprenticeship course",
+                       CourseOption = (string)null,
+                       CourseLevel = 3,
+                       PlannedStartDate = new DateTime(2021, 03, 12),
+                       PlannedEndDate = new DateTime(2022, 09, 15),
+                       DurationInMonths = 19,
                    }));
 
             return this;
@@ -127,6 +133,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     Request.Create()
                         .UsingPost()
                         .WithPath($"/apprentices/*/apprenticeships/*/trainingproviderconfirmation"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                );
+
+            return this;
+        }
+
+        public ApprenticeCommitmentsApiBuilder WithApprenticeshipDetailsConfirmation()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingPost()
+                        .WithPath($"/apprentices/*/apprenticeships/*/apprenticeshipdetailsconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                 );

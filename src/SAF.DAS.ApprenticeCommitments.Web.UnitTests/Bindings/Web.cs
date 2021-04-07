@@ -3,12 +3,12 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
 using SFA.DAS.HashingService;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Bindings
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
 {
     [Binding]
     public class Web

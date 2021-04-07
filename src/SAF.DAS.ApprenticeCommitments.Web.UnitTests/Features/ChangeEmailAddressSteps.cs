@@ -2,7 +2,7 @@
 using System.Net;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
     public class ChangeEmailAddressSteps

@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     internal static class Urls
     {
