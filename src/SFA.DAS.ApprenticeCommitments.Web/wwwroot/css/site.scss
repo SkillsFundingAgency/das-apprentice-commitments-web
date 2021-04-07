@@ -1,4 +1,6 @@
-﻿.app-notification-banner {
+﻿@import "../lib/govuk-frontend/govuk/all.scss";
+
+.app-notification-banner {
     font-family: "GDS Transport", arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
