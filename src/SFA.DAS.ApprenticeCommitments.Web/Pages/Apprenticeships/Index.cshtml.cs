@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.HashingService;
@@ -25,6 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             return await RedirectToLatestApprenticeship(user);
         }
+
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
             var apprenticeship = await _client.GetApprenticeships(user.ApprenticeId);

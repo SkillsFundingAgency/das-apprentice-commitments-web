@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 #nullable enable
 
-namespace SFA.DAS.ApprenticeCommitments.Web
+namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     internal class RequiresIdentityConfirmedAttribute : Attribute

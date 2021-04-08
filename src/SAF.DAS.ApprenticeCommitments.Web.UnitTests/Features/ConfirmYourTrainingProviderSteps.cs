@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Collections.Generic;
 using System.Linq;

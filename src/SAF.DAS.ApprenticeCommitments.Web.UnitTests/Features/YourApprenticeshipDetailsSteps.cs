@@ -1,8 +1,8 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Collections.Generic;

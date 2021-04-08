@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing
+namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     [ModelBinder(typeof(HashedIdModelBinder))]
     public sealed class HashedId
