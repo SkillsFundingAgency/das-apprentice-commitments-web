@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddDataProtection(appConfig.ConnectionStrings, Environment)
                 .AddAuthentication(appConfig.Authentication, Environment)
                 .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
-                .AddHashingService(appConfig.Hashing)
+                .AddIdentityServices(appConfig.Hashing)
                 .RegisterServices()
                 .AddRazorPages();
         }
@@ -44,7 +44,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => endpoints.MapRazorPages());
+                .RequireIdentity()
+                .UseEndpoints(endpoints => endpoints.MapRazorPages())
+                ;
         }
     }
 }

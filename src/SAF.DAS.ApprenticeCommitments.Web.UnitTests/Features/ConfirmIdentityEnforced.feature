@@ -16,5 +16,7 @@ Scenario Outline: Redirect to Confirm Your Identity from subpages
 	Then redirect the user to the Confirm ID page
 
 	Examples: 
-	| page            |
-	| ConfirmYourEmployer |
+	| page                        |
+	| ConfirmYourEmployer         |
+	| ConfirmYourTrainingProvider |
+	| YourApprenticeshipDetails   |

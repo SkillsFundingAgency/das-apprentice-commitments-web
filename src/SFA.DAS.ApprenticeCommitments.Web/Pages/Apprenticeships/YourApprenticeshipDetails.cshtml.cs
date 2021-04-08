@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
+    [RequiresIdentityConfirmed]
     public class YourApprenticeshipDetails : PageModel, IHasBackLink
     {
         private readonly IOuterApiClient _client;

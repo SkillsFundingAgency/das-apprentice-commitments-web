@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.HashingService;
 using System;
@@ -7,7 +8,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
     public static class HashingStartup
     {
-        public static IServiceCollection AddHashingService(
+        public static IServiceCollection AddIdentityServices(
+            this IServiceCollection services,
+            HashingConfiguration configuration)
+        {
+            services.AddHashingService(configuration);
+            services.AddScoped<RequiresIdentityConfirmedMiddleware>();
+            return services;
+        }
+
+        private static IServiceCollection AddHashingService(
             this IServiceCollection services,
             HashingConfiguration configuration)
         {
@@ -22,6 +32,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 options.ConstraintMap.Add("HashedId", typeof(HashedIdRouteConstraint)));
 
             return services;
+        }
+
+        public static IApplicationBuilder RequireIdentity(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<RequiresIdentityConfirmedMiddleware>();
         }
     }
 

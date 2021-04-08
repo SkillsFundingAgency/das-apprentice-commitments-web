@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
+    [RequiresIdentityConfirmed]
     public class ConfirmYourTrainingModel : PageModel, IHasBackLink
     {
         private readonly IOuterApiClient _client;

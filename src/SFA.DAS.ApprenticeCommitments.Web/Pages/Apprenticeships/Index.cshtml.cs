@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [Authorize]
+    [RequiresIdentityConfirmed]
     public class ApprenticeshipIndexModel : PageModel
     {
         private readonly IOuterApiClient _client;
@@ -22,16 +23,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
         {
-            try
-            {
-                return await RedirectToLatestApprenticeship(user);
-            }
-            catch (RestEase.ApiException e) when(e.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                return RedirectToPage("/ConfirmYourIdentity");
-            }
+            return await RedirectToLatestApprenticeship(user);
         }
-
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
             var apprenticeship = await _client.GetApprenticeships(user.ApprenticeId);
