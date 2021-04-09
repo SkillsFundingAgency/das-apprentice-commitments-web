@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    [Authorize]
     [RequiresIdentityConfirmed]
     public class ApprenticeshipIndexModel : PageModel
     {

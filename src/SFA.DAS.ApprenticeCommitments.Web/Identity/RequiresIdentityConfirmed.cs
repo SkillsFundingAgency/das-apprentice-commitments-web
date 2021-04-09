@@ -16,27 +16,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            try
-            {
-                await next(context);
-            }
-            catch (RestEase.ApiException e) when (ShouldRedirect(e, context))
-            {
+            if (ShouldRedirect(context))
                 context.Response.Redirect("/ConfirmYourIdentity");
-            }
+            else
+                await next(context);
         }
 
-        private static bool ShouldRedirect(RestEase.ApiException e, HttpContext context)
-            => ShouldCheckIdentityConfirmation(context) && IsUnverifiedAccount(e);
+        private bool ShouldRedirect(HttpContext context)
+        {
+            if (!RequiresIdentityConfirmed(context)) return false;
+            if (context.User.HasClaim("VerifiedUser", "True")) return false;
+            return true;
+        }
 
-        private static bool ShouldCheckIdentityConfirmation(HttpContext context)
+        private static bool RequiresIdentityConfirmed(HttpContext context)
         {
             var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
             var attribute = endpoint?.Metadata.GetMetadata<RequiresIdentityConfirmedAttribute>();
             return attribute != null;
         }
-
-        private static bool IsUnverifiedAccount(RestEase.ApiException e)
-            => e.StatusCode == System.Net.HttpStatusCode.NotFound;
     }
 }

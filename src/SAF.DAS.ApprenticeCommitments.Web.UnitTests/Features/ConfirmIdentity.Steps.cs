@@ -53,6 +53,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
 
+        [Given("an unverified logged in user")]
+        public void GivenAVerifiedApprenticeHasLoggedIn()
+        {
+            TestAuthenticationHandler.AddUnverifiedUser(_userContext.ApprenticeId);
+            _context.Web.Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
+        }
+
         [Given("the apprentice has not verified their identity")]
         public void GivenTheApprenticeHasNotVerifiedTheirIdentity()
         {

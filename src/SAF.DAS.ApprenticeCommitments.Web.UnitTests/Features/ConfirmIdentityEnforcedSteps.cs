@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,21 +30,6 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new { Id = _userContext.ApprenticeId }));
-
-            //_context.OuterApi.MockServer.Given(
-            //    Request.Create()
-            //        .UsingGet()
-            //        .WithPath($"/registrations/{_userContext.ApprenticeId}")
-            //                                  )
-            //    .RespondWith(Response.Create()
-            //        .WithStatusCode(200)
-            //        .WithBodyAsJson(new VerifyRegistrationResponse()
-            //        {
-            //            ApprenticeId = _userContext.ApprenticeId,
-            //            Email = "bob",
-            //            HasCompletedVerification = false,
-            //            HasViewedVerification = false
-            //        }));
         }
 
         [When("the user attempts to land on Apprenticeships index page")]
