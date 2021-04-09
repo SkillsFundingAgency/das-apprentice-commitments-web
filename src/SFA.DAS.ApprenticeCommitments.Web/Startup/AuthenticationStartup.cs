@@ -65,19 +65,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         {
             services.AddAuthorization();
 
-            if (environment.IsDevelopment())
-            {
-                services.AddScoped(_ => AuthenticatedUser.FakeUser);
-            }
-            else
-            {
+            // Chas!
+            //if (environment.IsDevelopment())
+            //{
+            //    services.AddScoped(_ => AuthenticatedUser.FakeUser);
+            //}
+            //else
+            //{
                 services.AddRazorPages(o => o.Conventions
                     .AuthorizePage("/ConfirmYourIdentity")
                     .AllowAnonymousToPage("/ping"));
                 services.AddScoped<AuthenticatedUser>();
                 services.AddScoped(s => s
                     .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
-            }
+            //}
 
             return services;
         }

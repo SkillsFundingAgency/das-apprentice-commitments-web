@@ -1,0 +1,136 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/rolesandresponsibilities"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilitiesModel
+@{
+}
+
+<div class="govuk-width-container">
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <partial name="ValidationSummary" />
+
+            <h1 asp-hide="false" class="govuk-heading-xl">Roles and responsibilities</h1>
+
+            <div asp-show="@Model.RolesAndResponsibilitiesConfirmed.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+                <span class="app-notification-banner__icon das-text--success-icon"></span>
+                You have confirmed your roles and responsibilities
+            </div>
+
+            <div class="govuk-body">
+                <div class="govuk-tabs" data-module="govuk-tabs">
+                    <ul class="govuk-tabs__list">
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#tab_you">You</a>
+                        </li>
+                        <li class="govuk-tabs__list-item">
+                            <a class="govuk-tabs__tab" href="#tab_youremployer">Your employer</a>
+                        </li>
+                        <li class="govuk-tabs__list-item">
+                            <a class="govuk-tabs__tab" href="#tab_yourprovider">Your training provider</a>
+                        </li>
+                    </ul>
+
+                    <div class="govuk-tabs__panel" id="tab_you">
+                        <h3>Apprentice</h3>
+                        <p class="govuk-body">These roles and responsibilities set out what is expected of you</p>
+                        <h4>I have:</h4>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>read and signed my apprenticeship agreement</li>
+                            <li>been told when my apprenticeship starts and finishes</li>
+                            <li>understood the roles of my employer and training provider</li>
+                            <li>understood that I will be assessed by an independent end-point-assessment organisation</li>
+                            <li>read through my training plan with my employer and training provider</li>
+                            <li>understood that at least 20% of my apprenticeship hours will be off-the-job training</li>
+                        </ul>
+                        <h4>I will:</h4>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>take part in regular progress reviews with my employer and provider</li>
+                            <li>go to all my off-the-job training and give evidence where needed</li>
+                            <li>complete all my learning activities, assignments and exams</li>
+                            <li>tell my employer in advance when I cannot attend work</li>
+                            <li>tell my training provider in advance when I cannot attend off the job training</li>
+                            <li>agree with my employer and training provider when I am ready to complete my end point assessment</li>
+                            <li>tell my employer and training provider about any learning support or health issues</li>
+                            <li>raise any concerns or complaints through my employer and provider’s official channels and take my complaint further if I need to</li>
+                        </ul>
+                    </div>
+
+                    <div class="govuk-tabs__panel" id="tab_youremployer">
+                        <h3>Your employer</h3>
+                        <p class="govuk-body">The roles and responsibilities set out what is expected of your employer.</p>
+                        <h4>They have:</h4>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>signed an apprenticeship agreement between you-the apprentice-and them</li>
+                            <li>contributed to a training plan with you and your training provider</li>
+                            <li>committed to working with your training provider to support your training needs</li>
+                        </ul>
+                        <h4>They will:</h4>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>enable you to complete your off-the-job training (20% minimum requirement) during your working hours</li>
+                            <li>take part in regular progress reviews with you and your training provider</li>
+                            <li>work with you and your training provider to resolve any concerns or complaints</li>
+                        </ul>
+                    </div>
+
+                    <div class="govuk-tabs__panel" id="tab_yourprovider">
+                        <h3>Your training provider</h3>
+                        <p class="govuk-body">The roles and responsibilities set out what is expected of your employer.</p>
+                        <h4>They have:</h4>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>a copy of the apprenticeship agreement signed by you–the apprentice–and your employer</li>
+                            <li>told you and your employer when the apprenticeship starts and ends</li>
+                            <li>explained how off-the-job training will be delivered</li>
+                            <li>told you and your employer about whether they will use sub-contracted training providers</li>
+                            <li>explained that you be assessed by an end-point assessment organisation</li>
+                            <li>signed a training plan with you and your employer</li>
+                            <li>discussed the training plan you and ensured it accounts for prior learning, English and maths needs and additional learning support
+                        </ul>
+                        <h4>They will:</h4>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>manage the quality and delivery of your off-the-job training</li>
+                            <li>take responsibility for regular progress reviews between all parties</li>
+                            <li>make sure that you and your employer know how to address concerns or complaints about the apprenticeship</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-hide="@Model.RolesAndResponsibilitiesConfirmed.HasValue" id="employer-form-hide" method="post" action="">
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h3 class="govuk-fieldset__heading">
+                                Do you understand your roles and responsibilities?
+                            </h3>
+                        </legend>
+
+                        <span asp-validation-for="RolesAndResponsibilitiesConfirmed" class="govuk-error-message"></span>
+
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="confirm-yes" name="RolesAndResponsibilitiesConfirmed" type="radio" value="true">
+                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="confirm-no" name="RolesAndResponsibilitiesConfirmed" type="radio" value="false">
+                                <label class="govuk-label govuk-radios__label" for="confirm-no">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <button class="govuk-button" data-module="govuk-button" id="roles-responsibilities-confirm">Confirm</button>
+                <input type="hidden" name="EmployerName" value="temp name" />
+            </form>
+
+            <form asp-show="@Model.RolesAndResponsibilitiesConfirmed.HasValue" action="@Model.Backlink">
+                <button class="govuk-button">Continue</button>
+            </form>
+        </div>
+    </div>
+</div>
