@@ -52,7 +52,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "Test user"),
-                new Claim("registration_id", guid.ToString()),
+                new Claim("apprentice_id", guid.ToString()),
             };
             if (isVerified) claims.Add(new Claim("VerifiedUser", "True"));
             var identity = new ClaimsIdentity(claims, "Test1");

@@ -9,13 +9,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
     {
         public AuthenticatedUser(ClaimsPrincipal user)
         {
-            var claim = user.RegistationIdClaim()
-                ?? throw new Exception("There is no `registration_id` claim.");
+            var claim = user.ApprenticeIdClaim()
+                ?? throw new Exception("There is no `apprentice_id` claim.");
 
-            if (!Guid.TryParse(claim.Value, out var registrationId))
-                throw new Exception($"`{claim.Value}` in claim `registration_id` is not a valid identifier");
+            if (!Guid.TryParse(claim.Value, out var apprenticeId))
+                throw new Exception($"`{claim.Value}` in claim `apprentice_id` is not a valid identifier");
 
-            ApprenticeId = registrationId;
+            ApprenticeId = apprenticeId;
         }
 
         public static AuthenticatedUser FakeUser => new AuthenticatedUser(FakeUserClaim);
@@ -25,7 +25,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             {
                 new ClaimsIdentity(new []
                 {
-                    new Claim("registration_id", Guid.NewGuid().ToString()),
+                    new Claim("apprentice_id", Guid.NewGuid().ToString()),
                     new Claim("sub", Guid.NewGuid().ToString()),
                 })
             });

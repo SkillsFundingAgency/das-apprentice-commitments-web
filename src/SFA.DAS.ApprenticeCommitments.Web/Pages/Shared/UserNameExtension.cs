@@ -7,8 +7,8 @@ namespace SAF.DAS.ApprenticeCommitments.Web
 {
     public static class UserNameExtension
     {
-        public static Claim? RegistationIdClaim(this ClaimsPrincipal user)
-            => user.Claims.FirstOrDefault(c => c.Type == "registration_id");
+        public static Claim? ApprenticeIdClaim(this ClaimsPrincipal user)
+            => user.Claims.FirstOrDefault(c => c.Type == "apprentice_id");
 
         public static string FullName(this ClaimsPrincipal user)
         {

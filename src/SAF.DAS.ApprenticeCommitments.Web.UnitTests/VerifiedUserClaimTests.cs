@@ -14,7 +14,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
     public class VerifiedUserClaimTests
     {
         [Test, MoqAutoData]
-        public async Task Users_without_a_registration_id_do_not_have_VerifiedUser_claim(AuthenticationEvents sut, ClaimsPrincipal identity)
+        public async Task Users_without_an_apprentice_id_do_not_have_VerifiedUser_claim(AuthenticationEvents sut, ClaimsPrincipal identity)
         {
             await sut.AddUserVerifiedClaim(identity);
 
@@ -22,9 +22,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         }
 
         [Test, MoqAutoData]
-        public async Task Users_with_an_invalid_registration_id_do_not_have_VerifiedUser_claim(AuthenticationEvents sut, ClaimsPrincipal identity, string notAGuid)
+        public async Task Users_with_an_invalid_apprentice_id_do_not_have_VerifiedUser_claim(AuthenticationEvents sut, ClaimsPrincipal identity, string notAGuid)
         {
-            identity.AddIdentity(new ClaimsIdentity(new[] { new Claim("registration_id", notAGuid) }));
+            identity.AddIdentity(new ClaimsIdentity(new[] { new Claim("apprentice_id", notAGuid) }));
 
             await sut.AddUserVerifiedClaim(identity);
 
@@ -34,10 +34,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         [Test, MoqAutoData]
         public async Task Users_that_do_not_exist_do_not_have_VerifiedUser_claim([Frozen] IOuterApiClient api, AuthenticationEvents sut, ClaimsPrincipal identity, Guid registrationId)
         {
-            identity.AddIdentity(RegistrationIdClaimsIdentity(registrationId.ToString()));
+            identity.AddIdentity(ApprenticeIdClaimsIdentity(registrationId.ToString()));
             Mock.Get(api)
                 .Setup(x => x.GetRegistration(It.IsAny<Guid>()))
-                .Throws(new Exception("Registration not found"));
+                .Throws(new Exception("Apprentice registration not found"));
 
             await sut.AddUserVerifiedClaim(identity);
 
@@ -47,7 +47,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         [Test, MoqAutoData]
         public async Task Users_that_have_not_completed_verification_do_not_have_VerifiedUser_claim([Frozen] IOuterApiClient api, AuthenticationEvents sut, Guid registrationId, ClaimsPrincipal identity)
         {
-            identity.AddIdentity(RegistrationIdClaimsIdentity(registrationId.ToString()));
+            identity.AddIdentity(ApprenticeIdClaimsIdentity(registrationId.ToString()));
             Mock.Get(api)
                 .Setup(x => x.GetRegistration(registrationId))
                 .ReturnsAsync(new VerifyRegistrationResponse { HasCompletedVerification = false });
@@ -60,7 +60,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         [Test, MoqAutoData]
         public async Task Users_that_have_completed_verification_have_VerifiedUser_claim_which_is_true([Frozen] IOuterApiClient api, AuthenticationEvents sut, Guid registrationId, ClaimsPrincipal identity)
         {
-            identity.AddIdentity(RegistrationIdClaimsIdentity(registrationId.ToString()));
+            identity.AddIdentity(ApprenticeIdClaimsIdentity(registrationId.ToString()));
             Mock.Get(api)
                 .Setup(x => x.GetRegistration(registrationId))
                 .ReturnsAsync(new VerifyRegistrationResponse { HasCompletedVerification = true });
@@ -74,9 +74,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             });
         }
 
-        private static ClaimsIdentity RegistrationIdClaimsIdentity(string notAGuid)
+        private static ClaimsIdentity ApprenticeIdClaimsIdentity(string notAGuid)
         {
-            return new ClaimsIdentity(new[] { new Claim("registration_id", notAGuid) });
+            return new ClaimsIdentity(new[] { new Claim("apprentice_id", notAGuid) });
         }
     }
 }
