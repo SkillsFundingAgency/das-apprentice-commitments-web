@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAF.DAS.ApprenticeCommitments.Web;
+using System;
 using System.Linq;
 using System.Security.Claims;
 
@@ -8,7 +9,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
     {
         public AuthenticatedUser(ClaimsPrincipal user)
         {
-            var claim = user.Claims.FirstOrDefault(c => c.Type == "registration_id")
+            var claim = user.RegistationIdClaim()
                 ?? throw new Exception("There is no `registration_id` claim.");
 
             if (!Guid.TryParse(claim.Value, out var registrationId))
@@ -17,13 +18,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             ApprenticeId = registrationId;
         }
 
-        public static AuthenticatedUser FakeUser
-        {
-            get
-            {
-                return new AuthenticatedUser(FakeUserClaim);
-            }
-        }
+        public static AuthenticatedUser FakeUser => new AuthenticatedUser(FakeUserClaim);
 
         public static ClaimsPrincipal FakeUserClaim =>
             new ClaimsPrincipal(new[]

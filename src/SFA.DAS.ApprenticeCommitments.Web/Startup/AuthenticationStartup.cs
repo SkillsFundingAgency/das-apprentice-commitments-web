@@ -54,7 +54,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
                     options.SaveTokens = true;
                     options.DisableTelemetry = false;
+
+                    options.EventsType = typeof(AuthenticationEvents);
                 });
+
+            services.AddScoped<AuthenticationEvents>();
+            services.AddScoped<VerifiedUserService>();
 
             return services;
         }
