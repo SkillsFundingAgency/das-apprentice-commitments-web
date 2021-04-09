@@ -20,7 +20,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public bool? EmployerConfirmation { get; set; } = true;
         public bool? TrainingProviderConfirmation { get; set; } = false;
-        public bool? ApprenticeshipConfirmation { get; set; } = null;
+        public bool? ApprenticeshipDetailsConfirmation { get; set; } = null;
 
         public ConfirmApprenticeshipModel(AuthenticatedUserClient client)
         {
@@ -35,6 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
+            ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
         }
     }
 }

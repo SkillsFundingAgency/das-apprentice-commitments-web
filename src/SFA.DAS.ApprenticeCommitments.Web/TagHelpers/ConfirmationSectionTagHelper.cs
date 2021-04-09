@@ -58,7 +58,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
         private bool? StateOf(string aspPage)
         {
-            var name = $"{aspPage.Replace("ConfirmYour", "")}Confirmation";
+            var name = $"{aspPage.Replace("Confirm", "").Replace("Your", "")}Confirmation";
             var value = Model?.GetType().GetProperty(name);
             return value?.GetValue(Model) as bool?;
         }
