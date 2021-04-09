@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
             _context.OuterApi.MockServer.Given(
                Request.Create()
-                   .UsingGet()
+                   .UsingPost()
                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/howapprenticeshipwillbedeliveredconfirmation"))
                .RespondWith(Response.Create()
                    .WithStatusCode(200));
