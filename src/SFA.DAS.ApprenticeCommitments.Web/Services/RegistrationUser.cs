@@ -14,7 +14,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             if (!Guid.TryParse(claim.Value, out var registrationId))
                 throw new Exception($"`{claim.Value}` in claim `registration_id` is not a valid identifier");
 
-            RegistrationId = registrationId;
+            ApprenticeId = registrationId;
         }
 
         public static AuthenticatedUser FakeUser
@@ -35,6 +35,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 })
             });
 
-        public Guid RegistrationId { get; }
+        public Guid ApprenticeId { get; }
     }
 }

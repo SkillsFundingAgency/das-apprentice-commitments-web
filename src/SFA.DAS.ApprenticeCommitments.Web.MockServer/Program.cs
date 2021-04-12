@@ -7,6 +7,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
         public static void Main(string[] args)
         {
             var apprenticeCommitmentsApi = ApprenticeCommitmentsApiBuilder.Create(5121)
+                .WithRegistrationFirstSeenOn()
                 .WithUsersFirstLogin()
                 .WithUsersApprenticeships()
                 .WithEmployerConfirmation()
