@@ -1,4 +1,4 @@
-@page "/apprenticeships/{apprenticeshipid:HashedId}/confirmyourtrainingprovider"
+@page "/apprenticeships/{apprenticeshipid}/confirmyourtrainingprovider"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmYourTrainingModel
 @{
 }
@@ -10,9 +10,9 @@
 
             <partial name="ValidationSummary" />
             
-            <h1 asp-hide="@Model.ConfirmedTrainingProvider" class="govuk-heading-xl">Confirm your training provider</h1>
+            <h1 asp-hide="@Model.ConfirmedTrainingProvider.HasValue" class="govuk-heading-xl">Confirm your training provider</h1>
 
-            <div asp-show="@Model.ConfirmedTrainingProvider" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+            <div asp-show="@Model.ConfirmedTrainingProvider.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
                 <span class="app-notification-banner__icon das-text--success-icon"></span>
                 You have confirmed your training provider
             </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <form asp-hide="@Model.ConfirmedTrainingProvider" id="training-provider-form-hide" method="post" action="">
+            <form asp-hide="@Model.ConfirmedTrainingProvider.HasValue" id="training-provider-form-hide" method="post" action="">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -64,7 +64,7 @@
                 <button class="govuk-button" data-module="govuk-button" id="training-provider-confirm">Confirm</button>
             </form>
 
-            <form asp-show="@Model.ConfirmedTrainingProvider" action="@Model.Backlink">
+            <form asp-show="@Model.ConfirmedTrainingProvider.HasValue" action="@Model.Backlink">
                 <button class="govuk-button">Continue</button>
             </form>
 

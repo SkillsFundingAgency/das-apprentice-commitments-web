@@ -1,6 +1,6 @@
-﻿using SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks;
+﻿using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Features
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     public class StepsBase
     {

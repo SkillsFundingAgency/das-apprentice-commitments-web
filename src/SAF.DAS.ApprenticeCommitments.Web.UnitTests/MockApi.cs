@@ -1,7 +1,7 @@
 ﻿using System;
 using WireMock.Server;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class MockApi : IDisposable
     {

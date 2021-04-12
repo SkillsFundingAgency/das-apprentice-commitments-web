@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests.Hooks
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
 {
     public class TestActionResult
     {

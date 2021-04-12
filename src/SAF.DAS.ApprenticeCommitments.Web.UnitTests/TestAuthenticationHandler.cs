@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.AcceptanceTests
+namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class TestAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
