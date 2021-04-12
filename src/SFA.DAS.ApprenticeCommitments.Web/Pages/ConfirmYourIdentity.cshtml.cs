@@ -38,7 +38,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             var reg = await _registrations.GetRegistration(user);
 
-            if (reg.UserId != null) return RedirectToPage("/apprenticeships/index");
+            if (reg.HasCompletedVerification)
+            {
+                return RedirectToPage("/apprenticeships/index");
+            }
+
+            if (!reg.HasViewedVerification)
+            {
+                await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
+            }
 
             EmailAddress = reg?.Email;
 
@@ -51,7 +59,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 await _registrations.VerifyRegistration(new VerifyRegistrationRequest
                 {
-                    RegistrationId = user.RegistrationId,
+                    ApprenticeId = user.ApprenticeId,
                     FirstName = FirstName,
                     LastName = LastName,
                     NationalInsuranceNumber = NationalInsuranceNumber,

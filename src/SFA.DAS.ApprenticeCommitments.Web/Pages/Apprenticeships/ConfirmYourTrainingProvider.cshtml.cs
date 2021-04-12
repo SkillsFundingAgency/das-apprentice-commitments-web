@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task OnGetAsync()
         {
             var apprenticeship = await _client
-                .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
+                .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
             TrainingProviderName = apprenticeship.TrainingProviderName;
             ConfirmedTrainingProvider = apprenticeship.TrainingProviderCorrect;
         }
@@ -49,7 +49,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmTrainingProvider(
-                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
                 new TrainingProviderConfirmationRequest(ConfirmedTrainingProvider.Value));
 
             var nextPage = ConfirmedTrainingProvider.Value ? "Confirm" : "CannotConfirm";
