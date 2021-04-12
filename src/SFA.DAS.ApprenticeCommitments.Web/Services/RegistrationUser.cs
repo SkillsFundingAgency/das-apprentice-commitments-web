@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages
+namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
     public class AuthenticatedUser
     {
