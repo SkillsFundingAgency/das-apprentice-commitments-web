@@ -4,52 +4,49 @@
     ViewData["Title"] = "Apprentice Commitments";
 }
 
+@section AfterHeader {
 
 <div class="app-page-header">
     <div class="govuk-width-container">
         <div class="govuk-grid-row app-page-header__row">
             <div class="govuk-grid-column-two-thirds">
-                <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship(s)</h1>
+                <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship</h1>
             </div>
         </div>
     </div>
 </div>
-<div class="govuk-width-container">
-    <main class="govuk-main-wrapper " id="main-content" role="main">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <h2 class="govuk-heading-l">Confirming your apprenticeship</h2>
-                <p>Review all the details below to confirm your apprenticeship.</p>
-                <div class="govuk-warning-text">
-                    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                    <strong class="govuk-warning-text__text">
-                        <span class="govuk-warning-text__assistive">Warning</span>
-                        You have 14 days to confirm your apprenticeship
-                    </strong>
-                </div>
-                <ol class="govuk-list app-status-list">
-                    <li class="app-status-list__list-item">
-                        <a asp-page="ConfirmYourEmployer" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
-                            <h3 class="app-status-list__link-text">Confirm your employer</h3>
-                        </a>
-                    </li>
-                    <li class="app-status-list__list-item">
-                        <a asp-page="ConfirmYourTrainingProvider" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
-                            <h3 class="app-status-list__link-text">Confirm your training provider</h3>
-                        </a>
-                    </li>
-                    <li class="app-status-list__list-item">
-                        <a asp-page="YourApprenticeshipDetails" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
-                            <h3 class="app-status-list__link-text">Your Apprenticeship Details</h3>
-                        </a>
-                    </li>
-                    <li class="app-status-list__list-item">
-                        <a asp-page="HowYourApprenticeshipWillBeDelivered" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link">
-                            <h3 class="app-status-list__link-text">How your apprenticeship will be delivered</h3>
-                        </a>
-                    </li>
-                </ol>
-            </div>
-        </div>
-    </main>
+
+}
+
+<h2 class="govuk-heading-l">Confirm your apprenticeship</h2>
+<div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        You have 14 days to confirm your apprenticeship
+    </strong>
 </div>
+<p>We want to make sure you have everything you need for a successful apprenticeship.</p>
+<p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
+<p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
+<ol class="govuk-list app-status-list">
+    <li confirmation-section asp-page="ConfirmYourEmployer" model="Model">
+        Your employer
+    </li>
+    <li confirmation-section asp-page="ConfirmYourTrainingProvider" model="Model">
+        Your training provider
+    </li>
+    <li confirmation-section asp-page="YourApprenticeshipDetails" model="Model">
+        Your Apprenticeship Details
+    </li>
+    <li confirmation-section asp-page="HowYourApprenticeshipWillBeDelivered" model="Model">
+        How your apprenticeship will be delivered
+    </li>
+    <li confirmation-section asp-page="ConfirmYourRolesAndResponsibilities" model="Model">
+        Roles and responsibilities
+    </li>
+    <li confirmation-section asp-page="HelpAndSupport" model="Model">
+        Help and support
+    </li>
+</ol>
+

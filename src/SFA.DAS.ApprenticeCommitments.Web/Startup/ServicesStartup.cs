@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
@@ -12,6 +13,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             this IServiceCollection services)
         {
             services.AddTransient<RegistrationsService>();
+            services.AddTransient<AuthenticatedUserClient>();
+            services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             return services;
         }
 
