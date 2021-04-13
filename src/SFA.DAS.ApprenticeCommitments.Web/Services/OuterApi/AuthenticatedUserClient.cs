@@ -15,6 +15,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         }
 
         internal Task<Apprenticeship> GetApprenticeship(long id)
-            => client.GetApprenticeship(authenticatedUser.RegistrationId, id);
+            => client.GetApprenticeship(authenticatedUser.ApprenticeId, id);
     }
 }

@@ -6,14 +6,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
     public interface IOuterApiClient
     {
-        [Get("/registrations/{id}")]
-        Task<VerifyRegistrationResponse> GetRegistration([Path] Guid id);
+        [Get("/registrations/{apprenticeId}")]
+        Task<VerifyRegistrationResponse> GetRegistration([Path] Guid apprenticeId);
+
+        [Post("/registrations/{apprenticeId}/firstseen")]
+        Task RegistrationFirstSeenOn([Path]Guid apprenticeId, [Body] RegistrationFirstSeenOnRequest request);
 
         [Post("/registrations")]
         Task VerifyRegistration([Body] VerifyRegistrationRequest verification);
 
-        [Get("/apprentices/{id}/apprenticeships")]
-        Task<Apprenticeship[]> GetApprenticeships([Path] Guid id);
+        [Get("/apprentices/{apprenticeId}/apprenticeships")]
+        Task<Apprenticeship[]> GetApprenticeships([Path] Guid apprenticeId);
 
         [Get("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}")]
         Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeid, [Path] long apprenticeshipid);

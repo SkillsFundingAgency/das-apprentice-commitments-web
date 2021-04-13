@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
         public ApprenticeCommitmentsApiBuilder WithUsersFirstLogin()
         {
-            var data = new VerifyRegistrationResponse { Email = "bob@example.com", Id = Guid.NewGuid() };
+            var data = new VerifyRegistrationResponse { Email = "bob@example.com", ApprenticeId = Guid.NewGuid() };
             var response = JsonConvert.SerializeObject(data, DefaultSerializerSettings);
 
             _server.Given(
@@ -77,6 +77,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
             return this;
         }
+
+        public ApprenticeCommitmentsApiBuilder WithRegistrationFirstSeenOn()
+        {
+            _server.Given(
+                    Request.Create()
+                        .WithPath("/registrations/*/firstseen")
+                        .UsingPost()
+                )
+                .RespondWith(
+                    Response.Create()
+                        .WithStatusCode(HttpStatusCode.Accepted));
+
+            return this;
+        }
+
+
 
         public ApprenticeCommitmentsApiBuilder WithUsersApprenticeships()
         {

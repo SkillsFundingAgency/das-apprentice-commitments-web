@@ -42,7 +42,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task OnGet()
         {
             var apprenticeship = await _client
-                .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
+                .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
             CourseName = apprenticeship.CourseName;
             CourseLevel = apprenticeship.CourseLevel;
             CourseOption = apprenticeship.CourseOption;
@@ -61,7 +61,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmApprenticeshipDetails(
-                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
                 new ApprenticeshipDetailsConfirmationRequest(ConfirmedApprenticeshipDetails.Value));
 
             var nextPage = ConfirmedApprenticeshipDetails.Value ? "Confirm" : "CannotConfirm";
