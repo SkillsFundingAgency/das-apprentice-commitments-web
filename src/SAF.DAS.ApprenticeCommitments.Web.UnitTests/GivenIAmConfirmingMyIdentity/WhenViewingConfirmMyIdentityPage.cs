@@ -23,10 +23,10 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
         {
             user.AddIdentity(new ClaimsIdentity(new[]
             {
-                new Claim("registration_id", registration.Id.ToString())
+                new Claim("registration_id", registration.ApprenticeId.ToString())
             }));
-            registration.UserId = null;
-            api.Setup(x => x.GetRegistration(registration.Id)).Returns(Task.FromResult(registration));
+            registration.HasCompletedVerification = false;
+            api.Setup(x => x.GetRegistration(registration.ApprenticeId)).Returns(Task.FromResult(registration));
 
             await sut.OnGetAsync(new AuthenticatedUser(user));
 

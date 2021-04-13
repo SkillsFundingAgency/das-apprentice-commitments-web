@@ -18,6 +18,7 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
+    [Scope(Feature = "ConfirmIdentity")]
     public class ConfirmIdentitySteps : StepsBase
     {
         private readonly TestContext _context;
@@ -28,6 +29,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context = context;
             _userContext = userContext;
+
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingPost()
+                        .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
+                )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(HttpStatusCode.Accepted));
+
         }
 
         [Given("the apprentice has not logged in")]
@@ -38,9 +48,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has logged in")]
         public void GivenTheApprenticeHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUser(_userContext.RegistrationId);
+            TestAuthenticationHandler.AddUser(_userContext.ApprenticeId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue(_userContext.RegistrationId.ToString());
+                new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
 
         [Given("the apprentice has not verified their identity")]
@@ -49,27 +59,40 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_userContext.RegistrationId}")
+                    .WithPath($"/registrations/{_userContext.ApprenticeId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new
+                    .WithBodyAsJson(new VerifyRegistrationResponse()
                     {
-                        Id = _userContext.RegistrationId,
+                        ApprenticeId = _userContext.ApprenticeId,
                         Email = "bob",
-                    }));
-
-            _context.OuterApi.MockServer.Given(
-                Request.Create()
-                    .UsingGet()
-                    .WithPath($"/apprentices/*/apprenticeships"))
-                .RespondWith(Response.Create()
-                    .WithStatusCode(200)
-                    .WithBodyAsJson(new[]
-                    {
-                        new { Id = 1235 },
+                        HasCompletedVerification = false,
+                        HasViewedVerification = false
                     }));
         }
+
+        [Given("the apprentice has not verified their identity, but has seen this page")]
+        public void GivenTheApprenticeHasNotVerifiedTheirIdentityButHasSeenThjisPage()
+        {
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/registrations/{_userContext.ApprenticeId}")
+                )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new VerifyRegistrationResponse()
+                    {
+                        ApprenticeId = _userContext.ApprenticeId,
+                        Email = "bob",
+                        HasCompletedVerification = false,
+                        HasViewedVerification = true
+                    }));
+        }
+
+
+
 
         [When(@"accessing the ""(.*)"" page")]
         public async Task WhenAccessingThePage(string page)
@@ -90,21 +113,49 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             page.Model.Should().BeOfType<ConfirmYourIdentityModel>().Which.EmailAddress.Should().Be("bob");
         }
 
+        [Then(@"the apprentice marks the registration as seen")]
+        public void ThenTheApprenticeMarksTheRegistrationAsSeen()
+        {
+            var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
+                Request.Create()
+                    .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
+                    .UsingPost()
+            );
+
+            registrationPosts.Should().NotBeEmpty();
+            var post = registrationPosts.First();
+            var reg = JsonConvert.DeserializeObject<RegistrationFirstSeenOnRequest>(post.RequestMessage.Body);
+            reg.SeenOn.Should().BeBefore(DateTime.UtcNow);
+        }
+
+        [Then(@"the apprentice does not try to mark the registration as seen")]
+        public void ThenTheApprenticeDoesNotTryToMarksTheRegistrationAsSeen()
+        {
+            var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
+                Request.Create()
+                    .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
+                    .UsingPost()
+            );
+
+            registrationPosts.Should().BeEmpty();
+        }
+
+
         [Given("the apprentice has verified their identity")]
         public void GivenTheApprenticeHasVerifiedTheirIdentity()
         {
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_userContext.RegistrationId}")
+                    .WithPath($"/registrations/{_userContext.ApprenticeId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
                     {
-                        Id = _userContext.RegistrationId,
+                        Id = _userContext.ApprenticeId,
                         Email = "bob",
-                        UserId = 12,
+                        HasCompletedVerification = true,
                     }));
         }
 
@@ -157,7 +208,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var reg = JsonConvert.DeserializeObject<VerifyRegistrationRequest>(post.RequestMessage.Body);
             reg.Should().BeEquivalentTo(new VerifyRegistrationRequest
             {
-                RegistrationId = _userContext.RegistrationId,
+                ApprenticeId = _userContext.ApprenticeId,
                 FirstName = _postedRegistration.FirstName,
                 LastName = _postedRegistration.LastName,
                 NationalInsuranceNumber = _postedRegistration.NationalInsuranceNumber,

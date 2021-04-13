@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         }
 
         internal Task<VerifyRegistrationResponse> GetRegistration(AuthenticatedUser user) =>
-            _client.GetRegistration(user.RegistrationId);
+            _client.GetRegistration(user.ApprenticeId);
 
         internal async Task VerifyRegistration(VerifyRegistrationRequest verification)
         {
@@ -32,6 +32,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
                 throw new DomainValidationException(errors);
             }
+        }
+
+        internal async Task FirstSeenOn(Guid apprenticeId, DateTime seenOn)
+        {
+            await _client.RegistrationFirstSeenOn(apprenticeId, new RegistrationFirstSeenOnRequest {SeenOn = seenOn });
         }
     }
 }
