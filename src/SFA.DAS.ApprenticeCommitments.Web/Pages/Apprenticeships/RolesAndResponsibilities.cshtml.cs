@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task OnGet()
         {
             var apprenticeship = await _client
-                .GetApprenticeship(_authenticatedUser.RegistrationId, ApprenticeshipId.Id);
+                .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
             this.RolesAndResponsibilitiesConfirmed = apprenticeship.RolesAndResponsibilitiesCorrect;
         }
@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmRolesAndResponsibilities(
-                _authenticatedUser.RegistrationId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
                 new RolesAndResponsibilitiesConfirmationRequest(RolesAndResponsibilitiesConfirmed.Value));
 
             var nextPage = RolesAndResponsibilitiesConfirmed.Value ? "Confirm" : "CannotConfirm";
