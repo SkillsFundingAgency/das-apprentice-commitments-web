@@ -18,9 +18,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty(SupportsGet = true)]
         public HashedId? ApprenticeshipId { get; set; }
 
-        public bool? EmployerConfirmation { get; set; } = true;
-        public bool? TrainingProviderConfirmation { get; set; } = false;
+        public bool? EmployerConfirmation { get; set; } = null;
+        public bool? TrainingProviderConfirmation { get; set; } = null;
         public bool? ApprenticeshipDetailsConfirmation { get; set; } = null;
+        public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
 
         public ConfirmApprenticeshipModel(AuthenticatedUserClient client)
         {
@@ -36,6 +37,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
+            RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
         }
     }
 }
