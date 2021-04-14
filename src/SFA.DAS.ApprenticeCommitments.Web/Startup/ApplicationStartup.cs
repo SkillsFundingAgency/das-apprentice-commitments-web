@@ -44,7 +44,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()
-                .RequireIdentity()
                 .UseEndpoints(endpoints => endpoints.MapRazorPages())
                 ;
         }

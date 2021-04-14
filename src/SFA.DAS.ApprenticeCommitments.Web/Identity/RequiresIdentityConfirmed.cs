@@ -1,39 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using System;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 #nullable enable
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    internal class RequiresIdentityConfirmedAttribute : Attribute
+    public class RequiresIdentityConfirmedAttribute : TypeFilterAttribute
     {
+        public RequiresIdentityConfirmedAttribute() : base(typeof(ClaimRequirementFilter))
+        {
+        }
     }
 
-    public class RequiresIdentityConfirmedMiddleware : IMiddleware
+    public class ClaimRequirementFilter : IAuthorizationFilter
     {
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (ShouldRedirect(context))
-                context.Response.Redirect("/ConfirmYourIdentity");
-            else
-                await next(context);
-        }
+            var isVerified = context.HttpContext.User.HasClaim("VerifiedUser", "True");
 
-        private bool ShouldRedirect(HttpContext context)
-        {
-            if (!RequiresIdentityConfirmed(context)) return false;
-            if (context.User.HasClaim("VerifiedUser", "True")) return false;
-            return true;
-        }
-
-        private static bool RequiresIdentityConfirmed(HttpContext context)
-        {
-            var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
-            var attribute = endpoint?.Metadata.GetMetadata<RequiresIdentityConfirmedAttribute>();
-            return attribute != null;
+            if (!isVerified)
+                context.Result = new RedirectResult("/ConfirmYourIdentity");
         }
     }
 }

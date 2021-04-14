@@ -13,7 +13,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             HashingConfiguration configuration)
         {
             services.AddHashingService(configuration);
-            services.AddScoped<RequiresIdentityConfirmedMiddleware>();
             return services;
         }
 
@@ -32,11 +31,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 options.ConstraintMap.Add("HashedId", typeof(HashedIdRouteConstraint)));
 
             return services;
-        }
-
-        public static IApplicationBuilder RequireIdentity(this IApplicationBuilder app)
-        {
-            return app.UseMiddleware<RequiresIdentityConfirmedMiddleware>();
         }
     }
 
