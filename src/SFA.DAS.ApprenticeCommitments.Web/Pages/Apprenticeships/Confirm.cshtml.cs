@@ -11,7 +11,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    [Authorize]
+    [RequiresIdentityConfirmed]
     public class ConfirmApprenticeshipModel : PageModel
     {
         //private readonly AuthenticatedUserClient _client;
