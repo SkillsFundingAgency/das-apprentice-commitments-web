@@ -10,4 +10,4 @@ Scenario: The apprentice is authenticated and should see Green confirmation box
 	Given the apprentice has logged in
 	When accessing the TransactionComplete page
 	Then the response status code should be Ok
-	And the apprentice should see the Green confirmation box with the employers name
+	And the apprentice should see the Green confirmation box with the course name

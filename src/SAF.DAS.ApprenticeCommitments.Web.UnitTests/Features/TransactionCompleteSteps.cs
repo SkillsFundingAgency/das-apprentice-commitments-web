@@ -23,7 +23,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private bool? _rolesAndResponsibilitiesConfirmed;
 
         public TransactionCompleteSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -37,7 +36,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
-                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, EmployerName = "Test Employer" }));
+                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, EmployerName = "Test Course" }));
         }
 
         [Given("the apprentice has logged in")]
@@ -60,12 +59,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Then("the apprentice should see the Green confirmation box with the employers name")]
-        public void ThenTheApprenticeShouldSeeTheGreenConfirmationBoxWithTheEmpoloyersName()
+        [Then("the apprentice should see the Green confirmation box with the course name")]
+        public void ThenTheApprenticeShouldSeeTheGreenConfirmationBoxWithTheCourseName()
         {
             var model = _context.ActionResult.LastPageResult.Model.As<TransactionCompleteModel>();
             model.Should().NotBeNull();
-            model.EmployerName.Should().Be("Test Employer");
+            model.CourseName.Should().Be("Test Course");
         }
     }
 }

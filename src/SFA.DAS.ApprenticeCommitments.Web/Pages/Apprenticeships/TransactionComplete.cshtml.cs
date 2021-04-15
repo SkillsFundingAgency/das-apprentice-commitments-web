@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
-        public string EmployerName { get; set; }
+        public string CourseName { get; set; }
 
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
@@ -27,7 +27,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task OnGet()
         {
             var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
-            EmployerName = apprenticeship.EmployerName;
+            CourseName = apprenticeship.CourseName;
         }
     }
 }
