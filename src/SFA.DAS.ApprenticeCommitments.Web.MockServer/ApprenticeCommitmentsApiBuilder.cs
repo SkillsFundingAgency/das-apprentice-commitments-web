@@ -92,8 +92,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             return this;
         }
 
-
-
         public ApprenticeCommitmentsApiBuilder WithUsersApprenticeships()
         {
             _server.Given(
@@ -164,6 +162,32 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     Request.Create()
                         .UsingPost()
                         .WithPath($"/apprentices/*/apprenticeships/*/apprenticeshipdetailsconfirmation"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                );
+
+            return this;
+        }
+
+        public ApprenticeCommitmentsApiBuilder WithRolesAndResponsibilitiesConfirmation()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingPost()
+                        .WithPath($"/apprentices/*/apprenticeships/*/rolesandresponsibilitiesconfirmation"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                );
+
+            return this;
+        }
+
+        public ApprenticeCommitmentsApiBuilder WithHowApprenticeshipWillBeDeliveredConfirmation()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingPost()
+                        .WithPath($"/apprentices/*/apprenticeships/*/howapprenticeshipwillbedeliveredconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                 );
