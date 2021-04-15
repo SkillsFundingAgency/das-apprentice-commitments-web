@@ -6,15 +6,15 @@
 
 @section AfterHeader {
 
-<div class="app-page-header">
-    <div class="govuk-width-container">
-        <div class="govuk-grid-row app-page-header__row">
-            <div class="govuk-grid-column-two-thirds">
-                <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship</h1>
+    <div class="app-page-header">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row app-page-header__row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship</h1>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 }
 
@@ -29,6 +29,19 @@
 <p>We want to make sure you have everything you need for a successful apprenticeship.</p>
 <p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
 <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
+
+<div asp-show="@Model.AllConfirmed" class="govuk-form-group">
+    <h2 class="govuk-heading-m">Your apprenticeship is ready to confirm</h2>
+    <div class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+        <div>
+            <span class="app-notification-banner__icon das-text--success-icon"></span>
+            Your apprenticeship is now ready for you to check confirm
+        </div>
+        <br />
+        <a href="@Model.Forwardlink" class="govuk-button" style="margin-bottom:10px" data-module="govuk-button">Confirm your apprenticeship</a>
+    </div>
+</div>
+
 <ol class="govuk-list app-status-list">
     <li confirmation-section asp-page="ConfirmYourEmployer" model="Model">
         Your employer

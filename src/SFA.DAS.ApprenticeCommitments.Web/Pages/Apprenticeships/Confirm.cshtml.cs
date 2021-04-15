@@ -16,12 +16,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly AuthenticatedUserClient _client;
 
         [BindProperty(SupportsGet = true)]
-        public HashedId? ApprenticeshipId { get; set; }
+        public HashedId ApprenticeshipId { get; set; }
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
         public bool? ApprenticeshipDetailsConfirmation { get; set; } = null;
         public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
+
+        public string Forwardlink => $"/apprenticeships/{ApprenticeshipId.Hashed}/transactioncomplete";
+
+        public bool AllConfirmed
+        {
+            get {
+                return EmployerConfirmation ==
+                    TrainingProviderConfirmation ==
+                    ApprenticeshipDetailsConfirmation ==
+                    RolesAndResponsibilitiesConfirmation == true;
+            }
+        }
 
         public ConfirmApprenticeshipModel(AuthenticatedUserClient client)
         {

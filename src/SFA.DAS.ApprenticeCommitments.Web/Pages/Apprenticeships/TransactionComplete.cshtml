@@ -1,0 +1,27 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/transactioncomplete"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.TransactionCompleteModel
+@{
+}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <div class="govuk-panel govuk-panel--confirmation">
+                <h1 class="govuk-panel__title">
+                    You have confirmed your apprenticeship
+                </h1>
+                <div class="govuk-panel__body">
+                    @Model.EmployerName
+                </div>
+            </div>
+
+            <p>We have sent you a confirmation email.</p>
+
+            <h3 class="govuk-heading-m">What happens next?</h3>
+
+            <p>We will send the confirmation of your apprenticeship to your employer and training provider and they will be in touch to start your apprenticeship.</p>
+
+        </div>
+    </div>
+</div>
