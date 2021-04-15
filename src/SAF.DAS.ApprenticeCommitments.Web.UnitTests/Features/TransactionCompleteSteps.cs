@@ -36,7 +36,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
-                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, EmployerName = "Test Course" }));
+                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, CourseName = "Test Course" }));
         }
 
         [Given("the apprentice has logged in")]
