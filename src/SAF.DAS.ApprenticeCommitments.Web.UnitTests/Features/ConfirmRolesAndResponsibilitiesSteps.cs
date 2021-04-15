@@ -33,14 +33,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
             _context.OuterApi.MockServer.Given(
                     Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
-                    .RespondWith(Response.Create()
-                        .WithStatusCode(200)
-                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id }));
-
-            _context.OuterApi.MockServer.Given(
-                    Request.Create()
                         .UsingAnyMethod()
                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/rolesandresponsibilitiesconfirmation"))
                     .RespondWith(Response.Create()
@@ -58,7 +50,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice has not verified their Roles and Responsibilities")]
         public void GivenTheApprenticeHasNotVerifiedTheirRolesAndResponsibilities()
         {
-            
+            SetupApiConfirmation(null);
+        }
+
+        [Given("the apprentice has negatively confirmed their Roles and Responsibilities")]
+        public void GivenTheApprenticeHasNegativelyConfirmedTheirRolesAndResponsibilities()
+        {
+            SetupApiConfirmation(false);
+        }
+
+        private void SetupApiConfirmation(bool? confirmed)
+        {
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                    .RespondWith(Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, RolesAndResponsibilitiesCorrect = confirmed }));
         }
 
         [When(@"accessing the RolesAndResponsibilities page")]
@@ -78,6 +87,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<RolesAndResponsibilitiesModel>();
+        }
+
+        [Then("the user should see the confirmation options")]
+        public void ThenTheUserShouldSeeTheConfirmationOptions()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<RolesAndResponsibilitiesModel>().Which.RolesAndResponsibilitiesConfirmed.Should().BeNull();
         }
 
         [Then(@"the link is pointing to the confirm page")]

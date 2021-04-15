@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System.Threading.Tasks;
 
 #nullable enable
 
@@ -16,10 +16,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
+
         [BindProperty]
         public string EmployerName { get; set; }
+
         [BindProperty]
         public bool? ConfirmedEmployer { get; set; }
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourEmployerModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -32,13 +35,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+
             EmployerName = apprenticeship.EmployerName;
-            ConfirmedEmployer = apprenticeship.EmployerCorrect;
+
+            if (apprenticeship.EmployerCorrect == true)
+                ConfirmedEmployer = true;
         }
 
         public async Task<IActionResult> OnPost()
         {
-
             if (ConfirmedEmployer == null)
             {
                 ModelState.AddModelError(nameof(ConfirmedEmployer), "Select an answer");

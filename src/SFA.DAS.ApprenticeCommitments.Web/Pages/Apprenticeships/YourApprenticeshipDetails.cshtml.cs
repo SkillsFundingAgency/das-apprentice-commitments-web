@@ -43,13 +43,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+            
             CourseName = apprenticeship.CourseName;
             CourseLevel = apprenticeship.CourseLevel;
             CourseOption = apprenticeship.CourseOption;
             DurationInMonths = apprenticeship.DurationInMonths;
             PlannedStartDate = apprenticeship.PlannedStartDate;
             PlannedEndDate = apprenticeship.PlannedEndDate;
-            ConfirmedApprenticeshipDetails = apprenticeship.ApprenticeshipDetailsCorrect;
+
+            if(apprenticeship.ApprenticeshipDetailsCorrect == true)
+                ConfirmedApprenticeshipDetails = true;
         }
 
         public async Task<IActionResult> OnPost()

@@ -45,22 +45,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has not verified their training provider")]
         public void GivenTheApprenticeHasNotVerifiedTheirTrainingProvider()
         {
-            _context.OuterApi.MockServer.Given(
-                     Request.Create()
-                         .UsingGet()
-                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
-                    .RespondWith(Response.Create()
-                        .WithStatusCode(200)
-                        .WithBodyAsJson(new
-                        {
-                            _apprenticeshipId.Id,
-                            TrainingProviderName = _trainingProviderName,
-                            trainingProviderCorrect = (bool?)null,
-                        }));
+            SetupApiGetConfirmed(null);
         }
 
-        [Given(@"the apprentice has verified their training provider")]
+        [Given("the apprentice has verified their training provider")]
         public void GivenTheApprenticeHasVerifiedTheirTrainingProvider()
+        {
+            SetupApiGetConfirmed(true);
+        }
+
+        [Given("the apprentice has negatively verified their training provider")]
+        public void GivenTheApprenticeHasNegativelyVerifiedTheirTrainingProvider()
+        {
+            SetupApiGetConfirmed(false);
+        }
+
+        private void SetupApiGetConfirmed(bool? confirmed)
         {
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -72,7 +72,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         {
                             _apprenticeshipId.Id,
                             TrainingProviderName = _trainingProviderName,
-                            trainingProviderCorrect = true,
+                            trainingProviderCorrect = confirmed,
                         }));
         }
 
@@ -88,7 +88,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _trainingProviderNameConfirmed = false;
         }
 
-        [Given(@"the apprentice doesn't select an option")]
+        [Given("the apprentice doesn't select an option")]
         public void GivenTheApprenticeDoesnTSelectAnOption()
         {
             _trainingProviderNameConfirmed = null;
@@ -174,7 +174,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 .WhichValue.Should().Be(_apprenticeshipId.Hashed);
         }
 
-        [Then(@"the model should contain an error message")]
+        [Then("the model should contain an error message")]
         public void ThenTheModelShouldContainAnErrorMessage()
         {
             var model = _context.ActionResult
@@ -186,13 +186,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.ModelState[ModelConfirmedKey].Errors[0].ErrorMessage.Should().Be("Select an answer");
         }
 
-        [Then(@"the apprentice should be able to provider a response")]
-        public void ThenTheApprenticeShouldBeAbleToProviderAResponse()
+        [Then("the apprentice should not be able to provide a response")]
+        public void ThenTheApprenticeShouldNotBeAbleToProvideAResponse()
         {
             _context.ActionResult
                 .LastActionResult.Should().BeOfType<PageResult>()
                 .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>()
                 .Which.ConfirmedTrainingProvider.Should().NotBeNull();
+        }
+
+        [Then("the apprentice should be able to provide a response")]
+        public void ThenTheApprenticeShouldBeAbleToProvideAResponse()
+        {
+            _context.ActionResult
+                .LastActionResult.Should().BeOfType<PageResult>()
+                .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>()
+                .Which.ConfirmedTrainingProvider.Should().BeNull();
         }
     }
 }

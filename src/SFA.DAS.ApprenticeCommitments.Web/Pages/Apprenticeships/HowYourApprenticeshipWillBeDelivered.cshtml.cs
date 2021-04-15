@@ -28,7 +28,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
-            ConfirmedHowApprenticeshipDelivered = apprenticeship.HowApprenticeshipDeliveredCorrect;
+
+            if(apprenticeship.HowApprenticeshipDeliveredCorrect == true)
+                ConfirmedHowApprenticeshipDelivered = true;
         }
 
         public async Task<IActionResult> OnPost()

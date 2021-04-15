@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Threading.Tasks;
@@ -36,8 +36,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+
             TrainingProviderName = apprenticeship.TrainingProviderName;
-            ConfirmedTrainingProvider = apprenticeship.TrainingProviderCorrect;
+
+            if (apprenticeship.TrainingProviderCorrect == true)
+                ConfirmedTrainingProvider = true;
         }
 
         public async Task<IActionResult> OnPost()

@@ -36,3 +36,11 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the model should contain an error message
 	And the apprentice should see the Roles and Responsibilities
 	And the link is pointing to the confirm page
+
+Scenario: The apprentice is authenticated and has previously negatively confirmed
+	Given the apprentice has logged in
+	And the apprentice has negatively confirmed their Roles and Responsibilities
+	When accessing the RolesAndResponsibilities page
+	Then the response status code should be Ok
+	And the apprentice should see the Roles and Responsibilities
+	And the user should see the confirmation options

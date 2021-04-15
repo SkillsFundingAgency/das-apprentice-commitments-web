@@ -31,7 +31,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
-            this.RolesAndResponsibilitiesConfirmed = apprenticeship.RolesAndResponsibilitiesCorrect;
+            if(apprenticeship.RolesAndResponsibilitiesCorrect == true)
+                RolesAndResponsibilitiesConfirmed = true;
         }
 
         public async Task<IActionResult> OnPost()

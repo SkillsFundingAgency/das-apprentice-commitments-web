@@ -46,3 +46,11 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the apprentice should see the planned start date
 	And the apprentice should see the planned end date
 	And the link is pointing to the confirm page
+
+Scenario: The apprentice is authenticated and has negatively confirmed
+	Given the apprentice has logged in
+	And the apprentice has negatively confirmed their apprenticeship details
+	When accessing the YourApprenticeshipDetails page
+	Then the response status code should be Ok
+	And the apprentice should see the course name
+	And the user should see the confirmation options

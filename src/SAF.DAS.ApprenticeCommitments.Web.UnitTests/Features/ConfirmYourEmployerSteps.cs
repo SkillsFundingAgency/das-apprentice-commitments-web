@@ -35,14 +35,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
             _context.OuterApi.MockServer.Given(
                     Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
-                    .RespondWith(Response.Create()
-                        .WithStatusCode(200)
-                        .WithBodyAsJson( new { Id = _apprenticeshipId.Id, EmployerName = _employerName }));
-
-            _context.OuterApi.MockServer.Given(
-                    Request.Create()
                         .UsingAnyMethod()
                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/employerconfirmation"))
                 .RespondWith(Response.Create()
@@ -57,30 +49,48 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
 
-        [Given(@"the apprentice has not verified their employer")]
+        [Given("the apprentice has not verified their employer")]
         public void GivenTheApprenticeHasNotVerifiedTheirEmployer()
         {
+            SetupApiGetEmployerConfirmation(confirmed: null);
         }
 
-        [Given(@"the apprentice confirms their employer")]
+        [Given("the apprentice has confirmed this is not their employer")]
+        public void GivenTheApprenticeHasConfirmedThisIsNotTheirEmployer()
+        {
+            SetupApiGetEmployerConfirmation(confirmed: false);
+        }
+
+        private void SetupApiGetEmployerConfirmation(bool? confirmed)
+        {
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                    .RespondWith(Response.Create()
+                        .WithStatusCode(200)
+                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, EmployerName = _employerName, EmployerCorrect = confirmed }));
+        }
+
+        [Given("the apprentice confirms their employer")]
         public void GivenTheApprenticeConfirmsTheirEmployer()
         {
             _employerNameConfirmed = true;
         }
 
-        [Given(@"the apprentice states this is not their employer")]
+        [Given("the apprentice states this is not their employer")]
         public void GivenTheApprenticeStatesThisIsNotTheirEmployer()
         {
             _employerNameConfirmed = false;
         }
 
-        [Given(@"the apprentice doesn't select an option")]
+        [Given("the apprentice doesn't select an option")]
         public void GivenTheApprenticeDoesnTSelectAnOption()
         {
             _employerNameConfirmed = null;
         }
 
-        [When(@"submitting the ConfirmYourEmployer page")]
+        [When("submitting the ConfirmYourEmployer page")]
         public async Task WhenSubmittingTheConfirmYourEmployerPage()
         {
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyouremployer",
@@ -91,7 +101,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 }));
         }
 
-        [When(@"accessing the ConfirmYourEmployer page")]
+        [When("accessing the ConfirmYourEmployer page")]
         public async Task WhenAccessingTheConfirmYourEmployerPage()
         {
             await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyouremployer");
@@ -103,14 +113,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Then(@"the apprentice should see the employer's name")]
+        [Then("the apprentice should see the employer's name")]
         public void ThenTheApprenticeShouldSeeTheEmployersName()
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.EmployerName.Should().Be(_employerName);
         }
 
-        [Then(@"the link is pointing to the confirm page")]
+        [Then("the user should see the confirmation options")]
+        public void ThenTheUserShouldSeeTheConfirmationOptions()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.ConfirmedEmployer.Should().BeNull();
+        }
+
+        [Then("the link is pointing to the confirm page")]
         public void ThenTheLinkIsPointingToTheConfirmPage()
         {
             _context.ActionResult.LastPageResult
@@ -118,7 +135,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
 
-        [Then(@"the user should be redirected back to the overview page")]
+        [Then("the user should be redirected back to the overview page")]
         public void ThenTheUserShouldBeRedirectedBackToTheOverviewPage()
         {
             var redirect = _context.ActionResult.LastActionResult as RedirectToPageResult;
@@ -127,7 +144,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
-        [Then(@"the apprenticeship is updated to show the a '(.*)' confirmation")]
+        [Then("the apprenticeship is updated to show the a '(.*)' confirmation")]
         public void ThenTheApprenticeshipIsUpdatedToShowTheAConfirmation(bool confirm)
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
@@ -144,7 +161,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         }
 
 
-        [Then(@"the user should be redirected to the cannot confirm apprenticeship page")]
+        [Then("the user should be redirected to the cannot confirm apprenticeship page")]
         public void ThenTheUserShouldBeRedirectedToTheCannotConfirmApprenticeshipPage()
         {
             var redirect = _context.ActionResult.LastActionResult as RedirectToPageResult;
@@ -153,7 +170,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
-        [Then(@"the model should contain an error message")]
+        [Then("the model should contain an error message")]
         public void ThenTheModelShouldContainAnErrorMessage()
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmYourEmployerModel>();

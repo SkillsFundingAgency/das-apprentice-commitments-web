@@ -42,4 +42,12 @@ Scenario: The apprentice has previously confirmed their training provider
 	When accessing the ConfirmYourTrainingProvider page
 	Then the response status code should be OK
 	And the apprentice should see the training provider's name
-	And the apprentice should be able to provider a response
+	And the apprentice should not be able to provide a response
+
+Scenario: The apprentice has previously negatively confirmed their training provider
+	Given the apprentice has logged in
+	And the apprentice has negatively verified their training provider
+	When accessing the ConfirmYourTrainingProvider page
+	Then the response status code should be OK
+	And the apprentice should see the training provider's name
+	And the apprentice should be able to provide a response
