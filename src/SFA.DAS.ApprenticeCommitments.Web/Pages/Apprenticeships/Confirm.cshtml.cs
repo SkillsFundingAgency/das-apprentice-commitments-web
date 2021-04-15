@@ -34,10 +34,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             get
             {
-                return EmployerConfirmation ==
-                    TrainingProviderConfirmation ==
-                    ApprenticeshipDetailsConfirmation ==
-                    RolesAndResponsibilitiesConfirmation == true;
+                return EmployerConfirmation.HasValue && (bool)EmployerConfirmation == true
+                    && TrainingProviderConfirmation.HasValue && (bool)TrainingProviderConfirmation == true
+                    && ApprenticeshipDetailsConfirmation.HasValue && (bool)ApprenticeshipDetailsConfirmation == true
+                    && RolesAndResponsibilitiesConfirmation.HasValue && (bool)RolesAndResponsibilitiesConfirmation == true;
             }
         }
 
@@ -68,7 +68,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
                 new ApprenticeshipConfirmationRequest(true));
 
-            return RedirectToPage("transactioncomplete");
+            return Redirect(Forwardlink);
         }
     }
 }
