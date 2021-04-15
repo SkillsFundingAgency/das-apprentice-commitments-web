@@ -1,0 +1,103 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/howyourapprenticeshipwillbedelivered"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.HowYourApprenticeshipWillBeDeliveredModel
+@{
+    ViewData["Title"] = "How your apprenticeship will be delivered";
+}
+
+<div class="govuk-width-container">
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <partial name="ValidationSummary" />
+
+            <h1 asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" class="govuk-heading-xl">@ViewData["Title"]</h1>
+
+            <div asp-show="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
+                <span class="app-notification-banner__icon das-text--success-icon"></span>
+                You have understood how your apprenticeship will be delivered
+            </div>
+
+            <div class="govuk-body">
+
+                <p>
+                    Your apprenticeship will be delivered in two parts; a training period and an assessment period.
+                </p>
+
+                <h2 class="govuk-heading-m">Your training period</h2>
+
+                <p>
+                    <strong>Your employer</strong> will give you hands-on experience in your chosen occupation to improve your 
+                    employment prospects. They’ll provide you with training and supervision to help you perform and excel in the 
+                    job they’ve hired you for.
+                </p>
+   
+                <p>
+                    <strong>Your training provider</strong> is responsible for your off-the-job training, which will give you the 
+                    knowledge, skills and behaviours that you need to excel. They will work with your employer to deliver this.
+                </p>
+
+                <p>
+                    <strong>Your training plan</strong>, given to you by your training provider, will set out a training schedule 
+                    for your off-the-job training. For example, you may do it a couple hours a day or one day per week.
+                </p>
+
+                <p>
+                    During your training period, expect to have regular progress reviews with your training provider and employer.
+                </p>
+
+                <h2 class="govuk-heading-l">Your assessment period</h2>
+                <p>
+                    During your regular progress reviews with your employer and training provider, you will agree when you’re ready for 
+                    your end-point assessment. They will tell you what to expect and when the assessment will take place.
+                </p>
+
+                <p>
+                    You’ll be assessed by an end-point assessment organisation (EPAO) to make sure you’re fully competent in your chosen 
+                    occupation.
+                </p>
+
+                <p>
+                    You may also need to study for maths and English qualifications as part of your apprenticeship.
+                </p>
+
+            </div>
+
+                <form asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" id="apprenticeship-delivered-form-hide" method="post" action="">
+                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">
+                                    Do you understand what you’ve read?
+                                </h1>
+                            </legend>
+
+                            <span asp-validation-for="ConfirmedHowApprenticeshipDelivered" class="govuk-error-message"></span>
+
+                            <div class="govuk-radios govuk-radios--inline">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="confirm-yes" name="ConfirmedHowApprenticeshipDelivered" type="radio" value="true">
+                                    <label class="govuk-label govuk-radios__label" for="confirm-yes">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="confirm-no" name="ConfirmedHowApprenticeshipDelivered" type="radio" value="false">
+                                    <label class="govuk-label govuk-radios__label" for="confirm-no">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <button class="govuk-button" data-module="govuk-button" id="apprentice-delivered-confirm">Confirm</button>
+                </form>
+
+                <form asp-show="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" action="@Model.Backlink">
+                    <button class="govuk-button">Continue</button>
+                </form>
+            </div>
+    </div>
+</div>
+

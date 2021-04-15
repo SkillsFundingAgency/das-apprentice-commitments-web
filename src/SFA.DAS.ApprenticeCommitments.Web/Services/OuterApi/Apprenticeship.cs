@@ -11,6 +11,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public bool? TrainingProviderCorrect { get; set; }
         public bool? RolesAndResponsibilitiesCorrect { get; set; }
         public bool? ApprenticeshipDetailsCorrect { get; set; }
+        public bool? HowApprenticeshipDeliveredCorrect { get; set; }
         public string CourseName { get; set; }
         public int CourseLevel { get; set; }
         public string? CourseOption { get; set; }

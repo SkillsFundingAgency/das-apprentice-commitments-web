@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Get("/registrations/{id}")]
         Task<VerifyRegistrationResponse> GetRegistration([Path] Guid id);
 
-		    [Post("/registrations/{apprenticeId}/firstseen")]
+		[Post("/registrations/{apprenticeId}/firstseen")]
         Task RegistrationFirstSeenOn([Path]Guid apprenticeId, [Body] RegistrationFirstSeenOnRequest request);
 
         [Post("/registrations")]
@@ -40,5 +40,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task ConfirmApprenticeshipDetails(
             [Path] Guid apprenticeid, [Path] long apprenticeshipid,
             [Body] ApprenticeshipDetailsConfirmationRequest confirmation);
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/howapprenticeshipwillbedeliveredconfirmation")]
+        Task ConfirmHowApprenticeshipDelivered(
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Body] HowApprenticeshipDeliveredConfirmationRequest confirmation);
+
     }
 }
