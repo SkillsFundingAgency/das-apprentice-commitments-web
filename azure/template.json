@@ -23,6 +23,9 @@
         "sharedFrontEndSubnetResourceId": {
             "type": "string"
         },
+        "frontEndAccessRestrictions": {
+            "type": "array"
+        },
         "sharedEnvResourceGroup": {
             "type": "string"
         },
@@ -215,6 +218,9 @@
                     },
                     "certificateThumbprint": {
                         "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             }
