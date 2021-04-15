@@ -1,6 +1,5 @@
 ﻿using SAF.DAS.ApprenticeCommitments.Web;
 using System;
-using System.Linq;
 using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services

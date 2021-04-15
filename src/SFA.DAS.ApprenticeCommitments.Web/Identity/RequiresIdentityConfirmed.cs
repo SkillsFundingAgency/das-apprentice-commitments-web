@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 
 #nullable enable
 
@@ -16,9 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var isVerified = context.HttpContext.User.HasClaim("VerifiedUser", "True");
-
-            if (!isVerified)
+            if (VerifiedUser.UserHasUnconfirmedIdentity(context.HttpContext))
                 context.Result = new RedirectResult("/ConfirmYourIdentity");
         }
     }
