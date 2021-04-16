@@ -22,6 +22,10 @@
   padding-left: 65px;
 }
 
+.app-notification-banner--icon-content-wrap {
+  padding-left: 45px;
+}
+
 .app-notification-banner--success {
   border-left-color: govuk-colour("green");
 }
@@ -46,6 +50,6 @@
   background-size: 20px;
 }
 
-.app-notification-banner--success > .app-notification-banner__icon {
+.app-notification-banner--success .app-notification-banner__icon {
   border-color: govuk-colour("green");
 }

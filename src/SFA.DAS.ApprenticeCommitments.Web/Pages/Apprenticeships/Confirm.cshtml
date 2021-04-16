@@ -6,15 +6,15 @@
 
 @section AfterHeader {
 
-<div class="app-page-header">
-    <div class="govuk-width-container">
-        <div class="govuk-grid-row app-page-header__row">
-            <div class="govuk-grid-column-two-thirds">
-                <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship</h1>
+    <div class="app-page-header">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row app-page-header__row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship</h1>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 }
 
@@ -29,6 +29,20 @@
 <p>We want to make sure you have everything you need for a successful apprenticeship.</p>
 <p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
 <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
+
+<div asp-show="@Model.AllConfirmed" class="govuk-!-margin-bottom-5">
+    <h2 class="govuk-heading-m">Your apprenticeship is ready to confirm</h2>
+    <div class="app-notification-banner app-notification-banner--success">
+        <div class="app-notification-banner--icon-content-wrap">
+            <span class="app-notification-banner__icon das-text--success-icon"></span>
+            Your apprenticeship is now ready for you to check confirm
+        </div>
+        <form asp-page-handler="confirm" method="post">
+            <button class="govuk-button govuk-!-margin-top-4 govuk-!-margin-bottom-0">Confirm your apprenticeship</button>
+        </form>
+    </div>
+</div>
+
 <ol class="govuk-list app-status-list">
     <li confirmation-section asp-page="ConfirmYourEmployer" model="Model">
         Your employer
@@ -39,7 +53,7 @@
     <li confirmation-section asp-page="YourApprenticeshipDetails" model="Model">
         Your Apprenticeship Details
     </li>
-    <li confirmation-section asp-page="ConfirmYourDelivery" model="Model">
+    <li confirmation-section asp-page="HowYourApprenticeshipWillBeDelivered" model="Model">
         How your apprenticeship will be delivered
     </li>
     <li confirmation-section asp-page="RolesAndResponsibilities" model="Model">
