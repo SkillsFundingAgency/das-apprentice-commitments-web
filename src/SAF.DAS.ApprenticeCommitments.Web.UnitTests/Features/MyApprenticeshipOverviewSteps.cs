@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private bool _EmployerConfirmation, _TrainingProviderConfirmation, _ApprenticeshipDetailsConfirmation, _RolesAndResponsibilitiesConfirmation;
+        private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _RolesAndResponsibilitiesConf, _HowApprenticeshipWillBeDeliveredConf;
 
         public MyApprenticeOverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -51,10 +51,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithStatusCode(200)
                         .WithBodyAsJson(new { 
                             Id = _apprenticeshipId.Id,
-                            EmployerCorrect = _EmployerConfirmation,
-                            TrainingProviderCorrect = _TrainingProviderConfirmation,
-                            ApprenticeshipDetailsCorrect = _ApprenticeshipDetailsConfirmation,
-                            RolesAndResponsibilitiesCorrect = _RolesAndResponsibilitiesConfirmation
+                            EmployerCorrect = _EmployerConf,
+                            TrainingProviderCorrect = _TrainingProviderConf,
+                            ApprenticeshipDetailsCorrect = _ApprenticeshipDetailsConf,
+                            RolesAndResponsibilitiesCorrect = _RolesAndResponsibilitiesConf,
+                            HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf
                         }));
         }
 
@@ -80,10 +81,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice has not confirmed every aspect of the apprenciceship")]
         public void GivenTheApprenticeHasNotConfirmedEveryAspectOfTheApprenciceship()
         {
-            _EmployerConfirmation =
-                _TrainingProviderConfirmation =
-                _ApprenticeshipDetailsConfirmation =
-                _RolesAndResponsibilitiesConfirmation = false;
+            _EmployerConf =
+                _TrainingProviderConf =
+                _ApprenticeshipDetailsConf =
+                _RolesAndResponsibilitiesConf = 
+                _HowApprenticeshipWillBeDeliveredConf = false;
         }
 
         [Then(@"the apprentice should not see the ready to confirm banner")]
@@ -97,10 +99,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice has confirmed every aspect of the apprenciceship")]
         public void WhenTheApprenticeHasConfirmedEveryAspectOfTheApprenciceship()
         {
-            _EmployerConfirmation =
-                _TrainingProviderConfirmation =
-                _ApprenticeshipDetailsConfirmation =
-                _RolesAndResponsibilitiesConfirmation = true;
+            _EmployerConf =
+                _TrainingProviderConf =
+                _ApprenticeshipDetailsConf =
+                _RolesAndResponsibilitiesConf =
+                _HowApprenticeshipWillBeDeliveredConf = true;
         }
 
         [Then(@"the apprentice should see the ready to confirm banner")]

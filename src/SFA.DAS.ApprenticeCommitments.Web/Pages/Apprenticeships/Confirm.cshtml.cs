@@ -34,10 +34,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             get
             {
-                return EmployerConfirmation.HasValue && (bool)EmployerConfirmation == true
-                    && TrainingProviderConfirmation.HasValue && (bool)TrainingProviderConfirmation == true
-                    && ApprenticeshipDetailsConfirmation.HasValue && (bool)ApprenticeshipDetailsConfirmation == true
-                    && RolesAndResponsibilitiesConfirmation.HasValue && (bool)RolesAndResponsibilitiesConfirmation == true;
+                return EmployerConfirmation.Equals(true)
+                    && TrainingProviderConfirmation.Equals(true)
+                    && ApprenticeshipDetailsConfirmation.Equals(true)
+                    && RolesAndResponsibilitiesConfirmation.Equals(true)                    
+                    && HowApprenticeshipWillBeDeliveredConfirmation.Equals(true);
             }
         }
 

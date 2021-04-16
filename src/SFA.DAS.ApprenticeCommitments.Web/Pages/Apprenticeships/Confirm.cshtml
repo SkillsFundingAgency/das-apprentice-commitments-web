@@ -30,16 +30,15 @@
 <p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
 <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
 
-<div asp-show="@Model.AllConfirmed" class="govuk-form-group">
+<div asp-show="@Model.AllConfirmed" class="govuk-!-margin-bottom-5">
     <h2 class="govuk-heading-m">Your apprenticeship is ready to confirm</h2>
-    <div class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
-        <div>
+    <div class="app-notification-banner app-notification-banner--success">
+        <div class="app-notification-banner--icon-content-wrap">
             <span class="app-notification-banner__icon das-text--success-icon"></span>
             Your apprenticeship is now ready for you to check confirm
         </div>
-        <br />
         <form asp-page-handler="confirm" method="post">
-            <button class="govuk-button" style="margin-bottom:10px">Confirm your apprenticeship</button>
+            <button class="govuk-button govuk-!-margin-top-4 govuk-!-margin-bottom-0">Confirm your apprenticeship</button>
         </form>
     </div>
 </div>
