@@ -178,7 +178,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 {
                     { "FirstName", _postedRegistration.FirstName },
                     { "LastName", _postedRegistration.LastName },
-                    { "NationalInsuranceNumber", _postedRegistration.NationalInsuranceNumber },
                     { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
@@ -211,7 +210,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 ApprenticeId = _userContext.ApprenticeId,
                 FirstName = _postedRegistration.FirstName,
                 LastName = _postedRegistration.LastName,
-                NationalInsuranceNumber = _postedRegistration.NationalInsuranceNumber,
                 DateOfBirth = _postedRegistration.DateOfBirth.Date,
             });
         }
