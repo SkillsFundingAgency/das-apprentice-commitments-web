@@ -30,10 +30,9 @@ Scenario: The apprentice enters valid identity information
 	And the apprentice has not verified their identity
 	And the API will accept the identity
 	When the apprentice verifies their identity with
-	| First name | Last name  | Date of Birth | National Insurance Number |
-	| Bob        | bobbertson | 2000-01-30    | AB123456C                 |
+	| First name | Last name  | Date of Birth |
+	| Bob        | bobbertson | 2000-01-30    |
 	Then verification is successful
-	#And the apprentice should see the verify identity page
 
 Scenario: The apprentice enters invalid identity information
 	Given the apprentice has logged in
@@ -43,17 +42,15 @@ Scenario: The apprentice enters invalid identity information
 	| FirstName                 | not valid                           |
 	| LastName                  | not valid                           |
 	| DateOfBirth               | not valid                           |
-	| NationalInsuranceNumber   | not valid                           |
 	| SomethingWeDoNotKnowAbout | is very wrong                       |
 	|                           | errors can have null property names |
 	When the apprentice verifies their identity with
-	| First name | Last name  | Date of Birth | National Insurance Number |
-	| Bob        | bobbertson | 2000-01-01    | lars                      |
+	| First name | Last name  | Date of Birth |
+	| Bob        | bobbertson | 2000-01-01    |
 	Then verification is not successful
 	And the apprentice should see the following error messages
 	| Property Name           | Error Message                        |
 	| FirstName               | Enter your first name                |
 	| LastName                | Enter your last name                 |
 	| DateOfBirth             | Enter your date of birth             |
-	| NationalInsuranceNumber | Enter your National Insurance Number |
 	|                         | Something went wrong                 |

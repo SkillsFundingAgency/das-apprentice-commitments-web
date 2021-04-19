@@ -30,9 +30,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; }
 
-        [BindProperty]
-        public string NationalInsuranceNumber { get; set; }
-
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
@@ -62,7 +59,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     ApprenticeId = user.ApprenticeId,
                     FirstName = FirstName,
                     LastName = LastName,
-                    NationalInsuranceNumber = NationalInsuranceNumber,
                     DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
                     UserIdentityId = Guid.NewGuid(),
                     Email = EmailAddress,
@@ -88,7 +84,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     nameof(FirstName) => (e.PropertyName, "Enter your first name"),
                     nameof(LastName) => (e.PropertyName, "Enter your last name"),
                     nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
-                    nameof(NationalInsuranceNumber) => (e.PropertyName, "Enter your National Insurance Number"),
                     _ => ("", "Something went wrong"),
                 };
                 ModelState.AddModelError(p, m);
