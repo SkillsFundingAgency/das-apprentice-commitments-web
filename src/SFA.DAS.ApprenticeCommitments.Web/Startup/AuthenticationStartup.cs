@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -59,7 +59,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 });
 
             services.AddScoped<AuthenticationEvents>();
-            services.AddScoped<VerifiedUserService>();
 
             return services;
         }

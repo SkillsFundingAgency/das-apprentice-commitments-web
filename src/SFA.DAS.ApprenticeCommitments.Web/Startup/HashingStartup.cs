@@ -8,15 +8,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
     public static class HashingStartup
     {
-        public static IServiceCollection AddIdentityServices(
-            this IServiceCollection services,
-            HashingConfiguration configuration)
-        {
-            services.AddHashingService(configuration);
-            return services;
-        }
-
-        private static IServiceCollection AddHashingService(
+        public static IServiceCollection AddHashingService(
             this IServiceCollection services,
             HashingConfiguration configuration)
         {

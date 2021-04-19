@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddDataProtection(appConfig.ConnectionStrings, Environment)
                 .AddAuthentication(appConfig.Authentication, Environment)
                 .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
-                .AddIdentityServices(appConfig.Hashing)
+                .AddHashingService(appConfig.Hashing)
                 .RegisterServices()
                 .AddRazorPages();
         }

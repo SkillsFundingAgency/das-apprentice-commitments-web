@@ -1,4 +1,4 @@
-﻿using SAF.DAS.ApprenticeCommitments.Web;
+﻿using SAF.DAS.ApprenticeCommitments.Web.Identity;
 using System;
 using System.Security.Claims;
 
@@ -9,10 +9,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         public AuthenticatedUser(ClaimsPrincipal user)
         {
             var claim = user.ApprenticeIdClaim()
-                ?? throw new Exception("There is no `apprentice_id` claim.");
+                ?? throw new Exception($"There is no `{IdentityClaims.ApprenticeId}` claim.");
 
             if (!Guid.TryParse(claim.Value, out var apprenticeId))
-                throw new Exception($"`{claim.Value}` in claim `apprentice_id` is not a valid identifier");
+                throw new Exception($"`{claim.Value}` in claim `{IdentityClaims.ApprenticeId}` is not a valid identifier");
 
             ApprenticeId = apprenticeId;
         }
@@ -24,8 +24,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             {
                 new ClaimsIdentity(new []
                 {
-                    new Claim("apprentice_id", Guid.NewGuid().ToString()),
-                    new Claim("sub", Guid.NewGuid().ToString()),
+                    new Claim(IdentityClaims.ApprenticeId, Guid.NewGuid().ToString()),
+                    new Claim(IdentityClaims.LogonId, Guid.NewGuid().ToString()),
+                    new Claim(IdentityClaims.VerifiedUser, "True"),
                 })
             });
 

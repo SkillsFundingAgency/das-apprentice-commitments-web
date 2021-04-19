@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using SAF.DAS.ApprenticeCommitments.Web;
+using SAF.DAS.ApprenticeCommitments.Web.Identity;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -29,8 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             if (registrationClaim == null) return;
             if (apprenticeClaim != null) return;
 
-            var apprenticeId = new ClaimsIdentity(new[] { new Claim("apprentice_id", registrationClaim.Value) });
-            principal.AddIdentity(apprenticeId);
+            principal.AddIdentity(IdentityClaims.CreateApprenticeIdClaim(registrationClaim.Value));
         }
 
         public async Task AddUserVerifiedClaim(ClaimsPrincipal principal)
@@ -38,11 +37,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             var claim = principal.ApprenticeIdClaim();
 
             if (claim == null) return;
-            if (!Guid.TryParse(claim.Value, out var registrationId)) return;
-            if (!await _verifiedUserService.IsUserVerified(registrationId)) return;
+            if (!Guid.TryParse(claim.Value, out var apprenticeId)) return;
+            if (!await _verifiedUserService.IsUserVerified(apprenticeId)) return;
 
-            var verifiedUser = new ClaimsIdentity(new[] { new Claim("VerifiedUser", "True") });
-            principal.AddIdentity(verifiedUser);
+            principal.AddIdentity(IdentityClaims.CreateVerifiedUserClaim(true));
         }
     }
 }

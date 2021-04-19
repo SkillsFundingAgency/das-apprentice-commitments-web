@@ -1,6 +1,7 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SAF.DAS.ApprenticeCommitments.Web.Identity;
 using System;
 using System.Security.Claims;
 
