@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         {
             services
                 .AddApplicationAuthentication(config)
-                .AddApplicationAuthorisation(environment);
+                .AddApplicationAuthorisation();
 
             services.AddTransient((_) => config);
 
@@ -64,25 +64,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         }
 
         private static IServiceCollection AddApplicationAuthorisation(
-            this IServiceCollection services,
-            IWebHostEnvironment environment)
+            this IServiceCollection services)
         {
             services.AddAuthorization();
 
-            if (environment.IsDevelopment())
-            {
-                services.AddScoped(_ => AuthenticatedUser.FakeUser);
-            }
-            else
-            {
-                services.AddRazorPages(o => o.Conventions
-                    .AuthorizePage("/ConfirmYourIdentity")
-                    .AuthorizeFolder("/Apprenticeships")
-                    .AllowAnonymousToPage("/ping"));
-                services.AddScoped<AuthenticatedUser>();
-                services.AddScoped(s => s
-                    .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
-            }
+            services.AddRazorPages(o => o.Conventions
+                .AuthorizeFolder("/")
+                .AllowAnonymousToPage("/ping"));
+            services.AddScoped<AuthenticatedUser>();
+            services.AddScoped(s => s
+                .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
 
             return services;
         }

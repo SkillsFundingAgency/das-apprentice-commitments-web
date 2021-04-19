@@ -33,7 +33,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
         public ApprenticeCommitmentsApiBuilder WithUsersFirstLogin()
         {
-            var data = new VerifyRegistrationResponse { Email = "bob@example.com", ApprenticeId = Guid.NewGuid() };
+            var data = new VerifyRegistrationResponse 
+            {
+                Email = "bob@example.com",
+                ApprenticeId = Guid.NewGuid(),
+                HasViewedVerification = true,
+                HasCompletedVerification = true,
+            };
             var response = JsonConvert.SerializeObject(data, DefaultSerializerSettings);
 
             _server.Given(
