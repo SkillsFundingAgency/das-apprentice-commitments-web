@@ -3,19 +3,19 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="app-user-header">
-        <div class="govuk-width-container">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-one-half">
-                    <p class="govuk-body-l app-user-header__name">
-                        <span asp-show="Model is ConfirmApprenticeshipModel">Welcome, </span>
-                        @User.FullName()
-                    </p>
-                </div>
-                <div class="govuk-grid-column-one-half">
-                    <a asp-page="/SignOut" class="govuk-link app-user-header__link">Sign out</a>
-                </div>
+<div class="app-user-header">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body-l app-user-header__name">
+                    <span asp-show="Model is ConfirmApprenticeshipModel">Welcome, </span>
+                    <span asp-show="!(Model is ConfirmYourIdentityModel)">@User.FullName()</span>&nbsp
+                </p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <a asp-page="/SignOut" class="govuk-link app-user-header__link">Sign out</a>
             </div>
         </div>
     </div>
+</div>
 }
