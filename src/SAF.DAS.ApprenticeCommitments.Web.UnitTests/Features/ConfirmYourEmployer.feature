@@ -36,3 +36,11 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the model should contain an error message
 	And the apprentice should see the employer's name
 	And the link is pointing to the confirm page
+
+Scenario: The apprentice is authenticated has previously said this is not their employer
+	Given the apprentice has logged in
+	And the apprentice has confirmed this is not their employer
+	When accessing the ConfirmYourEmployer page
+	Then the response status code should be Ok
+	And the apprentice should see the employer's name
+	And the user should see the confirmation options

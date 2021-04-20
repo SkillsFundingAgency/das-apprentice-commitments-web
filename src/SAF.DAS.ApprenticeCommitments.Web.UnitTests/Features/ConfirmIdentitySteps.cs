@@ -18,7 +18,6 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
-    [Scope(Feature = "ConfirmIdentity")]
     public class ConfirmIdentitySteps : StepsBase
     {
         private readonly TestContext _context;
@@ -30,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context = context;
             _userContext = userContext;
 
-            _context.OuterApi.MockServer.Given(
+            _context.OuterApi?.MockServer.Given(
                     Request.Create()
                         .UsingPost()
                         .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")

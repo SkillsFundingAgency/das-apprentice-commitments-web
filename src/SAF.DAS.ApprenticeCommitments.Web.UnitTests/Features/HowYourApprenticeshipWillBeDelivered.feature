@@ -35,3 +35,9 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the model should contain an error message
 	And the back link is pointing to the confirm page
 
+Scenario: The apprentice is authenticated and has previously negatively confirmed
+	Given the apprentice has logged in
+	And the apprentice has negatively confirmed they have read the page
+	When accessing the How your apprenticeship will be delivered page
+	Then the response status code should be OK
+	And the user should see the confirmation options

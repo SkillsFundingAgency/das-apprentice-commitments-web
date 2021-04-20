@@ -32,14 +32,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
 
             _context.OuterApi.MockServer.Given(
-                Request.Create()
-                    .UsingGet()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
-                .RespondWith(Response.Create()
-                    .WithStatusCode(200)
-                    .WithBodyAsJson(new { Id = _apprenticeshipId.Id } ));
-
-            _context.OuterApi.MockServer.Given(
                Request.Create()
                    .UsingPost()
                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/howapprenticeshipwillbedeliveredconfirmation"))
@@ -58,6 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice has not verified they have read the page")]
         public void GivenTheApprenticeHasNotVerifiedTheyHaveReadThePage()
         {
+            SetupApiConfirmation(null);
         }
 
         [Given(@"the apprentice confirms they understand what they have read")]
@@ -76,6 +69,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void GivenTheApprenticeDoesnTSelectAnOption()
         {
             _confirmedHowApprenticeshipDelivered = null;
+        }
+
+        [Given(@"the apprentice has negatively confirmed they have read the page")]
+        public void GivenTheApprenticeHasNegativelyConfirmedTheyHaveReadThePage()
+        {
+            SetupApiConfirmation(false);
+        }
+
+        private void SetupApiConfirmation(bool? confirmed)
+        {
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Id = _apprenticeshipId.Id, HowApprenticeshipDeliveredCorrect = confirmed }));
         }
 
         [When(@"accessing the How your apprenticeship will be delivered page")]
@@ -122,6 +132,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
             JsonConvert.DeserializeObject<HowApprenticeshipDeliveredConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { HowApprenticeshipDeliveredCorrect = confirm });
+        }
+
+        [Then("the user should see the confirmation options")]
+        public void ThenTheUserShouldSeeTheConfirmationOptions()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<HowYourApprenticeshipWillBeDeliveredModel>().Which.ConfirmedHowApprenticeshipDelivered.Should().BeNull();
         }
 
         [Then(@"the user should be redirected back to the overview page")]
