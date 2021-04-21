@@ -45,6 +45,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         }
 
         [Given("the apprentice has logged in")]
+        [Given("a logged in user")]
         public void GivenTheApprenticeHasLoggedIn()
         {
             TestAuthenticationHandler.AddUser(_userContext.ApprenticeId);

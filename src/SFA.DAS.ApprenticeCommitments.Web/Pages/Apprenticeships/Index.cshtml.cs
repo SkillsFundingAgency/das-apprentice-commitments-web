@@ -22,7 +22,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
         {
-            return await RedirectToLatestApprenticeship(user);
+            try
+            {
+                return await RedirectToLatestApprenticeship(user);
+            }
+            catch (RestEase.ApiException e) when(e.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return RedirectToPage("/ConfirmYourIdentity");
+            }
         }
 
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
