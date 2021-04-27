@@ -9,9 +9,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
     {
         internal static async Task ConfirmIdentity(HttpContext context)
         {
-            var identity = (ClaimsIdentity)context.User.Identity;
-            identity.AddClaim(new Claim("VerifiedUser", "True"));
-            await context.SignInAsync(context.User);
+            var authenticated = await context.AuthenticateAsync();
+
+            if (authenticated.Succeeded)
+            {
+                var identity = (ClaimsIdentity)authenticated.Principal.Identity;
+                identity.AddClaim(new Claim("VerifiedUser", "True"));
+                await context.SignInAsync(authenticated.Principal, authenticated.Properties);
+            }
         }
 
         internal static bool UserHasConfirmedIdentity(HttpContext httpContext)
