@@ -5,6 +5,7 @@
 
 @mytag
 Scenario: Redirect to Identity Service
+	Given the apprentice has logged in
 	When accessing the "ChangeYourEmailAddress" page
 	Then the result should redirect to the identity server's change email page
 

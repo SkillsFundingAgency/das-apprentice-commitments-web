@@ -11,7 +11,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features

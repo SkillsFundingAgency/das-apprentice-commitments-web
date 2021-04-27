@@ -4,7 +4,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations
 {
     public class MoqAutoDataAttribute : AutoDataCustomisationAttributeBase
     {
-        public MoqAutoDataAttribute() : base(new AutoMoqCustomization())
+        public MoqAutoDataAttribute() : base(new AutoMoqCustomization { ConfigureMembers = true })
         {
         }
     }

@@ -1,7 +1,7 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.HashingService;
 using static SAF.DAS.ApprenticeCommitments.Web.UnitTests.EqualityTests;
 
