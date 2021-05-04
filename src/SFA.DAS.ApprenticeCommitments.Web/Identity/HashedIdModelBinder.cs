@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 #nullable enable
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing
+namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     internal sealed class HashedIdModelBinder : IModelBinder
     {

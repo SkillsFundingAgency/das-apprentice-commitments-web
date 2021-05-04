@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.HashingService;
 using System;
 

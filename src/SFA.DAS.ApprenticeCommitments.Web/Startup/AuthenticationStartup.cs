@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         {
             services
                 .AddApplicationAuthentication(config)
-                .AddApplicationAuthorisation(environment);
+                .AddApplicationAuthorisation();
 
             services.AddTransient((_) => config);
 
@@ -54,30 +54,26 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
                     options.SaveTokens = true;
                     options.DisableTelemetry = false;
+
+                    options.EventsType = typeof(AuthenticationEvents);
                 });
+
+            services.AddScoped<AuthenticationEvents>();
 
             return services;
         }
 
         private static IServiceCollection AddApplicationAuthorisation(
-            this IServiceCollection services,
-            IWebHostEnvironment environment)
+            this IServiceCollection services)
         {
             services.AddAuthorization();
 
-            if (environment.IsDevelopment())
-            {
-                services.AddScoped(_ => AuthenticatedUser.FakeUser);
-            }
-            else
-            {
-                services.AddRazorPages(o => o.Conventions
-                    .AuthorizePage("/ConfirmYourIdentity")
-                    .AllowAnonymousToPage("/ping"));
-                services.AddScoped<AuthenticatedUser>();
-                services.AddScoped(s => s
-                    .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
-            }
+            services.AddRazorPages(o => o.Conventions
+                .AuthorizeFolder("/")
+                .AllowAnonymousToPage("/ping"));
+            services.AddScoped<AuthenticatedUser>();
+            services.AddScoped(s => s
+                .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
 
             return services;
         }

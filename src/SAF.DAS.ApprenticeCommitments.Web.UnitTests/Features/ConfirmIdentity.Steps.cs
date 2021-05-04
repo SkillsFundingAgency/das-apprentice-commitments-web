@@ -45,9 +45,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         }
 
         [Given("the apprentice has logged in")]
+        [Given("a logged in user")]
         public void GivenTheApprenticeHasLoggedIn()
         {
             TestAuthenticationHandler.AddUser(_userContext.ApprenticeId);
+            _context.Web.Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
+        }
+
+        [Given("an unverified logged in user")]
+        public void GivenAVerifiedApprenticeHasLoggedIn()
+        {
+            TestAuthenticationHandler.AddUnverifiedUser(_userContext.ApprenticeId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }

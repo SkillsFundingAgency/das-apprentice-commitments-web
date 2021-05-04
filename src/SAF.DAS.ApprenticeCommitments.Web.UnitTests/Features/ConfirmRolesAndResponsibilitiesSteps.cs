@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-          
+
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
