@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class TestAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        private static ConcurrentBag<Guid> _users = new ConcurrentBag<Guid>();
+        private static readonly ConcurrentDictionary<Guid, bool> _users = new ConcurrentDictionary<Guid, bool>();
 
         public TestAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -24,7 +25,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
         public static void AddUser(Guid registrationId)
         {
-            _users.Add(registrationId);
+            Console.WriteLine($"Adding logged in user {registrationId}");
+            _users.TryAdd(registrationId, true);
+        }
+
+        internal static void AddUnverifiedUser(Guid apprenticeId)
+        {
+            Console.WriteLine($"Adding unverified logged in user {apprenticeId}");
+            _users.TryAdd(apprenticeId, false);
         }
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -37,14 +45,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             var guid = FindUserFromHeader();
             if(guid == null) return AuthenticateResult.Fail("No user header found");
 
-            var exists = _users.TryPeek(out var _);
+            
+            var exists = _users.TryGetValue(guid.Value, out var isVerified);
             if (!exists) return AuthenticateResult.Fail($"User `{guid}` is not logged in");
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "Test user"),
-                new Claim("registration_id", guid.ToString()),
+                new Claim("apprentice_id", guid.ToString()),
             };
+            if (isVerified) claims.Add(new Claim("VerifiedUser", "True"));
             var identity = new ClaimsIdentity(claims, "Test1");
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test2");

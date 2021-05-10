@@ -4,7 +4,7 @@ using SFA.DAS.HashingService;
 
 #nullable enable
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing
+namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     internal class HashedIdRouteConstraint : IRouteConstraint
     {

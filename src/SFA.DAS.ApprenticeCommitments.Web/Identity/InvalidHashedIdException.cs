@@ -2,7 +2,7 @@
 
 #nullable enable
 
-namespace SFA.DAS.ApprenticeCommitments.Web.Pages.IdentityHashing
+namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     public class InvalidHashedIdException : Exception
     {

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Threading.Tasks;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
@@ -63,6 +63,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     UserIdentityId = Guid.NewGuid(),
                     Email = EmailAddress,
                 });
+
+                await VerifiedUser.ConfirmIdentity(HttpContext);
 
                 return RedirectToPage("/apprenticeships/index");
             }
