@@ -32,6 +32,8 @@
         document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
 
+    <partial name="_CookieBanner" model="@new SFA.DAS.ApprenticeCommitments.Web.Pages.Cookies.CookieBannerViewModel()" />
+
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
     <partial name="_Header" />
@@ -39,7 +41,7 @@
     @RenderSection("AfterHeader", required: false)
 
     <div class="govuk-width-container">
-        
+
         @RenderSection("BreadCrumbs", required: false)
 
         @if (Model is DAS.ApprenticeCommitments.Web.Services.IHasBackLink backlink)
