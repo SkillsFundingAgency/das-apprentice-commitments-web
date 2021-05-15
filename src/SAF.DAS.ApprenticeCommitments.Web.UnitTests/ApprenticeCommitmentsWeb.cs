@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {

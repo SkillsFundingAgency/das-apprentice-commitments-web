@@ -1,6 +1,6 @@
 using FluentAssertions;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -48,16 +48,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     }));
 
             _context.OuterApi.MockServer.Given(
-               Request.Create()
-                   .UsingGet()
-                   .WithPath($"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId}")
-                                             )
-               .RespondWith(Response.Create()
-                   .WithStatusCode(200)
-                   .WithBodyAsJson(new
-                   {
-                       Id = 1235,
-                   }));
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId}")
+                                              )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new
+                    {
+                        Id = 1235,
+                    }));
         }
 
         [When(@"accessing the ""(.*)"" page")]

@@ -30,13 +30,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _userContext = userContext;
 
             _context.OuterApi?.MockServer.Given(
-                    Request.Create()
-                        .UsingPost()
-                        .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
-                )
+                     Request.Create()
+                         .UsingPost()
+                         .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
+                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(HttpStatusCode.Accepted));
-
         }
 
         [Given("the apprentice has not logged in")]
@@ -84,10 +83,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void GivenTheApprenticeHasNotVerifiedTheirIdentityButHasSeenThjisPage()
         {
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingGet()
-                        .WithPath($"/registrations/{_userContext.ApprenticeId}")
-                )
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/registrations/{_userContext.ApprenticeId}")
+                                              )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new VerifyRegistrationResponse()
@@ -98,9 +97,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         HasViewedVerification = true
                     }));
         }
-
-
-
 
         [When(@"accessing the ""(.*)"" page")]
         public async Task WhenAccessingThePage(string page)
@@ -128,7 +124,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 Request.Create()
                     .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
                     .UsingPost()
-            );
+                                                                               );
 
             registrationPosts.Should().NotBeEmpty();
             var post = registrationPosts.First();
@@ -143,11 +139,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 Request.Create()
                     .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
                     .UsingPost()
-            );
+                                                                               );
 
             registrationPosts.Should().BeEmpty();
         }
-
 
         [Given("the apprentice has verified their identity")]
         public void GivenTheApprenticeHasVerifiedTheirIdentity()

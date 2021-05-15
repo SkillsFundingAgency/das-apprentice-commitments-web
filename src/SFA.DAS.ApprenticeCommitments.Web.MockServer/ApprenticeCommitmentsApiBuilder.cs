@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
         public ApprenticeCommitmentsApiBuilder WithUsersFirstLogin()
         {
-            var data = new VerifyRegistrationResponse 
+            var data = new VerifyRegistrationResponse
             {
                 Email = "bob@example.com",
                 ApprenticeId = Guid.NewGuid(),
@@ -90,7 +90,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     Request.Create()
                         .WithPath("/registrations/*/firstseen")
                         .UsingPost()
-                )
+                         )
                 .RespondWith(
                     Response.Create()
                         .WithStatusCode(HttpStatusCode.Accepted));
@@ -112,26 +112,26 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     }));
 
             _server.Given(
-               Request.Create()
-                   .UsingGet()
-                   .WithPath($"/apprentices/*/apprenticeships/1235")
-                                             )
-               .RespondWith(Response.Create()
-                   .WithStatusCode(200)
-                   .WithBodyAsJson(new
-                   {
-                       Id = 1235,
-                       EmployerName = "My Mock company",
-                       TrainingProviderName = "My Mock trainer",
-                       CourseName = "My mock apprenticeship course",
-                       CourseOption = (string)null,
-                       CourseLevel = 3,
-                       PlannedStartDate = new DateTime(2021, 03, 12),
-                       PlannedEndDate = new DateTime(2022, 09, 15),
-                       DurationInMonths = 19,
-                       EmployerCorrect = true,
-                       TrainingProviderCorrect = false,
-                   }));
+                Request.Create()
+                    .UsingGet()
+                    .WithPath($"/apprentices/*/apprenticeships/1235")
+                         )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new
+                    {
+                        Id = 1235,
+                        EmployerName = "My Mock company",
+                        TrainingProviderName = "My Mock trainer",
+                        CourseName = "My mock apprenticeship course",
+                        CourseOption = (string)null,
+                        CourseLevel = 3,
+                        PlannedStartDate = new DateTime(2021, 03, 12),
+                        PlannedEndDate = new DateTime(2022, 09, 15),
+                        DurationInMonths = 19,
+                        EmployerCorrect = true,
+                        TrainingProviderCorrect = false,
+                    }));
 
             return this;
         }
@@ -144,7 +144,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         .WithPath($"/apprentices/*/apprenticeships/*/employerconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                );
+                            );
 
             return this;
         }
@@ -157,7 +157,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         .WithPath($"/apprentices/*/apprenticeships/*/trainingproviderconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                );
+                            );
 
             return this;
         }
@@ -170,7 +170,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         .WithPath($"/apprentices/*/apprenticeships/*/apprenticeshipdetailsconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                );
+                            );
 
             return this;
         }
@@ -183,7 +183,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         .WithPath($"/apprentices/*/apprenticeships/*/rolesandresponsibilitiesconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                );
+                            );
 
             return this;
         }
@@ -196,7 +196,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         .WithPath($"/apprentices/*/apprenticeships/*/howapprenticeshipwillbedeliveredconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                );
+                            );
 
             return this;
         }
