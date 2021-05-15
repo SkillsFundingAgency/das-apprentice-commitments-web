@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
 {
-    internal class DomainValidationException : Exception
+    public class DomainValidationException : Exception
     {
         public List<ErrorItem> Errors { get; }
 

@@ -47,7 +47,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             _ = ApprenticeshipId ?? throw new ArgumentNullException(nameof(ApprenticeshipId));
 
-            //var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 

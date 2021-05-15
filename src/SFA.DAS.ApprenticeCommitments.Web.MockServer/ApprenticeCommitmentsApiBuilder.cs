@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 {
     public class ApprenticeCommitmentsApiBuilder
     {
-        public static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+        private static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
         private readonly WireMockServer _server;
 
