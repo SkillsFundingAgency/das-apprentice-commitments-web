@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
 
     public class ErrorItem
     {
-        public string PropertyName { get; set; }
-        public string ErrorMessage { get; set; }
+        public string PropertyName { get; set; } = null!;
+        public string ErrorMessage { get; set; } = null!;
     }
 }

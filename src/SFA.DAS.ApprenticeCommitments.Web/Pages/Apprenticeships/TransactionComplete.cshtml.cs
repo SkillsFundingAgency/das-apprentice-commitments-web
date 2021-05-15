@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -11,10 +11,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly AuthenticatedUserClient _client;
 
         [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; }
+        public HashedId ApprenticeshipId { get; set; } = null!;
 
         [BindProperty]
-        public string CourseName { get; set; }
+        public string CourseName { get; set; } = null!;
 
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 

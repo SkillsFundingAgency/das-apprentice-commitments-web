@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     public class RequiresIdentityConfirmedAttribute : TypeFilterAttribute

@@ -2,24 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Threading.Tasks;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-
-#nullable enable
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [RequiresIdentityConfirmed]
     public class ConfirmApprenticeshipModel : PageModel
     {
-        //private readonly AuthenticatedUserClient _client;
-
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
 
         [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; }
+        public HashedId ApprenticeshipId { get; set; } = null!;
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -36,7 +32,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 return EmployerConfirmation.Equals(true)
                     && TrainingProviderConfirmation.Equals(true)
                     && ApprenticeshipDetailsConfirmation.Equals(true)
-                    && RolesAndResponsibilitiesConfirmation.Equals(true)                    
+                    && RolesAndResponsibilitiesConfirmation.Equals(true)
                     && HowApprenticeshipWillBeDeliveredConfirmation.Equals(true);
             }
         }

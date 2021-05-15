@@ -5,8 +5,6 @@ using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System;
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 {
     [HtmlTargetElement("li", Attributes = "confirmation-section")]

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using System.IdentityModel.Tokens.Jwt;
@@ -81,7 +80,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
     public class AuthenticationServiceConfiguration
     {
-        public string MetadataAddress { get; set; }
+        public string MetadataAddress { get; set; } = null!;
         public string ChangeEmailPath { get; set; } = "/changeemail";
     }
 }

@@ -2,8 +2,6 @@
 using SFA.DAS.HashingService;
 using System.Diagnostics.CodeAnalysis;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     [ModelBinder(typeof(HashedIdModelBinder))]
