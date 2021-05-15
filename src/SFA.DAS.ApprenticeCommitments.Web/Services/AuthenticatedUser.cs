@@ -9,10 +9,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         public AuthenticatedUser(ClaimsPrincipal user)
         {
             var claim = user.ApprenticeIdClaim()
-                ?? throw new Exception($"There is no `{IdentityClaims.ApprenticeId}` claim.");
+                ?? throw new InvalidOperationException($"There is no `{IdentityClaims.ApprenticeId}` claim.");
 
             if (!Guid.TryParse(claim.Value, out var apprenticeId))
-                throw new Exception($"`{claim.Value}` in claim `{IdentityClaims.ApprenticeId}` is not a valid identifier");
+                throw new InvalidOperationException($"`{claim.Value}` in claim `{IdentityClaims.ApprenticeId}` is not a valid identifier");
 
             ApprenticeId = apprenticeId;
         }

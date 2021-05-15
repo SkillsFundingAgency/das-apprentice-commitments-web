@@ -45,7 +45,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGetAsync()
         {
-            _ = ApprenticeshipId ?? throw new ArgumentNullException(nameof(ApprenticeshipId));
+            _ = ApprenticeshipId ?? throw new PropertyNullException(nameof(ApprenticeshipId));
 
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);

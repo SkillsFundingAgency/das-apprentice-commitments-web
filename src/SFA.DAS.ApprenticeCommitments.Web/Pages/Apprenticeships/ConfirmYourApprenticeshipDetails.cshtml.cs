@@ -4,8 +4,5 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     public class ConfirmYourApprenticeshipDetailsModel : PageModel
     {
-        public void OnGet()
-        {
-        }
     }
 }

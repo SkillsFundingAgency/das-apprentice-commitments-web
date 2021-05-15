@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
-using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
@@ -26,9 +25,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            _ = ViewContext ?? throw new ArgumentNullException(nameof(ViewContext));
-            _ = AspPage ?? throw new ArgumentNullException(nameof(AspPage));
-            _ = Model ?? throw new ArgumentNullException(nameof(Model));
+            _ = ViewContext ?? throw new PropertyNullException(nameof(ViewContext));
+            _ = AspPage ?? throw new PropertyNullException(nameof(AspPage));
+            _ = Model ?? throw new PropertyNullException(nameof(Model));
 
             var url = _urlFactory.Page(ViewContext, AspPage, new { Model.ApprenticeshipId });
 
