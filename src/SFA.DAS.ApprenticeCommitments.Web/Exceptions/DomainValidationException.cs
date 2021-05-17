@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
 {
+    [Serializable]
     public class DomainValidationException : Exception
     {
         public List<ErrorItem> Errors { get; }
@@ -10,6 +12,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
         public DomainValidationException(List<ErrorItem> errors) : base("DomainValidation Exception")
         {
             Errors = errors;
+        }
+
+        protected DomainValidationException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+        {
+            _ = info ?? throw new ArgumentNullException(nameof(info));
+            Errors = info.GetValue(nameof(Errors), typeof(List<ErrorItem>)) as List<ErrorItem>
+                ?? throw new InvalidOperationException();
         }
     }
 
