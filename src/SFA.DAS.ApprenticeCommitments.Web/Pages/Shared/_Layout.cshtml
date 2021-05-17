@@ -24,6 +24,9 @@
     <![endif]-->
 
     <link href="~/css/site.css" media="screen" rel="stylesheet" no-cdn />
+    <link href="~/css/_step-by-step-header.css" rel="stylesheet" no-cdn />
+    <link href="~/css/_step-by-step-nav.css" rel="stylesheet" no-cdn />
+    <link href="~/css/_step-by-step-related.css" rel="stylesheet" no-cdn />
 
     <title>@ViewData["Title"] - Commitment Statement</title>
 </head>
@@ -39,7 +42,7 @@
     @RenderSection("AfterHeader", required: false)
 
     <div class="govuk-width-container">
-        
+
         @RenderSection("BreadCrumbs", required: false)
 
         @if (Model is DAS.ApprenticeCommitments.Web.Services.IHasBackLink backlink)
@@ -56,6 +59,7 @@
     <script src="/libs/jquery/jquery.min.js"></script>
     <script src="/js/das-all.js"></script>
     <script src="/js/app.min.js"></script>
+    <script src="~/js/step-by-step-nav.js" no-cdn></script>
     <script>
         window.GOVUKFrontend.initAll();
         window.DASFrontend.initAll();
