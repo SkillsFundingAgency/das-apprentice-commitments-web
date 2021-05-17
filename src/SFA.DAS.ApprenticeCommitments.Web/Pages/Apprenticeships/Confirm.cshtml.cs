@@ -16,7 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly AuthenticatedUser _authenticatedUser;
 
         [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; } = null!;
+        public HashedId ApprenticeshipId { get; set; }
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -46,7 +46,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGetAsync()
         {
-            _ = ApprenticeshipId ?? throw new PropertyNullException(nameof(ApprenticeshipId));
+            if(ApprenticeshipId == default)
+                throw new PropertyNullException(nameof(ApprenticeshipId));
 
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);

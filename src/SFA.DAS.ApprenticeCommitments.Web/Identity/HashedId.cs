@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     [ModelBinder(typeof(HashedIdModelBinder))]
-    public sealed class HashedId
+    public struct HashedId
     {
         public long Id { get; }
         public string Hashed { get; }

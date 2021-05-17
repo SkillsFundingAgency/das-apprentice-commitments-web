@@ -8,7 +8,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     public class CannotConfirmApprenticeshipModel : PageModel, IHasBackLink
     {
         [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; } = null!;
+        public HashedId ApprenticeshipId { get; set; }
 
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
     }

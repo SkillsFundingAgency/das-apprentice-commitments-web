@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly AuthenticatedUser _authenticatedUser;
 
         [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; } = null!;
+        public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
         public bool? ConfirmedApprenticeshipDetails { get; set; }
