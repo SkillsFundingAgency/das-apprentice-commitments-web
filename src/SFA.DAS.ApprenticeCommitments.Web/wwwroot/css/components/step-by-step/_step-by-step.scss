@@ -451,6 +451,7 @@ $top-border: solid 2px govuk-colour("mid-grey", $legacy: "grey-3");
     @include govuk-font(16, $weight: bold);
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 .app-step-nav-related--singular {
@@ -475,19 +476,9 @@ $top-border: solid 2px govuk-colour("mid-grey", $legacy: "grey-3");
     }
 }
 
-.app-step-nav-related__links {
-    list-style: none;
-}
-
 .app-step-nav-related__link-item {
     margin-top: govuk-spacing(3);
     @include govuk-media-query($from: tablet) {
         margin-top: govuk-spacing(1);
     }
 }
-
-.app-step-nav-related__link {
-
-}
-
-  

@@ -1,5 +1,5 @@
 ﻿
-// Step by step 
+// Step by step
 
 var $stepByStep = $('#step-by-step-navigation')
 if ($stepByStep) {
