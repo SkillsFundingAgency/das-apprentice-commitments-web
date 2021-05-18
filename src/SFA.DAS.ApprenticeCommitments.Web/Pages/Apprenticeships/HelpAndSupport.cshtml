@@ -1,25 +1,21 @@
 ﻿@page
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.HelpAndSupportModel
 @{
+    ViewData["Title"] = "Help and support";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
         <h1 class="govuk-heading-l">
             Help and support
         </h1>
-
         <p>
             If you have questions or concerns about your apprenticeship, here are some places you can go.
         </p>
-
         <div id="step-by-step-navigation" class="app-step-nav app-step-nav--large app-step-nav--active" data-show-text="Show" data-hide-text="Hide" data-show-all-text="Show all" data-hide-all-text="Hide all">
-
             <ol class="app-step-nav__steps">
-                <li class="app-step-nav__step js-step" id="check-youre-allowed-to-drive">
+                <li class="app-step-nav__step js-step" id="check-our-help-center">
                     <div class="app-step-nav__header js-toggle-panel" data-position="1">
-
                         <h2 class="app-step-nav__title">
                             <span class="app-step-nav__circle app-step-nav__circle--number">
                                 <span class="app-step-nav__circle-inner">
@@ -28,9 +24,8 @@
                                     </span>
                                 </span>
                             </span>
-
                             <span class="js-step-title">
-                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-check-youre-allowed-to-drive-1">
+                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-check-our-help-center-1">
                                     <span class="js-step-title-text">
                                         Check our Help Centre for answers to your questions
                                     </span><span class="app-step-nav__toggle-link js-toggle-link" aria-hidden="true" hidden="">Show</span>
@@ -38,12 +33,7 @@
                             </span>
                         </h2>
                     </div>
-
-                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-check-youre-allowed-to-drive-1">
-                        <!--<p class="app-step-nav__paragraph">XXXXX</p>-->
-
-
-
+                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-check-our-help-center-1">
                         <ul class="govuk-list govuk-list--bullet">
                             <li>Knowledge articles about your employer</li>
                             <li>Knowledge articles about your training provider</li>
@@ -51,10 +41,8 @@
                             <li>Other answers to questions you might have</li>
                         </ul>
                     </div>
-
                 </li>
-
-                <li class="app-step-nav__step js-step" id="get-a-provisional-licence">
+                <li class="app-step-nav__step js-step" id="speak-to-your-contact">
                     <div class="app-step-nav__header js-toggle-panel" data-position="2">
                         <h2 class="app-step-nav__title">
                             <span class="app-step-nav__circle app-step-nav__circle--number">
@@ -64,9 +52,8 @@
                                     </span>
                                 </span>
                             </span>
-
                             <span class="js-step-title">
-                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-get-a-provisional-licence-2">
+                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-speak-to-your-contact-2">
                                     <span class="js-step-title-text">
                                         Speak to your day-to-day contact at your employer
                                     </span><span class="app-step-nav__toggle-link js-toggle-link" aria-hidden="true" hidden="">Show</span>
@@ -74,15 +61,12 @@
                             </span>
                         </h2>
                     </div>
-
-                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-get-a-provisional-licence-2">
+                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-speak-to-your-contact-2">
                         <p class="app-step-nav__paragraph">You should have a day-to-day contact or manager who can answer any questions you might have. </p>
                         <p class="app-step-nav__paragraph">Speak to them next time you’re at work or contact them by phone or email if it can’t wait.</p>
                     </div>
-
                 </li>
-
-                <li class="app-step-nav__step js-step" id="driving-lessons-and-practice">
+                <li class="app-step-nav__step js-step" id="speak-to-your-training-provider">
                     <div class="app-step-nav__header js-toggle-panel" data-position="3">
                         <h2 class="app-step-nav__title">
                             <span class="app-step-nav__circle app-step-nav__circle--number">
@@ -92,9 +76,8 @@
                                     </span>
                                 </span>
                             </span>
-
                             <span class="js-step-title">
-                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-driving-lessons-and-practice-3">
+                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-speak-to-your-training-provider-3">
                                     <span class="js-step-title-text">
                                         Speak to your training provider
                                     </span><span class="app-step-nav__toggle-link js-toggle-link" aria-hidden="true" hidden="">Show</span>
@@ -102,21 +85,13 @@
                             </span>
                         </h2>
                     </div>
-
-                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-driving-lessons-and-practice-3">
+                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-speak-to-your-training-provider-3">
                         <p class="app-step-nav__paragraph">If you can’t resolve the issue with your employer, speak to your main contact at your training provider who can answer any questions you might have. </p>
-
                         <p class="app-step-nav__paragraph">Speak to them next time you do your off-the-job training or contact them by phone or email if it can’t wait.</p>
-
                     </div>
-
                 </li>
-
-
-
-
-                <li class="app-step-nav__step js-step" id="when-you-pass">
-                    <div class="app-step-nav__header js-toggle-panel" data-position="7">
+                <li class="app-step-nav__step js-step" id="still-have-concerns">
+                    <div class="app-step-nav__header js-toggle-panel" data-position="4">
                         <h2 class="app-step-nav__title">
                             <span class="app-step-nav__circle app-step-nav__circle--number">
                                 <span class="app-step-nav__circle-inner">
@@ -125,9 +100,8 @@
                                     </span>
                                 </span>
                             </span>
-
                             <span class="js-step-title">
-                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-when-you-pass-7">
+                                <button class="app-step-nav__button app-step-nav__button--title js-step-title-button" aria-expanded="false" aria-controls="step-panel-still-have-concerns-4">
                                     <span class="js-step-title-text">
                                         If you still have concerns, you should tell us.
                                     </span><span class="app-step-nav__toggle-link js-toggle-link" aria-hidden="true" hidden="">Show</span>
@@ -135,16 +109,12 @@
                             </span>
                         </h2>
                     </div>
-
-                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-when-you-pass-7">
+                    <div class="app-step-nav__panel js-panel js-hidden" id="step-panel-still-have-concerns-4">
                         <p class="app-step-nav__paragraph">at the Education Skills Funding Agency, we’ll always take your complaints seriously.</p>
                         <h3 class="govuk-heading-s">Telephone</h3>
                         <p class="app-step-nav__paragraph">XXXXX</p>
-
                         <h3 class="govuk-heading-s">Telephone</h3>
-
                         <p class="govuk-body">If you have a unique reference number, have it with you when you call.</p>
-
                         <ul class="govuk-list">
                             <li>Telephone: 000 0000 0000</li>
                             <li>Textphone: 000 0000 0000</li>
@@ -157,23 +127,16 @@
                             <a class="govuk-link" href="#">Find out about call charges</a>
                         </p>
                         <h3 class="govuk-heading-s">Email</h3>
-
                         <ul class="govuk-list">
                             <li><a class="govuk-link" href="#">name@example.com</a></li>
                             <li>We aim to respond within 2 working days</li>
                         </ul>
-
-
                     </div>
-
                 </li>
             </ol>
         </div>
-        <a href="../dashboard/2-my-apprenticeships" class="govuk-button" data-module="govuk-button">
+        <a href="#" class="govuk-button" data-module="govuk-button">
             Go back to the dashboard
         </a>
-
     </div>
 </div>
-
-
