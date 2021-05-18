@@ -61,6 +61,7 @@
                     </fieldset>
                 </div>
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
                 <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
             </form>
 

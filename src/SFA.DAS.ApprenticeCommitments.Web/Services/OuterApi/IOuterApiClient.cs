@@ -21,34 +21,34 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Get("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}")]
         Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeid, [Path] long apprenticeshipid);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/trainingproviderconfirmation")]
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/{commitmentStatementId}/trainingproviderconfirmation")]
         Task ConfirmTrainingProvider(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] TrainingProviderConfirmationRequest confirmation);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/employerconfirmation")]
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/{commitmentStatementId}/employerconfirmation")]
         Task ConfirmEmployer(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] EmployerConfirmationRequest confirmation);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/rolesandresponsibilitiesconfirmation")]
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/{commitmentStatementId}/rolesandresponsibilitiesconfirmation")]
         Task ConfirmRolesAndResponsibilities(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] RolesAndResponsibilitiesConfirmationRequest confirmation);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/apprenticeshipdetailsconfirmation")]
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/{commitmentStatementId}/apprenticeshipdetailsconfirmation")]
         Task ConfirmApprenticeshipDetails(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] ApprenticeshipDetailsConfirmationRequest confirmation);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/howapprenticeshipwillbedeliveredconfirmation")]
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/{commitmentStatementId}/howapprenticeshipwillbedeliveredconfirmation")]
         Task ConfirmHowApprenticeshipDelivered(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] HowApprenticeshipDeliveredConfirmationRequest confirmation);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/apprenticeshipconfirmation")]
+        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/{commitmentStatementId}/apprenticeshipconfirmation")]
         Task ConfirmApprenticeship(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid,
+            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] ApprenticeshipConfirmationRequest confirmation);
     }
 }
