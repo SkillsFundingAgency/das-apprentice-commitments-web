@@ -81,10 +81,6 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
                 })
             }
 
-            function headerIsOpen($stepHeader) {
-                return (typeof $stepHeader.closest('.js-step').data('show') !== 'undefined')
-            }
-
             function addAriaControlsAttrForShowHideAllButton() {
                 var ariaControlsValue = $element.find('.js-panel').first().attr('id')
 
@@ -356,7 +352,7 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
                 stepNavTracker.track('pageElementInteraction', trackingAction(), trackingOptions)
             }
 
-            function trackingLabel() {                
+            function trackingLabel() {
                 return `${$target.closest(jsTogglePanel).attr(dataPosition)} - ${stepView.title} - ${locateClickElement()}: ${stepNavSize}${isOptional()}`
             }
 
