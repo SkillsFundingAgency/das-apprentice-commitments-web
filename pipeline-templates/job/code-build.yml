@@ -27,6 +27,7 @@ jobs:
         scannerMode: MSBuild
         projectName: "$(Build.DefinitionName)"
         projectKey: "$(SonarCloudProjectKey)"
+        extraProperties: sonar.exclusions=**/SFA.DAS.ApprenticeCommitments.Web/wwwroot/js/step-by-step-nav.js
 
     - template: azure-pipelines-templates/build/step/app-build.yml@das-platform-building-blocks
 
