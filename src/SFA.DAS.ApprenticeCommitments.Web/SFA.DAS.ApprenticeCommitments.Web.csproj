@@ -35,6 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.Apprentice.SharedUi\SFA.DAS.Apprentice.SharedUi.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Content Update="wwwroot\lib\govuk-frontend\**" CopyToPublishDirectory="Never" />
   </ItemGroup>
   
