@@ -42,8 +42,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
     public class OuterApiConfiguration : IApimClientConfiguration
     {
-        public string ApiBaseUrl { get; set; }
-        public string SubscriptionKey { get; set; }
-        public string ApiVersion { get; set; }
+        public string ApiBaseUrl { get; set; } = null!;
+        public string SubscriptionKey { get; set; } = null!;
+        public string ApiVersion { get; set; } = null!;
     }
 }

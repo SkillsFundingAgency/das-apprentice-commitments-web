@@ -3,8 +3,6 @@ using SFA.DAS.HashingService;
 using System;
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     internal sealed class HashedIdModelBinder : IModelBinder

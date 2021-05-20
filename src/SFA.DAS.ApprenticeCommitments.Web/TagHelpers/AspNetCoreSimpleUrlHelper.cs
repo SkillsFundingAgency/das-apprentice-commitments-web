@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 {
     public interface ISimpleUrlHelper

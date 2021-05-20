@@ -9,7 +9,7 @@
         <div class="govuk-grid-column-two-thirds">
 
             <partial name="ValidationSummary" />
-            
+
             <h1 asp-hide="@Model.ConfirmedTrainingProvider.HasValue" class="govuk-heading-xl">Confirm your training provider</h1>
 
             <div asp-show="@Model.ConfirmedTrainingProvider.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
@@ -57,7 +57,6 @@
                                 </label>
                             </div>
                         </div>
-
                     </fieldset>
                 </div>
                 <input type="hidden" asp-for="TrainingProviderName" value="@Model.TrainingProviderName" />
@@ -67,10 +66,6 @@
             <form asp-show="@Model.ConfirmedTrainingProvider.HasValue" action="@Model.Backlink">
                 <button class="govuk-button">Continue</button>
             </form>
-
         </div>
     </div>
 </div>
-
-
-

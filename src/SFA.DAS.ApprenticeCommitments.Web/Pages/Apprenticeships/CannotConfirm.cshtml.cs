@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
-        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
+        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
     }
 }

@@ -2,12 +2,10 @@
 using SFA.DAS.HashingService;
 using System.Diagnostics.CodeAnalysis;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     [ModelBinder(typeof(HashedIdModelBinder))]
-    public sealed class HashedId
+    public struct HashedId
     {
         public long Id { get; }
         public string Hashed { get; }

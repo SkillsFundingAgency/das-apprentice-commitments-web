@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class RolesAndResponsibilitiesModel : PageModel , IHasBackLink
+    public class RolesAndResponsibilitiesModel : PageModel, IHasBackLink
     {
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
@@ -31,13 +31,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
-            if(apprenticeship.RolesAndResponsibilitiesCorrect == true)
+            if (apprenticeship.RolesAndResponsibilitiesCorrect == true)
                 RolesAndResponsibilitiesConfirmed = true;
         }
 
         public async Task<IActionResult> OnPost()
         {
-
             if (RolesAndResponsibilitiesConfirmed == null)
             {
                 ModelState.AddModelError(nameof(RolesAndResponsibilitiesConfirmed), "Select an answer");

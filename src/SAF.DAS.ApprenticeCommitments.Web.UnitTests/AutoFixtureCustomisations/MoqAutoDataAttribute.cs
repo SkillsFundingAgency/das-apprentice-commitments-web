@@ -8,5 +8,4 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations
         {
         }
     }
-
 }

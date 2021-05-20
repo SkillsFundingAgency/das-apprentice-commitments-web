@@ -43,9 +43,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         protected AuthenticateResult HandleAuthenticate()
         {
             var guid = FindUserFromHeader();
-            if(guid == null) return AuthenticateResult.Fail("No user header found");
+            if (guid == null) return AuthenticateResult.Fail("No user header found");
 
-            
             var exists = _users.TryGetValue(guid.Value, out var isVerified);
             if (!exists) return AuthenticateResult.Fail($"User `{guid}` is not logged in");
 

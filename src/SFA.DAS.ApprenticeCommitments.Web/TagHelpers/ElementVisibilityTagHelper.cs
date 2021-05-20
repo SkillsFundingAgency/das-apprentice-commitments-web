@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 {
     [HtmlTargetElement(Attributes = "asp-hide")]

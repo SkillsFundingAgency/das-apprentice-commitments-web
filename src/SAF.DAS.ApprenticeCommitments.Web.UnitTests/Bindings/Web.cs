@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
+using System.Collections.Generic;
+using System.Net.Http;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
     {
         public static HttpClient Client { get; set; }
         public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
-        public static Hook<IActionResult>  ActionResultHook;
+        public static Hook<IActionResult> ActionResultHook;
 
         private readonly TestContext _context;
 

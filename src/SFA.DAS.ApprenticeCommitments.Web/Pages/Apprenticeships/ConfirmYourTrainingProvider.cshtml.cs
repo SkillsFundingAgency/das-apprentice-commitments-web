@@ -6,8 +6,6 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [RequiresIdentityConfirmed]
@@ -20,7 +18,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
-        public string TrainingProviderName { get; set; }
+        public string TrainingProviderName { get; set; } = null!;
 
         [BindProperty]
         public bool? ConfirmedTrainingProvider { get; set; }
