@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ApprenticeCommitments.Web.Startup
+﻿#nullable disable
+
+namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
     public class ApplicationConfiguration
     {

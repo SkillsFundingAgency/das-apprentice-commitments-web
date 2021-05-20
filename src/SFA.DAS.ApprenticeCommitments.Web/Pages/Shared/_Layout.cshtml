@@ -39,7 +39,7 @@
     @RenderSection("AfterHeader", required: false)
 
     <div class="govuk-width-container">
-        
+
         @RenderSection("BreadCrumbs", required: false)
 
         @if (Model is DAS.ApprenticeCommitments.Web.Services.IHasBackLink backlink)
@@ -63,8 +63,6 @@
     <script src="~/js/site.js" asp-append-version="true" no-cdn></script>
     @RenderSection("Scripts", required: false)
 
-
     <partial name="_Footer" />
-
 </body>
 </html>

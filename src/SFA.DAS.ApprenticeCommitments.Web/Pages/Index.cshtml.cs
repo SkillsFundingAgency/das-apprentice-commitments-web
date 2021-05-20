@@ -6,8 +6,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        public string Name { get; private set; }
-
         public async Task<IActionResult> OnGet()
         {
             // Until some actual functionality is implemented just redirect to the ConfirmYourIdentity page

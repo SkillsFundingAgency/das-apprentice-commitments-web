@@ -31,13 +31,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public bool IsValid => Validate() == null;
 
-        private void EnsureValid()
-        {
-            var validationError = Validate();
-            if (validationError != null) throw validationError;
-        }
-
-        private Exception Validate()
+        private Exception? Validate()
         {
             if (!IsValidDay)
                 return new ArgumentException($"`{Day:00}` is not a valid day");

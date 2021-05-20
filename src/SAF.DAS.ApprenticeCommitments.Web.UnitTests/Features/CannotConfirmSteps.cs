@@ -1,9 +1,9 @@
-﻿using System.Net;
+﻿using FluentAssertions;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using FluentAssertions;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
-using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features

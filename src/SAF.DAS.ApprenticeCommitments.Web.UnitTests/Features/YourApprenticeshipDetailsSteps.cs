@@ -1,8 +1,8 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -24,13 +23,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private HashedId _apprenticeshipId;
-        private string _courseName;
-        private int _courseLevel;
-        private string? _courseOption;
-        private int _durationInMonths;
-        private DateTime _plannedStartDate;
-        private DateTime _plannedEndDate;
+        private readonly HashedId _apprenticeshipId;
+        private readonly string _courseName;
+        private readonly int _courseLevel;
+        private readonly string _courseOption;
+        private readonly int _durationInMonths;
+        private readonly DateTime _plannedStartDate;
+        private readonly DateTime _plannedEndDate;
         private bool? _confirmedApprenticeshipDetails;
 
         public YourApprenticeshipDetailsSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -47,9 +46,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _plannedEndDate = new DateTime(2022, 09, 15);
 
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingAnyMethod()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/apprenticeshipdetailsconfirmation"))
+                     Request.Create()
+                         .UsingAnyMethod()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/apprenticeshipdetailsconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200));
         }
@@ -77,9 +76,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private void SetupApiGetConfirmation(bool? confirmed)
         {
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingAnyMethod()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                     Request.Create()
+                         .UsingAnyMethod()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new

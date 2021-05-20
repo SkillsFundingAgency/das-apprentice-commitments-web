@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
 {
@@ -29,7 +29,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
             {
                 LastPageResult = pageResult;
             }
-
         }
 
         public void SetException(Exception exception)

@@ -19,33 +19,33 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         [BindProperty]
         [HiddenInput]
-        public string EmailAddress { get; set; }
+        public string EmailAddress { get; set; } = null!;
 
         [BindProperty]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = null!;
 
         [BindProperty]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = null!;
 
         [BindProperty]
-        public DateModel DateOfBirth { get; set; }
+        public DateModel DateOfBirth { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
-            var reg = await _registrations.GetRegistration(user);
+            var registration = await _registrations.GetRegistration(user);
 
-            if (reg.HasCompletedVerification)
+            if (registration.HasCompletedVerification)
             {
                 return RedirectToPage("/apprenticeships/index");
             }
 
-            if (!reg.HasViewedVerification)
+            if (!registration.HasViewedVerification)
             {
                 await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
             }
 
-            EmailAddress = reg?.Email;
+            EmailAddress = registration.Email;
 
             return Page();
         }

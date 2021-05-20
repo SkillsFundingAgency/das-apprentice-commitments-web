@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.HashingService;
 using System;
@@ -28,7 +27,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
     public class HashingConfiguration
     {
-        public string AllowedHashstringCharacters { get; set; }
-        public string Hashstring { get; set; }
+        public string AllowedHashstringCharacters { get; set; } = null!;
+        public string Hashstring { get; set; } = null!;
     }
 }

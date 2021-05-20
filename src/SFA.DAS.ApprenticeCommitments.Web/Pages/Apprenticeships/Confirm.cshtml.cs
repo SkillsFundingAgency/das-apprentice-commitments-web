@@ -1,20 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Threading.Tasks;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-
-#nullable enable
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [RequiresIdentityConfirmed]
     public class ConfirmApprenticeshipModel : PageModel
     {
-        //private readonly AuthenticatedUserClient _client;
-
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
 
@@ -36,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 return EmployerConfirmation.Equals(true)
                     && TrainingProviderConfirmation.Equals(true)
                     && ApprenticeshipDetailsConfirmation.Equals(true)
-                    && RolesAndResponsibilitiesConfirmation.Equals(true)                    
+                    && RolesAndResponsibilitiesConfirmation.Equals(true)
                     && HowApprenticeshipWillBeDeliveredConfirmation.Equals(true);
             }
         }
@@ -49,9 +46,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGetAsync()
         {
-            _ = ApprenticeshipId ?? throw new ArgumentNullException(nameof(ApprenticeshipId));
+            if(ApprenticeshipId == default)
+                throw new PropertyNullException(nameof(ApprenticeshipId));
 
-            //var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 

@@ -1,8 +1,6 @@
 using System.Linq;
 using System.Security.Claims;
 
-#nullable enable
-
 namespace SAF.DAS.ApprenticeCommitments.Web.Identity
 {
     public static class IdentityClaims
