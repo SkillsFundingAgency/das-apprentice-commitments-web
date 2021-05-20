@@ -123,7 +123,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/{_commitmentStatementId}/howapprenticeshipwillbedeliveredconfirmation")
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/statements/{_commitmentStatementId}/howapprenticeshipwillbedeliveredconfirmation")
                     .UsingPost());
 
             updates.Should().HaveCount(1);
