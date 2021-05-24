@@ -1,10 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -12,10 +11,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
+
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
+
         [BindProperty]
-        public bool? ConfirmedHowApprenticeshipDelivered { get; set; }
+        public bool? ConfirmedHowApprenticeshipDelivered { get; set; } = null!;
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public HowYourApprenticeshipWillBeDeliveredModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -29,7 +31,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
-            if(apprenticeship.HowApprenticeshipDeliveredCorrect == true)
+            if (apprenticeship.HowApprenticeshipDeliveredCorrect == true)
                 ConfirmedHowApprenticeshipDelivered = true;
         }
 

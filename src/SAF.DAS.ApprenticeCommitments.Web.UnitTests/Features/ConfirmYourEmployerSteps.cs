@@ -1,18 +1,18 @@
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
-using SFA.DAS.ApprenticeCommitments.Web.Identity;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
@@ -34,9 +34,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _employerName = "My Test Company";
 
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingAnyMethod()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/employerconfirmation"))
+                     Request.Create()
+                         .UsingAnyMethod()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/employerconfirmation"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200));
         }
@@ -64,9 +64,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private void SetupApiGetEmployerConfirmation(bool? confirmed)
         {
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new { Id = _apprenticeshipId.Id, EmployerName = _employerName, EmployerCorrect = confirmed }));
@@ -159,7 +159,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             JsonConvert.DeserializeObject<EmployerConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { EmployerCorrect = confirm });
         }
-
 
         [Then("the user should be redirected to the cannot confirm apprenticeship page")]
         public void ThenTheUserShouldBeRedirectedToTheCannotConfirmApprenticeshipPage()

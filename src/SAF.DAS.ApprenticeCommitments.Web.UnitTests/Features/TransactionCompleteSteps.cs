@@ -1,18 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
+using SFA.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
-using SFA.DAS.ApprenticeCommitments.Web.Identity;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
@@ -31,9 +25,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
 
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new { Id = _apprenticeshipId.Id, CourseName = "Test Course" }));

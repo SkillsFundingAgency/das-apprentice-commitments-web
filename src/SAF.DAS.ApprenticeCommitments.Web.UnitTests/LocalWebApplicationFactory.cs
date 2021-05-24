@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
@@ -52,7 +52,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 {
                     o.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 });
-
             });
 
             builder.ConfigureAppConfiguration(a =>

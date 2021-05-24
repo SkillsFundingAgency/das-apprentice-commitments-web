@@ -5,8 +5,6 @@ using SAF.DAS.ApprenticeCommitments.Web.Identity;
 using System;
 using System.Security.Claims;
 
-#nullable enable
-
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class UserIdentityNameTests

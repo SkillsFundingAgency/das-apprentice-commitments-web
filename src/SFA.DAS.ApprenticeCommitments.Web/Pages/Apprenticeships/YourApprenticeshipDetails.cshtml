@@ -19,6 +19,7 @@
         <div class="govuk-body">
 
             <table class="govuk-table data-table">
+                <caption></caption>
                 <tbody class="govuk-table__body">
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Apprenticeship</th>
@@ -72,7 +73,6 @@
                                 </label>
                             </div>
                         </div>
-
                     </fieldset>
                 </div>
                 <button class="govuk-button" data-module="govuk-button" id="apprenticeship-details-confirm">Confirm</button>
@@ -87,8 +87,6 @@
             <form asp-show="@Model.ConfirmedApprenticeshipDetails.HasValue" action="@Model.Backlink">
                 <button class="govuk-button">Continue</button>
             </form>
-
         </div>
-
     </div>
 </div>

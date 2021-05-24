@@ -24,9 +24,9 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void GivenTheApprenticeHasNotVerifiedTheirIdentity()
         {
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_userContext.ApprenticeId}"))
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_userContext.ApprenticeId}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new { Id = _userContext.ApprenticeId }));

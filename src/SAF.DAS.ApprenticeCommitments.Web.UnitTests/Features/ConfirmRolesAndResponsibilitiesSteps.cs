@@ -32,9 +32,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
 
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingAnyMethod()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/rolesandresponsibilitiesconfirmation"))
+                     Request.Create()
+                         .UsingAnyMethod()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/rolesandresponsibilitiesconfirmation"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200));
         }
@@ -62,9 +62,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private void SetupApiConfirmation(bool? confirmed)
         {
             _context.OuterApi.MockServer.Given(
-                    Request.Create()
-                        .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
+                     Request.Create()
+                         .UsingGet()
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(new { Id = _apprenticeshipId.Id, RolesAndResponsibilitiesCorrect = confirmed }));
@@ -113,7 +113,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [When(@"submitting the RolesAndResponsibilities page")]
         public async Task WhenSubmittingTheConfirmYourEmployerPage()
         {
-            var res =  await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities",
+            var res = await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "RolesAndResponsibilitiesConfirmed", _rolesAndResponsibilitiesConfirmed.ToString() }

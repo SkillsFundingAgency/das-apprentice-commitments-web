@@ -19,18 +19,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty]
         public bool? ConfirmedApprenticeshipDetails { get; set; }
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         [BindProperty]
-        public string CourseName { get; set; }
+        public string CourseName { get; set; } = null!;
+
         [BindProperty]
         public int CourseLevel { get; set; }
+
         [BindProperty]
         public string? CourseOption { get; set; }
+
         [BindProperty]
         public int DurationInMonths { get; set; }
+
         [BindProperty]
         public DateTime PlannedStartDate { get; set; }
+
         [BindProperty]
         public DateTime PlannedEndDate { get; set; }
 
@@ -44,7 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
-            
+
             CourseName = apprenticeship.CourseName;
             CourseLevel = apprenticeship.CourseLevel;
             CourseOption = apprenticeship.CourseOption;
@@ -52,7 +58,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             PlannedStartDate = apprenticeship.PlannedStartDate;
             PlannedEndDate = apprenticeship.PlannedEndDate;
 
-            if(apprenticeship.ApprenticeshipDetailsCorrect == true)
+            if (apprenticeship.ApprenticeshipDetailsCorrect == true)
                 ConfirmedApprenticeshipDetails = true;
         }
 

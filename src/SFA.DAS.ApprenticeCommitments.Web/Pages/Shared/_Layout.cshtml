@@ -38,6 +38,8 @@
 
     <partial name="_Header" />
 
+    <partial name="_BetaBanner" />
+
     @RenderSection("AfterHeader", required: false)
 
     <div class="govuk-width-container">
@@ -58,6 +60,7 @@
     <script src="/libs/jquery/jquery.min.js"></script>
     <script src="/js/das-all.js"></script>
     <script src="/js/app.min.js"></script>
+    <script src="/js/step-by-step-nav.js" no-cdn></script>
     <script>
         window.GOVUKFrontend.initAll();
         window.DASFrontend.initAll();
@@ -65,8 +68,6 @@
     <script src="~/js/site.js" asp-append-version="true" no-cdn></script>
     @RenderSection("Scripts", required: false)
 
-
     <partial name="_Footer" />
-
 </body>
 </html>

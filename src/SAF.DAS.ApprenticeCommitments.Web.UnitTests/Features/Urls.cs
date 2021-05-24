@@ -6,6 +6,5 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         public static string MyApprenticshipPage(HashedId forApprenticeship)
             => $"/apprenticeships/{forApprenticeship.Hashed}";
-
     }
 }
