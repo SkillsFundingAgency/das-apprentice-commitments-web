@@ -10,13 +10,13 @@ namespace SFA.DAS.Apprentice.SharedUi.Zendesk
     public static class Extensions
     {
         public static string? GetZenDeskSectionId(this ViewDataDictionary viewData)
-            => GetZendeskConfiguration(viewData)?.SectionId;
+            => GetZendeskConfiguration(viewData)?.ZendeskSectionId;
 
         public static string? GetZenDeskSnippetKey(this ViewDataDictionary viewData)
-            => GetZendeskConfiguration(viewData)?.SnippetKey;
+            => GetZendeskConfiguration(viewData)?.ZendeskSnippetKey;
 
         public static string? GetCobrowsingSnippetKey(this ViewDataDictionary viewData)
-            => GetZendeskConfiguration(viewData)?.CobrowsingSnippetKey;
+            => GetZendeskConfiguration(viewData)?.ZendeskCobrowsingSnippetKey;
 
         private static ZenDeskConfiguration? GetZendeskConfiguration(ViewDataDictionary viewData)
             => viewData.TryGetValue(ViewDataKeys.ZenDeskConfiguration, out var section)

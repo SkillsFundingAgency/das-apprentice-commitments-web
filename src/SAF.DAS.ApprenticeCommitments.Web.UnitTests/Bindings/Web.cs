@@ -1,3 +1,4 @@
+using AutoFixture;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +14,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
     [Binding]
     public class Web
     {
+        private Fixture _fixture = new Fixture();
         public static HttpClient Client { get; set; }
+        public static Dictionary<string, string> Config { get; private set; }
         public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
+
         public static Hook<IActionResult> ActionResultHook;
 
         private readonly TestContext _context;
@@ -29,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
         {
             if (Client == null)
             {
-                var config = new Dictionary<string, string>
+                Config = new Dictionary<string, string>
                 {
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
                     {"Authentication:MetadataAddress", _context.IdentityServiceUrl},
@@ -37,16 +41,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
                     {"Hashing:AllowedHashstringCharacters", "abcdefgh12345678"},
                     {"Hashing:Hashstring", "testing"},
+                    {"ZenDesk:ZendeskSectionId", _fixture.Create<string>()},
+                    {"ZenDesk:ZendeskSnippetKey", _fixture.Create<string>()},
+                    {"ZenDesk:ZendeskCobrowsingSnippetKey", _fixture.Create<string>()},
                 };
 
                 ActionResultHook = new Hook<IActionResult>();
-                Factory = new LocalWebApplicationFactory<ApplicationStartup>(_context, config, ActionResultHook);
+                Factory = new LocalWebApplicationFactory<ApplicationStartup>(_context, Config, ActionResultHook);
                 Client = Factory.CreateClient(new WebApplicationFactoryClientOptions
                 {
                     AllowAutoRedirect = false
                 });
             }
-            _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook);
+            _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook, Config);
             _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();
         }
 
