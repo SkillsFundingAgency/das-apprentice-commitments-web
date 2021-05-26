@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
@@ -12,14 +14,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         public HttpResponseMessage Response { get; set; }
         public Uri BaseAddress { get; private set; }
         public IHook<IActionResult> ActionResultHook { get; set; }
+        public Dictionary<string, string> Config { get; }
 
         private bool isDisposed;
 
-        public ApprenticeCommitmentsWeb(HttpClient client, IHook<IActionResult> actionResultHook)
+        public ApprenticeCommitmentsWeb(HttpClient client, IHook<IActionResult> actionResultHook, Dictionary<string, string> config)
         {
             Client = client;
             BaseAddress = client.BaseAddress;
             ActionResultHook = actionResultHook;
+            Config = config;
+        }
+
+        public void AuthoriseApprentice(Guid apprenticeId)
+        {
+            TestAuthenticationHandler.AddUser(apprenticeId);
+            Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(apprenticeId.ToString());
         }
 
         public async Task<HttpResponseMessage> Get(string url)
