@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿
+// Step by step
 
-// Write your Javascript code.
+var $stepByStep = $('#step-by-step-navigation')
+if ($stepByStep) {
+    var stepByStepNavigation = new GOVUK.Modules.AppStepNav()
+    stepByStepNavigation.start($stepByStep)
+}

@@ -28,9 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has logged in")]
         public void GivenTheApprenticeHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUser(_userContext.ApprenticeId);
-            _context.Web.Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
+            _context.Web.AuthoriseApprentice(_userContext.ApprenticeId);
         }
 
         [Given(@"there is one apprenticeship")]
