@@ -23,6 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public bool? ApprenticeshipDetailsConfirmation { get; set; } = null;
         public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
         public bool? HowApprenticeshipWillBeDeliveredConfirmation { get; set; } = null;
+        public bool ApprenticeshipConfirmed { get; set; } = false;
 
         public string Forwardlink => $"/apprenticeships/{ApprenticeshipId.Hashed}/transactioncomplete";
 
@@ -57,6 +58,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
+            ApprenticeshipConfirmed = apprenticeship.ConfirmedOn.HasValue;
         }
 
         public async Task<IActionResult> OnPostConfirm()

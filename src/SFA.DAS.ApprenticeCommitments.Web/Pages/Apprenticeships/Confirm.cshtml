@@ -1,7 +1,7 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @{
-    ViewData["Title"] = "Apprentice Commitments";
+    ViewData["Title"] = "Apprentice Commitments";    
 }
 
 @section AfterHeader {
@@ -10,7 +10,7 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row app-page-header__row">
                 <div class="govuk-grid-column-two-thirds">
-                    <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship</h1>
+                    <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship details</h1>
                 </div>
             </div>
         </div>
@@ -18,19 +18,21 @@
 
 }
 
-<h2 class="govuk-heading-l">Confirm your apprenticeship</h2>
-<div class="govuk-warning-text">
-    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-    <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        You have 14 days to confirm your apprenticeship
-    </strong>
+<div asp-show="!@Model.ApprenticeshipConfirmed">
+    <h2 class="govuk-heading-l">Confirm your apprenticeship</h2>
+    <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            You have 14 days to confirm your apprenticeship
+        </strong>
+    </div>
+    <p>We want to make sure you have everything you need for a successful apprenticeship.</p>
+    <p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
+    <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
 </div>
-<p>We want to make sure you have everything you need for a successful apprenticeship.</p>
-<p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
-<p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
 
-<div asp-show="@Model.AllConfirmed" class="govuk-!-margin-bottom-5">
+<div asp-show="!@Model.ApprenticeshipConfirmed && @Model.AllConfirmed" class="govuk-!-margin-bottom-5">
     <h2 class="govuk-heading-m">Your apprenticeship is ready to confirm</h2>
     <div class="app-notification-banner app-notification-banner--success">
         <div class="app-notification-banner--icon-content-wrap">
@@ -42,6 +44,16 @@
         </form>
     </div>
 </div>
+
+<div asp-show="@Model.ApprenticeshipConfirmed && @Model.AllConfirmed" class="govuk-!-margin-bottom-5">
+    <div class="app-notification-banner app-notification-banner--success">
+        <div class="app-notification-banner--icon-content-wrap">
+            <span class="app-notification-banner__icon das-text--success-icon"></span>
+            Your apprenticeship has been agreed and you're ready to start
+        </div>
+    </div>
+</div>
+
 
 <ol class="govuk-list app-status-list">
     <li confirmation-section asp-page="ConfirmYourEmployer" model="Model">
