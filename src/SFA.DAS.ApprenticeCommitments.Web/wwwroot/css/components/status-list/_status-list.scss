@@ -39,6 +39,8 @@ li.app-status-list__list-item {
     &:hover,
     &:focus {
         transform: scale(1.05);
+        background: $govuk-focus-colour;
+        color: $govuk-focus-text-colour;
     }
 
     &:hover {
