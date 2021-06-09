@@ -12,4 +12,4 @@ Scenario: Redirect to confirm your new email in the login service
 	Given the apprentice has logged in
 	And they have received the link to change their email address
 	When they click on this link
-	Then they should be redirected to the login service
+	Then they should be redirected to the login service confirm new email page

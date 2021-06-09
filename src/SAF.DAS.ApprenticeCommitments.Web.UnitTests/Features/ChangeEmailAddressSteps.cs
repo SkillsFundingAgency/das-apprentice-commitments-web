@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Gherkin;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
 using TechTalk.SpecFlow;
 
@@ -41,8 +40,8 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Get(_link);
         }
 
-        [Then(@"they should be redirected to the login service")]
-        public void ThenTheyShouldBeRedirectedToTheLoginService()
+        [Then(@"they should be redirected to the login service confirm new email page")]
+        public void ThenTheyShouldBeRedirectedToTheLoginServiceConfirmPage()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
             _context.Web.Response.Headers.Location.Should().Be($"https://identity/profile/{_clientId}/changeemail/confirm?email={Email}&token={Token}");
