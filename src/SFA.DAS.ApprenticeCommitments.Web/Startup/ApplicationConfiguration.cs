@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using SFA.DAS.Apprentice.SharedUi.GoogleAnalytics;
 using SFA.DAS.Apprentice.SharedUi.Zendesk;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
@@ -11,5 +12,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public OuterApiConfiguration ApprenticeCommitmentsApi { get; set; }
         public HashingConfiguration Hashing { get; set; }
         public ZenDeskConfiguration ZenDesk { get; set; }
+        public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; }
     }
 }

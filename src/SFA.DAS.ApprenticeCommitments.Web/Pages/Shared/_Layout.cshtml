@@ -1,6 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using SFA.DAS.Apprentice.SharedUi.GoogleAnalytics
+@using SFA.DAS.ApprenticeCommitments.Web.Pages.Cookies 
+
+<!DOCTYPE html>
 <html lang="en" class="govuk-template ">
 <head>
+    <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta property="og:image" content="/assets/images/govuk-opengraph-image.png">
@@ -28,13 +33,15 @@
     <title>@ViewData["Title"] - Commitment Statement</title>
 </head>
 <body class="govuk-template__body">
+    <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Body" />
+
     <script>
         document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
 
     <partial name="_ZenDeskWidget" />
 
-    <partial name="_CookieBanner" model="@new SFA.DAS.ApprenticeCommitments.Web.Pages.Cookies.CookieBannerViewModel()" />
+    <partial name="_CookieBanner" model="@new CookieBannerViewModel()" />
 
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
