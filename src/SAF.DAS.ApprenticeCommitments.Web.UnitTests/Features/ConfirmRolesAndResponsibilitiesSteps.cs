@@ -23,6 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
+        private long _commitmentStatementId;
         private bool? _rolesAndResponsibilitiesConfirmed;
 
         public ConfirmRolesAndResponsibilitiesSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -30,11 +31,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context = context;
             _userContext = userContext;
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
+            _commitmentStatementId = 6613;
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
-                         .UsingAnyMethod()
-                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/rolesandresponsibilitiesconfirmation"))
+                         .UsingAnyMethod())
                     .RespondWith(Response.Create()
                         .WithStatusCode(200));
         }
@@ -65,7 +66,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                          .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
-                        .WithBodyAsJson(new { Id = _apprenticeshipId.Id, RolesAndResponsibilitiesCorrect = confirmed }));
+                        .WithBodyAsJson(new
+                        {
+                            _apprenticeshipId.Id,
+                            CommitmentStatementId = _commitmentStatementId,
+                            RolesAndResponsibilitiesCorrect = confirmed
+                        }));
         }
 
         [When(@"accessing the RolesAndResponsibilities page")]
@@ -111,10 +117,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [When(@"submitting the RolesAndResponsibilities page")]
         public async Task WhenSubmittingTheConfirmYourEmployerPage()
         {
-            var res = await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities",
+            await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { "RolesAndResponsibilitiesConfirmed", _rolesAndResponsibilitiesConfirmed.ToString() }
+                    { nameof(RolesAndResponsibilitiesModel.CommitmentStatementId), _commitmentStatementId.ToString() },
+                    { nameof(RolesAndResponsibilitiesModel.RolesAndResponsibilitiesConfirmed), _rolesAndResponsibilitiesConfirmed.ToString() }
                 }));
         }
 
@@ -123,7 +130,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/rolesandresponsibilitiesconfirmation")
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/statements/{_commitmentStatementId}/rolesandresponsibilitiesconfirmation")
                     .UsingPost());
 
             updates.Should().HaveCount(1);

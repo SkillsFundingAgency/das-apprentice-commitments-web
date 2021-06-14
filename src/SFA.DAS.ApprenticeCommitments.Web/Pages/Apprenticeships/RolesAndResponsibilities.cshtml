@@ -127,7 +127,7 @@
                     </fieldset>
                 </div>
                 <button class="govuk-button" data-module="govuk-button" id="roles-responsibilities-confirm">Confirm</button>
-                <input type="hidden" name="EmployerName" value="temp name" />
+                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
             </form>
 
             <form asp-show="@Model.RolesAndResponsibilitiesConfirmed.HasValue" action="@Model.Backlink">

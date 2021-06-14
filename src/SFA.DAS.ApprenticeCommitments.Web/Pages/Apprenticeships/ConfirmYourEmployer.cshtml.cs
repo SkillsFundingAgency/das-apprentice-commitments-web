@@ -22,6 +22,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public bool? ConfirmedEmployer { get; set; }
 
+        [BindProperty]
+        public long CommitmentStatementId { get; set; }
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourEmployerModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -35,6 +38,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
+            CommitmentStatementId = apprenticeship.CommitmentStatementId;
             EmployerName = apprenticeship.EmployerName;
 
             if (apprenticeship.EmployerCorrect == true)
@@ -50,7 +54,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmEmployer(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
                 new EmployerConfirmationRequest(ConfirmedEmployer.Value));
 
             var nextPage = ConfirmedEmployer.Value ? "Confirm" : "CannotConfirm";

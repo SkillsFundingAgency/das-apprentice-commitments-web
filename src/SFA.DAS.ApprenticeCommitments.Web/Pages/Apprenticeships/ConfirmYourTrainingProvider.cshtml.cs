@@ -21,6 +21,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public string TrainingProviderName { get; set; } = null!;
 
         [BindProperty]
+        public long CommitmentStatementId { get; set; }
+
+        [BindProperty]
         public bool? ConfirmedTrainingProvider { get; set; }
 
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
@@ -36,6 +39,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
+            CommitmentStatementId = apprenticeship.CommitmentStatementId;
             TrainingProviderName = apprenticeship.TrainingProviderName;
 
             if (apprenticeship.TrainingProviderCorrect == true)
@@ -51,7 +55,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmTrainingProvider(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
                 new TrainingProviderConfirmationRequest(ConfirmedTrainingProvider.Value));
 
             var nextPage = ConfirmedTrainingProvider.Value ? "Confirm" : "CannotConfirm";

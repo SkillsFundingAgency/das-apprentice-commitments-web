@@ -76,6 +76,7 @@
                     </fieldset>
                 </div>
                 <button class="govuk-button" data-module="govuk-button" id="apprenticeship-details-confirm">Confirm</button>
+                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
                 <input type="hidden" name="CourseName" value="@Model.CourseName" />
                 <input type="hidden" name="CourseLevel" value="@Model.CourseLevel" />
                 <input type="hidden" name="CourseOption" value="@Model.CourseOption" />

@@ -20,11 +20,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     [Scope(Feature = "ConfirmYourTrainingProvider")]
     public class ConfirmYourTrainingProviderSteps : StepsBase
     {
+        private const string ModelCommitmentStatementIdKey = nameof(ConfirmYourTrainingModel.CommitmentStatementId);
         private const string ModelNameKey = nameof(ConfirmYourTrainingModel.TrainingProviderName);
         private const string ModelConfirmedKey = nameof(ConfirmYourTrainingModel.ConfirmedTrainingProvider);
 
         private readonly TestContext _context;
         private HashedId _apprenticeshipId;
+        private long _commitmentStatementId;
         private string _trainingProviderName;
         private bool? _trainingProviderNameConfirmed;
 
@@ -32,12 +34,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context = context;
             _apprenticeshipId = HashedId.Create(1397, _context.Hashing);
+            _commitmentStatementId = 6614;
             _trainingProviderName = "My Test Company";
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
-                         .UsingAnyMethod()
-                         .WithPath("/apprentices/*/apprenticeships/*/trainingproviderconfirmation"))
+                         .UsingAnyMethod())
                     .RespondWith(Response.Create()
                         .WithStatusCode(200));
         }
@@ -71,6 +73,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
+                            CommitmentStatementId = _commitmentStatementId,
                             TrainingProviderName = _trainingProviderName,
                             trainingProviderCorrect = confirmed,
                         }));
@@ -107,6 +110,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
+                    { ModelCommitmentStatementIdKey, _commitmentStatementId.ToString() },
                     { ModelNameKey, _trainingProviderName },
                     { ModelConfirmedKey, _trainingProviderNameConfirmed.ToString() }
                 }));
@@ -123,7 +127,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/trainingproviderconfirmation")
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/statements/{_commitmentStatementId}/trainingproviderconfirmation")
                     .UsingPost());
 
             updates.Should().HaveCount(1);
@@ -132,7 +136,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
             JsonConvert
                 .DeserializeObject<TrainingProviderConfirmationRequest>(post.RequestMessage.Body)
-                .Should().BeEquivalentTo(new { TrainingProviderCorrect = true, });
+                .Should().BeEquivalentTo(new { TrainingProviderCorrect = true });
         }
 
         [Then("the apprentice should see the training provider's name")]

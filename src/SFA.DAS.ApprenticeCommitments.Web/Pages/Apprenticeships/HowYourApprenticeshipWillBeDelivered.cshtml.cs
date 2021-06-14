@@ -18,6 +18,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public bool? ConfirmedHowApprenticeshipDelivered { get; set; } = null!;
 
+        [BindProperty]
+        public long CommitmentStatementId { get; set; }
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public HowYourApprenticeshipWillBeDeliveredModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -30,6 +33,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+
+            CommitmentStatementId = apprenticeship.CommitmentStatementId;
 
             if (apprenticeship.HowApprenticeshipDeliveredCorrect == true)
                 ConfirmedHowApprenticeshipDelivered = true;
@@ -44,7 +49,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmHowApprenticeshipDelivered(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
                 new HowApprenticeshipDeliveredConfirmationRequest(ConfirmedHowApprenticeshipDelivered.Value));
 
             var nextPage = ConfirmedHowApprenticeshipDelivered.Value ? "Confirm" : "CannotConfirm";
