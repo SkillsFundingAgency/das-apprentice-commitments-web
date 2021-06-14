@@ -50,6 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
                 "</div>" +
                 "</a>";
 
+            output.Attributes.RemoveAll("confirmation-section");
             output.Attributes.Add("class", "app-status-list__list-item");
             output.Content.SetHtmlContent(encoded);
         }
