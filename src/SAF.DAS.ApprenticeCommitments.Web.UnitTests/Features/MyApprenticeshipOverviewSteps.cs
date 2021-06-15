@@ -130,5 +130,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.DaysRemaining.Should().Be(days);
         }
 
+        [Then("the overdue state should be (.*)")]
+        public void ThenTheOverdueStateShouldBe(bool overdue)
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.Overdue.Should().Be(overdue);
+        }
     }
 }
