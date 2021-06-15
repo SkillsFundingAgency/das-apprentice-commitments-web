@@ -3,7 +3,9 @@
     public class TrainingProviderConfirmationRequest
     {
         public TrainingProviderConfirmationRequest(bool trainingProviderCorrect)
-            => TrainingProviderCorrect = trainingProviderCorrect;
+        {
+            TrainingProviderCorrect = trainingProviderCorrect;
+        }
 
         public bool TrainingProviderCorrect { get; }
     }

@@ -18,6 +18,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public bool? RolesAndResponsibilitiesConfirmed { get; set; }
 
+        [BindProperty]
+        public long CommitmentStatementId { get; set; }
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public RolesAndResponsibilitiesModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -30,6 +33,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+
+            CommitmentStatementId = apprenticeship.CommitmentStatementId;
 
             if (apprenticeship.RolesAndResponsibilitiesCorrect == true)
                 RolesAndResponsibilitiesConfirmed = true;
@@ -44,7 +49,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
 
             await _client.ConfirmRolesAndResponsibilities(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
                 new RolesAndResponsibilitiesConfirmationRequest(RolesAndResponsibilitiesConfirmed.Value));
 
             var nextPage = RolesAndResponsibilitiesConfirmed.Value ? "Confirm" : "CannotConfirm";

@@ -3,7 +3,9 @@
     public class RolesAndResponsibilitiesConfirmationRequest
     {
         public RolesAndResponsibilitiesConfirmationRequest(bool rolesAndResponsibilitiesCorrect)
-            => RolesAndResponsibilitiesCorrect = rolesAndResponsibilitiesCorrect;
+        {
+            RolesAndResponsibilitiesCorrect = rolesAndResponsibilitiesCorrect;
+        }
 
         public bool RolesAndResponsibilitiesCorrect { get; }
     }

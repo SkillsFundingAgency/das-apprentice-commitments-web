@@ -62,35 +62,36 @@
                 </p>
             </div>
 
-                <form asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" id="apprenticeship-delivered-form-hide" method="post" action="">
-                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h1 class="govuk-fieldset__heading">
-                                    Do you understand what you’ve read?
-                                </h1>
-                            </legend>
+            <form asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" id="apprenticeship-delivered-form-hide" method="post" action="">
+                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Do you understand what you’ve read?
+                            </h1>
+                        </legend>
 
-                            <span asp-validation-for="ConfirmedHowApprenticeshipDelivered" class="govuk-error-message"></span>
+                        <span asp-validation-for="ConfirmedHowApprenticeshipDelivered" class="govuk-error-message"></span>
 
-                            <div class="govuk-radios govuk-radios--inline">
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="confirm-yes" name="ConfirmedHowApprenticeshipDelivered" type="radio" value="true">
-                                    <label class="govuk-label govuk-radios__label" for="confirm-yes">
-                                        Yes
-                                    </label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="confirm-no" name="ConfirmedHowApprenticeshipDelivered" type="radio" value="false">
-                                    <label class="govuk-label govuk-radios__label" for="confirm-no">
-                                        No
-                                    </label>
-                                </div>
+                        <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="confirm-yes" name="ConfirmedHowApprenticeshipDelivered" type="radio" value="true">
+                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
+                                    Yes
+                                </label>
                             </div>
-                        </fieldset>
-                    </div>
-                    <button class="govuk-button" data-module="govuk-button" id="apprentice-delivered-confirm">Confirm</button>
-                </form>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="confirm-no" name="ConfirmedHowApprenticeshipDelivered" type="radio" value="false">
+                                <label class="govuk-label govuk-radios__label" for="confirm-no">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
+                <button class="govuk-button" data-module="govuk-button" id="apprentice-delivered-confirm">Confirm</button>
+            </form>
 
                 <form asp-show="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" action="@Model.Backlink">
                     <button class="govuk-button">Continue</button>

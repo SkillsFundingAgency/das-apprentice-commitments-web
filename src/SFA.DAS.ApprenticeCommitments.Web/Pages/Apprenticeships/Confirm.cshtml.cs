@@ -4,7 +4,6 @@ using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
@@ -17,6 +16,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
+
+        [BindProperty]
+        public long CommitmentStatementId { get; set; }
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -47,12 +49,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGetAsync()
         {
-            if(ApprenticeshipId == default)
+            if (ApprenticeshipId == default)
                 throw new PropertyNullException(nameof(ApprenticeshipId));
 
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
+            CommitmentStatementId = apprenticeship.CommitmentStatementId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
@@ -64,7 +67,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task<IActionResult> OnPostConfirm()
         {
             await _client.ConfirmApprenticeship(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
                 new ApprenticeshipConfirmationRequest(true));
 
             return Redirect(Forwardlink);
