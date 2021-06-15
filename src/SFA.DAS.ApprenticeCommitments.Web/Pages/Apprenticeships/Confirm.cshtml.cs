@@ -4,6 +4,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
@@ -13,12 +14,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
+        private readonly ITimeProvider _time;
 
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
         public long CommitmentStatementId { get; set; }
+
+        public int DaysRemaining { get; set; }
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -41,9 +45,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
         }
 
-        public ConfirmApprenticeshipModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
+        public ConfirmApprenticeshipModel(IOuterApiClient client, ITimeProvider time, AuthenticatedUser authenticatedUser)
         {
             _client = client;
+            _time = time;
             _authenticatedUser = authenticatedUser;
         }
 
@@ -54,6 +59,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+
+            DaysRemaining = Math.Max(0, (apprenticeship.ConfirmBefore - _time.Now).Days);
 
             CommitmentStatementId = apprenticeship.CommitmentStatementId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;

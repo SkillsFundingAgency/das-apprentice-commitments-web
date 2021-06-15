@@ -2,9 +2,11 @@ using AutoFixture;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using TechTalk.SpecFlow;
@@ -22,10 +24,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
         public static Hook<IActionResult> ActionResultHook;
 
         private readonly TestContext _context;
+        private static readonly Func<SpecifiedTimeProvider> _time = () => _timeProvider;
+        private static SpecifiedTimeProvider _timeProvider;
 
         public Web(TestContext context)
         {
             _context = context;
+            _timeProvider = _context.Time;
         }
 
         [BeforeScenario()]
@@ -47,7 +52,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                 };
 
                 ActionResultHook = new Hook<IActionResult>();
-                Factory = new LocalWebApplicationFactory<ApplicationStartup>(_context, Config, ActionResultHook);
+                Factory = new LocalWebApplicationFactory<ApplicationStartup>(Config, ActionResultHook, _time);
                 Client = Factory.CreateClient(new WebApplicationFactoryClientOptions
                 {
                     AllowAutoRedirect = false

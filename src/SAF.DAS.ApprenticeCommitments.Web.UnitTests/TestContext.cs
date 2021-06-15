@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
+﻿using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
 using System;
 
@@ -11,6 +12,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         public TestActionResult ActionResult { get; set; }
         public string IdentityServiceUrl { get; } = "https://identity";
         public IHashingService Hashing { get; set; }
+        public SpecifiedTimeProvider Time { get; set; }
+            = new SpecifiedTimeProvider(DateTimeOffset.UtcNow);
     }
 
     public class RegisteredUserContext

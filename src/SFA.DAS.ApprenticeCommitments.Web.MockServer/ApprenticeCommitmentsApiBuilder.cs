@@ -129,6 +129,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         PlannedStartDate = new DateTime(2021, 03, 12),
                         PlannedEndDate = new DateTime(2022, 09, 15),
                         DurationInMonths = 19,
+                        ConfirmBefore = DateTime.UtcNow.AddDays(12),
                         EmployerCorrect = true,
                         TrainingProviderCorrect = false,
                     }));

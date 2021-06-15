@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using System;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
         private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _RolesAndResponsibilitiesConf, _HowApprenticeshipWillBeDeliveredConf;
+        private DateTime _confirmationDeadline;
 
         public MyApprenticeOverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -32,6 +34,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.AuthoriseApprentice(_userContext.ApprenticeId);
         }
 
+        [Given("the confirmation deadline is (.*)")]
+        public void GivenTheConfirmationDeadlineIs(DateTime confirmBefore)
+        {
+            _confirmationDeadline = confirmBefore;
+        }
+
+        [Given(@"the time is (.*)")]
+        public void GivenTheTimeIs(DateTime now)
+        {
+            _context.Time.Now = now;
+        }
+
         [Given("the apprentice will navigate to the overview page")]
         public void GivenTheApprenticeWillNavigateToTheOverviewPage()
         {
@@ -44,6 +58,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             Id = _apprenticeshipId.Id,
+                            ConfirmBefore = _confirmationDeadline,
                             EmployerCorrect = _EmployerConf,
                             TrainingProviderCorrect = _TrainingProviderConf,
                             ApprenticeshipDetailsCorrect = _ApprenticeshipDetailsConf,
@@ -89,7 +104,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.AllConfirmed.Should().Be(false);
         }
 
-        [Given(@"the apprentice has confirmed every aspect of the apprenciceship")]
+        [Given("the apprentice has confirmed every aspect of the apprenticeship")]
         public void WhenTheApprenticeHasConfirmedEveryAspectOfTheApprenciceship()
         {
             _EmployerConf =
@@ -106,5 +121,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.Should().NotBeNull();
             model.AllConfirmed.Should().Be(true);
         }
+
+        [Then("the apprentice should see (.*) days remaining")]
+        public void ThenTheApprenticeShouldSeeDaysRemaining(int days)
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.DaysRemaining.Should().Be(days);
+        }
+
     }
 }

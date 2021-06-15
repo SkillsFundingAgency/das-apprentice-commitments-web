@@ -22,10 +22,27 @@ Scenario: The apprentice has not confirmed every aspect of the apprenciceship
 	Then the response status code should be Ok
 	Then the apprentice should not see the ready to confirm banner
 
-Scenario: The apprentice has confirmed every aspect of the apprenciceship
+Scenario: The apprentice has confirmed every aspect of the apprenticeship
 	Given the apprentice has logged in
-	And the apprentice has confirmed every aspect of the apprenciceship	
+	And the apprentice has confirmed every aspect of the apprenticeship
 	And the apprentice will navigate to the overview page
 	When accessing the overview page
 	Then the response status code should be Ok
 	Then the apprentice should see the ready to confirm banner
+
+Scenario: The apprentice is shown days remaining for confirmation
+	Given the apprentice has logged in
+	And the confirmation deadline is <Confirm Before>
+	And the time is <Now>
+	And the apprentice will navigate to the overview page
+	When accessing the overview page
+	Then the response status code should be Ok
+	Then the apprentice should see <Days Remaining> days remaining
+
+	Examples: 
+	| Confirm Before   | Now              | Days Remaining |
+	| 2021-03-26 10:59 | 2021-03-12 10:59 | 14             |
+	| 2021-03-26 10:59 | 2021-03-12 11:00 | 13             |
+	| 2021-03-26 10:59 | 2021-03-25 10:59 | 1              |
+	| 2021-03-26 10:59 | 2021-03-26 10:59 | 0              |
+	| 2021-03-26 10:59 | 2021-03-27 10:59 | 0              |

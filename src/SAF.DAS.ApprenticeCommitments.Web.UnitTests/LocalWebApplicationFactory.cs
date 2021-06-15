@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
+using System;
 using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
@@ -16,13 +18,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
     {
         private readonly Dictionary<string, string> _config;
         private readonly IHook<IActionResult> _actionResultHook;
-        private readonly TestContext _testContext;
+        private readonly Func<ITimeProvider> _timeProvider;
 
-        public LocalWebApplicationFactory(TestContext testContext, Dictionary<string, string> config, IHook<IActionResult> actionResultHook)
+        public LocalWebApplicationFactory(Dictionary<string, string> config, IHook<IActionResult> actionResultHook, Func<SpecifiedTimeProvider> timeProvider)
         {
             _config = config;
             _actionResultHook = actionResultHook;
-            _testContext = testContext;
+            _timeProvider = timeProvider;
         }
 
         protected override IHostBuilder CreateHostBuilder()
@@ -39,6 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 services
                     .AddAuthentication("TestScheme")
                     .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", _ => { });
+                services.AddTransient((_) => _timeProvider());
             });
 
             builder.ConfigureServices(s =>
