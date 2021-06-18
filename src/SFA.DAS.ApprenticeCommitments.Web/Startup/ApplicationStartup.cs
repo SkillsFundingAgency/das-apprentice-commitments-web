@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,14 +30,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddHashingService(appConfig.Hashing)
                 .AddSharedUi(appConfig)
                 .RegisterServices()
-                .AddRazorPages();
+                .AddControllers();
+            services.AddRazorPages();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app
-                .UseErrorPages(env)
+            app.UseErrorPages(env)
                 .UseStatusCodePagesWithReExecute("/Error")
                 .UseHsts(env)
                 .UseHttpsRedirection()
@@ -46,8 +48,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .UseMiddleware<SecurityHeadersMiddleware>()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => endpoints.MapRazorPages())
-                ;
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapRazorPages();
+                    endpoints.MapControllers();
+                });
         }
     }
 }
