@@ -62,14 +62,14 @@
                 </p>
             </div>
 
-            <form asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" id="apprenticeship-delivered-form-hide" method="post" action="">
-                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 class="govuk-fieldset__heading">
-                                Do you understand what you’ve read?
-                            </h1>
-                        </legend>
+                <form asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" id="apprenticeship-delivered-form-hide" method="post">
+                    <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">
+                                    Do you understand what you’ve read?
+                                </h1>
+                            </legend>
 
                         <span asp-validation-for="ConfirmedHowApprenticeshipDelivered" class="govuk-error-message"></span>
 

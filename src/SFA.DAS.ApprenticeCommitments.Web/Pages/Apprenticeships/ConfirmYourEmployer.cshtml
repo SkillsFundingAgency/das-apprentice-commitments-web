@@ -1,6 +1,9 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/confirmyouremployer"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmYourEmployerModel
-@{ }
+@{
+    ViewData["Title"] = "Confirm your employer";
+}
+
 
 <div class="govuk-width-container">
 
@@ -30,10 +33,10 @@
                         <li>the details for a day-to-day contact; someone to answer any questions you might have</li>
                     </ul>
                 </div>
-                <p>Your employer knows that they must let you spend <u>at least 20% of your working hours</u> with your training provider for off-the-job training.</p>
+                <p>Your employer knows that they must let you spend <strong>at least 20% of your working hours</strong> with your training provider for off-the-job training.</p>
             </div>
 
-            <form asp-hide="@Model.ConfirmedEmployer.HasValue" id="employer-form-hide" method="post" action="">
+            <form asp-hide="@Model.ConfirmedEmployer.HasValue" id="employer-form-hide" method="post">
                 <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
