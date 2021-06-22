@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System.Threading.Tasks;
 
@@ -12,6 +12,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
         public async Task InvokeAsync(HttpContext context)
         {
+            const string dasCdn = "das-at-frnt-end.azureedge.net das-pp-frnt-end.azureedge.net das-mo-frnt-end.azureedge.net das-test-frnt-end.azureedge.net das-test2-frnt-end.azureedge.net das-prd-frnt-end.azureedge.net";
+
             context.Response.Headers.AddIfNotPresent("x-frame-options", new StringValues("DENY"));
             context.Response.Headers.AddIfNotPresent("x-content-type-options", new StringValues("nosniff"));
             context.Response.Headers.AddIfNotPresent("X-Permitted-Cross-Domain-Policies", new StringValues("none"));
@@ -19,9 +21,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             context.Response.Headers.AddIfNotPresent(
                 "Content-Security-Policy",
                 new StringValues(
-                    "default-src 'self' das-at-frnt-end.azureedge.net das-pp-frnt-end.azureedge.net das-mo-frnt-end.azureedge.net " +
-                    "das-test-frnt-end.azureedge.net das-test2-frnt-end.azureedge.net das-prd-frnt-end.azureedge.net " +
-                    "'unsafe-inline' https://*.zdassets.com https://*.zendesk.com wss://*.zendesk.com wss://*.zopim.com https://*.rcrsv.io ;"));
+                    $"script-src 'self' 'unsafe-inline' 'unsafe-eval' { dasCdn} https://www.googletagmanager.com https://tagmanager.google.com https://www.google-analytics.com https://ssl.google-analytics.com https://*.zdassets.com https://*.zopim.com https://*.rcrsv.io; " +
+                    $"style-src 'self' 'unsafe-inline' {dasCdn} https://tagmanager.google.com https://fonts.googleapis.com https://*.rcrsv.io ; " +
+                    $"img-src {dasCdn} www.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com https://www.google-analytics.com ; " +
+                    $"font-src {dasCdn} https://fonts.gstatic.com https://*.rcrsv.io data: ;" +
+                    "connect-src https://www.google-analytics.com https://*.zendesk.com https://*.zdassets.com wss://*.zopim.com https://*.rcrsv.io ;"));
 
             await next(context);
         }
