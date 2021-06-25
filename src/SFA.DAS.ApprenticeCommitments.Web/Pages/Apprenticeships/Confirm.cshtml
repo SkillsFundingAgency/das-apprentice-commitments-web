@@ -2,16 +2,6 @@
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @{
     ViewData["Title"] = "My apprenticeship";
-
-    async Task RenderDaysRemaining()
-    {
-        <span asp-hide="@Model.Overdue">
-            You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
-        </span>
-        <span asp-show="@Model.Overdue">
-            You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
-        </span>
-    }
 }
 
 @section AfterHeader {
@@ -33,7 +23,12 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
-            @{ await RenderDaysRemaining(); }
+            <span asp-hide="@Model.Overdue">
+                You have @Model.DaysRemaining days to confirm your apprenticeship
+            </span>
+            <span asp-show="@Model.Overdue">
+                You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
+            </span>
         </strong>
     </div>
     <div asp-show="@Model.DisplayChangeNotification" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
@@ -47,7 +42,12 @@
                 Changed have been made to you apprenticeship.  Please review and confirm your new details.
             </p>
             <p>
-                @{ await RenderDaysRemaining(); }
+                <span asp-hide="@Model.Overdue">
+                    You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
+                </span>
+                <span asp-show="@Model.Overdue">
+                    You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
+                </span>
             </p>
         </div>
     </div>
