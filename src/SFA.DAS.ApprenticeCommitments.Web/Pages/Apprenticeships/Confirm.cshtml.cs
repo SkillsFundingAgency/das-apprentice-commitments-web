@@ -31,6 +31,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
         public bool? HowApprenticeshipWillBeDeliveredConfirmation { get; set; } = null;
         public bool ApprenticeshipConfirmed { get; set; } = false;
+        public bool DisplayChangeNotification { get; set; }
 
         public string Forwardlink => $"/apprenticeships/{ApprenticeshipId.Hashed}/transactioncomplete";
 
@@ -70,6 +71,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ApprenticeshipConfirmed = apprenticeship.ConfirmedOn.HasValue;
+            DisplayChangeNotification = apprenticeship.DisplayChangeNotification;
         }
 
         private int CalculateDaysRemaining(Apprenticeship apprenticeship)
