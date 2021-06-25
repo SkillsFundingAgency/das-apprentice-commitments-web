@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.Apprentice.SharedUi.GoogleAnalytics;
 using SFA.DAS.Apprentice.SharedUi.Zendesk;
 using System;
 
@@ -12,6 +13,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             services.SetZenDeskConfiguration(configuration.ZenDesk);
+            services.EnableGoogleAnalytics(configuration.GoogleAnalytics);
 
             return services;
         }
