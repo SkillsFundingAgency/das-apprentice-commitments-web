@@ -25,7 +25,7 @@
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
             <span asp-hide="@Model.Overdue">
-                You have @Model.DaysRemaining days to confirm your apprenticeship
+                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
             </span>
             <span asp-show="@Model.Overdue">
                 You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.

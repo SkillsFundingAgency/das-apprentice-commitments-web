@@ -122,12 +122,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.AllConfirmed.Should().Be(true);
         }
 
-        [Then("the apprentice should see (.*) days remaining")]
-        public void ThenTheApprenticeShouldSeeDaysRemaining(int days)
+        [Then("the apprentice should see (.*) remaining")]
+        public void ThenTheApprenticeShouldSeeDaysRemaining(string days)
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.DaysRemaining.Should().Be(days);
+            model.Pluralise(model.DaysRemaining, "day").Should().Be(days);
         }
 
         [Then("the overdue state should be (.*)")]

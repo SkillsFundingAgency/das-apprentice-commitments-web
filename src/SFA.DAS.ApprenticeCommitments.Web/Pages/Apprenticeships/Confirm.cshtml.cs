@@ -88,5 +88,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             return Redirect(Forwardlink);
         }
+
+        public string Pluralise(int number, string singular) =>
+            $"{number} {singular}{(number == 1 ? "" : "s")}";
     }
 }
