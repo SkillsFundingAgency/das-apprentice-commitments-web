@@ -61,7 +61,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
-            DaysRemaining = Math.Max(0, (apprenticeship.ConfirmBefore - _time.Now).Days);
+            DaysRemaining = CalculateDaysRemaining(apprenticeship);
 
             CommitmentStatementId = apprenticeship.CommitmentStatementId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
@@ -70,6 +70,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ApprenticeshipConfirmed = apprenticeship.ConfirmedOn.HasValue;
+        }
+
+        private int CalculateDaysRemaining(Apprenticeship apprenticeship)
+        {
+            // Show "1 day remaining during" the last hours of the last day, when technically
+            // there is less that one whole day.
+            var daysRemaining = apprenticeship.ConfirmBefore.AddDays(1) - _time.Now;
+            return Math.Max(0, daysRemaining.Days);
         }
 
         public async Task<IActionResult> OnPostConfirm()

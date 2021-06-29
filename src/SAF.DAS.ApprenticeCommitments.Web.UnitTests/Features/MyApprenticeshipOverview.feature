@@ -41,9 +41,10 @@ Scenario: The apprentice is shown days remaining for confirmation
 	And the overdue state should be <Overdue>
 
 	Examples: 
-	| Confirm Before   | Now              | Days Remaining | Overdue |
-	| 2021-03-26 10:59 | 2021-03-12 10:59 | 14             | false   |
-	| 2021-03-26 10:59 | 2021-03-12 11:00 | 13             | false   |
-	| 2021-03-26 10:59 | 2021-03-25 10:59 | 1              | false   |
-	| 2021-03-26 10:59 | 2021-03-26 10:59 | 0              | true    |
-	| 2021-03-26 10:59 | 2021-03-27 10:59 | 0              | true    |
+	| Confirm Before      | Now                 | Days Remaining | Overdue |
+	| 2021-07-12T18:20:00 | 2021-06-29T03:45:00 | 14             | false   |
+	| 2021-03-25 10:59    | 2021-03-12 10:59    | 14             | false   |
+	| 2021-03-25 10:59    | 2021-03-12 11:00    | 13             | false   |
+	| 2021-03-25 10:59    | 2021-03-25 10:59    | 1              | false   |
+	| 2021-03-25 10:59    | 2021-03-26 10:59    | 0              | true    |
+	| 2021-03-25 10:59    | 2021-03-27 10:59    | 0              | true    |
