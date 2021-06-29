@@ -24,7 +24,12 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
-            You have 14 days to confirm your apprenticeship
+            <span asp-hide="@Model.Overdue">
+                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
+            </span>
+            <span asp-show="@Model.Overdue">
+                You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
+            </span>
         </strong>
     </div>
     <p>We want to make sure you have everything you need for a successful apprenticeship.</p>

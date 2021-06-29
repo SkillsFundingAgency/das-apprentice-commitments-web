@@ -4,6 +4,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
@@ -13,12 +14,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
+        private readonly ITimeProvider _time;
 
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
         public long CommitmentStatementId { get; set; }
+
+        public int DaysRemaining { get; set; }
+        public bool Overdue => DaysRemaining <= 0;
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -41,9 +46,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             }
         }
 
-        public ConfirmApprenticeshipModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
+        public ConfirmApprenticeshipModel(IOuterApiClient client, ITimeProvider time, AuthenticatedUser authenticatedUser)
         {
             _client = client;
+            _time = time;
             _authenticatedUser = authenticatedUser;
         }
 
@@ -55,6 +61,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
+            DaysRemaining = CalculateDaysRemaining(apprenticeship);
+
             CommitmentStatementId = apprenticeship.CommitmentStatementId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
@@ -62,6 +70,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ApprenticeshipConfirmed = apprenticeship.ConfirmedOn.HasValue;
+        }
+
+        private int CalculateDaysRemaining(Apprenticeship apprenticeship)
+        {
+            // Show "1 day remaining during" the last hours of the last day, when technically
+            // there is less that one whole day.
+            var daysRemaining = apprenticeship.ConfirmBefore.AddDays(1) - _time.Now;
+            return Math.Max(0, daysRemaining.Days);
         }
 
         public async Task<IActionResult> OnPostConfirm()
@@ -72,5 +88,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             return Redirect(Forwardlink);
         }
+
+        public string Pluralise(int number, string singular) =>
+            $"{number} {singular}{(number == 1 ? "" : "s")}";
     }
 }
