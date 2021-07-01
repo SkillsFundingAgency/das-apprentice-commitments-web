@@ -1,4 +1,5 @@
-﻿using RestEase;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using RestEase;
 using System;
 using System.Threading.Tasks;
 
@@ -50,5 +51,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task ConfirmApprenticeship(
             [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] ApprenticeshipConfirmationRequest confirmation);
+
+        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/statements/{commitmentStatementId}")]
+        Task UpdateApprenticeship(
+            [Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long commitmentStatementId,
+            [Body] JsonPatchDocument<Apprenticeship> patch);
+    }
+
+    public static class OuterApiExtensions
+    {
+        public static async Task UpdateApprenticeshipLastViewed(this IOuterApiClient client, Guid apprenticeId, long apprenticeship, long commitmentStatementId)
+        {
+            var patch = new JsonPatchDocument<Apprenticeship>().Replace(x => x.LastViewed, DateTime.UtcNow);
+            await client.UpdateApprenticeship(apprenticeId, apprenticeship, commitmentStatementId, patch);
+        }
     }
 }

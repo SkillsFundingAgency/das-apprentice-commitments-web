@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System;
@@ -40,7 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _confirmationDeadline = confirmBefore;
         }
 
-        [Given(@"the time is (.*)")]
+        [Given("the time is (.*)")]
         public void GivenTheTimeIs(DateTime now)
         {
             _context.Time.Now = now;
@@ -64,6 +65,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
+                            CommitmentStatementId = 21,
                             ConfirmBefore = _confirmationDeadline,
                             EmployerCorrect = _EmployerConf,
                             TrainingProviderCorrect = _TrainingProviderConf,
@@ -72,9 +74,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf,
                             DisplayChangeNotification = _apprenticeshipHasChanged,
                         }));
+
+            _context.OuterApi.MockServer
+                .Given(Request.Create()
+                    .UsingPatch()
+                    .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(HttpStatusCode.OK));
         }
 
-        [When(@"accessing the overview page")]
+        [When("accessing the overview page")]
         public async Task WhenAccessingTheOverviewPage()
         {
             await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}");
@@ -93,7 +102,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.Should().NotBeNull();
         }
 
-        [Given(@"the apprentice has not confirmed every aspect of the apprenciceship")]
+        [Then("the apprenticeship is updated with the time the page was viewed")]
+        public void ThenTheApprenticeshipIsUpdatedWithTheTimeThePageWasViewed()
+        {
+            var request = _context.OuterApi.MockServer.LogEntries
+                .Should().Contain(x =>
+                    x.RequestMessage.Path == $"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId.Id}/statements/21" &&
+                    x.RequestMessage.Method == "PATCH").Which;
+
+            JArray patch = (JArray)request.RequestMessage.BodyAsJson;
+            patch[0]["path"].ToString().Should().BeEquivalentTo("/LastViewed");
+            patch[0]["op"].ToString().Should().BeEquivalentTo("replace");
+            patch[0]["value"].Value<DateTime>().Should().BeCloseTo(DateTime.Now, precision: 1000);
+        }
+
+        [Given("the apprentice has not confirmed every aspect of the apprenciceship")]
         public void GivenTheApprenticeHasNotConfirmedEveryAspectOfTheApprenciceship()
         {
             _EmployerConf =
@@ -103,7 +126,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 _HowApprenticeshipWillBeDeliveredConf = false;
         }
 
-        [Then(@"the apprentice should not see the ready to confirm banner")]
+        [Then("the apprentice should not see the ready to confirm banner")]
         public void ThenTheApprenticeShouldNotSeeTheReadyToConfirmBanner()
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
@@ -121,7 +144,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 _HowApprenticeshipWillBeDeliveredConf = true;
         }
 
-        [Then(@"the apprentice should see the ready to confirm banner")]
+        [Then("the apprentice should see the ready to confirm banner")]
         public void ThenTheApprenticeShouldSeeTheReadyToConfirmBanner()
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
