@@ -43,6 +43,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
                     {"Authentication:MetadataAddress", _context.IdentityServiceUrl},
                     {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
+                    {"ApplicationUrls:ApprenticeHomeUrl", _context.OuterApi?.BaseAddress ?? "https://home/"},
+                    {"ApplicationUrls:ApprenticeCommitmentsUrl", _context.OuterApi?.BaseAddress ?? "https://confirm/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
                     {"Hashing:AllowedHashstringCharacters", "abcdefgh12345678"},
                     {"Hashing:Hashstring", "testing"},

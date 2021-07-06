@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.Apprentice.SharedUi.Menu;
+using SFA.DAS.Apprentice.SharedUi.Startup;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -29,10 +30,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddAuthentication(appConfig.Authentication, Environment)
                 .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
                 .AddHashingService(appConfig.Hashing)
-                .AddSharedUi(appConfig)
                 .RegisterServices()
                 .AddControllers();
-            services.AddRazorPages().SetCurrentNavigationSection(NavigationSection.ConfirmMyApprenticeship);
+
+            services.AddSharedUi(appConfig, options =>
+            {
+                options.EnableZendesk();
+                options.EnableGoogleAnalytics();
+                options.SetCurrentNavigationSection(NavigationSection.ConfirmMyApprenticeship);
+            });
+
+            services.AddRazorPages();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
