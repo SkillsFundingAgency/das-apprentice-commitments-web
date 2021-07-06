@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.Apprentice.SharedUi;
 using SFA.DAS.Apprentice.SharedUi.GoogleAnalytics;
+using SFA.DAS.Apprentice.SharedUi.Menu;
 using SFA.DAS.Apprentice.SharedUi.Zendesk;
 using System;
 
@@ -12,8 +15,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         {
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            services.SetZenDeskConfiguration(configuration.ZenDesk);
+            services.SetZenDeskConfiguration(configuration.Zendesk);
             services.EnableGoogleAnalytics(configuration.GoogleAnalytics);
+            services.AddTransient(_ => new NavigationUrlHelper(configuration.ApplicationUrls));
 
             return services;
         }

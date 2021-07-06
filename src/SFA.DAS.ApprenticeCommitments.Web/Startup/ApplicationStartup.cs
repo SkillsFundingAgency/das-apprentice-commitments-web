@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.Apprentice.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -31,7 +32,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddSharedUi(appConfig)
                 .RegisterServices()
                 .AddControllers();
-            services.AddRazorPages();
+            services.AddRazorPages().SetCurrentNavigationSection(NavigationSection.ConfirmMyApprenticeship);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
