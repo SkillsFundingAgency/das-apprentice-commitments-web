@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -212,7 +211,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/statements/{_commitmentStatementId}/apprenticeshipdetailsconfirmation")
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_commitmentStatementId}/apprenticeshipdetailsconfirmation")
                     .UsingPost());
 
             updates.Should().HaveCount(1);

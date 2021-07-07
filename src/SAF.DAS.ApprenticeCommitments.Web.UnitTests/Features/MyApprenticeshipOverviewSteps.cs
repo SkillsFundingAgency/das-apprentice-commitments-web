@@ -107,7 +107,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var request = _context.OuterApi.MockServer.LogEntries
                 .Should().Contain(x =>
-                    x.RequestMessage.Path == $"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId.Id}/statements/21" &&
+                    x.RequestMessage.Path == $"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId.Id}/revisions/21" &&
                     x.RequestMessage.Method == "PATCH").Which;
 
             JArray patch = (JArray)request.RequestMessage.BodyAsJson;
