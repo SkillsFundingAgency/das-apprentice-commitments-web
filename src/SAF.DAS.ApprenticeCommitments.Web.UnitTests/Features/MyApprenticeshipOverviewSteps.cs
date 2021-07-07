@@ -3,7 +3,6 @@ using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
@@ -20,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private HashedId _apprenticeshipId;
         private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _RolesAndResponsibilitiesConf, _HowApprenticeshipWillBeDeliveredConf;
         private DateTime _confirmationDeadline;
+        private bool _apprenticeshipHasChanged;
 
         public MyApprenticeOverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -46,6 +46,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Time.Now = now;
         }
 
+        [Given("the apprenticeship has changed")]
+        public void GivenTheApprenticeshipHasChanged()
+        {
+            _apprenticeshipHasChanged = true;
+        }
+
         [Given("the apprentice will navigate to the overview page")]
         public void GivenTheApprenticeWillNavigateToTheOverviewPage()
         {
@@ -57,13 +63,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithStatusCode(200)
                         .WithBodyAsJson(new
                         {
-                            Id = _apprenticeshipId.Id,
+                            _apprenticeshipId.Id,
                             ConfirmBefore = _confirmationDeadline,
                             EmployerCorrect = _EmployerConf,
                             TrainingProviderCorrect = _TrainingProviderConf,
                             ApprenticeshipDetailsCorrect = _ApprenticeshipDetailsConf,
                             RolesAndResponsibilitiesCorrect = _RolesAndResponsibilitiesConf,
-                            HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf
+                            HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf,
+                            DisplayChangeNotification = _apprenticeshipHasChanged,
                         }));
         }
 
@@ -136,6 +143,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
             model.Should().NotBeNull();
             model.Overdue.Should().Be(overdue);
+        }
+
+        [Then("the apprentice should not see the change notification banner")]
+        public void ThenTheApprenticeShouldNotSeeTheChangeNotificationBanner()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.DisplayChangeNotification.Should().BeFalse();
+        }
+
+        [Then("the apprentice should see the change notification banner")]
+        public void ThenTheApprenticeShouldSeeTheChangeNotificationBanner()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.DisplayChangeNotification.Should().BeTrue();
         }
     }
 }
