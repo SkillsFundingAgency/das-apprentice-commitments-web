@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.Apprentice.SharedUi.Menu;
-using SFA.DAS.Apprentice.SharedUi.Startup;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
+using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {

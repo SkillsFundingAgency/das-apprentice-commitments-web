@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SFA.DAS.Apprentice.SharedUi.Menu;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [RequiresIdentityConfirmed]
-    public class YourApprenticeshipDetails : PageModel, IHasBackLink, IHideNavigation
+    [HideNavigationBar]
+    public class YourApprenticeshipDetails : PageModel, IHasBackLink
     {
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
