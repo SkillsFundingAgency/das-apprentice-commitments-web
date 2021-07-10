@@ -52,9 +52,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
             [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] ApprenticeshipConfirmationRequest confirmation);
 
-        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/revisions/{commitmentStatementId}")]
+        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}")]
         Task UpdateApprenticeship(
-            [Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long commitmentStatementId,
+            [Path] Guid apprenticeId, [Path] long apprenticeshipId,
             [Body] JsonPatchDocument<Apprenticeship> patch);
     }
 
@@ -63,7 +63,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public static async Task UpdateApprenticeshipLastViewed(this IOuterApiClient client, Guid apprenticeId, long apprenticeship, long commitmentStatementId)
         {
             var patch = new JsonPatchDocument<Apprenticeship>().Replace(x => x.LastViewed, DateTime.UtcNow);
-            await client.UpdateApprenticeship(apprenticeId, apprenticeship, commitmentStatementId, patch);
+            await client.UpdateApprenticeship(apprenticeId, apprenticeship, patch);
         }
     }
 }
