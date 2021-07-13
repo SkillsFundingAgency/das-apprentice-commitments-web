@@ -4,6 +4,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticePortal.SharedUi.Identity;
 using System;
 using System.Threading.Tasks;
 
@@ -72,6 +73,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ApprenticeshipConfirmed = apprenticeship.ConfirmedOn.HasValue;
             DisplayChangeNotification = apprenticeship.DisplayChangeNotification;
+
+            ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
         }
 
         private int CalculateDaysRemaining(Apprenticeship apprenticeship)
