@@ -86,7 +86,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     nameof(FirstName) => (e.PropertyName, "Enter your first name"),
                     nameof(LastName) => (e.PropertyName, "Enter your last name"),
                     nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
-                    _ => ("", e.ErrorMessage),
+                    null => ("", e.ErrorMessage),
+                    _ => ("", "Something went wrong")
                 };
                 ModelState.AddModelError(p, m);
             }
