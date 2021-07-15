@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
+    [HideNavigationBar]
     public class ConfirmYourPersonalDetailsModel : PageModel
     {
         private readonly RegistrationsService _registrations;
@@ -33,6 +35,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
+            ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
+
             var registration = await _registrations.GetRegistration(user);
 
             if (registration.HasCompletedVerification)
