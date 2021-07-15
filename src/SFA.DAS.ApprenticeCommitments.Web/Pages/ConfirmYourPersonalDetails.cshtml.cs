@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
-    public class ConfirmYourIdentityModel : PageModel
+    public class ConfirmYourPersonalDetailsModel : PageModel
     {
         private readonly RegistrationsService _registrations;
 
-        public ConfirmYourIdentityModel(RegistrationsService api)
+        public ConfirmYourPersonalDetailsModel(RegistrationsService api)
         {
             _registrations = api;
         }

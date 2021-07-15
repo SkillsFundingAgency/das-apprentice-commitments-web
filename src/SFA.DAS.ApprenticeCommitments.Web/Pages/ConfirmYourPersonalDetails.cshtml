@@ -1,7 +1,7 @@
 ﻿@page
-@model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourIdentityModel
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourPersonalDetailsModel
 @{
-    ViewData["Title"] = "Confirm your identity";
+    ViewData["Title"] = "Confirm your personal details";
 
     bool IsInvalid(string propertyName) =>
         ViewData.ModelState["FirstName"]?.ValidationState ==

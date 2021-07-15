@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
-    public class ConfirmYourIdentityNewModel : PageModel
+    public class ConfirmYourPersonalDetailsNewModel : PageModel
     {
         public async Task<IActionResult> OnGet()
         {
@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             }
             else
             {
-                return RedirectToPage("ConfirmYourIdentity");
+                return RedirectToPage("ConfirmYourPersonalDetails");
             }
         }
     }
