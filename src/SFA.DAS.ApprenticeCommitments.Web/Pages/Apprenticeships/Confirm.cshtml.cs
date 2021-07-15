@@ -75,6 +75,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             DisplayChangeNotification = apprenticeship.DisplayChangeNotification;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
+
+            await _client.UpdateApprenticeshipLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId);
         }
 
         private int CalculateDaysRemaining(Apprenticeship apprenticeship)

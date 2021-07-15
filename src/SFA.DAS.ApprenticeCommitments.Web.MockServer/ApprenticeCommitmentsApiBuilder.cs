@@ -134,6 +134,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         TrainingProviderCorrect = false,
                     }));
 
+            _server
+                .Given(Request.Create()
+                    .UsingPatch()
+                    .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
+
             return this;
         }
 
