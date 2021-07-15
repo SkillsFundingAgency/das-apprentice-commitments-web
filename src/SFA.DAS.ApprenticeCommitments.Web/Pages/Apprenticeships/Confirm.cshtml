@@ -15,7 +15,7 @@
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
             <span asp-hide="@Model.Overdue">
-                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details
+                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
             </span>
             <span asp-show="@Model.Overdue">
                 You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
@@ -34,7 +34,7 @@
             </p>
             <p class="govuk-notification-banner__heading">
                 <span asp-hide="@Model.Overdue">
-                    You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details
+                    You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
                 </span>
                 <span asp-show="@Model.Overdue">
                     You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
