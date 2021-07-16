@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
+using System.Net;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -47,6 +49,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseRewriter(new RewriteOptions()
+                .AddRedirect("ConfirmYourIdentity", "ConfirmYourPersonalDetails", (int)HttpStatusCode.MovedPermanently)
+                .AddRedirect("confirmyouridentity", "ConfirmYourPersonalDetails", (int)HttpStatusCode.MovedPermanently)
+                );
+
             app.UseErrorPages(env)
                 .UseStatusCodePagesWithReExecute("/Error")
                 .UseHsts(env)

@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private ConfirmYourIdentityModel _postedRegistration;
+        private ConfirmYourPersonalDetailsModel _postedRegistration;
 
         public ConfirmIdentitySteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -112,7 +112,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheApprenticeShouldSeeTheVerifyIdentityPage()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<ConfirmYourIdentityModel>().Which.EmailAddress.Should().Be("bob");
+            page.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>().Which.EmailAddress.Should().Be("bob");
         }
 
         [Then(@"the apprentice marks the registration as seen")]
@@ -170,11 +170,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [When("the apprentice verifies their identity with")]
         public async Task WhenTheApprenticeVerifiesTheirIdentityWith(Table table)
         {
-            _postedRegistration = table.CreateInstance(() => new ConfirmYourIdentityModel(null));
+            _postedRegistration = table.CreateInstance(() => new ConfirmYourPersonalDetailsModel(null));
             _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            await _context.Web.Post("ConfirmYourIdentity",
+            await _context.Web.Post("ConfirmYourPersonalDetails",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "FirstName", _postedRegistration.FirstName },
@@ -242,7 +242,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("verification is not successful")]
         public void ThenTheVerificationIsNotSuccessful()
         {
-            _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmYourIdentityModel>()
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>()
                 .Which.ModelState.IsValid.Should().BeFalse();
         }
 
@@ -254,7 +254,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             foreach (var (PropertyName, ErrorMessage) in messages)
             {
                 _context.ActionResult.LastPageResult
-                    .Model.As<ConfirmYourIdentityModel>()
+                    .Model.As<ConfirmYourPersonalDetailsModel>()
                     .ModelState[PropertyName]
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }
@@ -268,7 +268,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             foreach (var ErrorMessage in messages)
             {
                 _context.ActionResult.LastPageResult
-                    .Model.As<ConfirmYourIdentityModel>()
+                    .Model.As<ConfirmYourPersonalDetailsModel>()
                     .ModelState[""]
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }

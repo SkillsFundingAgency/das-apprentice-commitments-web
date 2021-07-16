@@ -17,7 +17,6 @@ li.app-status-list__list-item {
         box-shadow: 0 0 $govuk-focus-colour, 0 3px $govuk-focus-text-colour;
         color: $govuk-focus-text-colour;
         border-color: $govuk-focus-colour;
-        transition: all 0s;
         outline: $govuk-focus-width solid transparent;
     }
 }
@@ -38,13 +37,8 @@ li.app-status-list__list-item {
 
     &:hover,
     &:focus {
-        transform: scale(1.05);
         background: $govuk-focus-colour;
         color: $govuk-focus-text-colour;
-    }
-
-    &:hover {
-        transition: all .3s ease;
     }
 
     @include app-section-list-style-focused;

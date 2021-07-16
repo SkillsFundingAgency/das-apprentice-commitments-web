@@ -10,6 +10,13 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
+    public enum ConfirmStatus
+    {
+        SectionsIncomplete,
+        SectionsComplete,
+        ApprenticeshipComplete,
+    }
+
     [RequiresIdentityConfirmed]
     public class ConfirmApprenticeshipModel : PageModel
     {
@@ -31,22 +38,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public bool? ApprenticeshipDetailsConfirmation { get; set; } = null;
         public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
         public bool? HowApprenticeshipWillBeDeliveredConfirmation { get; set; } = null;
-        public bool ApprenticeshipConfirmed { get; set; } = false;
+
         public bool DisplayChangeNotification { get; set; }
 
-        public string Forwardlink => $"/apprenticeships/{ApprenticeshipId.Hashed}/transactioncomplete";
+        public bool ApprenticeshipConfirmed => Status == ConfirmStatus.ApprenticeshipComplete;
 
-        public bool AllConfirmed
-        {
-            get
-            {
-                return EmployerConfirmation.Equals(true)
-                    && TrainingProviderConfirmation.Equals(true)
-                    && ApprenticeshipDetailsConfirmation.Equals(true)
-                    && RolesAndResponsibilitiesConfirmation.Equals(true)
-                    && HowApprenticeshipWillBeDeliveredConfirmation.Equals(true);
-            }
-        }
+        public bool AllConfirmed => Status == ConfirmStatus.SectionsComplete;
+
+        public ConfirmStatus Status { get; private set; }
+
+        public string Forwardlink => $"/apprenticeships/{ApprenticeshipId.Hashed}/transactioncomplete";
 
         public ConfirmApprenticeshipModel(IOuterApiClient client, ITimeProvider time, AuthenticatedUser authenticatedUser)
         {
@@ -63,6 +64,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client
                 .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
 
+            Status = ConfirmationStatus(apprenticeship);
             DaysRemaining = CalculateDaysRemaining(apprenticeship);
 
             CommitmentStatementId = apprenticeship.CommitmentStatementId;
@@ -71,10 +73,30 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
-            ApprenticeshipConfirmed = apprenticeship.ConfirmedOn.HasValue;
             DisplayChangeNotification = apprenticeship.DisplayChangeNotification;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
+        }
+
+        private ConfirmStatus ConfirmationStatus(Apprenticeship apprenticeship)
+        {
+            if (apprenticeship.ConfirmedOn.HasValue)
+            {
+                return ConfirmStatus.ApprenticeshipComplete;
+            }
+            else if (
+                apprenticeship.EmployerCorrect == true &&
+                apprenticeship.TrainingProviderCorrect == true &&
+                apprenticeship.ApprenticeshipDetailsCorrect == true &&
+                apprenticeship.RolesAndResponsibilitiesCorrect == true &&
+                apprenticeship.HowApprenticeshipDeliveredCorrect == true)
+            {
+                return ConfirmStatus.SectionsComplete;
+            }
+            else
+            {
+                return ConfirmStatus.SectionsIncomplete;
+            }
         }
 
         private int CalculateDaysRemaining(Apprenticeship apprenticeship)
