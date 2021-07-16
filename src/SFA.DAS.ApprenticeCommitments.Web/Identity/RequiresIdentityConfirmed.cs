@@ -16,7 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (VerifiedUser.UserHasUnconfirmedIdentity(context.HttpContext))
-                context.Result = new RedirectResult("/ConfirmYourIdentity");
+                context.Result = new RedirectResult("/ConfirmYourPersonalDetails");
         }
     }
 }

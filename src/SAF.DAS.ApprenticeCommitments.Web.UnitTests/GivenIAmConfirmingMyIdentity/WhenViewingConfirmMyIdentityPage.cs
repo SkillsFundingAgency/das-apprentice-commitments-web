@@ -17,7 +17,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
         [Test, PageAutoData]
         public async Task The_page_shows_my_email_address(
             [Frozen] Mock<IOuterApiClient> api,
-            ConfirmYourIdentityModel sut,
+            ConfirmYourPersonalDetailsModel sut,
             ClaimsPrincipal user,
             VerifyRegistrationResponse registration)
         {
@@ -35,7 +35,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
 
         [Test, PageAutoData]
         public void Throws_when_the_registration_claim_is_missing(
-            ConfirmYourIdentityModel sut,
+            ConfirmYourPersonalDetailsModel sut,
             ClaimsPrincipal user)
         {
             sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
@@ -44,7 +44,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
 
         [Test, PageAutoData]
         public void Throws_when_the_registration_claim_is_not_a_guid(
-            ConfirmYourIdentityModel sut,
+            ConfirmYourPersonalDetailsModel sut,
             ClaimsPrincipal user,
             string notAGuid)
         {

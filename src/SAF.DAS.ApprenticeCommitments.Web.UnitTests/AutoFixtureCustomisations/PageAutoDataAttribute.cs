@@ -4,6 +4,7 @@ using AutoFixture.NUnit3;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 
@@ -21,8 +22,11 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.AutoFixtureCustomisations
                 new DefaultHttpContext { User = claims });
             fixture.Register((DefaultHttpContext http, RouteData route) =>
                 new ActionContext(http, route, new PageActionDescriptor()));
-            fixture.Register((ActionContext a) => new PageContext(a));
-            fixture.Customize(new AutoMoqCustomization());
+            fixture.Register((ActionContext a) => new PageContext(a)
+            {
+                ViewData = fixture.Create<ViewDataDictionary>()
+            });
+            fixture.Customize(new AutoMoqCustomization { ConfigureMembers = true });
             return fixture;
         }
     }

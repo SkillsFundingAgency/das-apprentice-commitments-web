@@ -2,30 +2,20 @@
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @using SFA.DAS.ApprenticePortal.SharedUi.Menu
 @{
-    ViewData["Title"] = "My apprenticeship";
+    ViewData["Title"] = "Confirm my apprenticeship details";
 }
 
-@section AfterHeader {
+<div asp-show="@Model.Status == ConfirmStatus.SectionsIncomplete">
+    <h2 class="govuk-heading-l">Confirm my apprenticeship details</h2>
 
-    <div class="app-page-header">
-        <div class="govuk-width-container">
-            <div class="govuk-grid-row app-page-header__row">
-                <div class="govuk-grid-column-two-thirds">
-                    <h1 class="govuk-heading-xl app-page-header__heading">My apprenticeship details</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+    <p>Read through each section below to confirm your apprenticeship. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
 
-<div asp-show="!@Model.ApprenticeshipConfirmed">
-    <h2 class="govuk-heading-l">Confirm your apprenticeship</h2>
     <div asp-show="!@Model.DisplayChangeNotification" class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
             <span asp-hide="@Model.Overdue">
-                You have @Model.DaysRemaining days to confirm your apprenticeship
+                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details
             </span>
             <span asp-show="@Model.Overdue">
                 You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
@@ -44,7 +34,7 @@
             </p>
             <p class="govuk-notification-banner__heading">
                 <span asp-hide="@Model.Overdue">
-                    You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship
+                    You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details
                 </span>
                 <span asp-show="@Model.Overdue">
                     You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
@@ -52,13 +42,14 @@
             </p>
         </div>
     </div>
-    <p>We want to make sure you have everything you need for a successful apprenticeship.</p>
-    <p>Read through each section below to confirm your apprenticeship with us. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
-    <p>Your answers are saved automatically, so you can go away and come back if you need to.</p>
+
+    <p>Your answers will save automatically, so you can leave and come back if you need to.</p>
+
 </div>
 
-<div asp-show="!@Model.ApprenticeshipConfirmed && @Model.AllConfirmed" class="govuk-!-margin-bottom-5">
-    <h2 class="govuk-heading-m">Your apprenticeship is ready to confirm</h2>
+<div asp-show="@Model.Status == ConfirmStatus.SectionsComplete" class="govuk-!-margin-bottom-5">
+    <h2 class="govuk-heading-m">Confirm my apprenticeship details</h2>
+
     <div class="app-notification-banner app-notification-banner--success">
         <div class="app-notification-banner--icon-content-wrap">
             <span class="app-notification-banner__icon das-text--success-icon"></span>
@@ -66,16 +57,17 @@
         </div>
         <form asp-page-handler="confirm" method="post">
             <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
-            <button class="govuk-button govuk-!-margin-top-4 govuk-!-margin-bottom-0">Confirm your apprenticeship</button>
+            <button class="govuk-button govuk-!-margin-top-4 govuk-!-margin-bottom-0">Confirm my apprenticeship</button>
         </form>
     </div>
 </div>
 
-<div asp-show="@Model.ApprenticeshipConfirmed && @Model.AllConfirmed" class="govuk-!-margin-bottom-5">
+<div asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" class="govuk-!-margin-bottom-5">
+    <h2 class="govuk-heading-m">Your apprenticeship details</h2>
     <div class="app-notification-banner app-notification-banner--success">
         <div class="app-notification-banner--icon-content-wrap">
             <span class="app-notification-banner__icon das-text--success-icon"></span>
-            Your apprenticeship has been agreed and you're ready to start
+            You have completed the confirmation of your apprenticeship.  Your employer and training provider will contact you shortly.
         </div>
     </div>
 </div>
@@ -89,7 +81,7 @@
         Your training provider
     </li>
     <li confirmation-section asp-page="YourApprenticeshipDetails" model="Model">
-        Your Apprenticeship Details
+        Your apprenticeship details
     </li>
     <li confirmation-section asp-page="HowYourApprenticeshipWillBeDelivered" model="Model">
         How your apprenticeship will be delivered
@@ -101,5 +93,5 @@
 
 <div class="govuk-heading-m">
     <h2 class="govuk-heading-m">Help and Support</h2>
-    <p>If you need help and support or have any questions, answers and guidance can be found in the <a asp-external-section="@NavigationSection.Home" asp-external-page="HelpAndSupport" class="govuk-link" >help and support section</a></p>
+    <p>If you have any questions or need support, guidance can be found in the <a asp-external-section="@NavigationSection.Home" asp-external-page="HelpAndSupport" class="govuk-link">help and support section</a>.</p>
 </div>
