@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly string _courseName;
         private readonly int _courseLevel;
         private readonly string _courseOption;
-        private readonly int _durationInMonths;
+        private readonly int _courseDuration;
         private readonly DateTime _plannedStartDate;
         private readonly DateTime _plannedEndDate;
         private bool? _confirmedApprenticeshipDetails;
@@ -43,7 +43,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _courseName = "My Test Course Name";
             _courseLevel = 3;
             _courseOption = (string)null;
-            _durationInMonths = 19;
+            _courseDuration = 19;
             _plannedStartDate = new DateTime(2021, 03, 12);
             _plannedEndDate = new DateTime(2022, 09, 15);
 
@@ -87,7 +87,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             CourseName = _courseName,
                             CourseLevel = _courseLevel,
                             CourseOption = _courseOption,
-                            DurationInMonths = _durationInMonths,
+                            CourseDuration = _courseDuration,
                             PlannedStartDate = _plannedStartDate,
                             PlannedEndDate = _plannedEndDate,
                             ApprenticeshipDetailsCorrect = confirmed,
@@ -128,7 +128,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { nameof(YourApprenticeshipDetails.CourseName), _courseName },
                     { nameof(YourApprenticeshipDetails.CourseLevel) , _courseLevel.ToString() },
                     { nameof(YourApprenticeshipDetails.CourseOption) , _courseOption },
-                    { nameof(YourApprenticeshipDetails.DurationInMonths) , _durationInMonths.ToString() },
+                    { nameof(YourApprenticeshipDetails.CourseDuration) , _courseDuration.ToString() },
                     { nameof(YourApprenticeshipDetails.PlannedStartDate) , _plannedStartDate.ToString("o")},
                     { nameof(YourApprenticeshipDetails.PlannedEndDate) , _plannedEndDate.ToString("o") },
                     { nameof(YourApprenticeshipDetails.ConfirmedApprenticeshipDetails), _confirmedApprenticeshipDetails.ToString() }
@@ -166,7 +166,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheApprenticeShouldSeeTheDurationInMonths()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<YourApprenticeshipDetails>().Which.DurationInMonths.Should().Be(_durationInMonths);
+            page.Model.Should().BeOfType<YourApprenticeshipDetails>().Which.CourseDuration.Should().Be(_courseDuration);
         }
 
         [Then("the apprentice should see the planned start date")]
