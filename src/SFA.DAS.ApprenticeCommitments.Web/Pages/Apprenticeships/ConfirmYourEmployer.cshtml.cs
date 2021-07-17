@@ -61,7 +61,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             var nextPage = ConfirmedEmployer.Value ? "Confirm" : "CannotConfirm";
 
-            return new RedirectToPageResult(nextPage, new { ApprenticeshipId });
+            return new RedirectToPageResult(nextPage, null, new { ApprenticeshipId = ApprenticeshipId, Entity = "Employer" });
         }
     }
 }

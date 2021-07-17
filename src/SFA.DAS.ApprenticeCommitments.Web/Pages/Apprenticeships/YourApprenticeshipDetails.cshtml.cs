@@ -37,7 +37,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public string? CourseOption { get; set; }
 
         [BindProperty]
-        public int DurationInMonths { get; set; }
+        public int CourseDuration { get; set; }
 
         [BindProperty]
         public DateTime PlannedStartDate { get; set; }
@@ -60,7 +60,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             CourseName = apprenticeship.CourseName;
             CourseLevel = apprenticeship.CourseLevel;
             CourseOption = apprenticeship.CourseOption;
-            DurationInMonths = apprenticeship.DurationInMonths;
+            CourseDuration = apprenticeship.CourseDuration;
             PlannedStartDate = apprenticeship.PlannedStartDate;
             PlannedEndDate = apprenticeship.PlannedEndDate;
 
@@ -82,7 +82,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             var nextPage = ConfirmedApprenticeshipDetails.Value ? "Confirm" : "CannotConfirm";
 
-            return new RedirectToPageResult(nextPage, new { ApprenticeshipId });
+            return new RedirectToPageResult(nextPage, null, new { ApprenticeshipId = ApprenticeshipId, Entity = "ApprenticeshipDetails" });
         }
     }
 }

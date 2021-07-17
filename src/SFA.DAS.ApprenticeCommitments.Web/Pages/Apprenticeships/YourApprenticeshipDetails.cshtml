@@ -1,11 +1,11 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
 @{
-    ViewData["Title"] = "Your apprenticeship details";
+    ViewData["Title"] = "Confirm the details of your apprenticeship";
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-desktop">
+    <div class="govuk-grid-column-two-thirds">
 
         <partial name="ValidationSummary" />
 
@@ -13,10 +13,18 @@
 
         <div asp-show="@Model.ConfirmedApprenticeshipDetails.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
             <span class="app-notification-banner__icon das-text--success-icon"></span>
-            You have confirmed your apprenticeship details
+            You have confirmed these are the details of your apprenticeship
         </div>
 
         <div class="govuk-body">
+
+            <p>
+                These are the details that your employer and training provider have agreed with you and have given to us.
+            </p>
+
+            <p>
+                <b>It’s important to check these details</b> because you’ll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.
+            </p>
 
             <table class="govuk-table data-table">
                 <caption></caption>
@@ -35,26 +43,39 @@
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Duration</th>
-                        <td class="govuk-table__cell">@Model.DurationInMonths months</td>
+                        <td class="govuk-table__cell">@Model.CourseDuration months</td>
                     </tr>
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Planned start date</th>
+                        <th scope="row" class="govuk-table__header">Planned start date for training</th>
                         <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Planned end date</th>
-                        <td class="govuk-table__cell">@Model.PlannedEndDate.ToString("MMMM yyyy")</td>
                     </tr>
                 </tbody>
             </table>
+
+            <h3>
+                Things you need to know
+            </h3>
+
+            <p>
+                Your planned training start date and estimated duration should:
+            </p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>include the time you will spend in off-the-job training</li>
+                <li>not include when your end point assessment will take place</li>
+            </ul>
+
+            <div class="govuk-inset-text">
+                The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and training provider.
+            </div>
 
             <form asp-hide="@Model.ConfirmedApprenticeshipDetails.HasValue" id="apprenticeship-details-form-hide" method="post">
                 <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 class="govuk-fieldset__heading">
-                                Are these details correct?
-                            </h1>
+                            <h2 class="govuk-fieldset__heading">
+                                Are your apprenticeship details correct?
+                            </h2>
                         </legend>
 
                         <span asp-validation-for="ConfirmedApprenticeshipDetails" class="govuk-error-message"></span>
@@ -80,7 +101,7 @@
                 <input type="hidden" name="CourseName" value="@Model.CourseName" />
                 <input type="hidden" name="CourseLevel" value="@Model.CourseLevel" />
                 <input type="hidden" name="CourseOption" value="@Model.CourseOption" />
-                <input type="hidden" name="DurationInMonths" value="@Model.DurationInMonths" />
+                <input type="hidden" name="CourseDuration" value="@Model.CourseDuration" />
                 <input type="hidden" name="PlannedStartDate" value="@Model.PlannedStartDate" />
                 <input type="hidden" name="PlannedEndDate" value="@Model.PlannedEndDate" />
             </form>

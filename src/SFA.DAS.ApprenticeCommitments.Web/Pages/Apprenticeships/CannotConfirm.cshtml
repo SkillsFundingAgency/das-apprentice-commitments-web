@@ -1,21 +1,68 @@
-﻿@page "/apprenticeships/{apprenticeshipId}/cannotconfirm"
+﻿@page "/apprenticeships/{apprenticeshipId}/cannotconfirm/{entity?}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.CannotConfirmApprenticeshipModel
 @{
-    ViewData["Title"] = "You can’t confirm your apprenticeship yet.";
+    var heading = string.Empty;
+
+    switch (Model.Entity)
+    {
+        case "Employer":
+            heading = "You have confirmed that this is not your employer.";
+            break;
+
+        case "Provider":
+            heading = "You have confirmed that this is not your training provider.";
+            break;
+
+        case "ApprenticeshipDetails":
+            heading = "You have confirmed that your apprenticeship details are not correct.";
+            break;
+
+        default:
+            heading = "You can’t confirm your apprenticeship yet.";
+            break;
+    }
 }
+
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl">@ViewData["Title"] </h1>
+        <h1 class="govuk-heading-xl">@heading</h1>
 
-        <p>
-            Speak to your employer and provider to fix this then come back here to continue.
-        </p>
+        <div asp-show="@(Model.Entity == "Employer")">
+            <p>
+                To change these details you need to speak to your training provider. You’ll be alerted when your employer has been corrected.
+            </p>
+            <p>
+                You should come back to confirm the rest of your apprenticeship details when your employer has been corrected.
+            </p>
+        </div>
+
+        <div asp-show="@(Model.Entity == "Provider")">
+            <p>
+                To change these details you need to speak to your employer. You’ll be alerted when your training provider has been corrected.
+            </p>
+            <p>
+                You should come back to confirm the rest of your apprenticeship details when your training provider has been corrected.
+            </p>
+        </div>
+
+        <div asp-show="@(Model.Entity == "ApprenticeshipDetails")">
+            <p>
+                To change these details you need to speak to your training provider. You’ll be alerted when your apprenticeship details have been corrected.
+            </p>
+            <p>
+                You should come back to confirm the rest of your apprenticeship details when your apprenticeship details have been corrected.
+            </p>
+        </div>
+
+        <div asp-show="@(string.IsNullOrEmpty(Model.Entity))">
+            <p>Speak to your employer and provider to fix this then come back here to continue.</p>
+        </div>
 
         <form action="@Model.Backlink">
             <button class="govuk-button" data-module="govuk-button">
-                Return to My apprenticeship
+                Return to My Apprenticeship
             </button>
         </form>
     </div>
