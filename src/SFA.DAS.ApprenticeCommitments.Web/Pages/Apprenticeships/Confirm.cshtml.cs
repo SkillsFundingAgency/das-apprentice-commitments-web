@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
@@ -23,6 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly IOuterApiClient _client;
         private readonly AuthenticatedUser _authenticatedUser;
         private readonly ITimeProvider _time;
+        private readonly ILogger<ConfirmApprenticeshipModel> _logger;
 
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
@@ -49,11 +51,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public string Forwardlink => $"/apprenticeships/{ApprenticeshipId.Hashed}/transactioncomplete";
 
-        public ConfirmApprenticeshipModel(IOuterApiClient client, ITimeProvider time, AuthenticatedUser authenticatedUser)
+        public ConfirmApprenticeshipModel(IOuterApiClient client, ITimeProvider time, AuthenticatedUser authenticatedUser, ILogger<ConfirmApprenticeshipModel> logger)
         {
             _client = client;
             _time = time;
             _authenticatedUser = authenticatedUser;
+            _logger = logger;
         }
 
         public async Task OnGetAsync()
@@ -77,6 +80,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 
+            _logger.LogInformation($"Marking apprenticeship as viewed {_authenticatedUser.ApprenticeId}, {ApprenticeshipId.Id}");
             await _client.UpdateApprenticeshipLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId);
         }
 
