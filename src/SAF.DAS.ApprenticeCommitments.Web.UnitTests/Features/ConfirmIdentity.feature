@@ -53,5 +53,4 @@ Scenario: The apprentice enters invalid identity information
 	| FirstName     | Enter your first name                |
 	| LastName      | Enter your last name                 |
 	| DateOfBirth   | Enter your date of birth             |
-	|               | Something went wrong                 |
-	|               | Sorry, can't validate you, try again |
+	|               | Details entered do not match a registered apprenticeship. Please try again. If match continues to fail, contact your training provider to ensure they have given us the correct details.                 |
