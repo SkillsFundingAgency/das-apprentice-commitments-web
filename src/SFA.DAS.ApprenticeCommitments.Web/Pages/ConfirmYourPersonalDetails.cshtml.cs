@@ -5,6 +5,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
@@ -82,6 +83,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         private void AddErrors(DomainValidationException exception)
         {
             ModelState.ClearValidationState(nameof(DateOfBirth));
+            ModelState.ClearValidationState(nameof(LastName));
+            ModelState.ClearValidationState(nameof(FirstName));
 
             foreach (var e in exception.Errors)
             {
@@ -90,8 +93,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     nameof(FirstName) => (e.PropertyName, "Enter your first name"),
                     nameof(LastName) => (e.PropertyName, "Enter your last name"),
                     nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
-                    _ => ("", "Something went wrong"),
+                    "PersonalDetails" => ("PersonalDetails", "Details entered do not match a registered apprenticeship. Please try again. If match continues to fail, contact your training provider to ensure they have given us the correct details."),
+                    _ => ("", "Something went wrong")
                 };
+                if (p?.Length == 0 && ModelState.Keys.Contains("")) continue;
                 ModelState.AddModelError(p, m);
             }
         }

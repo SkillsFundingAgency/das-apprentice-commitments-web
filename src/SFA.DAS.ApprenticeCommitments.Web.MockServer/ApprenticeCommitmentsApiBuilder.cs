@@ -70,6 +70,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                             new { PropertyName = "DateOfBirth", ErrorMessage = "Invalid DateOfBirth" },
                             new { PropertyName = "NationalInsuranceNumber", ErrorMessage = "Invalid NationalInsuranceNumber" },
                             new { PropertyName = "Email", ErrorMessage = "Invalid email" },
+                            new { PropertyName = "PersonalDetails", ErrorMessage = "DoB mismatch" },
                             new { PropertyName = (string)null, ErrorMessage = "Registration {Id} id already verified" },
                         }));
 
@@ -133,6 +134,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         EmployerCorrect = true,
                         TrainingProviderCorrect = false,
                     }));
+
+            _server
+                .Given(Request.Create()
+                    .UsingPatch()
+                    .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
 
             return this;
         }
