@@ -42,12 +42,12 @@
                         <td class="govuk-table__cell">@Model.CourseOption</td>
                     </tr>
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Duration</th>
-                        <td class="govuk-table__cell">@Model.CourseDuration months</td>
-                    </tr>
-                    <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Planned start date for training</th>
                         <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Estimated duration</th>
+                        <td class="govuk-table__cell">@Model.CourseDuration months</td>
                     </tr>
                 </tbody>
             </table>

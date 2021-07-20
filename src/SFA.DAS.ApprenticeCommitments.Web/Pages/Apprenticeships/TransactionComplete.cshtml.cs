@@ -28,10 +28,5 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
             CourseName = apprenticeship.CourseName;
         }
-
-        public async Task<IActionResult> OnPostSurvey()
-        {
-            return new RedirectResult("https://forms.office.com/Pages/ResponsePage.aspx?id=yXfS-grGoU2187O4s0qC-XVnVtImmRBOiQ5Eo7TmxhBURDVJOFZSSDNIM05JUlpTWkwzWEVXOEE5Ny4u");
-        }
     }
 }
