@@ -45,6 +45,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
                     {"ApplicationUrls:ApprenticeHomeUrl", _context.OuterApi?.BaseAddress ?? "https://home/"},
                     {"ApplicationUrls:ApprenticeCommitmentsUrl", _context.OuterApi?.BaseAddress ?? "https://confirm/"},
+                    {"ApplicationUrls:ApprenticeLoginUrl", _context.OuterApi?.BaseAddress ?? "https://login/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
                     {"Hashing:AllowedHashstringCharacters", "abcdefgh12345678"},
                     {"Hashing:Hashstring", "testing"},

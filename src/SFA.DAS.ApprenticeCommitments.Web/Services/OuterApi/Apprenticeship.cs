@@ -19,6 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public string CourseName { get; set; } = null!;
         public int CourseLevel { get; set; }
         public string? CourseOption { get; set; } = null!;
+        public int CourseDuration { get; set; }
         public int DurationInMonths { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime PlannedEndDate { get; set; }
