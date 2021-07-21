@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
@@ -39,7 +40,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddCookie("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.Cookie.Name = ".Apprentice.Cookies";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.Domain = ".apprenticeships.education.gov.uk";
+                    options.Cookie.Domain = "localhost";
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
                     options.SignInScheme = "Cookies";
