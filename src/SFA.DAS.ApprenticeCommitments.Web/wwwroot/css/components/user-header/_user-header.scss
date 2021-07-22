@@ -2,12 +2,11 @@
     background-color: govuk-colour('blue');
     margin-top: -10px;
     padding-top: 20px;
-    padding-bottom: 15px;
+    padding-bottom: 5px;
 }
 
 .app-user-header__name {
     color: #fff;
-    margin-bottom: 5px;
 
     @include govuk-media-query(tablet) {
         margin-bottom: 0;
