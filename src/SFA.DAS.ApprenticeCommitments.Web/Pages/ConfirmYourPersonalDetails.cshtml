@@ -4,7 +4,7 @@
     ViewData["Title"] = "Confirm your personal details";
 
     bool IsInvalid(string propertyName) =>
-        ViewData.ModelState["FirstName"]?.ValidationState ==
+        ViewData.ModelState[propertyName]?.ValidationState ==
         Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
 
     string FormGroupValidationClass(string propertyName)
@@ -18,7 +18,7 @@
 
             <h1 class="govuk-heading-xl">Confirm your personal details</h1>
 
-            <partial name="ValidationSummary" />
+            <partial name="ValidationSummaryPersonalDetails" />
 
             <form method="post" class="check-answers-page" id="identity-assurance">
                 <input asp-for="EmailAddress">
@@ -29,13 +29,13 @@
                     <input class="govuk-input govuk-input--width-20" asp-for="FirstName">
                 </div>
 
-                <div id="LastName" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                <div id="LastName" class="govuk-form-group @FormGroupValidationClass("Lastname")">
                     <label class="govuk-label govuk-label--m" asp-for="LastName">Last Name</label>
                     <span asp-validation-for="LastName" class="govuk-error-message"></span>
                     <input class="govuk-input govuk-input--width-20" asp-for="LastName">
                 </div>
 
-                <div id="DateOfBirth" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                <div id="DateOfBirth" class="govuk-form-group @FormGroupValidationClass("DateOfBirth")">
                     <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint date-of-birth-error">
                         <label class="govuk-label govuk-label--m" asp-for="DateOfBirth">
                             Date of birth
