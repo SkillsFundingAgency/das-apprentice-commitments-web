@@ -82,7 +82,12 @@
 
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
                 <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
-                <input type="hidden" name="EmployerName" value="@Model.ConfirmedApprenticeshipDetails" />
+                <input type="hidden" name="CourseName" value="@Model.CourseName" />
+                <input type="hidden" name="CourseLevel" value="@Model.CourseLevel" />
+                <input type="hidden" name="CourseOption" value="@Model.CourseOption" />
+                <input type="hidden" name="CourseDuration" value="@Model.CourseDuration" />
+                <input type="hidden" name="PlannedStartDate" value="@Model.PlannedStartDate" />
+                <input type="hidden" name="PlannedEndDate" value="@Model.PlannedEndDate" />
             </form>
 
             <form asp-hide="@Model.ShowForm" action="@Model.Backlink">

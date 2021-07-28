@@ -63,7 +63,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
                         </label>
                     </div>
                     <div class=""govuk-radios__item"">
-                        <input class=""govuk-radios__input"" id=""confirm-no"" name=""ConfirmedEmployer"" type=""radio"" value=""false"">
+                        <input class=""govuk-radios__input"" id=""confirm-no"" name=""{For.Name}"" type=""radio"" value=""false"">
                         <label class=""govuk-label govuk-radios__label"" for=""confirm-no"">
                             No
                         </label>
