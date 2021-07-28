@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
@@ -24,6 +24,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public bool? ConfirmedEmployer { get; set; }
 
+        public bool ShowForm => ConfirmedEmployer != true || ChangingAnswer;
+
+        public bool ChangingAnswer { get; private set; }
+
+        public bool CanChangeAnswer { get; private set; }
+
         [BindProperty]
         public long CommitmentStatementId { get; set; }
 
@@ -42,9 +48,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             CommitmentStatementId = apprenticeship.CommitmentStatementId;
             EmployerName = apprenticeship.EmployerName;
+            ConfirmedEmployer = apprenticeship.EmployerCorrect;
+            CanChangeAnswer = ConfirmedEmployer == true && !apprenticeship.IsCompleted();
+        }
 
-            if (apprenticeship.EmployerCorrect == true)
-                ConfirmedEmployer = true;
+        public async Task OnGetChangeAnswer()
+        {
+            await OnGet();
+            if (CanChangeAnswer)
+            {
+                ChangingAnswer = true;
+                CanChangeAnswer = false;
+            }
         }
 
         public async Task<IActionResult> OnPost()
