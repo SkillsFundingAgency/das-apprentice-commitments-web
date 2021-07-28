@@ -1,0 +1,95 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
+@{
+    ViewData["Title"] = "Confirm the details of your apprenticeship";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <partial name="ValidationSummary" />
+
+        <h1 asp-hide="@Model.ConfirmedApprenticeshipDetails.HasValue" class="govuk-heading-xl">@ViewData["Title"] </h1>
+
+        <notification-banner asp-hide="@Model.ShowForm">
+            You have confirmed these are the details of your apprenticeship
+        </notification-banner>
+
+        <notification-banner asp-show="@Model.ChangingAnswer">
+            You can now change your answer
+        </notification-banner>
+
+        <div class="govuk-body">
+            <p>
+                These are the details that your employer and training provider have agreed with you and have given to us.
+            </p>
+
+            <p>
+                <strong>It’s important to check these details</strong> because you’ll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.
+            </p>
+
+            <table class="govuk-table data-table">
+                <caption></caption>
+                <tbody class="govuk-table__body">
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Apprenticeship</th>
+                        <td class="govuk-table__cell">@Model.CourseName</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Level</th>
+                        <td class="govuk-table__cell">@Model.CourseLevel</td>
+                    </tr>
+                    <tr asp-show="Model.CourseOption != null" class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Option</th>
+                        <td class="govuk-table__cell">@Model.CourseOption</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned start date for training</th>
+                        <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Estimated duration</th>
+                        <td class="govuk-table__cell">@Model.CourseDuration months</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>
+                Things you need to know
+            </h3>
+
+            <p>
+                Your planned training start date and estimated duration should:
+            </p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>include the time you will spend in off-the-job training</li>
+                <li>not include when your end point assessment will take place</li>
+            </ul>
+
+            <div class="govuk-inset-text">
+                The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and training provider.
+            </div>
+
+            <form confirmation-form asp-show="@Model.ShowForm" method="post">
+                <yes-no-header>
+                    Are your apprenticeship details correct?
+                </yes-no-header>
+
+                <span asp-validation-for="ConfirmedApprenticeshipDetails" class="govuk-error-message"></span>
+
+                <yes-no-inputs asp-for="ConfirmedApprenticeshipDetails"></yes-no-inputs>
+
+                <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
+                <input type="hidden" name="EmployerName" value="@Model.ConfirmedApprenticeshipDetails" />
+            </form>
+
+            <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
+                <button class="govuk-button">Continue</button>
+            </form>
+
+            <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
+        </div>
+    </div>
+</div>
