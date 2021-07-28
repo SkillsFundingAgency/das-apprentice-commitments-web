@@ -13,10 +13,13 @@
 
             <h2 class="govuk-heading-xl">Confirm your training provider</h2>
 
-            <div asp-show="@Model.ConfirmedTrainingProvider.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
-                <span class="app-notification-banner__icon das-text--success-icon"></span>
-                You have confirmed this is your training provider
-            </div>
+            <notification-banner asp-hide="@Model.ShowForm">
+                You have confirmed this is your employer
+            </notification-banner>
+
+            <notification-banner asp-show="@Model.ChangingAnswer">
+                You can now change your answer
+            </notification-banner>
 
             <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
 
@@ -48,41 +51,22 @@
                 </div>
             </div>
 
-            <form asp-hide="@Model.ConfirmedTrainingProvider.HasValue" id="training-provider-form-hide" method="post">
-                <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h2 class="govuk-fieldset__heading">
-                                Is @Model.TrainingProviderName your training provider?
-                            </h2>
-                        </legend>
+            <form confirmation-form asp-show="@Model.ShowForm" method="post">
+                <yes-no-header>Is @Model.TrainingProviderName your training provider?</yes-no-header>
 
-                        <span asp-validation-for="ConfirmedTrainingProvider" class="govuk-error-message"></span>
+                <span asp-validation-for="ConfirmedTrainingProvider" class="govuk-error-message"></span>
 
-                        <div class="govuk-radios govuk-radios--inline">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" asp-for="ConfirmedTrainingProvider" id="confirm-yes" value="true" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
-                                    Yes
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" asp-for="ConfirmedTrainingProvider" id="confirm-no" value="false" type="radio" />
-                                <label class="govuk-label govuk-radios__label" for="confirm-no">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+                <yes-no-inputs asp-for="ConfirmedTrainingProvider" yes-checked="@(Model.ConfirmedTrainingProvider == true)"></yes-no-inputs>
+
+                <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
                 <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
-                <input type="hidden" asp-for="TrainingProviderName" value="@Model.TrainingProviderName" />
-                <button class="govuk-button" data-module="govuk-button" id="training-provider-confirm">Confirm</button>
+                <input type="hidden" name="TrainingProviderName" value="@Model.TrainingProviderName" />
             </form>
 
-            <form asp-show="@Model.ConfirmedTrainingProvider.HasValue" action="@Model.Backlink">
+            <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
                 <button class="govuk-button">Continue</button>
             </form>
-        </div>
+
+            <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
     </div>
 </div>

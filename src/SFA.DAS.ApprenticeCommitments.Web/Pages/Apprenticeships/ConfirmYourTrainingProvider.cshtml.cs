@@ -28,6 +28,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public bool? ConfirmedTrainingProvider { get; set; }
 
+        public bool ShowForm => ConfirmedTrainingProvider != true || ChangingAnswer;
+
+        public bool ChangingAnswer { get; private set; }
+
+        public bool CanChangeAnswer { get; private set; }
+
         public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         public ConfirmYourTrainingModel(IOuterApiClient client, AuthenticatedUser authenticatedUser)
@@ -44,8 +50,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             CommitmentStatementId = apprenticeship.CommitmentStatementId;
             TrainingProviderName = apprenticeship.TrainingProviderName;
 
-            if (apprenticeship.TrainingProviderCorrect == true)
-                ConfirmedTrainingProvider = true;
+            ConfirmedTrainingProvider = apprenticeship.TrainingProviderCorrect;
+            CanChangeAnswer = ConfirmedTrainingProvider == true && !apprenticeship.IsCompleted();
+        }
+
+        public async Task OnGetChangeAnswer()
+        {
+            await OnGetAsync();
+            if (CanChangeAnswer)
+            {
+                ChangingAnswer = true;
+                CanChangeAnswer = false;
+            }
         }
 
         public async Task<IActionResult> OnPost()
