@@ -55,4 +55,4 @@ Scenario: The apprentice enters invalid identity information
 	| DateOfBirth     | Enter your date of birth                                        |
 	| PersonalDetails | try again with the correct details                              |
 	| PersonalDetails | contact your employer or training provider to fix your details  |
-	|               | Something went wrong                                              |
+	|                 | Something went wrong                                            |
