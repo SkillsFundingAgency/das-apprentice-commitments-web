@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -89,7 +90,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             RolesAndResponsibilitiesCorrect = everythingConfirmed,
                             ApprenticeshipDetailsCorrect = everythingConfirmed,
                             HowApprenticeshipDeliveredCorrect = everythingConfirmed,
-                        }));
+                            ConfirmedOn = everythingConfirmed == true ? (DateTime?)DateTime.Now : null
+                        })); ;
         }
 
         [Given("the apprentice confirms their employer")]
