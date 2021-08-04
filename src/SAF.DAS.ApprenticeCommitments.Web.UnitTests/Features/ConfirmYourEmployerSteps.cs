@@ -91,7 +91,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             ApprenticeshipDetailsCorrect = everythingConfirmed,
                             HowApprenticeshipDeliveredCorrect = everythingConfirmed,
                             ConfirmedOn = everythingConfirmed == true ? (DateTime?)DateTime.Now : null
-                        })); ;
+                        }));
         }
 
         [Given("the apprentice confirms their employer")]
