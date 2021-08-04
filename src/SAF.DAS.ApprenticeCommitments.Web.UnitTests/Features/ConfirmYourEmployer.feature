@@ -44,3 +44,20 @@ Scenario: The apprentice is authenticated has previously said this is not their 
 	Then the response status code should be Ok
 	And the apprentice should see the employer's name
 	And the user should see the confirmation options
+
+Scenario: The apprentice is authenticated has previously said this is their employer
+	Given the apprentice has logged in
+	And the apprentice has confirmed this is their employer
+	When accessing the ConfirmYourEmployer page
+	Then the response status code should be Ok
+	And the apprentice should see the employer's name
+	And the user should not see the confirmation options
+	And the user should be able to change their answer
+
+Scenario: The apprentice is authenticated has completed their confirmation
+	Given the apprentice has logged in
+	And the apprentice has confirmed everything
+	When accessing the ConfirmYourEmployer page
+	Then the response status code should be Ok
+	And the user should not see the confirmation options
+	And the user should not be able to change their answer

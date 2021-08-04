@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
 {
-    public class ConfirmationSectionTests
+    public class ConfirmationSectionTests : TagHelperFixture
     {
         [Test, TestCustomisation]
         public async Task Sets_url_from_UrlHelper(string url, [Frozen] Mock<ISimpleUrlHelper> urlFactory, ConfirmationSectionTagHelper sut)
@@ -28,9 +28,9 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
                 .Returns(url);
 
             sut.AspPage = "EmployerConfirmation";
-            await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+            await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
-            var result = _tagHelperOutput.Content.GetContent();
+            var result = TagHelperOutput.Content.GetContent();
             result.Should().Contain($@"<a href=""{url}""");
         }
 
@@ -40,9 +40,9 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             sut.Model.EmployerConfirmation = true;
 
             sut.AspPage = "ConfirmYourEmployer";
-            await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+            await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
-            var result = _tagHelperOutput.Content.GetContent();
+            var result = TagHelperOutput.Content.GetContent();
             result.Should().Contain("govuk-tag--green");
             result.Should().Contain("Complete");
         }
@@ -53,9 +53,9 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             sut.Model.EmployerConfirmation = false;
 
             sut.AspPage = "ConfirmYourEmployer";
-            await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+            await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
-            var result = _tagHelperOutput.Content.GetContent();
+            var result = TagHelperOutput.Content.GetContent();
             result.Should().Contain("govuk-tag--red");
             result.Should().Contain("Waiting for<br/>correction");
         }
@@ -66,26 +66,12 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             sut.Model.EmployerConfirmation = null;
 
             sut.AspPage = "ConfirmYourEmployer";
-            await sut.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+            await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
-            var result = _tagHelperOutput.Content.GetContent();
+            var result = TagHelperOutput.Content.GetContent();
             result.Should().Contain("govuk-tag--yellow");
             result.Should().Contain("Incomplete");
         }
-
-        private readonly TagHelperContext _tagHelperContext = new TagHelperContext(
-                new TagHelperAttributeList(),
-                new Dictionary<object, object>(),
-                Guid.NewGuid().ToString());
-
-        private readonly TagHelperOutput _tagHelperOutput = new TagHelperOutput("list",
-                new TagHelperAttributeList(),
-                (_, __) =>
-                {
-                    var tagHelperContent = new DefaultTagHelperContent();
-                    tagHelperContent.SetHtmlContent(string.Empty);
-                    return Task.FromResult<TagHelperContent>(tagHelperContent);
-                });
 
         private class TestCustomisationAttribute : AutoDataAttribute
         {

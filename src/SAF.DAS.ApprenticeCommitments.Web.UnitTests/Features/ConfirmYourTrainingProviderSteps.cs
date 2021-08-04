@@ -196,7 +196,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.ActionResult
                 .LastActionResult.Should().BeOfType<PageResult>()
                 .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>()
-                .Which.ConfirmedTrainingProvider.Should().NotBeNull();
+                .Which.ShowForm.Should().BeFalse();
         }
 
         [Then("the apprentice should be able to provide a response")]
@@ -205,7 +205,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.ActionResult
                 .LastActionResult.Should().BeOfType<PageResult>()
                 .Which.Model.Should().BeOfType<ConfirmYourTrainingModel>()
-                .Which.ConfirmedTrainingProvider.Should().BeNull();
+                .Which.ShowForm.Should().BeTrue();
         }
     }
 }
