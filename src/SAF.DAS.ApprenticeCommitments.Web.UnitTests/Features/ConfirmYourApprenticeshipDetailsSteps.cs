@@ -186,7 +186,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheUserShouldSeeTheConfirmationOptions()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<YourApprenticeshipDetails>().Which.ConfirmedApprenticeshipDetails.Should().BeNull();
+            page.Model.Should().BeOfType<YourApprenticeshipDetails>().Which.ShowForm.Should().BeTrue();
         }
 
         [Then("the link is pointing to the confirm page")]

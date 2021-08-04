@@ -4,7 +4,6 @@
     ViewData["Title"] = "Confirm your employer";
 }
 
-
 <div class="govuk-width-container">
 
     <div class="govuk-grid-row">
@@ -14,10 +13,13 @@
 
             <h2 class="govuk-heading-xl">Confirm your employer</h2>
 
-            <div asp-show="@Model.ConfirmedEmployer.HasValue" class="app-notification-banner app-notification-banner--with-icon app-notification-banner--success">
-                <span class="app-notification-banner__icon das-text--success-icon"></span>
+            <notification-banner asp-hide="@Model.ShowForm">
                 You have confirmed this is your employer
-            </div>
+            </notification-banner>
+
+            <notification-banner asp-show="@Model.ChangingAnswer">
+                You can now change your answer
+            </notification-banner>
 
             <h2 class="govuk-heading-l">@Model.EmployerName</h2>
 
@@ -43,41 +45,25 @@
                 </div>
             </div>
 
-            <form asp-hide="@Model.ConfirmedEmployer.HasValue" id="employer-form-hide" method="post">
-                <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 class="govuk-fieldset__heading">
-                                Is @Model.EmployerName your employer?
-                            </h1>
-                        </legend>
-
-                        <span asp-validation-for="ConfirmedEmployer" class="govuk-error-message"></span>
-
-                        <div class="govuk-radios govuk-radios--inline">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="confirm-yes" name="ConfirmedEmployer" type="radio" value="true">
-                                <label class="govuk-label govuk-radios__label" for="confirm-yes">
-                                    Yes
-                                </label>
-                            </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="confirm-no" name="ConfirmedEmployer" type="radio" value="false">
-                                <label class="govuk-label govuk-radios__label" for="confirm-no">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+            <form confirmation-form asp-show="@Model.ShowForm" method="post">
+                <yes-no-header>
+                    Is @Model.EmployerName your employer?
+                </yes-no-header>
+                
+                <span asp-validation-for="ConfirmedEmployer" class="govuk-error-message"></span>
+                
+                <yes-no-inputs asp-for="ConfirmedEmployer" ></yes-no-inputs>
+                
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
                 <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
                 <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
             </form>
 
-            <form asp-show="@Model.ConfirmedEmployer.HasValue" action="@Model.Backlink">
+            <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
                 <button class="govuk-button">Continue</button>
             </form>
+
+            <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
         </div>
     </div>
 </div>
