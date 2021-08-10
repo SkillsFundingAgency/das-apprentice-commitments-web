@@ -93,11 +93,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     nameof(FirstName) => (e.PropertyName, "Enter your first name"),
                     nameof(LastName) => (e.PropertyName, "Enter your last name"),
                     nameof(DateOfBirth) => (e.PropertyName, "Enter your date of birth"),
-                    "PersonalDetails" => ("PersonalDetails", "Details entered do not match a registered apprenticeship. Please try again. If match continues to fail, contact your training provider to ensure they have given us the correct details."),
+                    "PersonalDetails" => ("PersonalDetails", "Details do not match any registered apprenticeship on our service. You can:"),
                     _ => ("", "Something went wrong")
                 };
+
                 if (p?.Length == 0 && ModelState.Keys.Contains("")) continue;
-                ModelState.AddModelError(p, m);
+
+                if (p == "PersonalDetails")
+                {
+                    ModelState.AddModelError(p, "try again with the correct details");
+                    ModelState.AddModelError(p, "contact your employer or training provider to fix your details");
+                }
+                else
+                {
+                    ModelState.AddModelError(p, m);
+                }
             }
         }
     }

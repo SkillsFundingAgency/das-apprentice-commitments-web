@@ -49,9 +49,10 @@ Scenario: The apprentice enters invalid identity information
 	| Bob        | bobbertson | 2000-01-01    |
 	Then verification is not successful
 	And the apprentice should see the following error messages
-	| Property Name   | Error Message                                                                                                                                                                            |
-	| FirstName       | Enter your first name                                                                                                                                                                    |
-	| LastName        | Enter your last name                                                                                                                                                                     |
-	| DateOfBirth     | Enter your date of birth                                                                                                                                                                 |
-	| PersonalDetails | Details entered do not match a registered apprenticeship. Please try again. If match continues to fail, contact your training provider to ensure they have given us the correct details. |
-	|               | Something went wrong                                                                                                                                                                     |
+	| Property Name   | Error Message                                                   |
+	| FirstName       | Enter your first name                                           |
+	| LastName        | Enter your last name                                            |
+	| DateOfBirth     | Enter your date of birth                                        |
+	| PersonalDetails | try again with the correct details                              |
+	| PersonalDetails | contact your employer or training provider to fix your details  |
+	|                 | Something went wrong                                            |
