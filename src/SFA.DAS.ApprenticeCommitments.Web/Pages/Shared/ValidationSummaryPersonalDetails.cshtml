@@ -8,7 +8,7 @@
 
             @if (ViewContext.ViewData.ModelState["PersonalDetails"]?.Errors?.Count() > 0)
             {
-                <p class="govuk-!-font-weight-bold">Details do not match any registered apprenticeship on our service. You can:</p>
+                <p class="govuk-!-font-weight-bold">Details do not match any registered apprenticeships on our service. You can:</p>
             }
 
             <ul>
@@ -19,7 +19,7 @@
                         foreach (var error in stateItem.Value.Errors)
                         {
                             <li>
-                                <p class="govuk-!-font-weight-bold">@error.ErrorMessage<p />
+                                <div class="govuk-!-font-weight-bold">@error.ErrorMessage</div>
                             </li>
                         }
                     }
