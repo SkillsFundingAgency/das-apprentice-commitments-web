@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 
     public class ApprenticeshipAssociation
     {
-        public Guid RegistrationId { get; set; }
+        public string RegistrationId { get; set; }
         public Guid ApprenticeId { get; set; }
     }
 }

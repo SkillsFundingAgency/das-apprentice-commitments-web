@@ -24,6 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         }
 
         [BindProperty]
+        [HiddenInput]
         public string EmailAddress { get; set; } = null!;
 
         [BindProperty]
@@ -38,6 +39,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public string FormHandler = "";
 
         [BindProperty(SupportsGet = true)]
+        [HiddenInput]
         public string? RegistrationCode { get; set; }
 
         public async Task<IActionResult> OnGetAsync(
@@ -50,14 +52,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnGetSignup(
+        public async Task<IActionResult> OnGetRegister(
             [FromServices] AuthenticatedUser user)
         {
-            FormHandler = "Signup";
+            FormHandler = "Register";
 
             var apprentice = await TryGetApprentice(user.ApprenticeId);
 
-            EmailAddress = apprentice?.Email ?? "";
+            EmailAddress = User.Identity.Name ?? "";
             FirstName = apprentice?.FirstName ?? "";
             LastName = apprentice?.LastName ?? "";
             //DateOfBirth.Date = apprentice?.DateOfBirth;
@@ -111,31 +113,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostSignup([FromServices] AuthenticatedUser user)
+        public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
         {
             await UpdateApprentice(user);
 
             if (ModelState.IsValid)
-                return RedirectToAction("Register", "Registration");
+                return RedirectToAction("Register", "Registration", new { RegistrationCode });
             else
                 return Page();
-        }
-
-        public async Task<IActionResult> OnPostMatchApprenticeship([FromServices] AuthenticatedUser user, [FromServices] NavigationUrlHelper urlHelper)
-        {
-            string notification;
-
-            try
-            {
-                await _registrations.MatchApprenticeToApprenticeship(Guid.NewGuid(), user.ApprenticeId);
-                notification = "ApprenticeshipMatched";
-            }
-            catch
-            {
-                notification = "ApprenticeshipDidNotMatch";
-            }
-
-            return Redirect(urlHelper.Generate(NavigationSection.Home, $"?notification={notification}"));
         }
 
         private void AddErrors(DomainValidationException exception)

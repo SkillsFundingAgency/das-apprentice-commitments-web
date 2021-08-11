@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
@@ -16,7 +18,10 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
         [When(@"accessing the ""(.*)"" page")]
         public async Task WhenAccessingThePage(string page)
-            => await _context.Web.Get(page);
+        {
+            await _context.Web.Get(page);
+            await _context.Web.FollowLocalRedirects();
+        }
 
         [Then("the response status code should be Ok")]
         public void ThenTheResponseStatusCodeShouldBeOk() 

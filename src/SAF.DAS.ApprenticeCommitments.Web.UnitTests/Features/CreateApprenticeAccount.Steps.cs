@@ -2,7 +2,6 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Collections.Generic;
@@ -24,6 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private ConfirmYourPersonalDetailsModel _postedRegistration;
+        private string _registrationCode;
 
         public CreateApprenticeAccountSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -37,6 +37,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                                                )
                 .RespondWith(Response.Create()
                     .WithStatusCode(HttpStatusCode.Accepted));
+
+            _registrationCode = Guid.NewGuid().ToString();
         }
 
         [Given("the apprentice has not logged in")]
@@ -93,7 +95,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("the apprentice should see the personal details page")]
         public void ThenTheApprenticeShouldSeeThePersonalDetailsPage()
         {
+            _context.Web.Response.Should().Be2XXSuccessful();
             var page = _context.ActionResult.LastPageResult;
+            page.Should().NotBeNull();
             page.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>();
         }
 
@@ -153,64 +157,35 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public async Task WhenTheApprenticeShouldBeShownThePage()
         {
             const string expectedLocation = "https://home/?notification=ApprenticeshipMatched";
-
-            while (
-                (int)_context.Web.Response.StatusCode >= 300 && (int)_context.Web.Response.StatusCode <= 400 &&
-                _context.Web.Response.Headers.Location.ToString() != expectedLocation)
-            {
-                if (!_context.Web.Response.Headers.Location.ToString().StartsWith('/')) break;
-
-                if (_context.Web.Response.StatusCode == HttpStatusCode.RedirectKeepVerb)
-                {
-                    await _context.Web.Send(
-                        new HttpRequestMessage(
-                            _context.Web.Response.RequestMessage.Method,
-                            _context.Web.Response.Headers.Location)
-                        {
-                            Content = _context.Web.Response.Content
-                        });
-                }
-                else if (
-                    _context.Web.Response.StatusCode >= HttpStatusCode.Moved &&
-                    _context.Web.Response.StatusCode <= HttpStatusCode.PermanentRedirect)
-                {
-                    await _context.Web.Get(_context.Web.Response.Headers.Location.ToString());
-                }
-            }
-
             _context.Web.Response.Should().Be302Redirect().And.HaveHeader("Location");
             _context.Web.Response.Headers.Location.ToString().Should().Be(expectedLocation);
+        }
+
+        [Then("the apprentice is matched to the apprenticeship")]
+        public void ThenTheApprenticeIsMatchedToTheApprenticeship()
+        {
+            var posts = _context.OuterApi.MockServer.FindLogEntries(
+                        Request.Create()
+                            .WithPath("/apprenticeships*")
+                            .UsingPost());
+
+            posts.Should().NotBeEmpty();
+
+            var post = posts.First();
+
+            post.RequestMessage.Path.Should().Be("/apprenticeships");
+            var reg = JsonConvert.DeserializeObject<ApprenticeshipAssociation>(post.RequestMessage.Body);
+            reg.Should().BeEquivalentTo(new
+            {
+                _userContext.ApprenticeId,
+                RegistrationId = _registrationCode,
+            });
         }
 
         [Then("the apprentice should be shown the Home page with a Not Matched notification")]
         public async Task WhenTheApprenticeShouldBeShownThePageWithNotMatched()
         {
             const string expectedLocation = "https://home/?notification=ApprenticeshipDidNotMatch";
-
-            while (
-                (int)_context.Web.Response.StatusCode >= 300 && (int)_context.Web.Response.StatusCode <= 400 &&
-                _context.Web.Response.Headers.Location.ToString() != expectedLocation)
-            {
-                if (!_context.Web.Response.Headers.Location.ToString().StartsWith('/')) break;
-
-                if (_context.Web.Response.StatusCode == HttpStatusCode.RedirectKeepVerb)
-                {
-                    await _context.Web.Send(
-                        new HttpRequestMessage(
-                            _context.Web.Response.RequestMessage.Method,
-                            _context.Web.Response.Headers.Location)
-                        {
-                            Content = _context.Web.Response.Content
-                        });
-                }
-                else if (
-                    _context.Web.Response.StatusCode >= HttpStatusCode.Moved &&
-                    _context.Web.Response.StatusCode <= HttpStatusCode.PermanentRedirect)
-                {
-                    await _context.Web.Get(_context.Web.Response.Headers.Location.ToString());
-                }
-            }
-
             _context.Web.Response.Should().Be302Redirect().And.HaveHeader("Location");
             _context.Web.Response.Headers.Location.ToString().Should().Be(expectedLocation);
         }
@@ -222,7 +197,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            var response = await _context.Web.Post("ConfirmYourPersonalDetails?handler=Signup",
+            var response = await _context.Web.Post($"ConfirmYourPersonalDetails?handler=Register&registrationCode={_registrationCode}",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "FirstName", _postedRegistration.FirstName },
@@ -232,6 +207,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
                     { "EmailAddress", _postedRegistration?.EmailAddress },
                 }));
+
+            await _context.Web.FollowLocalRedirects();
         }
 
         [Then("verification is successful")]
@@ -345,6 +322,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .ModelState[""]
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }
+        }
+
+        [Then(@"the registration code should be ""(.*)""")]
+        public void ThenTheRegistrationCodeShouldBe(string code)
+        {
+            _context.ActionResult.LastPageResult
+                .Model.As<ConfirmYourPersonalDetailsModel>()
+                .RegistrationCode.Should().Be(code);
         }
     }
 }

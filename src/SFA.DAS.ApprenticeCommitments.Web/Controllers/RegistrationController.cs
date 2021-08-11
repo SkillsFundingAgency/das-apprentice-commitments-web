@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.WebUtilities;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
@@ -22,9 +25,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         [HttpGet("/register")]
         public async Task<IActionResult> Register([FromQuery] string registrationCode)
         {
+            if (VerifiedUser.UserHasUnconfirmedIdentity(HttpContext))
+            {
+                var routeValuesDictionary = new RouteValueDictionary();
+                foreach (var a in Request.Query) routeValuesDictionary.Add(a.Key, a.Value);
+                return RedirectToPage("/ConfirmYourPersonalDetails", "register", routeValuesDictionary);
+            }
+
             try
             {
-                await _registrations.MatchApprenticeToApprenticeship(Guid.NewGuid(), _user.ApprenticeId);
+                await _registrations.MatchApprenticeToApprenticeship(registrationCode, _user.ApprenticeId);
                 return RedirectToNotice("ApprenticeshipMatched");
             }
             catch

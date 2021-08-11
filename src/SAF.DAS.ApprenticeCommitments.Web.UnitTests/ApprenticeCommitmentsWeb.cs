@@ -2,6 +2,7 @@
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -37,6 +38,39 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         {
             Response?.Dispose();
             return Response = await Client.GetAsync(url);
+        }
+
+        public async Task<HttpResponseMessage> FollowLocalRedirects()
+        {
+            while (
+                (int)Response.StatusCode >= 300 &&
+                (int)Response.StatusCode <= 400)
+            {
+                if (!Response.Headers.Location.ToString().StartsWith('/')) break;
+
+                if (Response.StatusCode == HttpStatusCode.RedirectKeepVerb)
+                {
+                    return Response = await Client.SendAsync(
+                        new HttpRequestMessage(
+                            Response.RequestMessage.Method,
+                            Response.Headers.Location)
+                        {
+                            Content = Response.Content
+                        });
+                }
+                else if (
+                    Response.StatusCode >= HttpStatusCode.Moved &&
+                    Response.StatusCode <= HttpStatusCode.PermanentRedirect)
+                {
+                    await Get(Response.Headers.Location.ToString());
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return Response;
         }
 
         internal async Task<HttpResponseMessage> Post(string url, HttpContent content)
