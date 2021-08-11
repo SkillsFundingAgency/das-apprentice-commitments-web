@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RestEase;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
@@ -14,14 +15,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     public class ConfirmYourPersonalDetailsModel : PageModel
     {
         private readonly RegistrationsService _registrations;
+        private readonly IOuterApiClient _api;
 
-        public ConfirmYourPersonalDetailsModel(RegistrationsService api)
+        public ConfirmYourPersonalDetailsModel(RegistrationsService rapi, IOuterApiClient api)
         {
-            _registrations = api;
+            _registrations = rapi;
+            _api = api;
         }
 
         [BindProperty]
-        [HiddenInput]
         public string EmailAddress { get; set; } = null!;
 
         [BindProperty]
@@ -33,51 +35,107 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
+        public string FormHandler = "";
+
+        [BindProperty(SupportsGet = true)]
+        public string? RegistrationCode { get; set; }
+
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
 
-            var registration = await _registrations.GetRegistration(user);
-
-            if (registration.HasCompletedVerification)
-            {
-                return RedirectToPage("/apprenticeships/index");
-            }
-
-            if (!registration.HasViewedVerification)
-            {
-                await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
-            }
-
-            EmailAddress = registration.Email;
+            var apprentice = await _api.GetApprentice(user.ApprenticeId);
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user)
+        public async Task<IActionResult> OnGetSignup(
+            [FromServices] AuthenticatedUser user)
+        {
+            FormHandler = "Signup";
+
+            var apprentice = await TryGetApprentice(user.ApprenticeId);
+
+            EmailAddress = apprentice?.Email ?? "";
+            FirstName = apprentice?.FirstName ?? "";
+            LastName = apprentice?.LastName ?? "";
+            //DateOfBirth.Date = apprentice?.DateOfBirth;
+
+            if (apprentice == null)
+            {
+                await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
+            }
+
+            return Page();
+        }
+
+        private async Task<Apprentice?> TryGetApprentice(Guid apprenticeId)
         {
             try
             {
-                await _registrations.VerifyRegistration(new VerifyRegistrationRequest
+                return await _api.GetApprentice(apprenticeId);
+            }
+            catch (ApiException e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user, [FromServices] NavigationUrlHelper urlHelper)
+        {
+            await UpdateApprentice(user);
+
+            if (ModelState.IsValid)
+                return Redirect(urlHelper.Generate(NavigationSection.Home));
+            else
+                return Page();
+        }
+
+        private async Task UpdateApprentice(AuthenticatedUser user)
+        {
+            try
+            {
+                await _api.UpdateApprenticeAccount(new Apprentice
                 {
-                    ApprenticeId = user.ApprenticeId,
+                    Id = user.ApprenticeId,
                     FirstName = FirstName,
                     LastName = LastName,
                     DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
-                    UserIdentityId = Guid.NewGuid(),
                     Email = EmailAddress,
                 });
-
-                await VerifiedUser.ConfirmIdentity(HttpContext);
-
-                return RedirectToPage("/apprenticeships/index");
             }
             catch (DomainValidationException exception)
             {
                 AddErrors(exception);
-                return Page();
             }
+        }
+
+        public async Task<IActionResult> OnPostSignup([FromServices] AuthenticatedUser user)
+        {
+            await UpdateApprentice(user);
+
+            if (ModelState.IsValid)
+                return RedirectToAction("Register", "Registration");
+            else
+                return Page();
+        }
+
+        public async Task<IActionResult> OnPostMatchApprenticeship([FromServices] AuthenticatedUser user, [FromServices] NavigationUrlHelper urlHelper)
+        {
+            string notification;
+
+            try
+            {
+                await _registrations.MatchApprenticeToApprenticeship(Guid.NewGuid(), user.ApprenticeId);
+                notification = "ApprenticeshipMatched";
+            }
+            catch
+            {
+                notification = "ApprenticeshipDidNotMatch";
+            }
+
+            return Redirect(urlHelper.Generate(NavigationSection.Home, $"?notification={notification}"));
         }
 
         private void AddErrors(DomainValidationException exception)

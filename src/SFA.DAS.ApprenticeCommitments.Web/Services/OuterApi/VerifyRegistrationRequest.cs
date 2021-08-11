@@ -12,4 +12,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime DateOfBirth { get; set; }
         public string NationalInsuranceNumber { get; set; } = null!;
     }
+
+    public class ApprenticeshipAssociation
+    {
+        public Guid RegistrationId { get; set; }
+        public Guid ApprenticeId { get; set; }
+    }
 }

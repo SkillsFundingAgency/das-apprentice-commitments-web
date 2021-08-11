@@ -20,7 +20,7 @@
 
             <partial name="ValidationSummaryPersonalDetails" />
 
-            <form method="post" class="check-answers-page" id="identity-assurance">
+            <form method="post" class="check-answers-page" id="identity-assurance" asp-page-handler="@Model.FormHandler">
                 <input asp-for="EmailAddress">
 
                 <div id="FirstName" class="govuk-form-group @FormGroupValidationClass("FirstName")">

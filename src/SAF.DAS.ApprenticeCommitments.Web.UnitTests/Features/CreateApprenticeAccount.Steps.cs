@@ -2,6 +2,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ using WireMock.ResponseBuilders;
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
-    public class ConfirmIdentitySteps : StepsBase
+    public class CreateApprenticeAccountSteps : StepsBase
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private ConfirmYourPersonalDetailsModel _postedRegistration;
 
-        public ConfirmIdentitySteps(TestContext context, RegisteredUserContext userContext) : base(context)
+        public CreateApprenticeAccountSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
@@ -58,27 +59,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
 
-        [Given("the apprentice has not verified their identity")]
-        public void GivenTheApprenticeHasNotVerifiedTheirIdentity()
+        [Given("the apprentice has not created their account")]
+        public void GivenTheApprenticeHasNotCreatedTheirAccount()
         {
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_userContext.ApprenticeId}")
-                                              )
+                    .WithPath($"/apprentices/{_userContext.ApprenticeId}"))
+
                 .RespondWith(Response.Create()
-                    .WithStatusCode(200)
-                    .WithBodyAsJson(new VerifyRegistrationResponse()
-                    {
-                        ApprenticeId = _userContext.ApprenticeId,
-                        Email = "bob",
-                        HasCompletedVerification = false,
-                        HasViewedVerification = false
-                    }));
+                    .WithStatusCode(404));
         }
 
-        [Given("the apprentice has not verified their identity, but has seen this page")]
-        public void GivenTheApprenticeHasNotVerifiedTheirIdentityButHasSeenThjisPage()
+        [Given("the apprentice has not created their account, but has seen this page")]
+        public void GivenTheApprenticeHasNotCreatedTheirAccountButHasSeenThisPage()
         {
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -96,23 +90,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     }));
         }
 
-        [When(@"accessing the ""(.*)"" page")]
-        public async Task WhenAccessingThePage(string page)
-        {
-            await _context.Web.Get(page);
-        }
-
-        [Then("the response status code should be Ok")]
-        public void ThenTheResponseStatusCodeShouldBeOk()
-        {
-            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        [Then("the apprentice should see the verify identity page")]
-        public void ThenTheApprenticeShouldSeeTheVerifyIdentityPage()
+        [Then("the apprentice should see the personal details page")]
+        public void ThenTheApprenticeShouldSeeThePersonalDetailsPage()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>().Which.EmailAddress.Should().Be("bob");
+            page.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>();
         }
 
         [Then(@"the apprentice marks the registration as seen")]
@@ -130,7 +112,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             reg.SeenOn.Should().BeBefore(DateTime.UtcNow);
         }
 
-        [Then(@"the apprentice does not try to mark the registration as seen")]
+        [Then("the apprentice does not try to mark the registration as seen")]
         public void ThenTheApprenticeDoesNotTryToMarksTheRegistrationAsSeen()
         {
             var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
@@ -142,39 +124,105 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             registrationPosts.Should().BeEmpty();
         }
 
-        [Given("the apprentice has verified their identity")]
-        public void GivenTheApprenticeHasVerifiedTheirIdentity()
+        [Given("the apprentice has created their account")]
+        public void GivenTheApprenticeHasCreatedTheirAccount()
         {
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/registrations/{_userContext.ApprenticeId}")
+                    .WithPath($"/apprentices/{_userContext.ApprenticeId}")
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
                     {
                         Id = _userContext.ApprenticeId,
-                        Email = "bob",
-                        HasCompletedVerification = true,
+                        Email = "bob@example.com",
                     }));
         }
 
-        [When(@"the apprentice should be shown the ""(.*)"" page")]
-        public void WhenTheApprenticeShouldBeShownThePage(string page)
+        [When("the apprentice should be shown the Overview page")]
+        public async Task WhenTheApprenticeShouldBeShownTheOverviewPage()
         {
-            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/apprenticeships");
+            _context.Web.Response
+                .Should().Be302Redirect()
+                .And.HaveHeader("Location").And.Match("/apprenticeships");
         }
 
-        [When("the apprentice verifies their identity with")]
-        public async Task WhenTheApprenticeVerifiesTheirIdentityWith(Table table)
+        [Then("the apprentice should be shown the Home page")]
+        public async Task WhenTheApprenticeShouldBeShownThePage()
         {
-            _postedRegistration = table.CreateInstance(() => new ConfirmYourPersonalDetailsModel(null));
+            const string expectedLocation = "https://home/?notification=ApprenticeshipMatched";
+
+            while (
+                (int)_context.Web.Response.StatusCode >= 300 && (int)_context.Web.Response.StatusCode <= 400 &&
+                _context.Web.Response.Headers.Location.ToString() != expectedLocation)
+            {
+                if (!_context.Web.Response.Headers.Location.ToString().StartsWith('/')) break;
+
+                if (_context.Web.Response.StatusCode == HttpStatusCode.RedirectKeepVerb)
+                {
+                    await _context.Web.Send(
+                        new HttpRequestMessage(
+                            _context.Web.Response.RequestMessage.Method,
+                            _context.Web.Response.Headers.Location)
+                        {
+                            Content = _context.Web.Response.Content
+                        });
+                }
+                else if (
+                    _context.Web.Response.StatusCode >= HttpStatusCode.Moved &&
+                    _context.Web.Response.StatusCode <= HttpStatusCode.PermanentRedirect)
+                {
+                    await _context.Web.Get(_context.Web.Response.Headers.Location.ToString());
+                }
+            }
+
+            _context.Web.Response.Should().Be302Redirect().And.HaveHeader("Location");
+            _context.Web.Response.Headers.Location.ToString().Should().Be(expectedLocation);
+        }
+
+        [Then("the apprentice should be shown the Home page with a Not Matched notification")]
+        public async Task WhenTheApprenticeShouldBeShownThePageWithNotMatched()
+        {
+            const string expectedLocation = "https://home/?notification=ApprenticeshipDidNotMatch";
+
+            while (
+                (int)_context.Web.Response.StatusCode >= 300 && (int)_context.Web.Response.StatusCode <= 400 &&
+                _context.Web.Response.Headers.Location.ToString() != expectedLocation)
+            {
+                if (!_context.Web.Response.Headers.Location.ToString().StartsWith('/')) break;
+
+                if (_context.Web.Response.StatusCode == HttpStatusCode.RedirectKeepVerb)
+                {
+                    await _context.Web.Send(
+                        new HttpRequestMessage(
+                            _context.Web.Response.RequestMessage.Method,
+                            _context.Web.Response.Headers.Location)
+                        {
+                            Content = _context.Web.Response.Content
+                        });
+                }
+                else if (
+                    _context.Web.Response.StatusCode >= HttpStatusCode.Moved &&
+                    _context.Web.Response.StatusCode <= HttpStatusCode.PermanentRedirect)
+                {
+                    await _context.Web.Get(_context.Web.Response.Headers.Location.ToString());
+                }
+            }
+
+            _context.Web.Response.Should().Be302Redirect().And.HaveHeader("Location");
+            _context.Web.Response.Headers.Location.ToString().Should().Be(expectedLocation);
+        }
+
+        [When("the apprentice creates their account with")]
+        public async Task WhenTheApprenticeCreatesTheirAccountWith(Table table)
+        {
+            _postedRegistration = table.CreateInstance(() => new ConfirmYourPersonalDetailsModel(null, null));
             _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            await _context.Web.Post("ConfirmYourPersonalDetails",
+            var response = await _context.Web.Post("ConfirmYourPersonalDetails?handler=Signup",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "FirstName", _postedRegistration.FirstName },
@@ -182,6 +230,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
+                    { "EmailAddress", _postedRegistration?.EmailAddress },
                 }));
         }
 
@@ -191,36 +240,60 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.StatusCode.As<int>().Should().BeLessThan(400);
         }
 
-        [Then("verification is sent to the API")]
+        [Then("the apprentice account is updated")]
         public void ThenTheVerificationIsSuccessfulSent()
         {
-            var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
+            var posts = _context.OuterApi.MockServer.FindLogEntries(
             Request.Create()
-                .WithPath($"/registrations*")
-                .UsingPost()
-                                                                               );
+                .WithPath("/apprentices*")
+                .UsingPost());
 
-            registrationPosts.Should().NotBeEmpty();
+            posts.Should().NotBeEmpty();
 
-            var post = registrationPosts.First();
+            var post = posts.First();
 
-            post.RequestMessage.Path.Should().Be("/registrations");
-            var reg = JsonConvert.DeserializeObject<VerifyRegistrationRequest>(post.RequestMessage.Body);
-            reg.Should().BeEquivalentTo(new VerifyRegistrationRequest
+            post.RequestMessage.Path.Should().Be("/apprentices");
+            var reg = JsonConvert.DeserializeObject<Apprentice>(post.RequestMessage.Body);
+            reg.Should().BeEquivalentTo(new
             {
-                ApprenticeId = _userContext.ApprenticeId,
-                FirstName = _postedRegistration.FirstName,
-                LastName = _postedRegistration.LastName,
+                Id = _userContext.ApprenticeId,
+                _postedRegistration.FirstName,
+                _postedRegistration.LastName,
                 DateOfBirth = _postedRegistration.DateOfBirth.Date,
             });
         }
 
-        [Given("the API will accept the identity")]
-        public void WhenTheApiAcceptsTheIdentityAsForInvalidData()
+        [Given("the API will accept the account")]
+        public void WhenTheApiAcceptsTheAccount()
         {
-            _context.OuterApi.MockServer
-                .Given(Request.Create().WithPath("/registrations*"))
-                .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingPost()
+                    .WithPath("/apprentices"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
+        }
+
+        [Given("the API will match the apprenticeship")]
+        public void WhenTheApiAcceptsTheMatch()
+        {
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingPost()
+                    .WithPath("/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
+        }
+
+        [Given("the API will not match the apprenticeship")]
+        public void WhenTheApiAcceptsTheMatchNot()
+        {
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingPost()
+                    .WithPath("/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(400));
         }
 
         [Given("the API will reject the identity with the following errors")]

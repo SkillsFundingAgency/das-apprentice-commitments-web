@@ -37,5 +37,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         {
             await _client.RegistrationFirstSeenOn(apprenticeId, new RegistrationFirstSeenOnRequest { SeenOn = seenOn });
         }
+
+        internal async Task MatchApprenticeToApprenticeship(Guid registrationId, Guid apprenticeId)
+        {
+            await _client.ClaimApprenticeship(new ApprenticeshipAssociation
+            {
+                RegistrationId = registrationId,
+                ApprenticeId = apprenticeId,
+            });
+        }
     }
 }
