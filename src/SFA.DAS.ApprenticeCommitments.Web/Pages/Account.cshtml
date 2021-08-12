@@ -1,5 +1,5 @@
 ﻿@page
-@model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourPersonalDetailsModel
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.AccountModel
 @{
     ViewData["Title"] = "Confirm your personal details";
 
@@ -22,7 +22,8 @@
 
             <form method="post" class="check-answers-page" id="identity-assurance" asp-page-handler="@Model.FormHandler">
                 <input asp-for="EmailAddress">
-
+                <input asp-for="RegistrationCode">
+                
                 <div id="FirstName" class="govuk-form-group @FormGroupValidationClass("FirstName")">
                     <label class="govuk-label govuk-label--m" asp-for="FirstName">First Name</label>
                     <span asp-validation-for="FirstName" class="govuk-error-message"></span>

@@ -13,7 +13,7 @@ Scenario: The apprentice has just created a login account
 Scenario: The enters their personal details for the first time
 	Given the apprentice has logged in
 	And the apprentice has not created their account
-	When accessing the "ConfirmYourPersonalDetails?handler=register" page
+	When accessing the "Account?handler=register" page
 	Then the response status code should be Ok
 	And the apprentice marks the registration as seen
 	And the apprentice should see the personal details page
@@ -21,7 +21,7 @@ Scenario: The enters their personal details for the first time
 Scenario: The apprentice updates their account details
 	Given the apprentice has logged in
 	And the apprentice has created their account
-	When accessing the "ConfirmYourPersonalDetails?handler=register" page
+	When accessing the "Account?handler=register" page
 	Then the response status code should be Ok
 	And the apprentice does not try to mark the registration as seen
 	And the apprentice should see the personal details page

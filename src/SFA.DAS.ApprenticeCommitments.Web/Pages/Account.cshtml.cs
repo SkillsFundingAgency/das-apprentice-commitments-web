@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
     [HideNavigationBar]
-    public class ConfirmYourPersonalDetailsModel : PageModel
+    public class AccountModel : PageModel
     {
         private readonly RegistrationsService _registrations;
         private readonly IOuterApiClient _api;
 
-        public ConfirmYourPersonalDetailsModel(RegistrationsService rapi, IOuterApiClient api)
+        public AccountModel(RegistrationsService rapi, IOuterApiClient api)
         {
             _registrations = rapi;
             _api = api;

@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private ConfirmYourPersonalDetailsModel _postedRegistration;
+        private AccountModel _postedRegistration;
         private string _registrationCode;
 
         public CreateApprenticeAccountSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -98,7 +98,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.Should().Be2XXSuccessful();
             var page = _context.ActionResult.LastPageResult;
             page.Should().NotBeNull();
-            page.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>();
+            page.Model.Should().BeOfType<AccountModel>();
         }
 
         [Then(@"the apprentice marks the registration as seen")]
@@ -193,11 +193,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [When("the apprentice creates their account with")]
         public async Task WhenTheApprenticeCreatesTheirAccountWith(Table table)
         {
-            _postedRegistration = table.CreateInstance(() => new ConfirmYourPersonalDetailsModel(null, null));
+            _postedRegistration = table.CreateInstance(() => new AccountModel(null, null));
             _postedRegistration.DateOfBirth =
                 new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
 
-            var response = await _context.Web.Post($"ConfirmYourPersonalDetails?handler=Register&registrationCode={_registrationCode}",
+            var response = await _context.Web.Post($"Account?handler=Register&registrationCode={_registrationCode}",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "FirstName", _postedRegistration.FirstName },
@@ -292,7 +292,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("verification is not successful")]
         public void ThenTheVerificationIsNotSuccessful()
         {
-            _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmYourPersonalDetailsModel>()
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<AccountModel>()
                 .Which.ModelState.IsValid.Should().BeFalse();
         }
 
@@ -304,7 +304,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             foreach (var (PropertyName, ErrorMessage) in messages)
             {
                 _context.ActionResult.LastPageResult
-                    .Model.As<ConfirmYourPersonalDetailsModel>()
+                    .Model.As<AccountModel>()
                     .ModelState[PropertyName]
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }
@@ -318,7 +318,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             foreach (var ErrorMessage in messages)
             {
                 _context.ActionResult.LastPageResult
-                    .Model.As<ConfirmYourPersonalDetailsModel>()
+                    .Model.As<AccountModel>()
                     .ModelState[""]
                     .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
             }
@@ -328,7 +328,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheRegistrationCodeShouldBe(string code)
         {
             _context.ActionResult.LastPageResult
-                .Model.As<ConfirmYourPersonalDetailsModel>()
+                .Model.As<AccountModel>()
                 .RegistrationCode.Should().Be(code);
         }
     }

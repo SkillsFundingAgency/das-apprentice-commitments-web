@@ -8,9 +8,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     {
         public async Task<IActionResult> OnGet()
         {
-            // Until some actual functionality is implemented just redirect to the ConfirmYourPersonalDetails page
+            // Until some actual functionality is implemented just redirect to the Account page
             // Note: the SignOut page redirects to Index.html from the 'Log back in' link
-            return RedirectToPage("ConfirmYourPersonalDetails");
+            return RedirectToPage("Account");
         }
     }
 }

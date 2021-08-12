@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             {
                 var routeValuesDictionary = new RouteValueDictionary();
                 foreach (var a in Request.Query) routeValuesDictionary.Add(a.Key, a.Value);
-                return RedirectToPage("/ConfirmYourPersonalDetails", "register", routeValuesDictionary);
+                return RedirectToPage("/Account", "register", routeValuesDictionary);
             }
 
             try

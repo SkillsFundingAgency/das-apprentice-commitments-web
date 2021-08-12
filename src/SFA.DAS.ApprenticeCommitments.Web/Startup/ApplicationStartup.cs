@@ -50,8 +50,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRewriter(new RewriteOptions()
-                .AddRedirect("ConfirmYourIdentity", "ConfirmYourPersonalDetails", (int)HttpStatusCode.MovedPermanently)
-                .AddRedirect("confirmyouridentity", "ConfirmYourPersonalDetails", (int)HttpStatusCode.MovedPermanently)
+                .AddRedirect("ConfirmYourIdentity", "Account", (int)HttpStatusCode.MovedPermanently)
+                .AddRedirect("confirmyouridentity", "Account", (int)HttpStatusCode.MovedPermanently)
                 );
 
             app.UseErrorPages(env)

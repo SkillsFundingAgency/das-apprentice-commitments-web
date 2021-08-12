@@ -12,7 +12,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
     {
         [Test, PageAutoData]
         public void Throws_when_the_registration_claim_is_missing(
-            ConfirmYourPersonalDetailsModel sut,
+            AccountModel sut,
             ClaimsPrincipal user)
         {
             sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
@@ -21,7 +21,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
 
         [Test, PageAutoData]
         public void Throws_when_the_registration_claim_is_not_a_guid(
-            ConfirmYourPersonalDetailsModel sut,
+            AccountModel sut,
             ClaimsPrincipal user,
             string notAGuid)
         {
