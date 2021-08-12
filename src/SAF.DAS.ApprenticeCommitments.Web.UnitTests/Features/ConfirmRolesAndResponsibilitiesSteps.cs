@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private long _commitmentStatementId;
+        private long _revisionId;
         private bool? _rolesAndResponsibilitiesConfirmed;
 
         public ConfirmRolesAndResponsibilitiesSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -30,7 +30,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context = context;
             _userContext = userContext;
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
-            _commitmentStatementId = 6613;
+            _revisionId = 6613;
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -68,7 +68,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
-                            CommitmentStatementId = _commitmentStatementId,
+                            CommitmentStatementId = _revisionId,
                             RolesAndResponsibilitiesCorrect = confirmed
                         }));
         }
@@ -119,7 +119,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { nameof(RolesAndResponsibilitiesModel.CommitmentStatementId), _commitmentStatementId.ToString() },
+                    { nameof(RolesAndResponsibilitiesModel.RevisionId), _revisionId.ToString() },
                     { nameof(RolesAndResponsibilitiesModel.RolesAndResponsibilitiesConfirmed), _rolesAndResponsibilitiesConfirmed.ToString() }
                 }));
         }
@@ -129,14 +129,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_commitmentStatementId}/rolesandresponsibilitiesconfirmation")
-                    .UsingPost());
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_revisionId}/confirmations")
+                    .UsingPatch());
 
             updates.Should().HaveCount(1);
 
             var post = updates.First();
 
-            JsonConvert.DeserializeObject<RolesAndResponsibilitiesConfirmationRequest>(post.RequestMessage.Body)
+            JsonConvert.DeserializeObject<ApprenticeshipConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { RolesAndResponsibilitiesCorrect = confirm });
         }
 
