@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
-    public interface IOuterApiClient
+    public interface IOuterApiClient : IObsoleteApi
     {
         [Get("/registrations/{id}")]
         Task<VerifyRegistrationResponse> GetRegistration([Path] Guid id);
@@ -34,12 +34,25 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Get("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}")]
         Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeid, [Path] long apprenticeshipid);
 
+        [Patch("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{revisionId}/confirmations")]
+        Task ConfirmApprenticeship(
+                 [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long revisionId,
+                 [Body] ApprenticeshipConfirmationRequest confirmation);
+
+        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}")]
+        Task UpdateApprenticeship(
+            [Path] Guid apprenticeId, [Path] long apprenticeshipId,
+            [Body] JsonPatchDocument<Apprenticeship> patch);
+    }
+
+    public interface IObsoleteApi
+    {
         [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/trainingproviderconfirmation")]
         [Obsolete]
         Task ConfirmTrainingProvider(
             [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] TrainingProviderConfirmationRequest confirmation);
-        
+
         [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/employerconfirmation")]
         [Obsolete]
         Task ConfirmEmployer(
@@ -63,17 +76,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task ConfirmHowApprenticeshipDelivered(
             [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
             [Body] HowApprenticeshipDeliveredConfirmationRequest confirmation);
-
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/apprenticeshipconfirmation")]
-        [Obsolete]
-        Task ConfirmApprenticeship(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] ApprenticeshipConfirmationRequest confirmation);
-
-        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}")]
-        Task UpdateApprenticeship(
-            [Path] Guid apprenticeId, [Path] long apprenticeshipId,
-            [Body] JsonPatchDocument<Apprenticeship> patch);
     }
 
     public static class OuterApiExtensions
