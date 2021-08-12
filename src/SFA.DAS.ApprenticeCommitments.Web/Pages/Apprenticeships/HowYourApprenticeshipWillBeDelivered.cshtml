@@ -74,7 +74,7 @@
 
                 <form asp-hide="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" id="apprenticeship-delivered-form-hide" method="post">
                 <input type="hidden" asp-for="ConfirmedHowApprenticeshipDelivered" value="true" />
-                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
+                <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
                 <button class="govuk-button" data-module="govuk-button" id="apprentice-delivered-confirm">Continue</button>
             </form>
 

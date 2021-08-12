@@ -17,6 +17,9 @@
         public static ApprenticeshipConfirmationRequest ConfirmEmployer(bool correct)
             => new ApprenticeshipConfirmationRequest { EmployerCorrect = correct };
 
+        public static ApprenticeshipConfirmationRequest ConfirmDelivery(bool correct)
+            => new ApprenticeshipConfirmationRequest { HowApprenticeshipDeliveredCorrect = correct };
+
         public bool? EmployerCorrect { get; set; }
         public bool? TrainingProviderCorrect { get; set; }
         public bool? ApprenticeshipDetailsCorrect { get; set; }

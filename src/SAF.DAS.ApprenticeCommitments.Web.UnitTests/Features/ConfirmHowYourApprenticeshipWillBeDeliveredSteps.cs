@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private long _commitmentStatementId;
+        private long _revisionId;
         private bool? _confirmedHowApprenticeshipDelivered;
 
         public ConfirmHowYourApprenticeshipWillBeDeliveredSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -30,11 +30,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context = context;
             _userContext = userContext;
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
-            _commitmentStatementId = 6615;
+            _revisionId = 6615;
 
             _context.OuterApi.MockServer.Given(
                 Request.Create()
-                    .UsingPost())
+                    .UsingAnyMethod())
                 .RespondWith(Response.Create()
                     .WithStatusCode(200));
         }
@@ -112,7 +112,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/howyourapprenticeshipwillbedelivered",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { nameof(HowYourApprenticeshipWillBeDeliveredModel.CommitmentStatementId), _commitmentStatementId.ToString() },
+                    { nameof(HowYourApprenticeshipWillBeDeliveredModel.RevisionId), _revisionId.ToString() },
                     { nameof(HowYourApprenticeshipWillBeDeliveredModel.ConfirmedHowApprenticeshipDelivered), _confirmedHowApprenticeshipDelivered.ToString() }
                 }));
         }
@@ -122,14 +122,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_commitmentStatementId}/howapprenticeshipwillbedeliveredconfirmation")
-                    .UsingPost());
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_revisionId}/confirmations")
+                    .UsingPatch());
 
             updates.Should().HaveCount(1);
 
             var post = updates.First();
 
-            JsonConvert.DeserializeObject<HowApprenticeshipDeliveredConfirmationRequest>(post.RequestMessage.Body)
+            JsonConvert.DeserializeObject<ApprenticeshipConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { HowApprenticeshipDeliveredCorrect = confirm });
         }
 
