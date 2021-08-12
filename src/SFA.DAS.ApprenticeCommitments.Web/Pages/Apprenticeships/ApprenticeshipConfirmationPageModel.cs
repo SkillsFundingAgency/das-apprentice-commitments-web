@@ -30,8 +30,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
             RevisionId = apprenticeship.CommitmentStatementId;
-            await LoadApprenticeship(apprenticeship);
+            LoadApprenticeship(apprenticeship);
             CanChangeAnswer = Confirmed == true && !apprenticeship.IsCompleted();
+        }
+
+        public async Task OnGetChangeAnswer()
+        {
+            await OnGetAsync();
+            if (CanChangeAnswer)
+            {
+                ChangingAnswer = true;
+                CanChangeAnswer = false;
+            }
         }
 
         public async Task<IActionResult> OnPost()
@@ -51,18 +61,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             return new RedirectToPageResult(nextPage, null, new { ApprenticeshipId, Entity = _entityName });
         }
 
-        public abstract Task LoadApprenticeship(Apprenticeship apprenticeship);
+        public abstract void LoadApprenticeship(Apprenticeship apprenticeship);
 
         public abstract ApprenticeshipConfirmationRequest CreateUpdate(bool confirmed);
-
-        public async Task OnGetChangeAnswer()
-        {
-            await OnGetAsync();
-            if (CanChangeAnswer)
-            {
-                ChangingAnswer = true;
-                CanChangeAnswer = false;
-            }
-        }
     }
 }

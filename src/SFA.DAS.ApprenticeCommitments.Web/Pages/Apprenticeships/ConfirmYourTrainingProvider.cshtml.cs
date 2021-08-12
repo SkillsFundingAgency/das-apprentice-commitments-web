@@ -18,7 +18,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
         }
 
-        public override async Task LoadApprenticeship(Apprenticeship apprenticeship)
+        public override void LoadApprenticeship(Apprenticeship apprenticeship)
         {
             TrainingProviderName = apprenticeship.TrainingProviderName;
             Confirmed = apprenticeship.TrainingProviderCorrect;
