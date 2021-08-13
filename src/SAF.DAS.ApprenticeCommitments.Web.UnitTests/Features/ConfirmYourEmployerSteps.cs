@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -59,7 +60,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             SetupApiGetEmployerConfirmation(confirmed: false);
         }
 
-        private void SetupApiGetEmployerConfirmation(bool? confirmed)
+        [Given("the apprentice has confirmed this is their employer")]
+        public void GivenTheApprenticeHasConfirmedThisIsTheirEmployer()
+        {
+            SetupApiGetEmployerConfirmation(confirmed: true);
+        }
+
+        [Given(@"the apprentice has confirmed everything")]
+        public void GivenTheApprenticeHasConfirmedEverything()
+        {
+            SetupApiGetEmployerConfirmation(confirmed: true, everythingConfirmed: true);
+        }
+
+        private void SetupApiGetEmployerConfirmation(bool? confirmed, bool? everythingConfirmed = null)
         {
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -73,6 +86,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             CommitmentStatementId = _commitmentStatementId,
                             EmployerName = _employerName,
                             EmployerCorrect = confirmed,
+                            TrainingProviderCorrect = everythingConfirmed,
+                            RolesAndResponsibilitiesCorrect = everythingConfirmed,
+                            ApprenticeshipDetailsCorrect = everythingConfirmed,
+                            HowApprenticeshipDeliveredCorrect = everythingConfirmed,
+                            ConfirmedOn = everythingConfirmed == true ? (DateTime?)DateTime.Now : null
                         }));
         }
 
@@ -129,7 +147,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheUserShouldSeeTheConfirmationOptions()
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.ConfirmedEmployer.Should().BeNull();
+            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.ShowForm.Should().BeTrue();
+        }
+
+        [Then("the user should not see the confirmation options")]
+        public void ThenTheUserShouldNotSeeTheConfirmationOptions()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.ShowForm.Should().BeFalse();
         }
 
         [Then("the link is pointing to the confirm page")]
@@ -180,6 +205,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmYourEmployerModel>();
             model.Should().NotBeNull();
             model.ModelState["ConfirmedEmployer"].Errors.Count.Should().Be(1);
+        }
+
+        [Then(@"the user should be able to change their answer")]
+        public void ThenTheUserShouldBeAbleToChangeTheirAnswer()
+        {
+            _context.ActionResult.LastPageResult.Model
+                .Should().BeOfType<ConfirmYourEmployerModel>()
+                .Which.CanChangeAnswer.Should().BeTrue();
+        }
+
+        [Then(@"the user should not be able to change their answer")]
+        public void ThenTheUserShouldNotBeAbleToChangeTheirAnswer()
+        {
+            _context.ActionResult.LastPageResult.Model
+                .Should().BeOfType<ConfirmYourEmployerModel>()
+                .Which.CanChangeAnswer.Should().BeFalse();
         }
     }
 }

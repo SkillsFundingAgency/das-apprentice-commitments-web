@@ -1,0 +1,41 @@
+﻿@if (!ViewData.ModelState.IsValid)
+{
+    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+            There is a problem
+        </h2>
+        <div class="govuk-error-message">
+
+            @if (ViewContext.ViewData.ModelState["PersonalDetails"]?.Errors?.Count() > 0)
+            {
+                <p class="govuk-!-font-weight-bold">Details do not match any registered apprenticeships on our service. You can:</p>
+            }
+
+            <ul>
+                @foreach (var stateItem in ViewContext.ViewData.ModelState)
+                {
+                    if (stateItem.Key == "PersonalDetails")
+                    {
+                        foreach (var error in stateItem.Value.Errors)
+                        {
+                            <li>
+                                <div class="govuk-!-font-weight-bold">@error.ErrorMessage</div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        var elementId = Html.GenerateIdFromName(ViewData.TemplateInfo.GetFullHtmlFieldName(stateItem.Key)) ?? stateItem.Key;
+
+                        foreach (var error in stateItem.Value.Errors)
+                        {
+                            <li class="govuk-error-summary__list">
+                                <a href="#@elementId">@error.ErrorMessage</a>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}
