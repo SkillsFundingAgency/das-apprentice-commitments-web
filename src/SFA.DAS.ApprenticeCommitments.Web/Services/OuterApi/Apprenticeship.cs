@@ -5,7 +5,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
     public class Apprenticeship
     {
         public long Id { get; set; }
-        public long CommitmentStatementId { get; set; }
+        public long RevisionId { get; set; }
         public string EmployerName { get; set; } = null!;
         public string TrainingProviderName { get; set; } = null!;
         public bool? EmployerCorrect { get; set; }

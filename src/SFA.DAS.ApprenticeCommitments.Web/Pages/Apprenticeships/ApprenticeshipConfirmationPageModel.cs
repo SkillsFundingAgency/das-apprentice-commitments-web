@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task OnGetAsync()
         {
             var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
-            RevisionId = apprenticeship.CommitmentStatementId;
+            RevisionId = apprenticeship.RevisionId;
             LoadApprenticeship(apprenticeship);
             CanChangeAnswer = Confirmed == true && !apprenticeship.IsCompleted();
         }

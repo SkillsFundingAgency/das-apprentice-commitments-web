@@ -24,7 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
 
-            RevisionId = apprenticeship.CommitmentStatementId;
+            RevisionId = apprenticeship.RevisionId;
 
             if (apprenticeship.HowApprenticeshipDeliveredCorrect == true)
                 ConfirmedHowApprenticeshipDelivered = true;
