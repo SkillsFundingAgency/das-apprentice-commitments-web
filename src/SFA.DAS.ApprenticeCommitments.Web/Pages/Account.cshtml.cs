@@ -14,8 +14,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     public class AccountModel : PageModel
     {
         private readonly ApprenticeApi _apprentices;
+        private readonly NavigationUrlHelper _urlHelper;
 
-        public AccountModel(ApprenticeApi api) => _apprentices = api;
+        public AccountModel(ApprenticeApi api, NavigationUrlHelper urlHelper)
+        {
+            _apprentices = api;
+            _urlHelper = urlHelper;
+        }
 
         public string EmailAddress { get; set; } = null!;
 
@@ -57,12 +62,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user, [FromServices] NavigationUrlHelper urlHelper)
+        public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user)
         {
             try
             {
                 await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
-                return Redirect(urlHelper.Generate(NavigationSection.Home));
+
+                return RedirectAfterUpdate();
             }
             catch (DomainValidationException exception)
             {
@@ -86,13 +92,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
                 await VerifiedUser.ConfirmIdentity(HttpContext);
 
-                return RedirectToAction("Register", "Registration", new { RegistrationCode });
+                return RedirectAfterUpdate();
             }
             catch (DomainValidationException exception)
             {
                 AddErrors(exception);
                 return Page();
             }
+        }
+
+        private IActionResult RedirectAfterUpdate()
+        {
+            if (RegistrationCode == null)
+                return Redirect(_urlHelper.Generate(NavigationSection.Home));
+            else
+                return RedirectToAction("Register", "Registration", new { RegistrationCode });
         }
 
         private void AddErrors(DomainValidationException exception)
