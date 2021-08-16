@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public static IServiceCollection RegisterServices(
             this IServiceCollection services)
         {
-            services.AddTransient<RegistrationsService>();
+            services.AddTransient<ApprenticeApi>();
             services.AddTransient<AuthenticatedUserClient>();
             services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             services.AddScoped<VerifiedUserService>();

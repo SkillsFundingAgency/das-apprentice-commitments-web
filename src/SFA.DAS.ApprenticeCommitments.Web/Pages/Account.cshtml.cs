@@ -1,13 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
-using RestEase;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,14 +13,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     [HideNavigationBar]
     public class AccountModel : PageModel
     {
-        private readonly RegistrationsService _registrations;
-        private readonly IOuterApiClient _api;
+        private readonly ApprenticeApi _apprentices;
 
-        public AccountModel(RegistrationsService rapi, IOuterApiClient api)
-        {
-            _registrations = rapi;
-            _api = api;
-        }
+        public AccountModel(ApprenticeApi api) => _apprentices = api;
 
         public string EmailAddress { get; set; } = null!;
 
@@ -36,23 +28,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
-        public string FormHandler = "";
-
         [BindProperty(SupportsGet = true)]
         [HiddenInput]
         public string? RegistrationCode { get; set; }
 
+        public string FormHandler = "";
+
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
-            var apprentice = await TryGetApprentice(user.ApprenticeId);
+            var apprentice = await _apprentices.TryGetApprentice(user.ApprenticeId);
 
             if (apprentice == null)
             {
                 FormHandler = "Register";
 
-                if(RegistrationCode != null)
-                    await _registrations.FirstSeenOn(RegistrationCode, DateTime.UtcNow);
+                if (RegistrationCode != null)
+                    await _apprentices.RegistrationSeen(RegistrationCode, DateTime.UtcNow);
             }
             else
             {
@@ -65,75 +57,41 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             return Page();
         }
 
-        private async Task<Apprentice?> TryGetApprentice(Guid apprenticeId)
-        {
-            try
-            {
-                return await _api.GetApprentice(apprenticeId);
-            }
-            catch (ApiException e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                return null;
-            }
-        }
-
         public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user, [FromServices] NavigationUrlHelper urlHelper)
         {
             try
             {
-                await _api.UpdateApprenticeAccount(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
-            }
-            catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
-                AddErrors(new DomainValidationException(errors));
+                await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
+                return Redirect(urlHelper.Generate(NavigationSection.Home));
             }
             catch (DomainValidationException exception)
             {
                 AddErrors(exception);
-            }
-
-            if (ModelState.IsValid)
-                return Redirect(urlHelper.Generate(NavigationSection.Home));
-            else
                 return Page();
+            }
         }
 
         public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
         {
-            await UpdateApprentice(user);
-
-            await VerifiedUser.ConfirmIdentity(HttpContext);
-
-            if (ModelState.IsValid)
-                return RedirectToAction("Register", "Registration", new { RegistrationCode });
-            else
-                return Page();
-        }
-
-        private async Task UpdateApprentice(AuthenticatedUser user)
-        {
             try
             {
-                EmailAddress = user.Email.ToString();
-
-                await _api.CreateApprenticeAccount(new Apprentice
+                await _apprentices.CreateApprentice(new Apprentice
                 {
                     ApprenticeId = user.ApprenticeId,
                     FirstName = FirstName,
                     LastName = LastName,
                     DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
-                    Email = EmailAddress,
+                    Email = user.Email.ToString(),
                 });
-            }
-            catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
-                AddErrors(new DomainValidationException(errors));
+
+                await VerifiedUser.ConfirmIdentity(HttpContext);
+
+                return RedirectToAction("Register", "Registration", new { RegistrationCode });
             }
             catch (DomainValidationException exception)
             {
                 AddErrors(exception);
+                return Page();
             }
         }
 

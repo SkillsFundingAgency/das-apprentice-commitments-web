@@ -12,10 +12,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
     public class RegistrationController : Controller
     {
         private readonly AuthenticatedUser _user;
-        private readonly RegistrationsService _registrations;
+        private readonly ApprenticeApi _registrations;
         private readonly NavigationUrlHelper _urlHelper;
 
-        public RegistrationController(AuthenticatedUser user, RegistrationsService registrations, NavigationUrlHelper urlHepler)
+        public RegistrationController(AuthenticatedUser user, ApprenticeApi registrations, NavigationUrlHelper urlHepler)
         {
             _user = user;
             _registrations = registrations;

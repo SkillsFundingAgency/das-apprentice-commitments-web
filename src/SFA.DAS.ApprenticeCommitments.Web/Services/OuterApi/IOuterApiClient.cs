@@ -89,14 +89,5 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
             var patch = new JsonPatchDocument<Apprenticeship>().Replace(x => x.LastViewed, DateTime.UtcNow);
             await client.UpdateApprenticeship(apprenticeId, apprenticeship, patch);
         }
-
-        public static async Task UpdateApprenticeAccount(this IOuterApiClient client, Guid apprenticeId, string firstName, string lastName, DateTime dateOfBirth)
-        {
-            var patch = new JsonPatchDocument<Apprentice>()
-                .Replace(x => x.FirstName, firstName)
-                .Replace(x => x.LastName, lastName)
-                .Replace(x => x.DateOfBirth, dateOfBirth);
-            await client.UpdateApprenticeship(apprenticeId, patch);
-        }
     }
 }
