@@ -30,15 +30,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context = context;
             _userContext = userContext;
-
-            _context.OuterApi?.MockServer.Given(
-                     Request.Create()
-                         .UsingPost()
-                         .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
-                                               )
-                .RespondWith(Response.Create()
-                    .WithStatusCode(HttpStatusCode.Accepted));
-
             _registrationCode = Guid.NewGuid().ToString();
         }
 
@@ -121,17 +112,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 });
         }
 
-        [Then(@"the apprentice marks the registration as seen")]
-        public void ThenTheApprenticeMarksTheRegistrationAsSeen()
+        [Then(@"the apprentice marks the ""(.*)"" registration as seen")]
+        public void ThenTheApprenticeMarksTheRegistrationAsSeen(string registrationCode)
         {
-            var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
-                Request.Create()
-                    .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
-                    .UsingPost()
-                                                                               );
+            var post = _context.OuterApi.MockServer.LogEntries.Should().Contain(x =>
+                x.RequestMessage.Path.Contains($"/registrations/{registrationCode}/firstseen")).Which;
 
-            registrationPosts.Should().NotBeEmpty();
-            var post = registrationPosts.First();
             var reg = JsonConvert.DeserializeObject<RegistrationFirstSeenOnRequest>(post.RequestMessage.Body);
             reg.SeenOn.Should().BeBefore(DateTime.UtcNow);
         }
@@ -141,7 +127,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var registrationPosts = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/registrations/{_userContext.ApprenticeId}/firstseen")
+                    .WithPath("/registrations/*/firstseen")
                     .UsingPost()
                                                                                );
 

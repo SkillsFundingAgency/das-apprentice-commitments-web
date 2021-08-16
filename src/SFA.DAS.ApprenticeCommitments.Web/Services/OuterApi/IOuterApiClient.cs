@@ -11,8 +11,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task<VerifyRegistrationResponse> GetRegistration([Path] Guid id);
 
         [AllowAnyStatusCode]
-        [Post("/registrations/{apprenticeId}/firstseen")]
-        Task RegistrationFirstSeenOn([Path] Guid apprenticeId, [Body] RegistrationFirstSeenOnRequest request);
+        [Post("/registrations/{registrationCode}/firstseen")]
+        Task RegistrationFirstSeenOn([Path] string registrationCode, [Body] RegistrationFirstSeenOnRequest request);
 
         [Post("/registrations")]
         Task VerifyRegistration([Body] VerifyRegistrationRequest verification);

@@ -50,7 +50,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             if (apprentice == null)
             {
                 FormHandler = "Register";
-                await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
+
+                if(RegistrationCode != null)
+                    await _registrations.FirstSeenOn(RegistrationCode, DateTime.UtcNow);
             }
             else
             {

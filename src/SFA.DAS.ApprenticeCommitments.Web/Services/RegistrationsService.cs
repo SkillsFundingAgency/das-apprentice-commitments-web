@@ -33,9 +33,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             }
         }
 
-        internal async Task FirstSeenOn(Guid apprenticeId, DateTime seenOn)
+        internal async Task FirstSeenOn(string registrationCode, DateTime seenOn)
         {
-            await _client.RegistrationFirstSeenOn(apprenticeId, new RegistrationFirstSeenOnRequest { SeenOn = seenOn });
+            await _client.RegistrationFirstSeenOn(registrationCode, new RegistrationFirstSeenOnRequest { SeenOn = seenOn });
         }
 
         internal async Task MatchApprenticeToApprenticeship(string registrationId, Guid apprenticeId)

@@ -10,12 +10,25 @@ Scenario: The apprentice has just created a login account
 	Then the apprentice should see the personal details page
 	And the registration code should be "bob"
 
+Scenario: The apprentice loads the registration page
+	Given the apprentice has logged in
+	And the apprentice has not created their account
+	When accessing the "Account?RegistrationCode=bob" page
+	Then the response status code should be Ok
+	And the apprentice marks the "bob" registration as seen
+
+Scenario: The registration is not seen if there is no code
+	Given the apprentice has logged in
+	And the apprentice has not created their account
+	When accessing the "Account?RegistrationCode=" page
+	Then the response status code should be Ok
+	And the apprentice does not try to mark the registration as seen
+
 Scenario: The apprentice enters their personal details for the first time
 	Given the apprentice has logged in
 	And the apprentice has not created their account
 	When accessing the "Account" page
 	Then the response status code should be Ok
-	And the apprentice marks the registration as seen
 	And the apprentice should see the personal details page
 
 Scenario: The apprentice wants to update their account details
