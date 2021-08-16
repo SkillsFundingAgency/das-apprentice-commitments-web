@@ -59,7 +59,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
             var apprentice = await TryGetApprentice(user.ApprenticeId);
 
-            EmailAddress = User.Identity.Name ?? "";
+            EmailAddress = user.Email.ToString();
             FirstName = apprentice?.FirstName ?? "";
             LastName = apprentice?.LastName ?? "";
             //DateOfBirth.Date = apprentice?.DateOfBirth;
@@ -100,7 +100,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 await _api.UpdateApprenticeAccount(new Apprentice
                 {
-                    Id = user.ApprenticeId,
+                    ApprenticeId = user.ApprenticeId,
                     FirstName = FirstName,
                     LastName = LastName,
                     DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
@@ -116,6 +116,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
         {
             await UpdateApprentice(user);
+
+            await VerifiedUser.ConfirmIdentity(HttpContext);
 
             if (ModelState.IsValid)
                 return RedirectToAction("Register", "Registration", new { RegistrationCode });

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
-    public class TestAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class TestAuthenticationHandler : SignInAuthenticationHandler<AuthenticationSchemeOptions>
     {
         private static readonly ConcurrentDictionary<Guid, bool> _users = new ConcurrentDictionary<Guid, bool>();
 
@@ -50,7 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, "Test user"),
+                new Claim(ClaimTypes.Name, "Testuser@example.com"),
                 new Claim("apprentice_id", guid.ToString()),
             };
             if (isVerified) claims.Add(new Claim("VerifiedUser", "True"));
@@ -67,5 +67,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 return guid;
             return default;
         }
+
+        protected override Task HandleSignInAsync(ClaimsPrincipal user, AuthenticationProperties properties) => Task.CompletedTask;
+
+        protected override Task HandleSignOutAsync(AuthenticationProperties properties) => Task.CompletedTask;
     }
 }

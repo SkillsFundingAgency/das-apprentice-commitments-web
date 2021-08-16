@@ -233,7 +233,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var reg = JsonConvert.DeserializeObject<Apprentice>(post.RequestMessage.Body);
             reg.Should().BeEquivalentTo(new
             {
-                Id = _userContext.ApprenticeId,
+                _userContext.ApprenticeId,
                 _postedRegistration.FirstName,
                 _postedRegistration.LastName,
                 DateOfBirth = _postedRegistration.DateOfBirth.Date,
