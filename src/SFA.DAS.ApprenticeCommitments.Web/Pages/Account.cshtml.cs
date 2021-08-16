@@ -57,6 +57,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                 ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
                 FirstName = apprentice.FirstName;
                 LastName = apprentice.LastName;
+                DateOfBirth = new DateModel(apprentice.DateOfBirth);
             }
 
             return Page();

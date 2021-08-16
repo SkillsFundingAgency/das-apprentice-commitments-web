@@ -1,4 +1,4 @@
-@outerApi
+﻿@outerApi
 Feature: CreateApprenticeAccount
 	As an apprentice who wants to view my commitment statements
 	If I haven't confirmed my identity
@@ -18,13 +18,21 @@ Scenario: The apprentice enters their personal details for the first time
 	And the apprentice marks the registration as seen
 	And the apprentice should see the personal details page
 
-Scenario: The apprentice updates their account details
+Scenario: The apprentice wants to update their account details
 	Given the apprentice has logged in
 	And the apprentice has created their account
 	When accessing the "Account" page
 	Then the response status code should be Ok
 	And the apprentice does not try to mark the registration as seen
 	And the apprentice should see the personal details page
+
+Scenario: The apprentice updates their account details
+	Given the apprentice has logged in
+	And the apprentice has created their account
+	When accessing the "Account" page
+	Then the response status code should be Ok
+	And the apprentice should see the personal details page
+	And the apprentice sees their previously entered details
 
 Scenario: The apprentice creates their account and matches to the apprenticeship
 	Given the apprentice has logged in

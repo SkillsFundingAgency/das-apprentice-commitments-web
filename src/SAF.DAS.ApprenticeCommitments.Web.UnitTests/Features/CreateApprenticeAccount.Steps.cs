@@ -23,6 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private AccountModel _postedRegistration;
+        private Apprentice _apprentice;
         private string _registrationCode;
 
         public CreateApprenticeAccountSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -101,6 +102,25 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             page.Model.Should().BeOfType<AccountModel>();
         }
 
+        [Then("the apprentice sees their previously entered details")]
+        public void ThenTheApprenticeSeesTheirPreviouslyEnteredDetails()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Should().NotBeNull();
+            page.Model.Should().BeOfType<AccountModel>()
+                .Which.Should().BeEquivalentTo(new
+                {
+                    _apprentice.FirstName,
+                    _apprentice.LastName,
+                    DateOfBirth = new
+                    {
+                        _apprentice.DateOfBirth.Year,
+                        _apprentice.DateOfBirth.Month,
+                        _apprentice.DateOfBirth.Day,
+                    }
+                });
+        }
+
         [Then(@"the apprentice marks the registration as seen")]
         public void ThenTheApprenticeMarksTheRegistrationAsSeen()
         {
@@ -131,6 +151,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has created their account")]
         public void GivenTheApprenticeHasCreatedTheirAccount()
         {
+            _apprentice = new Apprentice
+            {
+                ApprenticeId = Guid.NewGuid(),
+                Email = "someone@example.com",
+                FirstName = "Someone",
+                LastName = "Wurst",
+                DateOfBirth = new DateTime(2008, 08, 21),
+            };
+
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
@@ -138,11 +167,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                                               )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new
-                    {
-                        Id = _userContext.ApprenticeId,
-                        Email = "bob@example.com",
-                    }));
+                    .WithBodyAsJson(_apprentice));
         }
 
         [When("the apprentice should be shown the Overview page")]
