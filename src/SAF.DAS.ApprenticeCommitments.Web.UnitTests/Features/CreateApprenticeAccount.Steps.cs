@@ -283,7 +283,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             });
 
             _context.OuterApi.MockServer
-                .Given(Request.Create().WithPath("/registrations*"))
+                .Given(Request.Create().WithPath("/apprentices"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(HttpStatusCode.BadRequest)
                     .WithBodyAsJson(errors));

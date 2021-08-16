@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using RestEase;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,8 +25,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             _api = api;
         }
 
-        [BindProperty]
-        [HiddenInput]
         public string EmailAddress { get; set; } = null!;
 
         [BindProperty]
@@ -45,28 +45,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
-            ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
-
-            var apprentice = await _api.GetApprentice(user.ApprenticeId);
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnGetRegister(
-            [FromServices] AuthenticatedUser user)
-        {
-            FormHandler = "Register";
-
             var apprentice = await TryGetApprentice(user.ApprenticeId);
-
-            EmailAddress = user.Email.ToString();
-            FirstName = apprentice?.FirstName ?? "";
-            LastName = apprentice?.LastName ?? "";
-            //DateOfBirth.Date = apprentice?.DateOfBirth;
 
             if (apprentice == null)
             {
+                FormHandler = "Register";
                 await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
+            }
+            else
+            {
+                ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
+                FirstName = apprentice.FirstName;
+                LastName = apprentice.LastName;
             }
 
             return Page();
@@ -98,6 +88,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             try
             {
+                EmailAddress = user.Email.ToString();
+
                 await _api.UpdateApprenticeAccount(new Apprentice
                 {
                     ApprenticeId = user.ApprenticeId,
@@ -106,6 +98,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
                     Email = EmailAddress,
                 });
+            }
+            catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
+                AddErrors(new DomainValidationException(errors));
             }
             catch (DomainValidationException exception)
             {
