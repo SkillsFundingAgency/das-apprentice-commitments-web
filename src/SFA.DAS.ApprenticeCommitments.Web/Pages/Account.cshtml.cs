@@ -77,10 +77,34 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public async Task<IActionResult> OnPost([FromServices] AuthenticatedUser user, [FromServices] NavigationUrlHelper urlHelper)
         {
-            await UpdateApprentice(user);
+            try
+            {
+                await _api.UpdateApprenticeAccount(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
+            }
+            catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
+                AddErrors(new DomainValidationException(errors));
+            }
+            catch (DomainValidationException exception)
+            {
+                AddErrors(exception);
+            }
 
             if (ModelState.IsValid)
                 return Redirect(urlHelper.Generate(NavigationSection.Home));
+            else
+                return Page();
+        }
+
+        public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
+        {
+            await UpdateApprentice(user);
+
+            await VerifiedUser.ConfirmIdentity(HttpContext);
+
+            if (ModelState.IsValid)
+                return RedirectToAction("Register", "Registration", new { RegistrationCode });
             else
                 return Page();
         }
@@ -91,7 +115,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 EmailAddress = user.Email.ToString();
 
-                await _api.UpdateApprenticeAccount(new Apprentice
+                await _api.CreateApprenticeAccount(new Apprentice
                 {
                     ApprenticeId = user.ApprenticeId,
                     FirstName = FirstName,
@@ -109,18 +133,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 AddErrors(exception);
             }
-        }
-
-        public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
-        {
-            await UpdateApprentice(user);
-
-            await VerifiedUser.ConfirmIdentity(HttpContext);
-
-            if (ModelState.IsValid)
-                return RedirectToAction("Register", "Registration", new { RegistrationCode });
-            else
-                return Page();
         }
 
         private void AddErrors(DomainValidationException exception)

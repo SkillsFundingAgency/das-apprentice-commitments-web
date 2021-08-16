@@ -25,14 +25,17 @@ Scenario: The apprentice wants to update their account details
 	Then the response status code should be Ok
 	And the apprentice does not try to mark the registration as seen
 	And the apprentice should see the personal details page
+	And the apprentice sees their previously entered details
 
 Scenario: The apprentice updates their account details
 	Given the apprentice has logged in
 	And the apprentice has created their account
-	When accessing the "Account" page
-	Then the response status code should be Ok
-	And the apprentice should see the personal details page
-	And the apprentice sees their previously entered details
+	And the API will accept the account update
+	When the apprentice updates their account with
+	| First name | Last name  | EmailAddress    | Date of Birth |
+	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
+	Then the apprentice account is updated
+	And the apprentice should be shown the Home page
 
 Scenario: The apprentice creates their account and matches to the apprenticeship
 	Given the apprentice has logged in
@@ -42,9 +45,9 @@ Scenario: The apprentice creates their account and matches to the apprenticeship
 	When the apprentice creates their account with
 	| First name | Last name  | EmailAddress    | Date of Birth |
 	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
-	Then the apprentice account is updated
+	Then the apprentice account is created
 	And the apprentice is matched to the apprenticeship
-	And the apprentice should be shown the Home page
+	And the apprentice should be shown the Home page with a Matched notification
 
 Scenario: The apprentice creates their account and does not match to the apprenticeship
 	Given the apprentice has logged in
@@ -54,7 +57,7 @@ Scenario: The apprentice creates their account and does not match to the apprent
 	When the apprentice creates their account with
 	| First name | Last name  | EmailAddress    | Date of Birth |
 	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
-	Then the apprentice account is updated
+	Then the apprentice account is created
 	And the apprentice should be shown the Home page with a Not Matched notification
 
 Scenario: The apprentice registers a new apprenticeship to their existing account
@@ -65,8 +68,8 @@ Scenario: The apprentice registers a new apprenticeship to their existing accoun
 	When the apprentice creates their account with
 	| First name | Last name  | EmailAddress    | Date of Birth |
 	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
-	Then the apprentice account is updated
-	And the apprentice should be shown the Home page
+	Then the apprentice account is created
+	And the apprentice should be shown the Home page with a Matched notification
 
 Scenario: The apprentice enters invalid identity information
 	Given the apprentice has logged in

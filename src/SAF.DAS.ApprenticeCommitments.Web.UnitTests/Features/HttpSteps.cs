@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
@@ -24,7 +22,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         }
 
         [Then("the response status code should be Ok")]
-        public void ThenTheResponseStatusCodeShouldBeOk() 
+        public void ThenTheResponseStatusCodeShouldBeOk()
             => _context.Web.Response.Should().Be200Ok();
     }
 }

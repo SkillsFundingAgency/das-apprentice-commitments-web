@@ -24,7 +24,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task<Response<Apprentice>> TryGetApprenticeAccount([Path] Guid id);
 
         [Post("/apprentices")]
-        Task UpdateApprenticeAccount([Body] Apprentice apprentice);
+        Task CreateApprenticeAccount([Body] Apprentice apprentice);
+
+        [Patch("/apprentices/{apprenticeId}")]
+        Task UpdateApprenticeship([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
 
         [Post("/apprenticeships")]
         Task ClaimApprenticeship([Body] ApprenticeshipAssociation association);
@@ -85,6 +88,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         {
             var patch = new JsonPatchDocument<Apprenticeship>().Replace(x => x.LastViewed, DateTime.UtcNow);
             await client.UpdateApprenticeship(apprenticeId, apprenticeship, patch);
+        }
+
+        public static async Task UpdateApprenticeAccount(this IOuterApiClient client, Guid apprenticeId, string firstName, string lastName, DateTime dateOfBirth)
+        {
+            var patch = new JsonPatchDocument<Apprentice>()
+                .Replace(x => x.FirstName, firstName)
+                .Replace(x => x.LastName, lastName)
+                .Replace(x => x.DateOfBirth, dateOfBirth);
+            await client.UpdateApprenticeship(apprenticeId, patch);
         }
     }
 }

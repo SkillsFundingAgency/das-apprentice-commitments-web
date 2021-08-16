@@ -179,9 +179,25 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         }
 
         [Then("the apprentice should be shown the Home page")]
-        public async Task WhenTheApprenticeShouldBeShownThePage()
+        public void WhenTheApprenticeShouldBeShownTheHomePage()
         {
-            const string expectedLocation = "https://home/?notification=ApprenticeshipMatched";
+            ThenTheApprenticeShouldBeShownThePage("https://home/");
+        }
+
+        [Then("the apprentice should be shown the Home page with a Matched notification")]
+        public void ThenTheApprenticeShouldBeShownTheHomePageMatched()
+        {
+            ThenTheApprenticeShouldBeShownThePage("https://home/?notification=ApprenticeshipMatched");
+        }
+
+        [Then("the apprentice should be shown the Home page with a Not Matched notification")]
+        public void ThenTheApprenticeShouldBeShownThePageWithNotMatched()
+        {
+            ThenTheApprenticeShouldBeShownThePage("https://home/?notification=ApprenticeshipDidNotMatch");
+        }
+
+        public void ThenTheApprenticeShouldBeShownThePage(string expectedLocation)
+        {
             _context.Web.Response.Should().Be302Redirect().And.HaveHeader("Location");
             _context.Web.Response.Headers.Location.ToString().Should().Be(expectedLocation);
         }
@@ -207,14 +223,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             });
         }
 
-        [Then("the apprentice should be shown the Home page with a Not Matched notification")]
-        public async Task WhenTheApprenticeShouldBeShownThePageWithNotMatched()
-        {
-            const string expectedLocation = "https://home/?notification=ApprenticeshipDidNotMatch";
-            _context.Web.Response.Should().Be302Redirect().And.HaveHeader("Location");
-            _context.Web.Response.Headers.Location.ToString().Should().Be(expectedLocation);
-        }
-
         [When("the apprentice creates their account with")]
         public async Task WhenTheApprenticeCreatesTheirAccountWith(Table table)
         {
@@ -236,6 +244,27 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.FollowLocalRedirects();
         }
 
+        [When("the apprentice updates their account with")]
+        public async Task WhenTheApprenticeUpdatesTheirAccountWith(Table table)
+        {
+            _postedRegistration = table.CreateInstance(() => new AccountModel(null, null));
+            _postedRegistration.DateOfBirth =
+                new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
+
+            var response = await _context.Web.Post("Account",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "FirstName", _postedRegistration.FirstName },
+                    { "LastName", _postedRegistration.LastName },
+                    { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
+                    { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
+                    { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
+                    { "EmailAddress", _postedRegistration?.EmailAddress },
+                }));
+
+            await _context.Web.FollowLocalRedirects();
+        }
+
         [Then("verification is successful")]
         public void ThenTheVerificationIsSuccessful()
         {
@@ -243,6 +272,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         }
 
         [Then("the apprentice account is updated")]
+        public void ThenTheAccountIsUpdated()
+        {
+            var posts = _context.OuterApi.MockServer.FindLogEntries(
+            Request.Create()
+                .WithPath("/apprentices*")
+                .UsingPatch());
+
+            posts.Should().NotBeEmpty();
+
+            //var post = posts.First();
+        }
+
+        [Then("the apprentice account is created")]
         public void ThenTheVerificationIsSuccessfulSent()
         {
             var posts = _context.OuterApi.MockServer.FindLogEntries(
@@ -272,6 +314,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 Request.Create()
                     .UsingPost()
                     .WithPath("/apprentices"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
+        }
+
+        [Given("the API will accept the account update")]
+        public void GivenTheAPIWillAcceptTheAccountUpdate()
+        {
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingPatch()
+                    .WithPath("/apprentices/*"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200));
         }
