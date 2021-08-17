@@ -5,31 +5,31 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
-    public static class VerifiedUser
+    public static class UserAccountCreatedClaim
     {
-        public const string ClaimName = "VerifiedUser";
+        public const string ClaimName = "AccountCreated";
 
-        internal static async Task ConfirmIdentity(HttpContext context)
+        internal static async Task UserAccountCreated(this HttpContext context)
         {
             var authenticated = await context.AuthenticateAsync();
 
             if (authenticated.Succeeded)
             {
-                ((ClaimsIdentity)authenticated.Principal.Identity).AddVerifiedUserClaim();
+                ((ClaimsIdentity)authenticated.Principal.Identity).AddAccountCreatedClaim();
                 await context.SignInAsync(authenticated.Principal, authenticated.Properties);
             }
         }
 
-        internal static ClaimsIdentity CreateVerifiedUserClaim()
+        internal static ClaimsIdentity CreateAccountCreatedClaim()
             => new ClaimsIdentity(new[] { new Claim(ClaimName, "True") });
 
-        public static void AddVerifiedUserClaim(this ClaimsIdentity identity)
+        public static void AddAccountCreatedClaim(this ClaimsIdentity identity)
             => identity.AddClaim(new Claim(ClaimName, "True"));
 
-        internal static bool UserHasConfirmedIdentity(HttpContext httpContext)
+        internal static bool UserHasCreatedAccount(HttpContext httpContext)
             => httpContext.User.HasClaim(ClaimName, "True");
 
-        internal static bool UserHasUnconfirmedIdentity(HttpContext httpContext)
-            => !UserHasConfirmedIdentity(httpContext);
+        internal static bool UserHasNotCreatedAccount(HttpContext httpContext)
+            => !UserHasCreatedAccount(httpContext);
     }
 }

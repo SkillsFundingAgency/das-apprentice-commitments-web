@@ -15,7 +15,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             services.AddTransient<ApprenticeApi>();
             services.AddTransient<AuthenticatedUserClient>();
             services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
-            services.AddScoped<VerifiedUserService>();
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
             return services;
         }

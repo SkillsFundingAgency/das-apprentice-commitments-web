@@ -90,7 +90,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                     Email = user.Email.ToString(),
                 });
 
-                await VerifiedUser.ConfirmIdentity(HttpContext);
+                await HttpContext.UserAccountCreated();
 
                 return RedirectAfterUpdate();
             }

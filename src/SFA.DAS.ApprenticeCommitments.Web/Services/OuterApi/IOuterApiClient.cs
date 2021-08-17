@@ -20,9 +20,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Get("/apprentices/{id}")]
         Task<Apprentice> GetApprentice([Path] Guid id);
 
-        [Get("/apprentices/{id}")]
-        Task<Response<Apprentice>> TryGetApprenticeAccount([Path] Guid id);
-
         [Post("/apprentices")]
         Task CreateApprenticeAccount([Body] Apprentice apprentice);
 

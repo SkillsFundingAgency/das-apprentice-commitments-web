@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
-    public class Apprentice
+    public sealed class Apprentice
     {
         public Guid ApprenticeId { get; set; }
         public string FirstName { get; set; } = null!;

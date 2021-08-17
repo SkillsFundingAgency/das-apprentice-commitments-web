@@ -55,7 +55,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 new Claim("apprentice_id", guid.ToString()),
             };
             var identity = new ClaimsIdentity(claims, "Test1");
-            if (isVerified) identity.AddVerifiedUserClaim();
+            if (isVerified) identity.AddAccountCreatedClaim();
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test2");
 

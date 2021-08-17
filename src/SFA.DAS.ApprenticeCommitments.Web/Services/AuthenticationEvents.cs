@@ -9,16 +9,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
     public class AuthenticationEvents : OpenIdConnectEvents
     {
-        private readonly VerifiedUserService _verifiedUserService;
+        private readonly ApprenticeApi _client;
 
-        public AuthenticationEvents(VerifiedUserService verifiedUserService)
-            => _verifiedUserService = verifiedUserService;
+        public AuthenticationEvents(ApprenticeApi client) => _client = client;
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
             await base.TokenValidated(context);
             ConvertRegistrationIdToApprenticeId(context.Principal);
-            await AddUserVerifiedClaim(context.Principal);
+            await AddAccountCreatedClaim(context.Principal);
         }
 
         public void ConvertRegistrationIdToApprenticeId(ClaimsPrincipal principal)
@@ -32,15 +31,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             principal.AddIdentity(IdentityClaims.CreateApprenticeIdClaim(registrationClaim.Value));
         }
 
-        public async Task AddUserVerifiedClaim(ClaimsPrincipal principal)
+        public async Task AddAccountCreatedClaim(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
 
             if (claim == null) return;
             if (!Guid.TryParse(claim.Value, out var apprenticeId)) return;
-            if (!await _verifiedUserService.IsUserVerified(apprenticeId)) return;
+            if (await UserNeedsToCreateAccount(apprenticeId)) return;
 
-            principal.AddIdentity(VerifiedUser.CreateVerifiedUserClaim());
+            principal.AddIdentity(UserAccountCreatedClaim.CreateAccountCreatedClaim());
         }
+        public async Task<bool> UserNeedsToCreateAccount(Guid apprenticeId)
+            => await _client.TryGetApprentice(apprenticeId) == null;
     }
 }
