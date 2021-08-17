@@ -1,6 +1,8 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/cannotconfirm/{entity?}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.CannotConfirmApprenticeshipModel
 @{
+    ViewData["Title"] = "Can’t confirm your apprenticeship";
+
     var heading = string.Empty;
 
     switch (Model.Entity)
