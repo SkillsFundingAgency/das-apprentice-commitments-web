@@ -40,7 +40,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             if (!Guid.TryParse(claim.Value, out var apprenticeId)) return;
             if (!await _verifiedUserService.IsUserVerified(apprenticeId)) return;
 
-            principal.AddIdentity(IdentityClaims.CreateVerifiedUserClaim(true));
+            principal.AddIdentity(VerifiedUser.CreateVerifiedUserClaim());
         }
     }
 }

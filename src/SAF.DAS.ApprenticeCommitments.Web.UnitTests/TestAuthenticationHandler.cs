@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -53,8 +54,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 new Claim(ClaimTypes.Name, "Testuser@example.com"),
                 new Claim("apprentice_id", guid.ToString()),
             };
-            if (isVerified) claims.Add(new Claim("VerifiedUser", "True"));
             var identity = new ClaimsIdentity(claims, "Test1");
+            if (isVerified) identity.AddVerifiedUserClaim();
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test2");
 

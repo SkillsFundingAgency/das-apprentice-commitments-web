@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                     new Claim(IdentityClaims.ApprenticeId, Guid.NewGuid().ToString()),
                     new Claim(IdentityClaims.Name, "bob@example.com"),
                     new Claim(IdentityClaims.LogonId, Guid.NewGuid().ToString()),
-                    new Claim(IdentityClaims.VerifiedUser, "True"),
+                    new Claim(VerifiedUser.ClaimName, "True"),
                 })
             });
 

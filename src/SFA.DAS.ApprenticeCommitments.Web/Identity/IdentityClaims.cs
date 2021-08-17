@@ -6,7 +6,6 @@ namespace SAF.DAS.ApprenticeCommitments.Web.Identity
     public static class IdentityClaims
     {
         public const string ApprenticeId = "apprentice_id";
-        public const string VerifiedUser = "VerifiedUser";
         public const string LogonId = "sub";
         public const string Name = "name";
         public const string GivenName = "given_name";
@@ -36,8 +35,5 @@ namespace SAF.DAS.ApprenticeCommitments.Web.Identity
 
         public static ClaimsIdentity CreateApprenticeIdClaim(string id)
             => new ClaimsIdentity(new[] { new Claim(ApprenticeId, id) });
-
-        internal static ClaimsIdentity CreateVerifiedUserClaim(bool verified)
-            => new ClaimsIdentity(new[] { new Claim(VerifiedUser, verified.ToString()) });
     }
 }
