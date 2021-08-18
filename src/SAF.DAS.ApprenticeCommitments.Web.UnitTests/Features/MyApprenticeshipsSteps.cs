@@ -1,6 +1,7 @@
 using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -40,9 +41,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .WithPath($"/apprentices/{_userContext.ApprenticeId}/apprenticeships"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new[]
+                    .WithBodyAsJson(new
                     {
-                        new { Id = 1235 },
+                        Apprenticeships = new[]
+                        {
+                            new { Id = 1235 },
+                        }
                     }));
 
             _context.OuterApi.MockServer.Given(
