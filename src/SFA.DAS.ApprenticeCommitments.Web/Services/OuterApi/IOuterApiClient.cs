@@ -24,7 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task CreateApprenticeAccount([Body] Apprentice apprentice);
 
         [Patch("/apprentices/{apprenticeId}")]
-        Task UpdateApprenticeship([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
+        Task UpdateApprentice([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
 
         [Post("/apprenticeships")]
         Task ClaimApprenticeship([Body] ApprenticeshipAssociation association);

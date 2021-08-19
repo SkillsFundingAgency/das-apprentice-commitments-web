@@ -48,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                     .Replace(x => x.LastName, lastName)
                     .Replace(x => x.DateOfBirth, dateOfBirth);
 
-                await _client.UpdateApprenticeship(apprenticeId, patch);
+                await _client.UpdateApprentice(apprenticeId, patch);
             });
         }
 
