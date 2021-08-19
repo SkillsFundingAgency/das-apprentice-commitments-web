@@ -33,11 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
-        [BindProperty(SupportsGet = true)]
-        [HiddenInput]
-        public string? RegistrationCode { get; set; }
-
-        public string FormHandler = "";
+        public string FormHandler { get; private set; } = "";
 
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
@@ -47,9 +43,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             if (apprentice == null)
             {
                 FormHandler = "Register";
-
-                if (RegistrationCode != null)
-                    await _apprentices.RegistrationSeen(RegistrationCode, DateTime.UtcNow);
             }
             else
             {
@@ -103,10 +96,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         private IActionResult RedirectAfterUpdate()
         {
-            if (RegistrationCode == null)
-                return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));
-            else
+            if (Request.Cookies.TryGetValue("RegistrationCode", out string RegistrationCode))
                 return RedirectToAction("Register", "Registration", new { RegistrationCode });
+            else
+                return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));
         }
 
         private void AddErrors(DomainValidationException exception)

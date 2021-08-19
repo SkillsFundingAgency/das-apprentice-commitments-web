@@ -5,6 +5,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -62,15 +63,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             return AuthenticateResult.Success(ticket);
         }
 
+        protected override Task HandleSignInAsync(ClaimsPrincipal principal, AuthenticationProperties properties)
+        {
+            var guid = principal.Claims.First(x => x.Type == "apprentice_id").Value;
+            var userId = Guid.Parse(guid);
+
+            _users[userId] = true;
+
+            return Task.CompletedTask;
+        }
+
+        protected override Task HandleSignOutAsync(AuthenticationProperties properties) => Task.CompletedTask;
+
         private Guid? FindUserFromHeader()
         {
             if (Request.Headers.TryGetValue("Authorization", out var value) && Guid.TryParse(value, out var guid))
                 return guid;
             return default;
         }
-
-        protected override Task HandleSignInAsync(ClaimsPrincipal user, AuthenticationProperties properties) => Task.CompletedTask;
-
-        protected override Task HandleSignOutAsync(AuthenticationProperties properties) => Task.CompletedTask;
     }
 }

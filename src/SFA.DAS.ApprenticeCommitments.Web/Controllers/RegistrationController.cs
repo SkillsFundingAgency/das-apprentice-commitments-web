@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
+using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
@@ -22,6 +23,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         [HttpGet("/register")]
         public async Task<IActionResult> Register([FromQuery] string registrationCode)
         {
+            if (string.IsNullOrEmpty(registrationCode)) return RedirectToHome();
+
+            await _registrations.RegistrationSeen(registrationCode, DateTime.UtcNow);
+            Response.Cookies.Append("RegistrationCode", registrationCode);
+
             if (UserAccountCreatedClaim.UserHasNotCreatedAccount(HttpContext))
             {
                 var routeValuesDictionary = new RouteValueDictionary();
@@ -32,6 +38,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             try
             {
                 await _registrations.MatchApprenticeToApprenticeship(registrationCode, _user.ApprenticeId);
+                Response.Cookies.Delete("RegistrationCode");
                 return RedirectToNotice("ApprenticeshipMatched");
             }
             catch
@@ -40,9 +47,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             }
         }
 
+        private RedirectResult RedirectToHome()
+            => Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));
+
         private RedirectResult RedirectToNotice(string notification)
-        {
-            return Redirect(_urlHelper.Generate(NavigationSection.Home, $"Home?notification={notification}"));
-        }
+            => Redirect(_urlHelper.Generate(NavigationSection.Home, $"Home?notification={notification}"));
     }
 }
