@@ -48,7 +48,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenRedirectTheUserToTheConfirmIDPage()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/Account");
+            _context.Web.Response.Headers.Location.Should().Be("/Register");
         }
     }
 }

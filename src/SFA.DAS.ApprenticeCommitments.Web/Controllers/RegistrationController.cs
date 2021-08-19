@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
@@ -29,11 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             Response.Cookies.Append("RegistrationCode", registrationCode);
 
             if (UserAccountCreatedClaim.UserHasNotCreatedAccount(HttpContext))
-            {
-                var routeValuesDictionary = new RouteValueDictionary();
-                foreach (var a in Request.Query) routeValuesDictionary.Add(a.Key, a.Value);
-                return RedirectToPage("/Account", "register", routeValuesDictionary);
-            }
+                return RedirectToPage("/Account", "register");
 
             try
             {
