@@ -42,7 +42,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
 
         private RedirectResult RedirectToNotice(string notification)
         {
-            return Redirect(_urlHelper.Generate(NavigationSection.Home, $"?notification={notification}"));
+            return Redirect(_urlHelper.Generate(NavigationSection.Home, $"Home?notification={notification}"));
         }
     }
 }

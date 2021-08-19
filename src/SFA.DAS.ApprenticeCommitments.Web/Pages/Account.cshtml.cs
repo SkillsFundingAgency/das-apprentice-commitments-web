@@ -104,7 +104,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         private IActionResult RedirectAfterUpdate()
         {
             if (RegistrationCode == null)
-                return Redirect(_urlHelper.Generate(NavigationSection.Home));
+                return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));
             else
                 return RedirectToAction("Register", "Registration", new { RegistrationCode });
         }

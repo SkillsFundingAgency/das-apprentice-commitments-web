@@ -167,19 +167,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("the apprentice should be shown the Home page")]
         public void WhenTheApprenticeShouldBeShownTheHomePage()
         {
-            ThenTheApprenticeShouldBeShownThePage("https://home/");
+            ThenTheApprenticeShouldBeShownThePage("https://home/Home");
         }
 
         [Then("the apprentice should be shown the Home page with a Matched notification")]
         public void ThenTheApprenticeShouldBeShownTheHomePageMatched()
         {
-            ThenTheApprenticeShouldBeShownThePage("https://home/?notification=ApprenticeshipMatched");
+            ThenTheApprenticeShouldBeShownThePage("https://home/Home?notification=ApprenticeshipMatched");
         }
 
         [Then("the apprentice should be shown the Home page with a Not Matched notification")]
         public void ThenTheApprenticeShouldBeShownThePageWithNotMatched()
         {
-            ThenTheApprenticeShouldBeShownThePage("https://home/?notification=ApprenticeshipDidNotMatch");
+            ThenTheApprenticeShouldBeShownThePage("https://home/Home?notification=ApprenticeshipDidNotMatch");
         }
 
         public void ThenTheApprenticeShouldBeShownThePage(string expectedLocation)
