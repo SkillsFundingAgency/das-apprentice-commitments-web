@@ -48,16 +48,55 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has logged in but not created their account")]
         public void GivenTheApprenticeHasLoggedInButNotCreatedTheirAccount()
         {
-            GivenAVerifiedApprenticeHasLoggedIn();
+            GivenAUserWithoutAccountHasLoggedIn();
             GivenTheApprenticeHasNotCreatedTheirAccount();
         }
 
+        [Given("the apprentice has logged in but not matched their account")]
+        public void GivenTheApprenticeHasLoggedInButNotMatchedTheirAccount()
+        {
+            GivenTheApprenticeHasLoggedIn();
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath("/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Apprenticeships = new object[0] { } }));
+        }
+
         [Given("an unverified logged in user")]
-        public void GivenAVerifiedApprenticeHasLoggedIn()
+        public void GivenAUserWithoutAccountHasLoggedIn()
         {
             TestAuthenticationHandler.AddUnverifiedUser(_userContext.ApprenticeId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
+        }
+
+        [Given("the apprentice has logged in and matched their account")]
+        public void GivenTheApprenticeHasLoggedInAndMatchedTheirAccount()
+        {
+            GivenTheApprenticeHasLoggedIn();
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath("/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Apprenticeships = new[] { new { Id = 1 } } }));
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Id = 1 } ));
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingAnyMethod()
+                    .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
         }
 
         [Given("the apprentice has not created their account")]

@@ -30,6 +30,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             }
         }
 
+        public async Task<ApprenticeshipsWrapper?> TryGetApprenticeships(Guid apprenticeId)
+        {
+            try
+            {
+                return await _client.GetApprenticeships(apprenticeId);
+            }
+            catch (ApiException e) when (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
         internal Task RegistrationSeen(string registrationCode, DateTime seenOn)
             => _client.RegistrationFirstSeenOn(registrationCode,
                    new RegistrationFirstSeenOnRequest { SeenOn = seenOn });

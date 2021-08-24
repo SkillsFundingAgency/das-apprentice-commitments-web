@@ -10,7 +10,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             // Until some actual functionality is implemented just redirect to the Account page
             // Note: the SignOut page redirects to Index.html from the 'Log back in' link
-            return RedirectToPage("Account");
+            return RedirectToPage("/apprenticeships/index");
         }
     }
 }

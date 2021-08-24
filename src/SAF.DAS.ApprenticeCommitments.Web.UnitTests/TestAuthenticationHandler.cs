@@ -25,10 +25,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         {
         }
 
-        public static void AddUser(Guid registrationId)
+        public static void AddUser(Guid apprenticeId)
         {
-            Console.WriteLine($"Adding logged in user {registrationId}");
-            _users.TryAdd(registrationId, true);
+            Console.WriteLine($"Adding logged in user {apprenticeId}");
+            _users.TryAdd(apprenticeId, true);
         }
 
         internal static void AddUnverifiedUser(Guid apprenticeId)
