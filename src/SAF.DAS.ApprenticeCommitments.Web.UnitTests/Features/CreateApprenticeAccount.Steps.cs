@@ -394,11 +394,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the API will reject the identity with the following errors")]
         public void WhenTheApiRejectsTheIdentity(Table table)
         {
-            var errors = table.Rows.Select(row => new ErrorItem
+            var errors = new
             {
-                PropertyName = string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
-                ErrorMessage = row["Error Message"],
-            });
+                Errors = table.Rows.ToDictionary(
+                    row => string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
+                    row => new[] { row["Error Message"] })
+            };
 
             _context.OuterApi.MockServer
                 .Given(Request.Create().WithPath("/apprentices"))

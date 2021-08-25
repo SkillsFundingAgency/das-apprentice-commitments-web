@@ -72,6 +72,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
         {
+            FormHandler = "Register";
+
             try
             {
                 await _apprentices.CreateApprentice(new Apprentice
@@ -108,7 +110,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             ModelState.ClearValidationState(nameof(LastName));
             ModelState.ClearValidationState(nameof(FirstName));
 
-            foreach (var e in exception.Errors)
+            foreach (var e in exception.Errors.Distinct(new ErrorItemComparePropertyName()))
             {
                 var (p, m) = e.PropertyName switch
                 {

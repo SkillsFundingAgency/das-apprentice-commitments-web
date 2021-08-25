@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestEase;
 using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
@@ -81,7 +81,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             }
             catch (ApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
-                var errors = JsonConvert.DeserializeObject<List<ErrorItem>>(ex.Content!);
+                var value = ex.Content!;
+                var errors = JsonConvert.DeserializeObject<ValidationProblemDetails>(value);
                 throw new DomainValidationException(errors);
             }
         }
