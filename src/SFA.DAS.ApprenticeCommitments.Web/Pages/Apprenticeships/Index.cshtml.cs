@@ -29,6 +29,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
+            if (HttpContext.Request.Query.ContainsKey("RegistrationCode"))
+                return RedirectToAction("Register", "Registration", new { RegistrationCode = HttpContext.Request.Query["RegistrationCode"] });
+
             var apprenticeship = await _client.TryGetApprenticeships(user.ApprenticeId);
             if (apprenticeship == null) return RedirectToPage("/Account");
 
