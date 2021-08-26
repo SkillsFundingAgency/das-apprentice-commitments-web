@@ -5,19 +5,19 @@ Feature: CreateApprenticeAccount
 
 Scenario: The apprentice has just created a login account
 	Given the apprentice has logged in but not created their account
-	When accessing the "Register?registrationCode=bob" page 
+	When accessing the "Register/bob" page 
 	Then the apprentice should see the personal details page
 	And the registration code should be "bob"
 
 Scenario: The apprentice loads the registration page
 	Given the apprentice has logged in but not created their account
-	When accessing the "Register?RegistrationCode=bob" page
+	When accessing the "Register/bob" page
 	Then the apprentice should see the personal details page
-	And the apprentice marks the "bob" registration as seen
+	#And the apprentice marks the "bob" registration as seen
 
 Scenario: The registration is not seen if there is no code
 	Given the apprentice has logged in but not created their account
-	When accessing the "Register?RegistrationCode=" page
+	When accessing the "Register" page
 	Then the apprentice should be shown the Home page
 	And the apprentice does not try to mark the registration as seen
 

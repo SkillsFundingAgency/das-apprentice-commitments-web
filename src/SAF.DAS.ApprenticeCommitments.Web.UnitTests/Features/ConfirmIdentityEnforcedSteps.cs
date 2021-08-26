@@ -2,6 +2,7 @@
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -38,6 +39,13 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public async Task GivenTheUserAttemptsToLandOnApprenticeshipIndexPage()
         {
             await _context.Web.Get("Apprenticeships");
+        }
+
+        [When("the user attempts to land on the Register page with a registration code")]
+        public async Task GivenTheUserAttemptsToLandOnApprenticeshipIndexPageWithARegistrationCode()
+        {
+            await _context.Web.Get("register/banana");
+            await _context.Web.FollowLocalRedirects();
         }
 
         [When("the user attempts to land on root index page")]
@@ -88,6 +96,16 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.Should().Be2XXSuccessful();
             _context.ActionResult.LastPageResult.Should().NotBeNull();
             _context.ActionResult.LastPageResult.Model.Should().BeOfType<AccountModel>();
+        }
+
+        [Then("store the registration code in a cookie")]
+        public void ThenStoreTheRegistrationCodeInACookie()
+        {
+            _context.Web.Cookies.GetCookies(_context.Web.BaseAddress).Should().ContainEquivalentOf(new
+            {
+                Name = "RegistrationCode",
+                Value = "banana",
+            });
         }
     }
 }

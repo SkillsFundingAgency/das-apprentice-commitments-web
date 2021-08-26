@@ -16,15 +16,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         public Uri BaseAddress { get; private set; }
         public IHook<IActionResult> ActionResultHook { get; set; }
         public Dictionary<string, string> Config { get; }
+        public CookieContainer Cookies { get; }
 
         private bool isDisposed;
 
-        public ApprenticeCommitmentsWeb(HttpClient client, IHook<IActionResult> actionResultHook, Dictionary<string, string> config)
+        public ApprenticeCommitmentsWeb(HttpClient client, IHook<IActionResult> actionResultHook, Dictionary<string, string> config, CookieContainer cookies)
         {
             Client = client;
             BaseAddress = client.BaseAddress;
             ActionResultHook = actionResultHook;
             Config = config;
+            Cookies = cookies;
         }
 
         public void AuthoriseApprentice(Guid apprenticeId)

@@ -259,7 +259,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has a registration code")]
         public async Task GivenTheApprenticeHasARegistrationCode()
         {
-            await _context.Web.Get($"Register?RegistrationCode={_registrationCode}");
+            await _context.Web.Get($"Register/{_registrationCode}");
             _context.Web.Response.Should().Be302Redirect();//.And.Match;
         }
 

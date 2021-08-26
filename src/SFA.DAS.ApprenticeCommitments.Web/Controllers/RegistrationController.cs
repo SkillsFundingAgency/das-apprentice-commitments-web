@@ -1,11 +1,23 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
-using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
 {
+    [AllowAnonymous]
+    public class RegistrationControllerInitial : Controller
+    {
+        [HttpGet("/register/{registrationCode}")]
+        public IActionResult Register(string registrationCode)
+        {
+            Response.Cookies.Append("RegistrationCode", registrationCode);
+            return RedirectToAction("Register", "Registration");
+        }
+    }
+
+    [Authorize]
     public class RegistrationController : Controller
     {
         private readonly AuthenticatedUser _user;
@@ -20,12 +32,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         }
 
         [HttpGet("/register")]
-        public async Task<IActionResult> Register([FromQuery] string registrationCode)
+        public async Task<IActionResult> Register()
         {
-            if (string.IsNullOrEmpty(registrationCode)) return RedirectToHome();
-
-            await _registrations.RegistrationSeen(registrationCode, DateTime.UtcNow);
-            Response.Cookies.Append("RegistrationCode", registrationCode);
+            if (!Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))
+                return RedirectToHome();
 
             if (UserAccountCreatedClaim.UserHasNotCreatedAccount(HttpContext))
                 return RedirectToPage("/Account", "register");

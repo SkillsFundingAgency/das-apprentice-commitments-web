@@ -19,10 +19,16 @@ Scenario Outline: Redirect to Confirm Your Identity from subpages
 	| ConfirmYourTrainingProvider |
 	| YourApprenticeshipDetails   |
 
+Scenario: Redirect to account from apprenticeships when there is registration code
+	Given the apprentice has logged in but not created their account
+	When the user attempts to land on the Register page with a registration code
+	Then redirect the user to the Account page
+	And store the registration code in a cookie
+
 Scenario: Redirect to home from root when there is no registration code
 	Given the apprentice has logged in but not created their account
 	When the user attempts to land on root index page
-	Then redirect the user to the home page
+	Then redirect the user to the Account page
 
 Scenario: Redirect to NotMatched notification from root index when there is no apprenticeship
 	Given the apprentice has logged in but not matched their account

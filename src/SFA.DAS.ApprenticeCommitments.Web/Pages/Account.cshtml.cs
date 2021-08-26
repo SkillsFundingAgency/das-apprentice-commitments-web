@@ -98,8 +98,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         private IActionResult RedirectAfterUpdate()
         {
-            if (Request.Cookies.TryGetValue("RegistrationCode", out string RegistrationCode))
-                return RedirectToAction("Register", "Registration", new { RegistrationCode });
+            if (Request.Cookies.Keys.Contains("RegistrationCode"))
+                return RedirectToAction("Register", "Registration");
             else
                 return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));
         }
