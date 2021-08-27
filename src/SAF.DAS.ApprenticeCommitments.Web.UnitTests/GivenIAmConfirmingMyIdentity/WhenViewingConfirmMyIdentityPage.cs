@@ -16,7 +16,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
             ClaimsPrincipal user)
         {
             sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
-               .Should().Throw<Exception>().WithMessage("There is no `apprentice_id` claim.");
+               .Should().ThrowAsync<Exception>().WithMessage("There is no `apprentice_id` claim.");
         }
 
         [Test, PageAutoData]
@@ -31,7 +31,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
             }));
 
             sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
-               .Should().Throw<Exception>()
+               .Should().ThrowAsync<Exception>()
                .WithMessage($"`{notAGuid}` in claim `apprentice_id` is not a valid identifier");
         }
     }

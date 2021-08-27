@@ -164,7 +164,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.PageName.Should().Be("Confirm");
             redirect
                 .RouteValues.Should().ContainKey("ApprenticeshipId")
-                .WhichValue.Should().Be(_apprenticeshipId.Hashed);
+                .WhoseValue.Should().Be(_apprenticeshipId.Hashed);
         }
 
         [Then("the user should be redirected to the cannot confirm apprenticeship page")]
@@ -175,7 +175,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.PageName.Should().Be("CannotConfirm");
             redirect
                 .RouteValues.Should().ContainKey("ApprenticeshipId")
-                .WhichValue.Should().Be(_apprenticeshipId.Hashed);
+                .WhoseValue.Should().Be(_apprenticeshipId.Hashed);
         }
 
         [Then("the model should contain an error message")]
