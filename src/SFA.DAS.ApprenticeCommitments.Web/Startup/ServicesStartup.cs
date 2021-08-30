@@ -3,6 +3,7 @@ using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;
+using SFA.DAS.ApprenticePortal.SharedUi.Services;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
@@ -16,6 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             services.AddTransient<AuthenticatedUserClient>();
             services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
+            services.AddTransient<IMenuVisibility, MenuVisibility>();
             return services;
         }
 
