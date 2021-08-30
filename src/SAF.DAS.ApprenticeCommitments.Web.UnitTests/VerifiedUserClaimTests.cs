@@ -19,9 +19,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         [Test, MoqAutoData]
         public async Task Users_without_an_apprentice_id_do_not_have_AccountCreated_claim(AuthenticationEvents sut, ClaimsPrincipal identity)
         {
-            await sut.AddAccountCreatedClaim(identity);
+            await sut.AddClaims(identity);
 
             identity.Claims.Should().NotContain(c => c.Type.Equals("AccountCreated", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("GivenName", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("FamilyName", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test, MoqAutoData]
@@ -29,9 +31,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         {
             identity.AddIdentity(ApprenticeIdClaimsIdentity(notAGuid));
 
-            await sut.AddAccountCreatedClaim(identity);
+            await sut.AddClaims(identity);
 
             identity.Claims.Should().NotContain(c => c.Type.Equals("AccountCreated", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("GivenName", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("FamilyName", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test, MoqAutoData]
@@ -42,25 +46,37 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 .Setup(x => x.GetApprentice(It.IsAny<Guid>()))
                 .Throws(NotFoundApiException);
 
-            await sut.AddAccountCreatedClaim(identity);
+            await sut.AddClaims(identity);
 
             identity.Claims.Should().NotContain(c => c.Type.Equals("AccountCreated", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("GivenName", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("FamilyName", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test, MoqAutoData]
-        public async Task Users_that_have_completed_verification_have_AccountCreated_claim_which_is_true([Frozen] IOuterApiClient api, AuthenticationEvents sut, Guid apprenticeId, ClaimsPrincipal identity)
+        public async Task Users_that_have_created_an_account_have_AccountCreated_claim_which_is_true([Frozen] IOuterApiClient api, AuthenticationEvents sut, Guid apprenticeId, ClaimsPrincipal identity, Apprentice apprentice)
         {
             identity.AddIdentity(ApprenticeIdClaimsIdentity(apprenticeId));
             Mock.Get(api)
                 .Setup(x => x.GetApprentice(apprenticeId))
-                .ReturnsAsync(new Apprentice());
+                .ReturnsAsync(apprentice);
 
-            await sut.AddAccountCreatedClaim(identity);
+            await sut.AddClaims(identity);
 
             identity.Claims.Should().ContainEquivalentOf(new
             {
                 Type = "AccountCreated",
-                Value = "True"
+                Value = "True",
+            });
+            identity.Claims.Should().ContainEquivalentOf(new
+            {
+                Type = "given_name",
+                Value = apprentice.FirstName,
+            });
+            identity.Claims.Should().ContainEquivalentOf(new
+            {
+                Type = "family_name",
+                Value = apprentice.LastName,
             });
         }
 

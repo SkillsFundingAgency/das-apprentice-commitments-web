@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using SAF.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -17,7 +18,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         {
             await base.TokenValidated(context);
             ConvertRegistrationIdToApprenticeId(context.Principal);
-            await AddAccountCreatedClaim(context.Principal);
+            await AddClaims(context.Principal);
         }
 
         public void ConvertRegistrationIdToApprenticeId(ClaimsPrincipal principal)
@@ -31,17 +32,33 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             principal.AddIdentity(IdentityClaims.CreateApprenticeIdClaim(registrationClaim.Value));
         }
 
-        public async Task AddAccountCreatedClaim(ClaimsPrincipal principal)
+        public async Task AddClaims(ClaimsPrincipal principal)
+        {
+            var apprentice = await GetApprentice(principal);
+            if (apprentice == null) return;
+
+            AddAccountCreatedClaim(principal);
+            AddApprenticeNameClaims(apprentice, principal);
+        }
+
+        private async Task<Apprentice?> GetApprentice(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
 
-            if (claim == null) return;
-            if (!Guid.TryParse(claim.Value, out var apprenticeId)) return;
-            if (await UserNeedsToCreateAccount(apprenticeId)) return;
+            if (claim == null) return null;
+            if (!Guid.TryParse(claim.Value, out var apprenticeId)) return null;
 
-            principal.AddIdentity(UserAccountCreatedClaim.CreateAccountCreatedClaim());
+            return await _client.TryGetApprentice(apprenticeId);
         }
-        public async Task<bool> UserNeedsToCreateAccount(Guid apprenticeId)
-            => await _client.TryGetApprentice(apprenticeId) == null;
+
+        private void AddAccountCreatedClaim(ClaimsPrincipal principal)
+            => principal.AddIdentity(UserAccountCreatedClaim.CreateAccountCreatedClaim());
+
+        private void AddApprenticeNameClaims(Apprentice apprentice, ClaimsPrincipal principal)
+            => principal.AddIdentity(new ClaimsIdentity(new[]
+            {
+                new Claim(IdentityClaims.GivenName, apprentice.FirstName),
+                new Claim(IdentityClaims.FamilyName, apprentice.LastName),
+            }));
     }
 }
