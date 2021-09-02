@@ -44,11 +44,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         private async Task<Apprentice?> GetApprentice(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
-
-            if (claim == null) return null;
-            if (!Guid.TryParse(claim.Value, out var apprenticeId)) return null;
-
-            return await _client.TryGetApprentice(apprenticeId);
+            
+            if (Guid.TryParse(claim?.Value, out var apprenticeId))
+                return await _client.TryGetApprentice(apprenticeId);
+            else
+                return null;
         }
 
         private void AddAccountCreatedClaim(ClaimsPrincipal principal)
