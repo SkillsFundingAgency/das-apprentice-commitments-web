@@ -34,11 +34,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         [HttpGet("/register")]
         public async Task<IActionResult> Register()
         {
-            if (!Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))
-                return RedirectToHome();
-
             if (UserAccountCreatedClaim.UserHasNotCreatedAccount(HttpContext))
                 return RedirectToPage("/Account", "register");
+
+            if (!Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))
+                return RedirectToHome();
 
             try
             {

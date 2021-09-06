@@ -18,7 +18,7 @@ Scenario: The apprentice loads the registration page
 Scenario: The registration is not seen if there is no code
 	Given the apprentice has logged in but not created their account
 	When accessing the "Register" page
-	Then the apprentice should be shown the Home page
+	Then the apprentice should see the personal details page
 	And the apprentice does not try to mark the registration as seen
 
 Scenario: The apprentice enters their personal details for the first time
