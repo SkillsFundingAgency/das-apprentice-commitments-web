@@ -1,4 +1,4 @@
-﻿@page "/account/{mode=default}"
+﻿@page "/account"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.AccountModel
 @{
     ViewData["Title"] = "Enter personal details";
@@ -16,18 +16,18 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-            @if (Model.Mode == "Edit")
-            {
-                <h1 class="govuk-heading-xl">Edit My apprenticeship account</h1>
-                <p>
-                    Check your name and date of birth are correct so that we can use them to find your apprenticeship details.
-                </p>
-            }
-            else
+            @if (Model.FormHandler == "Register")
             {
                 <h1 class="govuk-heading-xl">Create My apprenticeship account</h1>
                 <p>
                     Enter your name and date of birth to complete the set-up of your account. You can then confirm your apprenticeship details.
+                </p>
+            }
+            else
+            {
+                <h1 class="govuk-heading-xl">Edit My apprenticeship account</h1>
+                <p>
+                    Check your name and date of birth are correct so that we can use them to find your apprenticeship details.
                 </p>
             }
 
