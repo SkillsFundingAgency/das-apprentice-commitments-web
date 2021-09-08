@@ -1,7 +1,7 @@
 ﻿@page "/account"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.AccountModel
 @{
-    ViewData["Title"] = "Enter personal details";
+    ViewData["Title"] = Model.FormHandler == "Register" ? "Create My apprenticeship account" : "Edit My apprenticeship account"; ;
 
     bool IsInvalid(string propertyName) =>
         ViewData.ModelState[propertyName]?.ValidationState ==
