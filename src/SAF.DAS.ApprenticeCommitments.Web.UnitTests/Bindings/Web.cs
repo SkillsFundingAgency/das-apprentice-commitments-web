@@ -69,6 +69,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
 
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook, Config, Cookies);
             _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();
+            TestAuthenticationHandler.Authentications.Clear();
         }
 
         [AfterScenario()]

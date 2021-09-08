@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
 using SAF.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
@@ -37,10 +39,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             var apprentice = await GetApprentice(principal);
             if (apprentice == null) return;
 
-            AddAccountCreatedClaim(principal);
-            AddApprenticeNameClaims(apprentice, principal);
+            AddClaims(principal, apprentice);
         }
-
         private async Task<Apprentice?> GetApprentice(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
@@ -51,14 +51,31 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 return null;
         }
 
-        private void AddAccountCreatedClaim(ClaimsPrincipal principal)
+        private static void AddClaims(ClaimsPrincipal principal, Apprentice apprentice)
+        {
+            AddAccountCreatedClaim(principal);
+            AddApprenticeNameClaims(apprentice, principal);
+        }
+
+        private static void AddAccountCreatedClaim(ClaimsPrincipal principal)
             => principal.AddIdentity(UserAccountCreatedClaim.CreateAccountCreatedClaim());
 
-        private void AddApprenticeNameClaims(Apprentice apprentice, ClaimsPrincipal principal)
+        private static void AddApprenticeNameClaims(Apprentice apprentice, ClaimsPrincipal principal)
             => principal.AddIdentity(new ClaimsIdentity(new[]
             {
                 new Claim(IdentityClaims.GivenName, apprentice.FirstName),
                 new Claim(IdentityClaims.FamilyName, apprentice.LastName),
             }));
+
+        public static async Task UserAccountCreated(HttpContext context, Apprentice apprentice)
+        {
+            var authenticated = await context.AuthenticateAsync();
+
+            if (authenticated.Succeeded)
+            {
+                AddClaims(authenticated.Principal, apprentice);
+                await context.SignInAsync(authenticated.Principal, authenticated.Properties);
+            }
+        }
     }
 }

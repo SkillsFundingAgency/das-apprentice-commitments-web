@@ -38,6 +38,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
+            ViewData.SetWelcomeText("Welcome");
             var apprentice = await _apprentices.TryGetApprentice(user.ApprenticeId);
 
             if (apprentice == null)
@@ -46,7 +47,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             }
             else
             {
-                ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
                 FirstName = apprentice.FirstName;
                 LastName = apprentice.LastName;
                 DateOfBirth = new DateModel(apprentice.DateOfBirth);
@@ -76,16 +76,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
             try
             {
-                await _apprentices.CreateApprentice(new Apprentice
+                var apprentice = new Apprentice
                 {
                     ApprenticeId = user.ApprenticeId,
                     FirstName = FirstName,
                     LastName = LastName,
                     DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
                     Email = user.Email.ToString(),
-                });
+                };
+                await _apprentices.CreateApprentice(apprentice);
 
-                await HttpContext.UserAccountCreated();
+                await AuthenticationEvents.UserAccountCreated(HttpContext, apprentice);
 
                 return RedirectAfterUpdate();
             }

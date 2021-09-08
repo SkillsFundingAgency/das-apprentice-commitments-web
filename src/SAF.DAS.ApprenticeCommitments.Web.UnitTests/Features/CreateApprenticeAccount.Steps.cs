@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Newtonsoft.Json;
-using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
@@ -90,7 +89,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .WithPath("/apprentices/*/apprenticeships/*"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new { Id = 1 } ));
+                    .WithBodyAsJson(new { Id = 1 }));
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingAnyMethod()
@@ -449,6 +448,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             //_context.ActionResult.LastPageResult
             //    .Model.As<AccountModel>()
             //    .RegistrationCode.Should().Be(code);
+        }
+
+        [Then(@"the authentication includes the apprentice's names: ""(.*)"" and ""(.*)""")]
+        public void TheAuthenticationIncludesTheApprenticesNames(string firstName, string lastName)
+        {
+            TestAuthenticationHandler.Authentications.Should().ContainSingle();
+            var claims = TestAuthenticationHandler.Authentications[0].Claims;
+            claims.Should().ContainEquivalentOf(new
+            {
+                Type = "given_name",
+                Value = firstName,
+            });
+            claims.Should().ContainEquivalentOf(new
+            {
+                Type = "family_name",
+                Value = lastName,
+            });
         }
     }
 }
