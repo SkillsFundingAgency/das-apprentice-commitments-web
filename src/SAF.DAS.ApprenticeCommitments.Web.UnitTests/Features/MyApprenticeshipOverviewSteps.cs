@@ -113,7 +113,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             JArray patch = (JArray)request.RequestMessage.BodyAsJson;
             patch[0]["path"].ToString().Should().BeEquivalentTo("/LastViewed");
             patch[0]["op"].ToString().Should().BeEquivalentTo("replace");
-            patch[0]["value"].Value<DateTime>().Should().BeCloseTo(DateTime.Now, precision: 1000);
+            patch[0]["value"].Value<DateTime>().Should().BeCloseTo(DateTime.Now, precision: TimeSpan.FromSeconds(1));
         }
 
         [Given("the apprentice has not confirmed every aspect of the apprenciceship")]

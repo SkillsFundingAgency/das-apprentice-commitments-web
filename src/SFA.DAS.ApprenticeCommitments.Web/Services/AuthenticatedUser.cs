@@ -1,5 +1,6 @@
 ﻿using SAF.DAS.ApprenticeCommitments.Web.Identity;
 using System;
+using System.Net.Mail;
 using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
@@ -15,6 +16,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 throw new InvalidOperationException($"`{claim.Value}` in claim `{IdentityClaims.ApprenticeId}` is not a valid identifier");
 
             ApprenticeId = apprenticeId;
+
+            var emailClaim = user.EmailAddressClaim()
+                ?? throw new InvalidOperationException($"There is no `{IdentityClaims.Name}` claim for the email.");
+
+            Email = new MailAddress(emailClaim.Value ?? "");
         }
 
         public static AuthenticatedUser FakeUser => new AuthenticatedUser(FakeUserClaim);
@@ -25,11 +31,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 new ClaimsIdentity(new []
                 {
                     new Claim(IdentityClaims.ApprenticeId, Guid.NewGuid().ToString()),
+                    new Claim(IdentityClaims.Name, "bob@example.com"),
                     new Claim(IdentityClaims.LogonId, Guid.NewGuid().ToString()),
-                    new Claim(IdentityClaims.VerifiedUser, "True"),
+                    new Claim(UserAccountCreatedClaim.ClaimName, "True"),
                 })
             });
 
         public Guid ApprenticeId { get; }
+
+        public MailAddress Email { get; }
     }
 }

@@ -102,7 +102,7 @@
 
             <form asp-hide="@Model.RolesAndResponsibilitiesConfirmed.HasValue" id="employer-form-hide" method="post">
                 <input type="hidden" asp-for="RolesAndResponsibilitiesConfirmed" value="true" />
-                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
+                <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
                 <button class="govuk-button" data-module="govuk-button" id="roles-responsibilities-confirm">Continue</button>
             </form>
 

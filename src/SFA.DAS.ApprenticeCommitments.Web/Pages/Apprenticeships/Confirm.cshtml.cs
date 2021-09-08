@@ -70,7 +70,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             Status = ConfirmationStatus(apprenticeship);
             DaysRemaining = CalculateDaysRemaining(apprenticeship);
 
-            CommitmentStatementId = apprenticeship.CommitmentStatementId;
+            CommitmentStatementId = apprenticeship.RevisionId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;

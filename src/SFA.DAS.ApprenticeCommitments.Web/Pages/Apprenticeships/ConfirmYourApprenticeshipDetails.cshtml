@@ -76,12 +76,12 @@
                     Are your apprenticeship details correct?
                 </yes-no-header>
 
-                <span asp-validation-for="ConfirmedApprenticeshipDetails" class="govuk-error-message"></span>
+                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
 
-                <yes-no-inputs asp-for="ConfirmedApprenticeshipDetails"></yes-no-inputs>
+                <yes-no-inputs asp-for="Confirmed"></yes-no-inputs>
 
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-                <input type="hidden" asp-for="CommitmentStatementId" value="@Model.CommitmentStatementId" />
+                <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
                 <input type="hidden" name="CourseName" value="@Model.CourseName" />
                 <input type="hidden" name="CourseLevel" value="@Model.CourseLevel" />
                 <input type="hidden" name="CourseOption" value="@Model.CourseOption" />

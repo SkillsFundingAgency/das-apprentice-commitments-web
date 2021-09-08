@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
+using SFA.DAS.ApprenticeCommitments.Web.Pages;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -38,6 +41,20 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Get("Apprenticeships");
         }
 
+        [When("the user attempts to land on the Register page with a registration code")]
+        public async Task GivenTheUserAttemptsToLandOnApprenticeshipIndexPageWithARegistrationCode()
+        {
+            await _context.Web.Get("register/banana");
+            await _context.Web.FollowLocalRedirects();
+        }
+
+        [When("the user attempts to land on root index page")]
+        public async Task GivenTheUserAttemptsToLandOnRootIndexPage()
+        {
+            await _context.Web.Get("/");
+            await _context.Web.FollowLocalRedirects();
+        }
+
         [When("the user attempts to land on personalised page (.*)")]
         public async Task GivenTheUserAttemptsToLandOnAnyPersonalizedApprenticeshipPortalPage(string page)
         {
@@ -48,7 +65,47 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenRedirectTheUserToTheConfirmIDPage()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/ConfirmYourPersonalDetails");
+            _context.Web.Response.Headers.Location.Should().Be("/Register");
+        }
+
+        [Then("redirect the user to the home page")]
+        public void ThenRedirectTheUserToTheHomePage()
+        {
+            _context.Web.Response.Should().Be302Redirect()
+                .And.HaveHeader("Location").And.Match("https://home/Home");
+        }
+
+        [Then("redirect the user to the home page with a NotMatched banner")]
+        public void ThenRedirectTheUserToTheHomePageWithANotMatchedBanner()
+        {
+            _context.Web.Response.Should().Be302Redirect()
+                .And.HaveHeader("Location").And.Match("https://home/Home?notification=ApprenticeshipDidNotMatch");
+        }
+
+        [Then("redirect the user to the overview page")]
+        public void ThenRedirectTheUserToTheOverviewPage()
+        {
+            _context.Web.Response.Should().Be2XXSuccessful();
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmApprenticeshipModel>();
+        }
+
+        [Then("redirect the user to the Account page")]
+        public void ThenRedirectTheUserToTheAccountPage()
+        {
+            _context.Web.Response.Should().Be2XXSuccessful();
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<AccountModel>();
+        }
+
+        [Then("store the registration code in a cookie")]
+        public void ThenStoreTheRegistrationCodeInACookie()
+        {
+            _context.Web.Cookies.GetCookies(_context.Web.BaseAddress).Should().ContainEquivalentOf(new
+            {
+                Name = "RegistrationCode",
+                Value = "banana",
+            });
         }
     }
 }

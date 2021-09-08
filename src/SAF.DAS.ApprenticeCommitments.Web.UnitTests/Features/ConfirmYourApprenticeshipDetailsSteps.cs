@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private readonly HashedId _apprenticeshipId;
-        private long _commitmentStatementId;
+        private long _revisionId;
         private readonly string _courseName;
         private readonly int _courseLevel;
         private readonly string _courseOption;
@@ -37,7 +37,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context = context;
             _userContext = userContext;
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
-            _commitmentStatementId = 6616;
+            _revisionId = 6616;
 
             _courseName = "My Test Course Name";
             _courseLevel = 3;
@@ -82,7 +82,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
-                            CommitmentStatementId = _commitmentStatementId,
+                            CommitmentStatementId = _revisionId,
                             CourseName = _courseName,
                             CourseLevel = _courseLevel,
                             CourseOption = _courseOption,
@@ -123,14 +123,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/yourapprenticeshipdetails",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { nameof(YourApprenticeshipDetails.CommitmentStatementId), _commitmentStatementId.ToString() },
+                    { nameof(YourApprenticeshipDetails.RevisionId), _revisionId.ToString() },
                     { nameof(YourApprenticeshipDetails.CourseName), _courseName },
                     { nameof(YourApprenticeshipDetails.CourseLevel) , _courseLevel.ToString() },
                     { nameof(YourApprenticeshipDetails.CourseOption) , _courseOption },
                     { nameof(YourApprenticeshipDetails.CourseDuration) , _courseDuration.ToString() },
                     { nameof(YourApprenticeshipDetails.PlannedStartDate) , _plannedStartDate.ToString("o")},
                     { nameof(YourApprenticeshipDetails.PlannedEndDate) , _plannedEndDate.ToString("o") },
-                    { nameof(YourApprenticeshipDetails.ConfirmedApprenticeshipDetails), _confirmedApprenticeshipDetails.ToString() }
+                    { nameof(YourApprenticeshipDetails.Confirmed), _confirmedApprenticeshipDetails.ToString() }
                 }));
         }
 
@@ -211,15 +211,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_commitmentStatementId}/apprenticeshipdetailsconfirmation")
-                    .UsingPost());
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_revisionId}/confirmations")
+                    .UsingPatch());
 
             updates.Should().HaveCount(1);
 
             var post = updates.First();
 
             JsonConvert
-                .DeserializeObject<ApprenticeshipDetailsConfirmationRequest>(post.RequestMessage.Body)
+                .DeserializeObject<ApprenticeshipConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { ApprenticeshipDetailsCorrect = confirm });
         }
 
@@ -237,7 +237,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<YourApprenticeshipDetails>();
             model.Should().NotBeNull();
-            model.ModelState["ConfirmedApprenticeshipDetails"].Errors.Count.Should().Be(1);
+            model.ModelState["Confirmed"].Errors.Count.Should().Be(1);
         }
     }
 }

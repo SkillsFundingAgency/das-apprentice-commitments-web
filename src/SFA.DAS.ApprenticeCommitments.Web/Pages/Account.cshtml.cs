@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
     [HideNavigationBar]
-    public class ConfirmYourPersonalDetailsModel : PageModel
+    public class AccountModel : PageModel
     {
-        private readonly RegistrationsService _registrations;
+        private readonly ApprenticeApi _apprentices;
+        private readonly NavigationUrlHelper _urlHelper;
 
-        public ConfirmYourPersonalDetailsModel(RegistrationsService api)
+        public AccountModel(ApprenticeApi api, NavigationUrlHelper urlHelper)
         {
-            _registrations = api;
+            _apprentices = api;
+            _urlHelper = urlHelper;
         }
 
-        [BindProperty]
-        [HiddenInput]
         public string EmailAddress { get; set; } = null!;
 
         [BindProperty]
@@ -33,24 +33,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
+        public string FormHandler { get; private set; } = "";
+
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
         {
-            ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
+            var apprentice = await _apprentices.TryGetApprentice(user.ApprenticeId);
 
-            var registration = await _registrations.GetRegistration(user);
-
-            if (registration.HasCompletedVerification)
+            if (apprentice == null)
             {
-                return RedirectToPage("/apprenticeships/index");
+                FormHandler = "Register";
             }
-
-            if (!registration.HasViewedVerification)
+            else
             {
-                await _registrations.FirstSeenOn(user.ApprenticeId, DateTime.UtcNow);
+                ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = "Welcome";
+                FirstName = apprentice.FirstName;
+                LastName = apprentice.LastName;
+                DateOfBirth = new DateModel(apprentice.DateOfBirth);
             }
-
-            EmailAddress = registration.Email;
 
             return Page();
         }
@@ -59,19 +59,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             try
             {
-                await _registrations.VerifyRegistration(new VerifyRegistrationRequest
-                {
-                    ApprenticeId = user.ApprenticeId,
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
-                    UserIdentityId = Guid.NewGuid(),
-                    Email = EmailAddress,
-                });
+                await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
 
-                await VerifiedUser.ConfirmIdentity(HttpContext);
-
-                return RedirectToPage("/apprenticeships/index");
+                return RedirectAfterUpdate();
             }
             catch (DomainValidationException exception)
             {
@@ -80,13 +70,47 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             }
         }
 
+        public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
+        {
+            FormHandler = "Register";
+
+            try
+            {
+                await _apprentices.CreateApprentice(new Apprentice
+                {
+                    ApprenticeId = user.ApprenticeId,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    DateOfBirth = DateOfBirth.IsValid ? DateOfBirth.Date : default,
+                    Email = user.Email.ToString(),
+                });
+
+                await HttpContext.UserAccountCreated();
+
+                return RedirectAfterUpdate();
+            }
+            catch (DomainValidationException exception)
+            {
+                AddErrors(exception);
+                return Page();
+            }
+        }
+
+        private IActionResult RedirectAfterUpdate()
+        {
+            if (Request.Cookies.Keys.Contains("RegistrationCode"))
+                return RedirectToAction("Register", "Registration");
+            else
+                return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));
+        }
+
         private void AddErrors(DomainValidationException exception)
         {
             ModelState.ClearValidationState(nameof(DateOfBirth));
             ModelState.ClearValidationState(nameof(LastName));
             ModelState.ClearValidationState(nameof(FirstName));
 
-            foreach (var e in exception.Errors)
+            foreach (var e in exception.Errors.Distinct(new ErrorItemComparePropertyName()))
             {
                 var (p, m) = e.PropertyName switch
                 {

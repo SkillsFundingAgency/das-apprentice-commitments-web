@@ -1,32 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
     [RequiresIdentityConfirmed]
     [HideNavigationBar]
-    public class YourApprenticeshipDetails : PageModel, IHasBackLink
+    public class YourApprenticeshipDetails : ApprenticeshipConfirmationPageModel
     {
-        private readonly IOuterApiClient _client;
-        private readonly AuthenticatedUser _authenticatedUser;
-
-        [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; }
-
-        [BindProperty]
-        public long CommitmentStatementId { get; set; }
-
-        [BindProperty]
-        public bool? ConfirmedApprenticeshipDetails { get; set; }
-
-        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
-
         [BindProperty]
         public string CourseName { get; set; } = null!;
 
@@ -45,60 +29,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         [BindProperty]
         public DateTime PlannedEndDate { get; set; }
 
-        public bool ShowForm => ConfirmedApprenticeshipDetails != true || ChangingAnswer;
-
-        public bool ChangingAnswer { get; private set; }
-
-        public bool CanChangeAnswer { get; private set; }
-
-        public YourApprenticeshipDetails(IOuterApiClient client, AuthenticatedUser authenticatedUser)
+        public YourApprenticeshipDetails(AuthenticatedUserClient client) : base("ApprenticeshipDetails", client)
         {
-            _client = client;
-            _authenticatedUser = authenticatedUser;
         }
 
-        public async Task OnGet()
+        public override void LoadApprenticeship(Apprenticeship apprenticeship)
         {
-            var apprenticeship = await _client
-                .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
-
-            CommitmentStatementId = apprenticeship.CommitmentStatementId;
             CourseName = apprenticeship.CourseName;
             CourseLevel = apprenticeship.CourseLevel;
             CourseOption = apprenticeship.CourseOption;
             CourseDuration = apprenticeship.CourseDuration;
             PlannedStartDate = apprenticeship.PlannedStartDate;
             PlannedEndDate = apprenticeship.PlannedEndDate;
-
-            ConfirmedApprenticeshipDetails = apprenticeship.ApprenticeshipDetailsCorrect;
-            CanChangeAnswer = ConfirmedApprenticeshipDetails == true && !apprenticeship.IsCompleted();
+            Confirmed = apprenticeship.ApprenticeshipDetailsCorrect;
         }
 
-        public async Task OnGetChangeAnswer()
-        {
-            await OnGet();
-            if (CanChangeAnswer)
-            {
-                ChangingAnswer = true;
-                CanChangeAnswer = false;
-            }
-        }
-
-        public async Task<IActionResult> OnPost()
-        {
-            if (ConfirmedApprenticeshipDetails == null)
-            {
-                ModelState.AddModelError(nameof(ConfirmedApprenticeshipDetails), "Select an answer");
-                return new PageResult();
-            }
-
-            await _client.ConfirmApprenticeshipDetails(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
-                new ApprenticeshipDetailsConfirmationRequest(ConfirmedApprenticeshipDetails.Value));
-
-            var nextPage = ConfirmedApprenticeshipDetails.Value ? "Confirm" : "CannotConfirm";
-
-            return new RedirectToPageResult(nextPage, null, new { ApprenticeshipId = ApprenticeshipId, Entity = "ApprenticeshipDetails" });
-        }
+        public override ApprenticeshipConfirmationRequest CreateUpdate(bool confirmed)
+            => ApprenticeshipConfirmationRequest.ConfirmApprenticeshipDetails(confirmed);
     }
 }

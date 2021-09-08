@@ -107,9 +107,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     .WithPath($"/apprentices/*/apprenticeships"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new[]
+                    .WithBodyAsJson(new
                     {
-                        new { Id = 1235, EmployerName = "My Mock company" },
+                        Apprenticeships = new[]
+                        {
+                            new { Id = 1235, EmployerName = "My Mock company" },
+                        }
                     }));
 
             _server.Given(

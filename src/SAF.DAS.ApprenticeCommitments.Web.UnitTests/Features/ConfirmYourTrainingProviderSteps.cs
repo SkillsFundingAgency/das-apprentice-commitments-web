@@ -20,13 +20,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     [Scope(Feature = "ConfirmYourTrainingProvider")]
     public class ConfirmYourTrainingProviderSteps : StepsBase
     {
-        private const string ModelCommitmentStatementIdKey = nameof(ConfirmYourTrainingModel.CommitmentStatementId);
+        private const string ModelCommitmentStatementIdKey = nameof(ConfirmYourTrainingModel.RevisionId);
         private const string ModelNameKey = nameof(ConfirmYourTrainingModel.TrainingProviderName);
-        private const string ModelConfirmedKey = nameof(ConfirmYourTrainingModel.ConfirmedTrainingProvider);
+        private const string ModelConfirmedKey = nameof(ConfirmYourTrainingModel.Confirmed);
 
         private readonly TestContext _context;
         private HashedId _apprenticeshipId;
-        private long _commitmentStatementId;
+        private long _revisionId;
         private string _trainingProviderName;
         private bool? _trainingProviderNameConfirmed;
 
@@ -34,7 +34,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context = context;
             _apprenticeshipId = HashedId.Create(1397, _context.Hashing);
-            _commitmentStatementId = 6614;
+            _revisionId = 6614;
             _trainingProviderName = "My Test Company";
 
             _context.OuterApi.MockServer.Given(
@@ -73,7 +73,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
-                            CommitmentStatementId = _commitmentStatementId,
+                            CommitmentStatementId = _revisionId,
                             TrainingProviderName = _trainingProviderName,
                             trainingProviderCorrect = confirmed,
                         }));
@@ -110,7 +110,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyourtrainingprovider",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { ModelCommitmentStatementIdKey, _commitmentStatementId.ToString() },
+                    { ModelCommitmentStatementIdKey, _revisionId.ToString() },
                     { ModelNameKey, _trainingProviderName },
                     { ModelConfirmedKey, _trainingProviderNameConfirmed.ToString() }
                 }));
@@ -127,15 +127,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_commitmentStatementId}/trainingproviderconfirmation")
-                    .UsingPost());
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_revisionId}/confirmations")
+                    .UsingPatch());
 
             updates.Should().HaveCount(1);
 
             var post = updates.First();
 
             JsonConvert
-                .DeserializeObject<TrainingProviderConfirmationRequest>(post.RequestMessage.Body)
+                .DeserializeObject<ApprenticeshipConfirmationRequest>(post.RequestMessage.Body)
                 .Should().BeEquivalentTo(new { TrainingProviderCorrect = true });
         }
 
@@ -164,7 +164,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.PageName.Should().Be("Confirm");
             redirect
                 .RouteValues.Should().ContainKey("ApprenticeshipId")
-                .WhichValue.Should().Be(_apprenticeshipId.Hashed);
+                .WhoseValue.Should().Be(_apprenticeshipId.Hashed);
         }
 
         [Then("the user should be redirected to the cannot confirm apprenticeship page")]
@@ -175,7 +175,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.PageName.Should().Be("CannotConfirm");
             redirect
                 .RouteValues.Should().ContainKey("ApprenticeshipId")
-                .WhichValue.Should().Be(_apprenticeshipId.Hashed);
+                .WhoseValue.Should().Be(_apprenticeshipId.Hashed);
         }
 
         [Then("the model should contain an error message")]

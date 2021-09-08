@@ -1,6 +1,7 @@
 using AutoFixture;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Mvc.Testing.Handlers;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
@@ -8,6 +9,7 @@ using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using TechTalk.SpecFlow;
 
@@ -18,6 +20,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
     {
         private Fixture _fixture = new Fixture();
         public static HttpClient Client { get; set; }
+        public CookieContainer Cookies { get; set; }
         public static Dictionary<string, string> Config { get; private set; }
         public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
 
@@ -43,7 +46,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"EnvironmentName", "ACCEPTANCE_TESTS"},
                     {"Authentication:MetadataAddress", _context.IdentityServiceUrl},
                     {"ApprenticeCommitmentsApi:ApiBaseUrl", _context.OuterApi?.BaseAddress ?? "https://api/"},
-                    {"ApplicationUrls:ApprenticeHomeUrl", _context.OuterApi?.BaseAddress ?? "https://home/"},
+                    {"ApplicationUrls:ApprenticeHomeUrl", "https://home/"},
                     {"ApplicationUrls:ApprenticeCommitmentsUrl", _context.OuterApi?.BaseAddress ?? "https://confirm/"},
                     {"ApplicationUrls:ApprenticeLoginUrl", _context.OuterApi?.BaseAddress ?? "https://login/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
@@ -56,12 +59,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
 
                 ActionResultHook = new Hook<IActionResult>();
                 Factory = new LocalWebApplicationFactory<ApplicationStartup>(Config, ActionResultHook, _time);
-                Client = Factory.CreateClient(new WebApplicationFactoryClientOptions
+                var handler = new CookieContainerHandler()
                 {
-                    AllowAutoRedirect = false
-                });
+                    InnerHandler = Factory.Server.CreateHandler(),
+                };
+                Client = new HttpClient(handler) { BaseAddress = Factory.Server.BaseAddress };
+                Cookies = handler.Container;
             }
-            _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook, Config);
+
+            _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook, Config, Cookies);
             _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();
         }
 

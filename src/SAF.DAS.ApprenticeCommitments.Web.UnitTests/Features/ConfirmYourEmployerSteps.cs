@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private long _commitmentStatementId;
+        private long _revisionId;
         private string _employerName;
         private bool? _employerNameConfirmed;
 
@@ -32,7 +32,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context = context;
             _userContext = userContext;
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
-            _commitmentStatementId = 6612;
+            _revisionId = 6612;
             _employerName = "My Test Company";
 
             _context.OuterApi.MockServer.Given(
@@ -83,7 +83,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
-                            CommitmentStatementId = _commitmentStatementId,
+                            CommitmentStatementId = _revisionId,
                             EmployerName = _employerName,
                             EmployerCorrect = confirmed,
                             TrainingProviderCorrect = everythingConfirmed,
@@ -118,9 +118,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/confirmyouremployer",
                 new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    { nameof(ConfirmYourEmployerModel.CommitmentStatementId), _commitmentStatementId.ToString() },
+                    { nameof(ConfirmYourEmployerModel.RevisionId), _revisionId.ToString() },
                     { nameof(ConfirmYourEmployerModel.EmployerName), _employerName },
-                    { nameof(ConfirmYourEmployerModel.ConfirmedEmployer), _employerNameConfirmed.ToString() }
+                    { nameof(ConfirmYourEmployerModel.Confirmed), _employerNameConfirmed.ToString() }
                 }));
         }
 
@@ -179,15 +179,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
-                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_commitmentStatementId}/employerconfirmation")
-                    .UsingPost());
+                    .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/revisions/{_revisionId}/confirmations")
+                    .UsingPatch());
 
             updates.Should().HaveCount(1);
 
             var post = updates.First();
 
-            JsonConvert.DeserializeObject<EmployerConfirmationRequest>(post.RequestMessage.Body)
-                .Should().BeEquivalentTo(new { EmployerCorrect = confirm, });
+            JsonConvert
+                .DeserializeObject<ApprenticeshipConfirmationRequest>(post.RequestMessage.Body)
+                .Should().BeEquivalentTo(new { EmployerCorrect = confirm });
         }
 
         [Then("the user should be redirected to the cannot confirm apprenticeship page")]
@@ -204,7 +205,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmYourEmployerModel>();
             model.Should().NotBeNull();
-            model.ModelState["ConfirmedEmployer"].Errors.Count.Should().Be(1);
+            model.ModelState["Confirmed"].Errors.Count.Should().Be(1);
         }
 
         [Then(@"the user should be able to change their answer")]

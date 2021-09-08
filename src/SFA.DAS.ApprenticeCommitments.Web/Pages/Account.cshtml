@@ -1,7 +1,7 @@
 ﻿@page
-@model SFA.DAS.ApprenticeCommitments.Web.Pages.ConfirmYourPersonalDetailsModel
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.AccountModel
 @{
-    ViewData["Title"] = "Confirm your personal details";
+    ViewData["Title"] = "Enter personal details";
 
     bool IsInvalid(string propertyName) =>
         ViewData.ModelState[propertyName]?.ValidationState ==
@@ -16,13 +16,12 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-            <h1 class="govuk-heading-xl">Confirm your personal details</h1>
+            <h1 class="govuk-heading-xl">Enter personal details</h1>
 
             <partial name="ValidationSummaryPersonalDetails" />
 
-            <form method="post" class="check-answers-page" id="identity-assurance">
-                <input asp-for="EmailAddress">
-
+            <form method="post" class="check-answers-page" id="identity-assurance" asp-page-handler="@Model.FormHandler">
+                
                 <div id="FirstName" class="govuk-form-group @FormGroupValidationClass("FirstName")">
                     <label class="govuk-label govuk-label--m" asp-for="FirstName">First Name</label>
                     <span asp-validation-for="FirstName" class="govuk-error-message"></span>

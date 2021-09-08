@@ -10,47 +10,35 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Get("/registrations/{id}")]
         Task<VerifyRegistrationResponse> GetRegistration([Path] Guid id);
 
-        [Post("/registrations/{apprenticeId}/firstseen")]
-        Task RegistrationFirstSeenOn([Path] Guid apprenticeId, [Body] RegistrationFirstSeenOnRequest request);
+        [AllowAnyStatusCode]
+        [Post("/registrations/{registrationCode}/firstseen")]
+        Task RegistrationFirstSeenOn([Path] string registrationCode, [Body] RegistrationFirstSeenOnRequest request);
 
         [Post("/registrations")]
         Task VerifyRegistration([Body] VerifyRegistrationRequest verification);
 
+        [Get("/apprentices/{id}")]
+        Task<Apprentice> GetApprentice([Path] Guid id);
+
+        [Post("/apprentices")]
+        Task CreateApprenticeAccount([Body] Apprentice apprentice);
+
+        [Patch("/apprentices/{apprenticeId}")]
+        Task UpdateApprentice([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
+
+        [Post("/apprenticeships")]
+        Task ClaimApprenticeship([Body] ApprenticeshipAssociation association);
+
         [Get("/apprentices/{id}/apprenticeships")]
-        Task<Apprenticeship[]> GetApprenticeships([Path] Guid id);
+        Task<ApprenticeshipsWrapper> GetApprenticeships([Path] Guid id);
 
         [Get("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}")]
         Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeid, [Path] long apprenticeshipid);
 
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/trainingproviderconfirmation")]
-        Task ConfirmTrainingProvider(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] TrainingProviderConfirmationRequest confirmation);
-
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/employerconfirmation")]
-        Task ConfirmEmployer(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] EmployerConfirmationRequest confirmation);
-
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/rolesandresponsibilitiesconfirmation")]
-        Task ConfirmRolesAndResponsibilities(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] RolesAndResponsibilitiesConfirmationRequest confirmation);
-
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/apprenticeshipdetailsconfirmation")]
-        Task ConfirmApprenticeshipDetails(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] ApprenticeshipDetailsConfirmationRequest confirmation);
-
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/howapprenticeshipwillbedeliveredconfirmation")]
-        Task ConfirmHowApprenticeshipDelivered(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] HowApprenticeshipDeliveredConfirmationRequest confirmation);
-
-        [Post("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{commitmentStatementId}/apprenticeshipconfirmation")]
+        [Patch("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{revisionId}/confirmations")]
         Task ConfirmApprenticeship(
-            [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long commitmentStatementId,
-            [Body] ApprenticeshipConfirmationRequest confirmation);
+                 [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long revisionId,
+                 [Body] ApprenticeshipConfirmationRequest confirmation);
 
         [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}")]
         Task UpdateApprenticeship(

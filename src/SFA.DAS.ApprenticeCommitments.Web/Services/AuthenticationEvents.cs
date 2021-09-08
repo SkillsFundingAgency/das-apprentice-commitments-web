@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using SAF.DAS.ApprenticeCommitments.Web.Identity;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -9,16 +10,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
     public class AuthenticationEvents : OpenIdConnectEvents
     {
-        private readonly VerifiedUserService _verifiedUserService;
+        private readonly ApprenticeApi _client;
 
-        public AuthenticationEvents(VerifiedUserService verifiedUserService)
-            => _verifiedUserService = verifiedUserService;
+        public AuthenticationEvents(ApprenticeApi client) => _client = client;
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
             await base.TokenValidated(context);
             ConvertRegistrationIdToApprenticeId(context.Principal);
-            await AddUserVerifiedClaim(context.Principal);
+            await AddClaims(context.Principal);
         }
 
         public void ConvertRegistrationIdToApprenticeId(ClaimsPrincipal principal)
@@ -32,15 +32,33 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             principal.AddIdentity(IdentityClaims.CreateApprenticeIdClaim(registrationClaim.Value));
         }
 
-        public async Task AddUserVerifiedClaim(ClaimsPrincipal principal)
+        public async Task AddClaims(ClaimsPrincipal principal)
+        {
+            var apprentice = await GetApprentice(principal);
+            if (apprentice == null) return;
+
+            AddAccountCreatedClaim(principal);
+            AddApprenticeNameClaims(apprentice, principal);
+        }
+
+        private async Task<Apprentice?> GetApprentice(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
-
-            if (claim == null) return;
-            if (!Guid.TryParse(claim.Value, out var apprenticeId)) return;
-            if (!await _verifiedUserService.IsUserVerified(apprenticeId)) return;
-
-            principal.AddIdentity(IdentityClaims.CreateVerifiedUserClaim(true));
+            
+            if (Guid.TryParse(claim?.Value, out var apprenticeId))
+                return await _client.TryGetApprentice(apprenticeId);
+            else
+                return null;
         }
+
+        private void AddAccountCreatedClaim(ClaimsPrincipal principal)
+            => principal.AddIdentity(UserAccountCreatedClaim.CreateAccountCreatedClaim());
+
+        private void AddApprenticeNameClaims(Apprentice apprentice, ClaimsPrincipal principal)
+            => principal.AddIdentity(new ClaimsIdentity(new[]
+            {
+                new Claim(IdentityClaims.GivenName, apprentice.FirstName),
+                new Claim(IdentityClaims.FamilyName, apprentice.LastName),
+            }));
     }
 }

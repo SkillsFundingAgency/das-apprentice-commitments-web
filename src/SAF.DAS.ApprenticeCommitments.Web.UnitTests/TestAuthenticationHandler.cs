@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
-    public class TestAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class TestAuthenticationHandler : SignInAuthenticationHandler<AuthenticationSchemeOptions>
     {
         private static readonly ConcurrentDictionary<Guid, bool> _users = new ConcurrentDictionary<Guid, bool>();
 
@@ -23,10 +25,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         {
         }
 
-        public static void AddUser(Guid registrationId)
+        public static void AddUser(Guid apprenticeId)
         {
-            Console.WriteLine($"Adding logged in user {registrationId}");
-            _users.TryAdd(registrationId, true);
+            Console.WriteLine($"Adding logged in user {apprenticeId}");
+            _users.TryAdd(apprenticeId, true);
         }
 
         internal static void AddUnverifiedUser(Guid apprenticeId)
@@ -50,16 +52,28 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, "Test user"),
+                new Claim(ClaimTypes.Name, "Testuser@example.com"),
                 new Claim("apprentice_id", guid.ToString()),
             };
-            if (isVerified) claims.Add(new Claim("VerifiedUser", "True"));
             var identity = new ClaimsIdentity(claims, "Test1");
+            if (isVerified) identity.AddAccountCreatedClaim();
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test2");
 
             return AuthenticateResult.Success(ticket);
         }
+
+        protected override Task HandleSignInAsync(ClaimsPrincipal principal, AuthenticationProperties properties)
+        {
+            var guid = principal.Claims.First(x => x.Type == "apprentice_id").Value;
+            var userId = Guid.Parse(guid);
+
+            _users[userId] = true;
+
+            return Task.CompletedTask;
+        }
+
+        protected override Task HandleSignOutAsync(AuthenticationProperties properties) => Task.CompletedTask;
 
         private Guid? FindUserFromHeader()
         {
