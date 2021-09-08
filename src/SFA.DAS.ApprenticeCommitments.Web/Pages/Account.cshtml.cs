@@ -24,6 +24,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public string EmailAddress { get; set; } = null!;
 
+        [BindProperty(Name = "mode", SupportsGet = true)]
+        public string Mode { get; set; } = "";
+
         [BindProperty]
         public string FirstName { get; set; } = null!;
 
