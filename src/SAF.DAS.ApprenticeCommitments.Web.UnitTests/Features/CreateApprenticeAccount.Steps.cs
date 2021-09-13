@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -24,13 +23,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly RegisteredUserContext _userContext;
         private AccountModel _postedRegistration;
         private Apprentice _apprentice;
-        private string _registrationCode;
+        private readonly string _registrationCode;
 
         public CreateApprenticeAccountSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
             _registrationCode = Guid.NewGuid().ToString();
+
+            _context.OuterApi?.MockServer
+                .Given(Request.Create().UsingPatch().WithPath("/apprentices/*"))
+                .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
         }
 
         [Given("the apprentice has not logged in")]
