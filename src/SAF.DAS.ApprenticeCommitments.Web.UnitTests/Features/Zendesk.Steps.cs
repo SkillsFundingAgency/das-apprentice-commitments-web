@@ -1,8 +1,12 @@
-﻿using NUnit.Framework;
+﻿using AutoFixture;
+using NUnit.Framework;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features;
 using System;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
 using TestContext = SFA.DAS.ApprenticeCommitments.Web.UnitTests.TestContext;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
@@ -18,6 +22,12 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context = context;
             context.Web.AuthoriseApprentice(apprenticeId);
+
+            _context.OuterApi.MockServer
+                .Given(Request.Create()
+                    .UsingAnyMethod())
+                .RespondWith(Response.Create()
+                    .WithBodyAsJson(new Fixture().Create<Apprenticeship>()));
         }
 
         [When("a page is requested")]

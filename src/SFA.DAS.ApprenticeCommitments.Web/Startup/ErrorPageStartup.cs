@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -21,6 +22,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             }
 
             return app;
+        }
+
+
+        public static bool IsDevelopmentOrTest(this IHostEnvironment hostEnvironment)
+        {
+            return hostEnvironment.IsEnvironment(Environments.Development) ||
+            hostEnvironment.IsEnvironment("LOCAL");
         }
     }
 }

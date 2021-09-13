@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -189,6 +190,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 FirstName = "Someone",
                 LastName = "Wurst",
                 DateOfBirth = new DateTime(2008, 08, 21),
+                TermsOfUseAccepted = true,
             };
 
             _context.OuterApi.MockServer.Given(
@@ -283,6 +285,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.FollowLocalRedirects();
         }
 
+        [When("the apprentice accepts the terms of use")]
+        public async Task WhenTheApprenticeAcceptsTheTermsOfUse()
+        {
+            await _context.Web.Post("TermsOfUse",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "ApprenticeId", Guid.NewGuid().ToString() },
+                    { "TermsOfUseAccepted", "true" },
+                }));
+
+            await _context.Web.FollowLocalRedirects();
+        }
+
         [When("the apprentice updates their account with")]
         public async Task WhenTheApprenticeUpdatesTheirAccountWith(Table table)
         {
@@ -299,6 +314,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
                     { "EmailAddress", _postedRegistration?.EmailAddress },
+                    { "TermsOfUseAccepted", _apprentice?.TermsOfUseAccepted.ToString() },
                 }));
 
             await _context.Web.FollowLocalRedirects();
@@ -465,6 +481,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 Type = "family_name",
                 Value = lastName,
             });
+        }
+
+        [Then("the apprentice is shown the Terms of Use")]
+        public void TheApprenticeIsShownTheTermsOfUse()
+        {
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
         }
     }
 }

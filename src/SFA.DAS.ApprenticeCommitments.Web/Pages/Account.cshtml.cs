@@ -33,6 +33,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
+        [BindProperty]
+        public bool TermsOfUseAccepted { get; set; }
+
         public string FormHandler { get; private set; } = "";
 
         public async Task<IActionResult> OnGetAsync(
@@ -50,6 +53,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                 FirstName = apprentice.FirstName;
                 LastName = apprentice.LastName;
                 DateOfBirth = new DateModel(apprentice.DateOfBirth);
+                TermsOfUseAccepted = apprentice.TermsOfUseAccepted;
             }
 
             return Page();
@@ -99,7 +103,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         private IActionResult RedirectAfterUpdate()
         {
-            if (Request.Cookies.Keys.Contains("RegistrationCode"))
+            if (!TermsOfUseAccepted)
+                return RedirectToPage("/TermsOfUse");
+            else if (Request.Cookies.Keys.Contains("RegistrationCode"))
                 return RedirectToAction("Register", "Registration");
             else
                 return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home"));

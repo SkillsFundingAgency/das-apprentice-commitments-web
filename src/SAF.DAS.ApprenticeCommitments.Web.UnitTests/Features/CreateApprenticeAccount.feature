@@ -43,43 +43,41 @@ Scenario: The apprentice updates their account details
 	When the apprentice updates their account with
 	| First name | Last name  | EmailAddress    | Date of Birth |
 	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
-	Then the apprentice account is updated
-	And the apprentice should be shown the Home page
+	Then the apprentice should be shown the Home page
 
-Scenario: The apprentice creates their account and matches to the apprenticeship
+Scenario: The apprentice creates their account accepts the terms of use
 	Given the apprentice has logged in but not created their account
 	And the apprentice has a registration code
 	And the API will accept the account
-	And the API will match the apprenticeship
 	When the apprentice creates their account with
 	| First name | Last name  | EmailAddress    | Date of Birth |
 	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
 	Then the apprentice account is created
-	And the apprentice is matched to the apprenticeship
-	And the apprentice should be shown the Home page with a Matched notification
+	And the apprentice is shown the Terms of Use
 	And the authentication includes the apprentice's names: "Bob" and "bobbertson"
 
-Scenario: The apprentice creates their account and does not match to the apprenticeship
-	Given the apprentice has logged in but not created their account
+Scenario: The apprentice creates their account and matches to the apprenticeship
+	Given the apprentice has logged in but not matched their account
 	And the apprentice has a registration code
-	And the API will accept the account
+	And the API will match the apprenticeship
+	When the apprentice accepts the terms of use
+	Then the apprentice is matched to the apprenticeship
+	And the apprentice should be shown the Home page with a Matched notification
+
+Scenario: The apprentice creates their account and does not match to the apprenticeship
+	Given the apprentice has logged in but not matched their account
+	And the apprentice has a registration code
 	And the API will not match the apprenticeship
-	When the apprentice creates their account with
-	| First name | Last name  | EmailAddress    | Date of Birth |
-	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
-	Then the apprentice account is created
-	And the apprentice should be shown the Home page with a Not Matched notification
+	When the apprentice accepts the terms of use
+	Then the apprentice should be shown the Home page with a Not Matched notification
 
 Scenario: The apprentice registers a new apprenticeship to their existing account
 	Given the apprentice has logged in
 	And the apprentice has created their account
 	And the API will accept the account
 	And the API will match the apprenticeship
-	When the apprentice creates their account with
-	| First name | Last name  | EmailAddress    | Date of Birth |
-	| Bob        | bobbertson | bob@example.com | 2000-01-30    |
-	Then the apprentice account is created
-	And the apprentice should be shown the Home page with a Matched notification
+	When the apprentice accepts the terms of use
+	Then the apprentice should be shown the Home page with a Matched notification
 
 Scenario: The apprentice enters invalid identity information
 	Given the apprentice has logged in but not created their account
