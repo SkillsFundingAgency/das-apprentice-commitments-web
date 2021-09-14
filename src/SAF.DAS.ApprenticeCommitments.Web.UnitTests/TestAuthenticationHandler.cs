@@ -16,6 +16,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
     {
         private static readonly ConcurrentDictionary<Guid, bool> _users = new ConcurrentDictionary<Guid, bool>();
 
+        public static List<ClaimsPrincipal> Authentications { get; } = new List<ClaimsPrincipal>();
+
         public TestAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
@@ -69,6 +71,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             var userId = Guid.Parse(guid);
 
             _users[userId] = true;
+
+            Authentications.Add(principal);
 
             return Task.CompletedTask;
         }

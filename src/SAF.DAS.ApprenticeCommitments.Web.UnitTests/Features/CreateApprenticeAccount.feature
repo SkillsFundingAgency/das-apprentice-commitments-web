@@ -57,6 +57,7 @@ Scenario: The apprentice creates their account and matches to the apprenticeship
 	Then the apprentice account is created
 	And the apprentice is matched to the apprenticeship
 	And the apprentice should be shown the Home page with a Matched notification
+	And the authentication includes the apprentice's names: "Bob" and "bobbertson"
 
 Scenario: The apprentice creates their account and does not match to the apprenticeship
 	Given the apprentice has logged in but not created their account
