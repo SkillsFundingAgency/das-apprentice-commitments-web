@@ -1,14 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
-using RestEase;
-using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.JsonPatch;
-using SFA.DAS.ApprenticeCommitments.Web.Services;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
@@ -38,6 +32,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             if (TermsOfUseAccepted)
             {
                 await _client.AcceptTermsOfUse(apprentice.ApprenticeId);
+                await AuthenticationEvents.TermsOfUseAccepted(HttpContext);
             }
 
             if (Request.Cookies.Keys.Contains("RegistrationCode"))

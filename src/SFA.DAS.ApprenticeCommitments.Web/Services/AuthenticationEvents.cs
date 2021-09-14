@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         private async Task<Apprentice?> GetApprentice(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
-            
+
             if (Guid.TryParse(claim?.Value, out var apprenticeId))
                 return await _client.TryGetApprentice(apprenticeId);
             else
@@ -74,6 +74,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             if (authenticated.Succeeded)
             {
                 AddClaims(authenticated.Principal, apprentice);
+                await context.SignInAsync(authenticated.Principal, authenticated.Properties);
+            }
+        }
+
+        internal static async Task TermsOfUseAccepted(HttpContext context)
+        {
+            var authenticated = await context.AuthenticateAsync();
+
+            if (authenticated.Succeeded)
+            {
+                authenticated.Principal.AddIdentity(TermsOfUseAcceptedClaim.CreateTermsOfUseAcceptedClaim());
                 await context.SignInAsync(authenticated.Principal, authenticated.Properties);
             }
         }

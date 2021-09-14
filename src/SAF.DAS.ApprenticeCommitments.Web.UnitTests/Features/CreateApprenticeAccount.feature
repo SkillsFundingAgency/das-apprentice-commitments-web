@@ -63,6 +63,7 @@ Scenario: The apprentice creates their account and matches to the apprenticeship
 	When the apprentice accepts the terms of use
 	Then the apprentice is matched to the apprenticeship
 	And the apprentice should be shown the Home page with a Matched notification
+	And the authentication includes the terms of use
 
 Scenario: The apprentice creates their account and does not match to the apprenticeship
 	Given the apprentice has logged in but not matched their account

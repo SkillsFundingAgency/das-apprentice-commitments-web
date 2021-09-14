@@ -486,6 +486,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             });
         }
 
+        [Then("the authentication includes the terms of use")]
+        public void TheAuthenticationIncludesTheTermsOfUse()
+        {
+            TestAuthenticationHandler.Authentications.Should().ContainSingle();
+            var claims = TestAuthenticationHandler.Authentications[0].Claims;
+            claims.Should().ContainEquivalentOf(new
+            {
+                Type = "TermsOfUseAccepted",
+                Value = "True",
+            });
+        }
+
         [Then("the apprentice is shown the Terms of Use")]
         public void TheApprenticeIsShownTheTermsOfUse()
         {
