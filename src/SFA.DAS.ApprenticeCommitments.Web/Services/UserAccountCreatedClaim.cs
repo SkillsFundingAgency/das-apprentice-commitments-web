@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
@@ -16,7 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         internal static bool UserHasCreatedAccount(HttpContext httpContext)
             => httpContext.User.HasClaim(ClaimName, "True");
 
-        internal static bool UserHasNotCreatedAccount(HttpContext httpContext)
+        internal static bool UserMustCreateAccount(this HttpContext httpContext)
             => !UserHasCreatedAccount(httpContext);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
@@ -11,6 +12,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 
         public static void AddTermsOfUseAcceptedClaim(this ClaimsIdentity identity)
             => identity.AddClaim(ClaimInstance);
+
+        internal static bool UserMustAcceptTermsOfUse(this HttpContext httpContext)
+            => !httpContext.User.HasClaim(ClaimName, "True");
 
         private static readonly Claim ClaimInstance = new Claim(ClaimName, "True");
     }

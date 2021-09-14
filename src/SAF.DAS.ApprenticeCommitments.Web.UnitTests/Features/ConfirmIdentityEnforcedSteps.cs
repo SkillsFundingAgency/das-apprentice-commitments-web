@@ -39,6 +39,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public async Task GivenTheUserAttemptsToLandOnApprenticeshipIndexPage()
         {
             await _context.Web.Get("Apprenticeships");
+            await _context.Web.FollowLocalRedirects();
         }
 
         [When("the user attempts to land on the Register page with a registration code")]
@@ -59,6 +60,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public async Task GivenTheUserAttemptsToLandOnAnyPersonalizedApprenticeshipPortalPage(string page)
         {
             await _context.Web.Get($"Apprenticeships/{_context.Hashing.HashValue(_userContext.ApprenticeId)}/{page}");
+            await _context.Web.FollowLocalRedirects();
         }
 
         [Then("redirect the user to the Confirm ID page")]
@@ -73,6 +75,14 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context.Web.Response.Should().Be302Redirect()
                 .And.HaveHeader("Location").And.Match("https://home/Home");
+        }
+
+        [Then("redirect the user to the TermsOfUse page")]
+        public void ThenRedirectTheUserToTermsOfUse()
+        {
+            _context.Web.Response.Should().Be2XXSuccessful();
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
         }
 
         [Then("redirect the user to the home page with a NotMatched banner")]

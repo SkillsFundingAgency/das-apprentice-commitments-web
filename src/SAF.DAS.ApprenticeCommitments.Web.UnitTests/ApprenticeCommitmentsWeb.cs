@@ -31,7 +31,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
         public void AuthoriseApprentice(Guid apprenticeId)
         {
-            TestAuthenticationHandler.AddUser(apprenticeId);
+            TestAuthenticationHandler.AddUserWithFullAccount(apprenticeId);
+            Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(apprenticeId.ToString());
+        }
+
+        internal void AuthoriseApprenticeWithoutTermsOfUse(Guid apprenticeId)
+        {
+            TestAuthenticationHandler.AddUserWithoutTerms(apprenticeId);
             Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(apprenticeId.ToString());
         }

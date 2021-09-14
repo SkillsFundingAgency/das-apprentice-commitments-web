@@ -14,7 +14,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
     public class TestAuthenticationHandler : SignInAuthenticationHandler<AuthenticationSchemeOptions>
     {
-        private static readonly ConcurrentDictionary<Guid, bool> _users = new ConcurrentDictionary<Guid, bool>();
+        public enum AccountStatus
+        {
+            Initial,
+            AccountCreated,
+            TermsAccepted,
+        }
+
+        private static readonly ConcurrentDictionary<Guid, AccountStatus> _users
+            = new ConcurrentDictionary<Guid, AccountStatus>();
 
         public static List<ClaimsPrincipal> Authentications { get; } = new List<ClaimsPrincipal>();
 
@@ -27,16 +35,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         {
         }
 
-        public static void AddUser(Guid apprenticeId)
+        public static void AddUserWithFullAccount(Guid apprenticeId)
         {
             Console.WriteLine($"Adding logged in user {apprenticeId}");
-            _users.TryAdd(apprenticeId, true);
+            _users.TryAdd(apprenticeId, AccountStatus.TermsAccepted);
         }
 
-        internal static void AddUnverifiedUser(Guid apprenticeId)
+        public static void AddUserWithoutTerms(Guid apprenticeId)
+        {
+            Console.WriteLine($"Adding logged in user {apprenticeId} who hasn't accepts ToC");
+            _users.TryAdd(apprenticeId, AccountStatus.AccountCreated);
+        }
+
+        internal static void AddUserWithoutAccount(Guid apprenticeId)
         {
             Console.WriteLine($"Adding unverified logged in user {apprenticeId}");
-            _users.TryAdd(apprenticeId, false);
+            _users.TryAdd(apprenticeId, AccountStatus.Initial);
         }
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -49,7 +63,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             var guid = FindUserFromHeader();
             if (guid == null) return AuthenticateResult.Fail("No user header found");
 
-            var exists = _users.TryGetValue(guid.Value, out var isVerified);
+            var exists = _users.TryGetValue(guid.Value, out var status);
             if (!exists) return AuthenticateResult.Fail($"User `{guid}` is not logged in");
 
             var claims = new List<Claim>
@@ -58,7 +72,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 new Claim("apprentice_id", guid.ToString()),
             };
             var identity = new ClaimsIdentity(claims, "Test1");
-            if (isVerified) identity.AddAccountCreatedClaim();
+            if (status >= AccountStatus.AccountCreated)
+                identity.AddAccountCreatedClaim();
+
+            if (status >= AccountStatus.TermsAccepted)
+                identity.AddTermsOfUseAcceptedClaim();
+
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test2");
 
@@ -69,8 +88,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         {
             var guid = principal.Claims.First(x => x.Type == "apprentice_id").Value;
             var userId = Guid.Parse(guid);
-
-            _users[userId] = true;
 
             Authentications.Add(principal);
 

@@ -55,6 +55,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             GivenTheApprenticeHasNotCreatedTheirAccount();
         }
 
+        [Given("the apprentice has logged in but not accepted the terms of use")]
+        public void GivenTheApprenticeHasLoggedInButNotAcceptedTerms()
+        {
+            _context.Web.AuthoriseApprenticeWithoutTermsOfUse(_userContext.ApprenticeId);
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath("/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Apprenticeships = new object[0] { } }));
+        }
+
+
         [Given("the apprentice has logged in but not matched their account")]
         public void GivenTheApprenticeHasLoggedInButNotMatchedTheirAccount()
         {
@@ -71,7 +85,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("an unverified logged in user")]
         public void GivenAUserWithoutAccountHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUnverifiedUser(_userContext.ApprenticeId);
+            TestAuthenticationHandler.AddUserWithoutAccount(_userContext.ApprenticeId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
