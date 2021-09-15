@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services

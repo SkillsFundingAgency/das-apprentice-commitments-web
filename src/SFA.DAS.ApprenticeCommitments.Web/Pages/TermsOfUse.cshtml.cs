@@ -25,6 +25,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public void OnGet()
         {
+            // nothing to do
         }
 
         public async Task<IActionResult> OnPost()
