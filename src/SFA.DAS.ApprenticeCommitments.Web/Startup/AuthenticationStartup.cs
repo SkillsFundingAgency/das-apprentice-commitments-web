@@ -39,7 +39,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddCookie("Cookies")
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.Cookie.Name = ".Apprenticeships.Application";
+                    options.Cookie.HttpOnly = true;
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = System.TimeSpan.FromHours(1);
+                })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
                     options.SignInScheme = "Cookies";
