@@ -11,7 +11,7 @@
         => IsInvalid(propertyName) ? "govuk-form-group--error" : "";
 }
 
-<div class="govuk-width-container">
+
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -33,17 +33,17 @@
 
             <partial name="ValidationSummaryPersonalDetails" />
 
-            <label class="govuk-label govuk-label--m">Account details</label>
+            <h2 class="govuk-heading-m">Account details</h2>
 
             <form method="post" class="check-answers-page" id="identity-assurance" asp-page-handler="@Model.FormHandler">
 
-                <div id="FirstName" class="govuk-form-group @FormGroupValidationClass("FirstName")">
+                <div id="FirstNameFieldRow" class="govuk-form-group @FormGroupValidationClass("FirstName")">
                     <label class="govuk-label govuk-label--s" asp-for="FirstName">First name</label>
                     <span asp-validation-for="FirstName" class="govuk-error-message"></span>
                     <input class="govuk-input govuk-input--width-20" asp-for="FirstName">
                 </div>
 
-                <div id="LastName" class="govuk-form-group @FormGroupValidationClass("Lastname")">
+                <div id="LastNameFieldRow" class="govuk-form-group @FormGroupValidationClass("Lastname")">
                     <label class="govuk-label govuk-label--s" asp-for="LastName">Last name</label>
                     <span asp-validation-for="LastName" class="govuk-error-message"></span>
                     <input class="govuk-input govuk-input--width-20" asp-for="LastName">
@@ -81,10 +81,7 @@
                     </fieldset>
                 </div>
 
-                <br>
-
                 <button class="govuk-button" data-module="govuk-button" id="identity-assurance-btn">Continue</button>
             </form>
         </div>
     </div>
-</div>
