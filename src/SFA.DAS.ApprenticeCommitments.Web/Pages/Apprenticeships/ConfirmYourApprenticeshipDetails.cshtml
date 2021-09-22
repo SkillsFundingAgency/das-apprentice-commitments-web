@@ -54,7 +54,7 @@
                 </tbody>
             </table>
 
-            <h3>
+            <h3 class="govuk-heading-m">
                 Things you need to know
             </h3>
 
@@ -75,10 +75,11 @@
                 <yes-no-header>
                     Are your apprenticeship details correct?
                 </yes-no-header>
-
-                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
-
-                <yes-no-inputs asp-for="Confirmed"></yes-no-inputs>
+                
+                <div class="govuk-form-group">
+                    <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
+                    <yes-no-inputs asp-for="Confirmed"></yes-no-inputs>
+                </div>
 
                 <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
                 <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />

@@ -47,10 +47,9 @@
             <yes-no-header>
                 Is @Model.EmployerName your employer?
             </yes-no-header>
-            
-            <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
-            
+
             <div class="govuk-form-group">
+                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
                 <yes-no-inputs asp-for="Confirmed" ></yes-no-inputs>
             </div>
             
