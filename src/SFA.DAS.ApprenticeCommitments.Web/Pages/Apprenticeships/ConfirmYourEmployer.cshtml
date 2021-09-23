@@ -4,66 +4,65 @@
     ViewData["Title"] = "Confirm your employer";
 }
 
-<div class="govuk-width-container">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-desktop">
+        <partial name="ValidationSummary" />
 
-            <partial name="ValidationSummary" />
+        <h1 class="govuk-heading-xl">Confirm your employer</h1>
 
-            <h2 class="govuk-heading-xl">Confirm your employer</h2>
+        <notification-banner asp-hide="@Model.ShowForm">
+            You have confirmed this is your employer
+        </notification-banner>
 
-            <notification-banner asp-hide="@Model.ShowForm">
-                You have confirmed this is your employer
-            </notification-banner>
+        <notification-banner asp-show="@Model.ChangingAnswer">
+            You can now change your answer
+        </notification-banner>
 
-            <notification-banner asp-show="@Model.ChangingAnswer">
-                You can now change your answer
-            </notification-banner>
+        <h2 class="govuk-heading-l">@Model.EmployerName</h2>
 
-            <h2 class="govuk-heading-l">@Model.EmployerName</h2>
-
-            <div class="govuk-body">
-                <details class="govuk-details" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Help if you do not recognise your employer's name
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        @Model.EmployerName is your employer's legal name registered with Companies House.  You may know them by their trading name instead.
-                    </div>
-                </details>
-
-                <h3>Things you need to know</h3>
-                <div class="govuk-inset-text">
-                    <p class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li>copy of your apprenticeship agreement signed by you and them, if you have not received this agreement please speak to your employer</li>
-                        <li>day-to-day contact or manager who will support you through your apprenticeship</li>
-                    </ul>
+        <div class="govuk-body">
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Help if you do not recognise your employer's name
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    @Model.EmployerName is your employer's legal name registered with Companies House.  You may know them by their trading name instead.
                 </div>
+            </details>
+
+            <h3>Things you need to know</h3>
+            <div class="govuk-inset-text">
+                <p class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>copy of your apprenticeship agreement signed by you and them, if you have not received this agreement please speak to your employer</li>
+                    <li>day-to-day contact or manager who will support you through your apprenticeship</li>
+                </ul>
             </div>
-
-            <form confirmation-form asp-show="@Model.ShowForm" method="post">
-                <yes-no-header>
-                    Is @Model.EmployerName your employer?
-                </yes-no-header>
-                
-                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
-                
-                <yes-no-inputs asp-for="Confirmed" ></yes-no-inputs>
-                
-                <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-                <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
-                <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
-            </form>
-
-            <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
-                <button class="govuk-button">Continue</button>
-            </form>
-
-            <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
         </div>
+
+        <form confirmation-form asp-show="@Model.ShowForm" method="post">
+            <yes-no-header>
+                Is @Model.EmployerName your employer?
+            </yes-no-header>
+
+            <div class="govuk-form-group">
+                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
+                <yes-no-inputs asp-for="Confirmed" ></yes-no-inputs>
+            </div>
+            
+            <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+            
+            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
+            <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
+        </form>
+
+        <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
+            <button class="govuk-button">Continue</button>
+        </form>
+
+        <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
     </div>
 </div>

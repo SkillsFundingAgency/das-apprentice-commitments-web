@@ -1,4 +1,4 @@
-@page "/apprenticeships/{apprenticeshipId}"
+﻿@page "/apprenticeships/{apprenticeshipId}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @using SFA.DAS.ApprenticePortal.SharedUi.Menu
 @{
@@ -6,7 +6,7 @@
 }
 
 <div asp-show="@Model.Status == ConfirmStatus.SectionsIncomplete">
-    <h2 class="govuk-heading-l">Confirm my apprenticeship details</h2>
+    <h1 class="govuk-heading-l">Confirm my apprenticeship details</h1>
 
     <p>Read through each section below to confirm your apprenticeship. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
 
@@ -48,7 +48,7 @@
 </div>
 
 <div asp-show="@Model.Status == ConfirmStatus.SectionsComplete" class="govuk-!-margin-bottom-5">
-    <h2 class="govuk-heading-l">Confirm my apprenticeship details</h2>
+    <h1 class="govuk-heading-l">Confirm my apprenticeship details</h1>
 
     <div class="app-notification-banner app-notification-banner--success">
         <div class="app-notification-banner--icon-content-wrap">
@@ -63,7 +63,7 @@
 </div>
 
 <div asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" class="govuk-!-margin-bottom-5">
-    <h2 class="govuk-heading-l">Your apprenticeship details</h2>
+    <h1 class="govuk-heading-l">Your apprenticeship details</h1>
     <div class="app-notification-banner app-notification-banner--success">
         <div class="app-notification-banner--icon-content-wrap">
             <span class="app-notification-banner__icon das-text--success-icon"></span>
@@ -92,6 +92,6 @@
 </ol>
 
 <div class="govuk-heading-m">
-    <h2 class="govuk-heading-m">Help and Support</h2>
+    <h2 class="govuk-heading-m">Help and support</h2>
     <p>If you have any questions or need support, guidance can be found in the <a asp-external-section="@NavigationSection.Home" asp-external-page="HelpAndSupport" class="govuk-link">help and support section</a>.</p>
 </div>
