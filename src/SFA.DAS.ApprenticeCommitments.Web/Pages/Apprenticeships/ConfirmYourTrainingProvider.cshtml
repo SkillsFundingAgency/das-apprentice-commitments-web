@@ -4,69 +4,68 @@
     ViewData["Title"] = "Confirm your training provider";
 }
 
-<div class="govuk-width-container">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-desktop">
+        <partial name="ValidationSummary" />
 
-            <partial name="ValidationSummary" />
+        <h1 class="govuk-heading-xl">Confirm your training provider</h1>
 
-            <h2 class="govuk-heading-xl">Confirm your training provider</h2>
+        <notification-banner asp-hide="@Model.ShowForm">
+            You have confirmed this is your training provider
+        </notification-banner>
 
-            <notification-banner asp-hide="@Model.ShowForm">
-                You have confirmed this is your training provider
-            </notification-banner>
+        <notification-banner asp-show="@Model.ChangingAnswer">
+            You can now change your answer
+        </notification-banner>
 
-            <notification-banner asp-show="@Model.ChangingAnswer">
-                You can now change your answer
-            </notification-banner>
+        <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
 
-            <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
-
-            <div class="govuk-body">
-                <details class="govuk-details" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Help if you do not recognise your training provider's name
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        @Model.TrainingProviderName is your training provider's legal name registered with Companies House.
-                        You may know them by their trading name instead.
-                    </div>
-                </details>
-
-                <p>
-                    Your off-the-job training will be <strong>at least 20% of your normal working hours</strong> spent learning new knowledge,
-                    skills and behaviours for your apprenticeship. Your off-the-job training will be managed by your training provider.
-                </p>
-
-                <h3>Things you need to know</h3>
-                <div class="govuk-inset-text">
-                    <p class="govuk-body">Before starting your apprenticeship your training provider should have:</p>
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li>told you if you'll have any training delivered by another training provider</li>
-                        <li>given you a day-to-day contact who will support you through your apprenticeship</li>
-                    </ul>
+        <div class="govuk-body">
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Help if you do not recognise your training provider's name
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    @Model.TrainingProviderName is your training provider's legal name registered with Companies House.
+                    You may know them by their trading name instead.
                 </div>
+            </details>
+
+            <p>
+                Your off-the-job training will be <strong>at least 20% of your normal working hours</strong> spent learning new knowledge,
+                skills and behaviours for your apprenticeship. Your off-the-job training will be managed by your training provider.
+            </p>
+
+            <h3>Things you need to know</h3>
+            <div class="govuk-inset-text">
+                <p class="govuk-body">Before starting your apprenticeship your training provider should have:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>told you if you'll have any training delivered by another training provider</li>
+                    <li>given you a day-to-day contact who will support you through your apprenticeship</li>
+                </ul>
+            </div>
+        </div>
+
+        <form confirmation-form asp-show="@Model.ShowForm" method="post">
+            <yes-no-header>Is @Model.TrainingProviderName your training provider?</yes-no-header>
+            
+            <div class="govuk-form-group">
+                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
+                <yes-no-inputs asp-for="Confirmed" yes-checked="@(Model.Confirmed == true)"></yes-no-inputs>
             </div>
 
-            <form confirmation-form asp-show="@Model.ShowForm" method="post">
-                <yes-no-header>Is @Model.TrainingProviderName your training provider?</yes-no-header>
+            <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
+            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
+            <input type="hidden" name="TrainingProviderName" value="@Model.TrainingProviderName" />
+        </form>
 
-                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
+        <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
+            <button class="govuk-button">Continue</button>
+        </form>
 
-                <yes-no-inputs asp-for="Confirmed" yes-checked="@(Model.Confirmed == true)"></yes-no-inputs>
-
-                <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-                <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
-                <input type="hidden" name="TrainingProviderName" value="@Model.TrainingProviderName" />
-            </form>
-
-            <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
-                <button class="govuk-button">Continue</button>
-            </form>
-
-            <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
+        <a class="govuk-link" asp-show="@Model.CanChangeAnswer" asp-page-handler="changeAnswer">I want to change my answer</a>
     </div>
 </div>
