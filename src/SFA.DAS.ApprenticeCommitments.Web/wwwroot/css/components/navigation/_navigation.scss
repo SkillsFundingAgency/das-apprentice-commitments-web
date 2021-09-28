@@ -123,6 +123,7 @@
     &:link,
     &:active,
     &:focus,
+    &:visited, 
     &:hover {
         color: govuk-colour('black');
         text-decoration: none;
