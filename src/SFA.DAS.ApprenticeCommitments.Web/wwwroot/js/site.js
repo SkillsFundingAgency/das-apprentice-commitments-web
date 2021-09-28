@@ -6,9 +6,9 @@ if ($stepByStep.length > 0) {
     stepByStepNavigation.start($stepByStep)
 }
 
-function Navigation(nav) {
-    this.nav = nav
-    if (!this.nav) {
+function Navigation(navigation) {
+    this.navigation = navigation
+    if (!this.navigation) {
       return
     }
     this.navToggle = nav.querySelector('[data-app-nav-toggle]')
@@ -51,3 +51,4 @@ function Navigation(nav) {
 
   var nav = document.querySelector('[data-app-navigation]')
   var navInstance = new Navigation(nav);
+  
