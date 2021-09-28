@@ -11,8 +11,8 @@ function Navigation(navigation) {
     if (!this.navigation) {
       return
     }
-    this.navToggle = nav.querySelector('[data-app-nav-toggle]')
-    this.navMenu = nav.querySelector('[data-app-nav-menu]')
+    this.navToggle = navigation.querySelector('[data-app-nav-toggle]')
+    this.navMenu = navigation.querySelector('[data-app-nav-menu]')
     this.init()
   }
 
@@ -51,4 +51,4 @@ function Navigation(navigation) {
 
   var nav = document.querySelector('[data-app-navigation]')
   var navInstance = new Navigation(nav);
-  
+
