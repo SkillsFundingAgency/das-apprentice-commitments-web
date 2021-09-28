@@ -1,7 +1,9 @@
 ﻿@page "/account"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.AccountModel
 @{
-    ViewData["Title"] = Model.FormHandler == "Register" ? "Create My apprenticeship account" : "Change your personal details"; ;
+    ViewData["Title"] = Model.IsCreating ? "Create My apprenticeship account" : "Change your personal details";
+
+    var ctaName = Model.IsCreating ? "Continue" : "Save and update";
 
     bool IsInvalid(string propertyName) =>
         ViewData.ModelState[propertyName]?.ValidationState ==
@@ -11,14 +13,12 @@
         => IsInvalid(propertyName) ? "govuk-form-group--error" : "";
 }
 
-
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
             <h1 class="govuk-heading-xl">@ViewData["Title"]</h1>
 
-            @if (Model.FormHandler == "Register")
+            @if (Model.IsCreating)
             {
                 <p>
                     Enter your name and date of birth to complete the set-up of your account. You can then confirm your apprenticeship details.
@@ -27,7 +27,8 @@
             else
             {
                 <p>
-                    Check your name and date of birth are correct so that we can use them to find your apprenticeship details.
+                    You can update your personal details. If your personal details are incorrect, 
+                    we won't be able to display your apprenticeship details to you
                 </p>
             }
 
@@ -81,7 +82,7 @@
                     </fieldset>
                 </div>
 
-                <button class="govuk-button" data-module="govuk-button" id="identity-assurance-btn">Continue</button>
+                <button class="govuk-button" data-module="govuk-button" id="identity-assurance-btn">@ctaName</button>
             </form>
         </div>
     </div>

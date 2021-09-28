@@ -33,7 +33,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
-        public string FormHandler { get; private set; } = "";
+        public string FormHandler => IsCreating ? "Register" : "";
+
+        public bool IsCreating { get; private set; } = false;
 
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
@@ -43,7 +45,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
             if (apprentice == null)
             {
-                FormHandler = "Register";
+                IsCreating = true;
             }
             else
             {
@@ -72,7 +74,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
         {
-            FormHandler = "Register";
+            IsCreating = true;
 
             try
             {
