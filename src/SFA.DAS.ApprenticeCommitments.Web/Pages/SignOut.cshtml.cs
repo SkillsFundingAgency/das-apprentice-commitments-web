@@ -31,6 +31,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                             CookieAuthenticationDefaults.AuthenticationScheme,
                             OpenIdConnectDefaults.AuthenticationScheme);
 
+            if (HttpContext.Request.Cookies.Count > 0)
+            {
+                var cookies = HttpContext.Request.Cookies.Where(x => x.Key.Contains("Apprenticeships") || x.Key.Contains("AspNetCore")).ToList();
+
+                cookies.ForEach(x => Response.Cookies.Delete(x.Key));
+            }
+
             return result;
         }
     }
