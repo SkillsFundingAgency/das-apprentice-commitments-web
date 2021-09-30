@@ -13,10 +13,21 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             DataProtectionConnectionStrings configuration,
             IWebHostEnvironment environment)
         {
-            if (!environment.IsDevelopment() && configuration != null)
+            if (environment.IsDevelopment())
+            {
+                services.AddDistributedMemoryCache();
+                services.AddDataProtection()
+                    .SetApplicationName("apprentice-commitments");
+            }
+            else
             {
                 var redisConnectionString = configuration.RedisConnectionString;
                 var dataProtectionKeysDatabase = configuration.DataProtectionKeysDatabase;
+
+                services.AddDistributedRedisCache(options =>
+                {
+                    options.Configuration = $"{redisConnectionString},{dataProtectionKeysDatabase}";
+                });
 
                 var redis = ConnectionMultiplexer
                     .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
