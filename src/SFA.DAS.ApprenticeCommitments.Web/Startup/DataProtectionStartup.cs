@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 services.AddDataProtection()
                     .SetApplicationName("apprentice-commitments");
             }
-            else
+            else if (configuration != null)
             {
                 var redisConnectionString = configuration.RedisConnectionString;
                 var dataProtectionKeysDatabase = configuration.DataProtectionKeysDatabase;
