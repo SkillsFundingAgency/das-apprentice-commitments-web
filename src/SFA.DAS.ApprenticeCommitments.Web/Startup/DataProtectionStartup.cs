@@ -20,13 +20,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     .SetApplicationName("apprentice-commitments");
             }
             else if (configuration != null)
-            {
+            {               
                 var redisConnectionString = configuration.RedisConnectionString;
                 var dataProtectionKeysDatabase = configuration.DataProtectionKeysDatabase;
 
                 services.AddDistributedRedisCache(options =>
                 {
-                    options.Configuration = $"{redisConnectionString},{dataProtectionKeysDatabase}";
+                    options.Configuration = $"{redisConnectionString},{"DefaultDatabase=0"}";
                 });
 
                 var redis = ConnectionMultiplexer
@@ -44,6 +44,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     public class DataProtectionConnectionStrings
     {
         public string RedisConnectionString { get; set; } = null!;
-        public string DataProtectionKeysDatabase { get; set; } = null!;
+        public string DataProtectionKeysDatabase { get; set; } = null!;        
     }
 }
