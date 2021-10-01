@@ -38,6 +38,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
@@ -45,6 +46,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     options.Cookie.Name = ".Apprenticeships.Application";
                     //options.Cookie.HttpOnly = true;
                     options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.SlidingExpiration = true;
                     options.ExpireTimeSpan = System.TimeSpan.FromHours(1);
                 })
