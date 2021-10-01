@@ -51,14 +51,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             await TryApi(() => _client.CreateApprenticeAccount(apprentice));
         }
 
-        internal async Task UpdateApprentice(Guid apprenticeId, string firstName, string lastName, DateTime dateOfBirth)
+        internal async Task UpdateApprentice(Guid apprenticeId, string firstName, string lastName)
         {
             await TryApi(async () =>
             {
                 var patch = new JsonPatchDocument<Apprentice>()
                     .Replace(x => x.FirstName, firstName)
-                    .Replace(x => x.LastName, lastName)
-                    .Replace(x => x.DateOfBirth, dateOfBirth);
+                    .Replace(x => x.LastName, lastName);
 
                 await _client.UpdateApprentice(apprenticeId, patch);
             });

@@ -61,7 +61,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             try
             {
-                await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
+                await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName);
 
                 return RedirectAfterUpdate();
             }
