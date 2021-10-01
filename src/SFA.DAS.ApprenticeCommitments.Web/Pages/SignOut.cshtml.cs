@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using Microsoft.AspNetCore.Authentication;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
+using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
@@ -30,7 +32,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
             {
                 var cookies = HttpContext.Request.Cookies.Where(x => x.Key.Contains("Apprenticeships") || x.Key.Contains("AspNetCore")).ToList();
 
-                cookies.ForEach(x => Response.Cookies.Delete(x.Key));
+                //cookies.ForEach(x => Response.Cookies.Delete(x.Key));
+                cookies.ForEach(x =>
+                {
+                    var options = new CookieOptions { Expires = System.DateTime.Now.AddDays(-1) };
+                    this.Response.Cookies.Append(x.Key, x.Value, options);
+                });
             }
 
             return result;
