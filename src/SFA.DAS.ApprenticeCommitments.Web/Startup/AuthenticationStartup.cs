@@ -45,10 +45,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 {
                     options.Cookie.Name = ".Apprenticeships.Application";
                     //options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.SlidingExpiration = true;
                     options.ExpireTimeSpan = System.TimeSpan.FromHours(1);
+                    options.CookieManager = new ChunkingCookieManager();
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
