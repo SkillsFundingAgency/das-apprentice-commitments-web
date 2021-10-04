@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             IWebHostEnvironment environment)
         {
             services
-                .AddApplicationAuthentication(config)
+                .AddApplicationAuthentication(config, environment)
                 .AddApplicationAuthorisation();
 
             services.AddTransient((_) => config);
@@ -27,7 +27,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
         private static IServiceCollection AddApplicationAuthentication(
             this IServiceCollection services,
-            AuthenticationServiceConfiguration config)
+            AuthenticationServiceConfiguration config,
+            IWebHostEnvironment environment)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -50,6 +51,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     options.SlidingExpiration = true;
                     options.ExpireTimeSpan = System.TimeSpan.FromHours(1);
                     //options.CookieManager = new ChunkingCookieManager();
+                    if (environment.EnvironmentName != "Development")
+                    {
+                        options.Cookie.Domain = ".apprenticeships.education.gov.uk";
+                    }
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
