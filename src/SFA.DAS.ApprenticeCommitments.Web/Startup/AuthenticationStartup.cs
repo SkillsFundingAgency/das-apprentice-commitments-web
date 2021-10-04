@@ -39,22 +39,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    //options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
                     options.Cookie.Name = ".Apprenticeships.Application";
-                    //options.Cookie.HttpOnly = true;
-                    //options.Cookie.SameSite = SameSiteMode.Lax;
-                    //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.HttpOnly = true;
                     options.SlidingExpiration = true;
-                    options.ExpireTimeSpan = System.TimeSpan.FromHours(1);
-                    //options.CookieManager = new ChunkingCookieManager();
+                    options.ExpireTimeSpan = System.TimeSpan.FromHours(1);                    
                     if (environment.EnvironmentName != "Development")
-                    {
                         options.Cookie.Domain = ".apprenticeships.education.gov.uk";
-                    }
                 })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                 {
