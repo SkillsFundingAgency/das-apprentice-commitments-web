@@ -33,7 +33,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         [BindProperty]
         public DateModel DateOfBirth { get; set; } = null!;
 
-        public string FormHandler { get; private set; } = "";
+        public string FormHandler => IsCreating ? "Register" : "";
+
+        public bool IsCreating { get; private set; } = false;
+
+        public bool CanEditDateOfBirth { get; set; } = false;
 
         public async Task<IActionResult> OnGetAsync(
             [FromServices] AuthenticatedUser user)
@@ -43,10 +47,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
             if (apprentice == null)
             {
-                FormHandler = "Register";
+                IsCreating = true;
+                CanEditDateOfBirth = true;
             }
             else
             {
+                var apprenticeship = await _apprentices.TryGetApprenticeships(user.ApprenticeId);
+                CanEditDateOfBirth = !(apprenticeship?.Apprenticeships?.Count() > 0);
+
                 FirstName = apprentice.FirstName;
                 LastName = apprentice.LastName;
                 DateOfBirth = new DateModel(apprentice.DateOfBirth);
@@ -59,7 +67,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             try
             {
-                await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName, DateOfBirth.Date);
+                var dob = DateOfBirth.Date == default ? null : (DateTime?)DateOfBirth.Date;
+                await _apprentices.UpdateApprentice(user.ApprenticeId, FirstName, LastName, dob);
 
                 return RedirectAfterUpdate();
             }
@@ -72,7 +81,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public async Task<IActionResult> OnPostRegister([FromServices] AuthenticatedUser user)
         {
-            FormHandler = "Register";
+            IsCreating = true;
 
             try
             {
