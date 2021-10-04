@@ -1,7 +1,9 @@
 ﻿@page "/account"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.AccountModel
 @{
-    ViewData["Title"] = Model.FormHandler == "Register" ? "Create My apprenticeship account" : "Edit My apprenticeship account"; ;
+    ViewData["Title"] = Model.IsCreating ? "Create My apprenticeship account" : "Change your personal details";
+
+    var ctaName = Model.IsCreating ? "Continue" : "Save and update";
 
     bool IsInvalid(string propertyName) =>
         ViewData.ModelState[propertyName]?.ValidationState ==
@@ -11,23 +13,22 @@
         => IsInvalid(propertyName) ? "govuk-form-group--error" : "";
 }
 
-
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-            @if (Model.FormHandler == "Register")
+            <h1 class="govuk-heading-xl">@ViewData["Title"]</h1>
+
+            @if (Model.IsCreating)
             {
-                <h1 class="govuk-heading-xl">Create My apprenticeship account</h1>
                 <p>
                     Enter your name and date of birth to complete the set-up of your account. You can then confirm your apprenticeship details.
                 </p>
             }
             else
             {
-                <h1 class="govuk-heading-xl">Edit My apprenticeship account</h1>
                 <p>
-                    Check your name and date of birth are correct so that we can use them to find your apprenticeship details.
+                    You can update your personal details. If your personal details are incorrect, 
+                    we won't be able to display your apprenticeship details to you.
                 </p>
             }
 
@@ -62,26 +63,26 @@
                             <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Day">Day</label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 length-limit" asp-for="DateOfBirth.Day" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric" maxlength="2" min="1" max="31">
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 length-limit" asp-for="DateOfBirth.Day" asp-disabled=@(!Model.CanEditDateOfBirth) type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric" maxlength="2" min="1" max="31">
                                 </div>
                             </div>
                             <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Month">Month</label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 length-limit" asp-for="DateOfBirth.Month" type="text" autocomplete="bday-month" pattern="[0-9]*" inputmode="numeric" maxlength="2" min="1" max="12">
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 length-limit" asp-for="DateOfBirth.Month" asp-disabled=@(!Model.CanEditDateOfBirth) type="text" autocomplete="bday-month" pattern="[0-9]*" inputmode="numeric" maxlength="2" min="1" max="12">
                                 </div>
                             </div>
                             <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Year">Year</label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4 length-limit" asp-for="DateOfBirth.Year" type="text" autocomplete="bday-year" pattern="[0-9]*" inputmode="numeric" maxlength="4" min="1900" max="9999">
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4 length-limit" asp-for="DateOfBirth.Year" asp-disabled=@(!Model.CanEditDateOfBirth) type="text" autocomplete="bday-year" pattern="[0-9]*" inputmode="numeric" maxlength="4" min="1900" max="9999">
                                 </div>
                             </div>
                         </div>
                     </fieldset>
                 </div>
 
-                <button class="govuk-button" data-module="govuk-button" id="identity-assurance-btn">Continue</button>
+                <button class="govuk-button" data-module="govuk-button" id="identity-assurance-btn">@ctaName</button>
             </form>
         </div>
     </div>
