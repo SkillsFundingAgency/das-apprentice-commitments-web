@@ -14,9 +14,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
                 Response.Cookies.Delete(cookie);
             }
 
-            return SignOut(
-                            CookieAuthenticationDefaults.AuthenticationScheme,
-                            OpenIdConnectDefaults.AuthenticationScheme);
+            return SignOut(CookieAuthenticationDefaults.AuthenticationScheme,
+                           OpenIdConnectDefaults.AuthenticationScheme);
         }
     }
 }
