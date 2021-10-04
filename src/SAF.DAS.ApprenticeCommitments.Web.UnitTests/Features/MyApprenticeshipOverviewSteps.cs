@@ -173,7 +173,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.DisplayChangeNotification.Should().BeFalse();
+            model.ShowChangeNotification.Should().BeFalse();
         }
 
         [Then("the apprentice should see the change notification banner")]
@@ -181,7 +181,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.DisplayChangeNotification.Should().BeTrue();
+            model.ShowChangeNotification.Should().BeTrue();
         }
     }
 }

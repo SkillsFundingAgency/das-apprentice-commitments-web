@@ -1,4 +1,5 @@
 ﻿using System;
+using SFA.DAS.ApprenticeCommitments.Types;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
@@ -23,6 +24,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public int DurationInMonths { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime PlannedEndDate { get; set; }
-        public bool DisplayChangeNotification { get; set; }
+        public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
     }
 }

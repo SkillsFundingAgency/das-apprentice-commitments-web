@@ -8,6 +8,8 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.SharedUi.Identity;
 using System;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SFA.DAS.ApprenticeCommitments.Types;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -41,7 +43,40 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
         public bool? HowApprenticeshipWillBeDeliveredConfirmation { get; set; } = null;
 
-        public bool DisplayChangeNotification { get; set; }
+        public ChangeOfCircumstanceNotifications ChangeNotifications { get; set; }
+        public bool ShowChangeNotification => ChangeNotifications != ChangeOfCircumstanceNotifications.None;
+
+        public string BuildChangeNotificationMessage()
+        {
+            var message = "Your ";
+
+            switch (ChangeNotifications)
+            {
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "training provider, employer and apprenticeship";
+                    break;
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
+                    message += "training provider and employer";
+                    break;
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "training provider and apprenticeship";
+                    break;
+                case ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "employer and apprenticeship";
+                    break;
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged:
+                    message += "training provider";
+                    break;
+                case ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
+                    message += "employer";
+                    break;
+                case ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "apprenticeship";
+                    break;
+            }
+
+            return message += " details have been corrected. Please review and confirm the apprenticeship details";
+        }
 
         public bool ApprenticeshipConfirmed => Status == ConfirmStatus.ApprenticeshipComplete;
 
@@ -76,7 +111,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
-            DisplayChangeNotification = apprenticeship.DisplayChangeNotification;
+            ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 

@@ -10,7 +10,7 @@
 
     <p>Read through each section below to confirm your apprenticeship. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
 
-    <div asp-show="!@Model.DisplayChangeNotification" class="govuk-warning-text">
+    <div asp-show="!@Model.ShowChangeNotification" class="govuk-warning-text">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
             <span class="govuk-warning-text__assistive">Warning</span>
@@ -22,7 +22,7 @@
             </span>
         </strong>
     </div>
-    <div asp-show="@Model.DisplayChangeNotification" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div asp-show="@Model.ShowChangeNotification" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
         <div class="govuk-notification-banner__header">
             <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                 Important
@@ -30,7 +30,7 @@
         </div>
         <div class="govuk-notification-banner__content">
             <p class="govuk-notification-banner__heading">
-                Changes have been made to your apprenticeship.  Please review and confirm your new details.
+                @Model.BuildChangeNotificationMessage()
             </p>
             <p class="govuk-notification-banner__heading">
                 <span asp-hide="@Model.Overdue">
