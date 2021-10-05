@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
@@ -9,7 +10,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     {
         public IActionResult OnGet()
         {
-            foreach (var cookie in Request.Cookies.Keys)
+            foreach (var cookie in Request.Cookies.Keys.Where(x => x.Contains("Apprenticeships")))
             {
                 Response.Cookies.Delete(cookie);
             }
