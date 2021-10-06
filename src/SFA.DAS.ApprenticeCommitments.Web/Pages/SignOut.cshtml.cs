@@ -10,7 +10,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
     {
         public IActionResult OnGet()
         {
-            foreach (var cookie in Request.Cookies.Keys.Where(x => x.Contains("Apprenticeships")))
+            foreach (var cookie in Request.Cookies.Keys.Where(x => x.Contains(".Apprenticeships.Application")))
             {
                 Response.Cookies.Delete(cookie);
             }
