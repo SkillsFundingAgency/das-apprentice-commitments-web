@@ -22,12 +22,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _RolesAndResponsibilitiesConf, _HowApprenticeshipWillBeDeliveredConf;
         private DateTime _confirmationDeadline;
         private ChangeOfCircumstanceNotifications _changeOfCircumstanceNotifications;
+        private long _revisionId;
 
         public MyApprenticeOverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
+            _revisionId = 21;
         }
 
         [Given("the apprentice has logged in")]
@@ -79,7 +81,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         .WithBodyAsJson(new
                         {
                             _apprenticeshipId.Id,
-                            CommitmentStatementId = 21,
+                            RevisionId = _revisionId,
                             ConfirmBefore = _confirmationDeadline,
                             EmployerCorrect = _EmployerConf,
                             TrainingProviderCorrect = _TrainingProviderConf,
@@ -116,12 +118,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.Should().NotBeNull();
         }
 
-        [Then("the apprenticeship is updated with the time the page was viewed")]
+        [Then("the apprenticeship revision is updated with the time the page was viewed")]
         public void ThenTheApprenticeshipIsUpdatedWithTheTimeThePageWasViewed()
         {
             var request = _context.OuterApi.MockServer.LogEntries
                 .Should().Contain(x =>
-                    x.RequestMessage.Path == $"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId.Id}" &&
+                    x.RequestMessage.Path == $"/apprentices/{_userContext.ApprenticeId}/apprenticeships/{_apprenticeshipId.Id}/revisions/{_revisionId}" &&
                     x.RequestMessage.Method == "PATCH").Which;
 
             JArray patch = (JArray)request.RequestMessage.BodyAsJson;

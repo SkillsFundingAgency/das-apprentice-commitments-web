@@ -13,7 +13,7 @@ Scenario: The apprentice is authenticated and should see the overview page
 	When accessing the overview page
 	Then the response status code should be Ok
 	And the apprentice should not see the change notification banner
-	And the apprenticeship is updated with the time the page was viewed
+	And the apprenticeship revision is updated with the time the page was viewed
 
 Scenario: The apprentice has not confirmed every aspect of the apprenciceship
 	Given the apprentice has logged in
