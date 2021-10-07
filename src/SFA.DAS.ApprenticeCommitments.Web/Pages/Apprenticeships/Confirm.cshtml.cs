@@ -8,7 +8,6 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.SharedUi.Identity;
 using System;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -76,7 +75,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                     break;
             }
 
-            return message += " details have been corrected. Please review and confirm the apprenticeship details";
+            return message + " details have been corrected. Please review and confirm the apprenticeship details";
         }
 
         public bool ApprenticeshipConfirmed => Status == ConfirmStatus.ApprenticeshipComplete;
