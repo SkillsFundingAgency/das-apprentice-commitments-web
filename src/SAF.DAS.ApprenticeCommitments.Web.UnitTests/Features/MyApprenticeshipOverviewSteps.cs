@@ -5,6 +5,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -20,7 +21,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private HashedId _apprenticeshipId;
         private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _RolesAndResponsibilitiesConf, _HowApprenticeshipWillBeDeliveredConf;
         private DateTime _confirmationDeadline;
-        private bool _apprenticeshipHasChanged;
+        private ChangeOfCircumstanceNotifications _changeOfCircumstanceNotifications;
 
         public MyApprenticeOverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -47,10 +48,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Time.Now = now;
         }
 
-        [Given("the apprenticeship has changed")]
-        public void GivenTheApprenticeshipHasChanged()
+        [Given(@"the apprenticeship has changes to these sections : (.*), (.*), (.*)")]
+        public void GivenTheApprenticeshipHasChabgesToTheseSections(bool providerChanged, bool employerChanged, bool apprenticeshipChanged)
         {
-            _apprenticeshipHasChanged = true;
+            var coc = ChangeOfCircumstanceNotifications.None;
+            if (providerChanged) 
+                coc |= ChangeOfCircumstanceNotifications.ProviderDetailsChanged;
+            if (employerChanged)
+                coc |= ChangeOfCircumstanceNotifications.EmployerDetailsChanged;
+            if(apprenticeshipChanged)
+                coc |= ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged;
+
+            SetCoC(coc);
+        }
+
+        private void SetCoC(ChangeOfCircumstanceNotifications coc)
+        {
+            _changeOfCircumstanceNotifications = coc;
         }
 
         [Given("the apprentice will navigate to the overview page")]
@@ -72,7 +86,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             ApprenticeshipDetailsCorrect = _ApprenticeshipDetailsConf,
                             RolesAndResponsibilitiesCorrect = _RolesAndResponsibilitiesConf,
                             HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf,
-                            DisplayChangeNotification = _apprenticeshipHasChanged,
+                            ChangeOfCircumstanceNotifications = _changeOfCircumstanceNotifications,
                         }));
 
             _context.OuterApi.MockServer
@@ -182,6 +196,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
             model.Should().NotBeNull();
             model.ShowChangeNotification.Should().BeTrue();
+        }
+
+        [Then(@"the message starts like (.*)")]
+        public void ThenTheMessageStartsLike(string expectedMessage)
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.ChangeNotificationsMessage.Should().StartWith(expectedMessage);
         }
     }
 }

@@ -9,7 +9,6 @@ using SFA.DAS.ApprenticePortal.SharedUi.Identity;
 using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SFA.DAS.ApprenticeCommitments.Types;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -46,7 +45,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public ChangeOfCircumstanceNotifications ChangeNotifications { get; set; }
         public bool ShowChangeNotification => ChangeNotifications != ChangeOfCircumstanceNotifications.None;
 
-        public string BuildChangeNotificationMessage()
+        public string ChangeNotificationsMessage => BuildChangeNotificationMessage();
+
+        private string BuildChangeNotificationMessage()
         {
             var message = "Your ";
 

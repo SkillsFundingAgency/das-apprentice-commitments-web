@@ -1,5 +1,4 @@
 ﻿using System;
-using SFA.DAS.ApprenticeCommitments.Types;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
@@ -25,5 +24,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime PlannedStartDate { get; set; }
         public DateTime PlannedEndDate { get; set; }
         public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
+    }
+
+    [Flags]
+    public enum ChangeOfCircumstanceNotifications
+    {
+        None = 0,
+        EmployerDetailsChanged = 1,
+        ProviderDetailsChanged = 2,
+        ApprenticeshipDetailsChanged = 4,
     }
 }

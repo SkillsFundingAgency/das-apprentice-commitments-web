@@ -52,8 +52,19 @@ Scenario: The apprentice is shown days remaining for confirmation
 
 Scenario: The apprentice is shown the change of circumstances notification
 	Given the apprentice has logged in
-	And the apprenticeship has changed
+	And the apprenticeship has changes to these sections : <Provider Changed>, <Employer Changed>, <Apprenticeship Changed> 
 	And the apprentice will navigate to the overview page
 	When accessing the overview page
 	Then the response status code should be Ok
 	And the apprentice should see the change notification banner
+	And the message starts like <Expected Message Starts Like>
+
+		Examples: 
+	| Provider Changed | Employer Changed | Apprenticeship Changed | Expected Message Starts Like                                |
+	| true             | false            | false                  | Your training provider details                              |
+	| true             | true             | false                  | Your training provider and employer details                 |
+	| true             | true             | true                   | Your training provider, employer and apprenticeship details |
+	| false            | true             | false                  | Your employer details                                       |
+	| false            | false            | true                   | Your apprenticeship details                                 |
+	| false            | true             | true                   | Your employer and apprenticeship details                    |
+
