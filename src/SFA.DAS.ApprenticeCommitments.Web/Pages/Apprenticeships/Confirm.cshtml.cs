@@ -31,7 +31,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
-        public long CommitmentStatementId { get; set; }
+        public long RevisionId { get; set; }
 
         public int DaysRemaining { get; set; }
         public bool Overdue => DaysRemaining <= 0;
@@ -106,7 +106,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             Status = ConfirmationStatus(apprenticeship);
             DaysRemaining = CalculateDaysRemaining(apprenticeship);
 
-            CommitmentStatementId = apprenticeship.RevisionId;
+            RevisionId = apprenticeship.RevisionId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
@@ -117,7 +117,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 
             _logger.LogInformation($"Marking apprenticeship as viewed {_authenticatedUser.ApprenticeId}, {ApprenticeshipId.Id}");
-            await _client.UpdateApprenticeshipLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId);
+            await _client.UpdateRevisionLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId);
         }
 
         private ConfirmStatus ConfirmationStatus(Apprenticeship apprenticeship)
@@ -152,7 +152,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task<IActionResult> OnPostConfirm()
         {
             await _client.ConfirmApprenticeship(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId,
                 new ApprenticeshipConfirmationRequest(true));
 
             return Redirect(Forwardlink);
