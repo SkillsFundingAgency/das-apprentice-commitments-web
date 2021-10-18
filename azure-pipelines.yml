@@ -12,10 +12,6 @@ variables:
 - name: BuildConfiguration
   value: 'release'
 
-pool:
-  name: 'DAS - Continuous Integration Agents'
-  demands: LATEST_DOTNET_VERSION -equals 3.1
-
 resources:
   repositories:
   - repository: self
