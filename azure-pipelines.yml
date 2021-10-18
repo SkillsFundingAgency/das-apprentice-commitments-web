@@ -13,7 +13,8 @@ variables:
   value: 'release'
 
 pool:
-  name: 'DAS - Continuous Integration'
+  name: 'DAS - Continuous Integration Agents'
+  demands: LATEST_DOTNET_VERSION -equals 3.1
 
 resources:
   repositories:
@@ -21,8 +22,8 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.3.29
-    endpoint: 'GitHub (SFA)'
+    ref: refs/tags/0.4.10
+    endpoint: SkillsFundingAgency
 
 stages:
 - stage: Build
