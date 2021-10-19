@@ -48,8 +48,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private string BuildChangeNotificationMessage()
         {
-            var message = "Your ";
 
+            if (ChangeNotifications == ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged)
+            {
+                return "The details of your apprenticeship have been corrected. Please review and confirm the changes to your apprenticeship details.";
+            }
+            
+            var message = "Your ";
             switch (ChangeNotifications)
             {
                 case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
@@ -70,12 +75,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 case ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
                     message += "employer";
                     break;
-                case ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
-                    message += "apprenticeship";
-                    break;
+                default:
+                    throw new ApplicationException($"ChangeNotification Type {ChangeNotifications} not found");
             }
 
-            return message + " details have been corrected. Please review and confirm the apprenticeship details";
+            return message + " details have been corrected. Please review and confirm the changes to your apprenticeship details.";
         }
 
         public bool ApprenticeshipConfirmed => Status == ConfirmStatus.ApprenticeshipComplete;
