@@ -82,6 +82,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     Response.Create()
                         .WithStatusCode(HttpStatusCode.OK));
 
+            _server.Given(
+                Request.Create()
+                    .WithPath("/apprentices")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create().WithStatusCode(HttpStatusCode.OK));
+
+            _server.Given(
+                Request.Create()
+                    .WithPath("/apprenticeships")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create().WithStatusCode(HttpStatusCode.OK));
+
             return this;
         }
 
