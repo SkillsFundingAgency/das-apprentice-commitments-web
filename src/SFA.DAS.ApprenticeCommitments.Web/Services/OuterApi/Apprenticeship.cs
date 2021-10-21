@@ -23,6 +23,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public int DurationInMonths { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime PlannedEndDate { get; set; }
-        public bool DisplayChangeNotification { get; set; }
+        public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
+    }
+
+    [Flags]
+    public enum ChangeOfCircumstanceNotifications
+    {
+        None = 0,
+        EmployerDetailsChanged = 1,
+        ProviderDetailsChanged = 2,
+        ApprenticeshipDetailsChanged = 4,
     }
 }

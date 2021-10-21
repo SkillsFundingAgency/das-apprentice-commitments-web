@@ -44,14 +44,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Task UpdateApprenticeship(
             [Path] Guid apprenticeId, [Path] long apprenticeshipId,
             [Body] JsonPatchDocument<Apprenticeship> patch);
+
+        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/revisions/{revisionId}")]
+        Task UpdateRevision([Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long revisionId, [Body] JsonPatchDocument<RevisionPatch> patch);
+
     }
 
     public static class OuterApiExtensions
     {
-        public static async Task UpdateApprenticeshipLastViewed(this IOuterApiClient client, Guid apprenticeId, long apprenticeship, long commitmentStatementId)
+        public static async Task UpdateRevisionLastViewed(this IOuterApiClient client, Guid apprenticeId, long apprenticeship, long revisionId)
         {
-            var patch = new JsonPatchDocument<Apprenticeship>().Replace(x => x.LastViewed, DateTime.UtcNow);
-            await client.UpdateApprenticeship(apprenticeId, apprenticeship, patch);
+            var patch = new JsonPatchDocument<RevisionPatch>().Replace(x => x.LastViewed, DateTime.UtcNow);
+            await client.UpdateRevision(apprenticeId, apprenticeship, revisionId, patch);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public HashedId ApprenticeshipId { get; set; }
 
         [BindProperty]
-        public long CommitmentStatementId { get; set; }
+        public long RevisionId { get; set; }
 
         public int DaysRemaining { get; set; }
         public bool Overdue => DaysRemaining <= 0;
@@ -41,7 +41,46 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public bool? RolesAndResponsibilitiesConfirmation { get; set; } = null;
         public bool? HowApprenticeshipWillBeDeliveredConfirmation { get; set; } = null;
 
-        public bool DisplayChangeNotification { get; set; }
+        public ChangeOfCircumstanceNotifications ChangeNotifications { get; set; }
+        public bool ShowChangeNotification => ChangeNotifications != ChangeOfCircumstanceNotifications.None;
+
+        public string ChangeNotificationsMessage => BuildChangeNotificationMessage();
+
+        private string BuildChangeNotificationMessage()
+        {
+
+            if (ChangeNotifications == ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged)
+            {
+                return "The details of your apprenticeship have been corrected. Please review and confirm the changes to your apprenticeship details.";
+            }
+            
+            var message = "Your ";
+            switch (ChangeNotifications)
+            {
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "training provider, employer and apprenticeship";
+                    break;
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
+                    message += "training provider and employer";
+                    break;
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "training provider and apprenticeship";
+                    break;
+                case ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
+                    message += "employer and apprenticeship";
+                    break;
+                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged:
+                    message += "training provider";
+                    break;
+                case ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
+                    message += "employer";
+                    break;
+                default:
+                    throw new ApplicationException($"ChangeNotification Type {ChangeNotifications} not found");
+            }
+
+            return message + " details have been corrected. Please review and confirm the changes to your apprenticeship details.";
+        }
 
         public bool ApprenticeshipConfirmed => Status == ConfirmStatus.ApprenticeshipComplete;
 
@@ -70,18 +109,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             Status = ConfirmationStatus(apprenticeship);
             DaysRemaining = CalculateDaysRemaining(apprenticeship);
 
-            CommitmentStatementId = apprenticeship.RevisionId;
+            RevisionId = apprenticeship.RevisionId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
-            DisplayChangeNotification = apprenticeship.DisplayChangeNotification;
+            ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 
             _logger.LogInformation($"Marking apprenticeship as viewed {_authenticatedUser.ApprenticeId}, {ApprenticeshipId.Id}");
-            await _client.UpdateApprenticeshipLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId);
+            await _client.UpdateRevisionLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId);
         }
 
         private ConfirmStatus ConfirmationStatus(Apprenticeship apprenticeship)
@@ -116,7 +155,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public async Task<IActionResult> OnPostConfirm()
         {
             await _client.ConfirmApprenticeship(
-                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, CommitmentStatementId,
+                _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId,
                 new ApprenticeshipConfirmationRequest(true));
 
             return Redirect(Forwardlink);
