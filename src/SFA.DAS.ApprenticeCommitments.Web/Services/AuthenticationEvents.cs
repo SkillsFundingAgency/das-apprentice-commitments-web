@@ -41,10 +41,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 
             AddClaims(principal, apprentice);
         }
+
         private async Task<Apprentice?> GetApprentice(ClaimsPrincipal principal)
         {
             var claim = principal.ApprenticeIdClaim();
-            
+
             if (Guid.TryParse(claim?.Value, out var apprenticeId))
                 return await _client.TryGetApprentice(apprenticeId);
             else
@@ -55,6 +56,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         {
             AddAccountCreatedClaim(principal);
             AddApprenticeNameClaims(apprentice, principal);
+            
+            if (apprentice.TermsOfUseAccepted)
+                AddTermsOfUseClaim(principal);
         }
 
         private static void AddAccountCreatedClaim(ClaimsPrincipal principal)
@@ -67,13 +71,27 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 new Claim(IdentityClaims.FamilyName, apprentice.LastName),
             }));
 
-        public static async Task UserAccountCreated(HttpContext context, Apprentice apprentice)
+        private static void AddTermsOfUseClaim(ClaimsPrincipal principal)
+            => principal.AddIdentity(TermsOfUseAcceptedClaim.CreateTermsOfUseAcceptedClaim());
+
+        internal static async Task UserAccountCreated(HttpContext context, Apprentice apprentice)
         {
             var authenticated = await context.AuthenticateAsync();
 
             if (authenticated.Succeeded)
             {
                 AddClaims(authenticated.Principal, apprentice);
+                await context.SignInAsync(authenticated.Principal, authenticated.Properties);
+            }
+        }
+
+        internal static async Task TermsOfUseAccepted(HttpContext context)
+        {
+            var authenticated = await context.AuthenticateAsync();
+
+            if (authenticated.Succeeded)
+            {
+                AddTermsOfUseClaim(authenticated.Principal);
                 await context.SignInAsync(authenticated.Principal, authenticated.Properties);
             }
         }

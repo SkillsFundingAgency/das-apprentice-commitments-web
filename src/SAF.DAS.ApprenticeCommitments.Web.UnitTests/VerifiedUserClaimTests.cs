@@ -24,6 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             identity.Claims.Should().NotContain(c => c.Type.Equals("AccountCreated", StringComparison.OrdinalIgnoreCase));
             identity.Claims.Should().NotContain(c => c.Type.Equals("GivenName", StringComparison.OrdinalIgnoreCase));
             identity.Claims.Should().NotContain(c => c.Type.Equals("FamilyName", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("TermsOfUse", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test, MoqAutoData]
@@ -36,6 +37,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             identity.Claims.Should().NotContain(c => c.Type.Equals("AccountCreated", StringComparison.OrdinalIgnoreCase));
             identity.Claims.Should().NotContain(c => c.Type.Equals("GivenName", StringComparison.OrdinalIgnoreCase));
             identity.Claims.Should().NotContain(c => c.Type.Equals("FamilyName", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("TermsOfUse", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test, MoqAutoData]
@@ -51,6 +53,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             identity.Claims.Should().NotContain(c => c.Type.Equals("AccountCreated", StringComparison.OrdinalIgnoreCase));
             identity.Claims.Should().NotContain(c => c.Type.Equals("GivenName", StringComparison.OrdinalIgnoreCase));
             identity.Claims.Should().NotContain(c => c.Type.Equals("FamilyName", StringComparison.OrdinalIgnoreCase));
+            identity.Claims.Should().NotContain(c => c.Type.Equals("TermsOfUse", StringComparison.OrdinalIgnoreCase));
         }
 
         [Test, MoqAutoData]
@@ -77,6 +80,38 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             {
                 Type = "family_name",
                 Value = apprentice.LastName,
+            });
+        }
+
+        [Test, MoqAutoData]
+        public async Task Users_that_have_created_but_not_accepted_terms_do_not_have_a_TermsOfUse_claim([Frozen] IOuterApiClient api, AuthenticationEvents sut, Guid apprenticeId, ClaimsPrincipal identity, Apprentice apprentice)
+        {
+            apprentice.TermsOfUseAccepted = false;
+            identity.AddIdentity(ApprenticeIdClaimsIdentity(apprenticeId));
+            Mock.Get(api)
+                .Setup(x => x.GetApprentice(apprenticeId))
+                .ReturnsAsync(apprentice);
+
+            await sut.AddClaims(identity);
+
+            identity.Claims.Should().NotContain(c => c.Type.Equals("TermsOfUse", StringComparison.OrdinalIgnoreCase));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Users_that_have_created_and_accepted_terms_have_a_TermsOfUse_claim([Frozen] IOuterApiClient api, AuthenticationEvents sut, Guid apprenticeId, ClaimsPrincipal identity, Apprentice apprentice)
+        {
+            apprentice.TermsOfUseAccepted = true;
+            identity.AddIdentity(ApprenticeIdClaimsIdentity(apprenticeId));
+            Mock.Get(api)
+                .Setup(x => x.GetApprentice(apprenticeId))
+                .ReturnsAsync(apprentice);
+
+            await sut.AddClaims(identity);
+
+            identity.Claims.Should().ContainEquivalentOf(new
+            {
+                Type = "TermsOfUseAccepted",
+                Value = "True",
             });
         }
 

@@ -15,8 +15,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (UserAccountCreatedClaim.UserHasNotCreatedAccount(context.HttpContext))
+            if (context.HttpContext.UserMustCreateAccount())
                 context.Result = new RedirectResult($"/Register{context.HttpContext.Request.QueryString}");
+
+            else if (context.HttpContext.UserMustAcceptTermsOfUse())
+                context.Result = new RedirectToPageResult("/TermsOfUse");
         }
     }
 }

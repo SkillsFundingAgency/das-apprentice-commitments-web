@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -61,7 +62,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             {
                 a.AddInMemoryCollection(_config);
             });
-            builder.UseEnvironment("LOCAL");
+            builder.UseEnvironment(Environments.Development);
         }
     }
 }

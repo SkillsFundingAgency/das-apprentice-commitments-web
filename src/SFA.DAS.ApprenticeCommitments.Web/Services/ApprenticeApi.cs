@@ -66,6 +66,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             });
         }
 
+        internal async Task AcceptTermsOfUse(Guid apprenticeId)
+        {
+            await TryApi(async () =>
+            {
+                await _client.UpdateApprentice(apprenticeId,
+                    new JsonPatchDocument<Apprentice>().Replace(x => x.TermsOfUseAccepted, true));
+            });
+        }
+
         internal async Task MatchApprenticeToApprenticeship(string registrationId, Guid apprenticeId)
         {
             await _client.ClaimApprenticeship(new ApprenticeshipAssociation

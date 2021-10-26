@@ -34,7 +34,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         [HttpGet("/register")]
         public async Task<IActionResult> Register()
         {
-            if (UserAccountCreatedClaim.UserHasNotCreatedAccount(HttpContext))
+            if (UserAccountCreatedClaim.UserMustCreateAccount(HttpContext))
                 return RedirectToPage("/Account", "register");
 
             if (!Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))

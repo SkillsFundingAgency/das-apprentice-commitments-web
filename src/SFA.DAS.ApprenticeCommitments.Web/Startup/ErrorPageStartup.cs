@@ -22,5 +22,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
             return app;
         }
+
+
+        public static bool IsDevelopmentOrTest(this IHostEnvironment hostEnvironment)
+        {
+            return hostEnvironment.IsEnvironment(Environments.Development) ||
+            hostEnvironment.IsEnvironment("LOCAL");
+        }
     }
 }

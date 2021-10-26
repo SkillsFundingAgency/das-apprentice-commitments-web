@@ -23,13 +23,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly RegisteredUserContext _userContext;
         private AccountModel _postedRegistration;
         private Apprentice _apprentice;
-        private string _registrationCode;
+        private readonly string _registrationCode;
 
         public CreateApprenticeAccountSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
             _context = context;
             _userContext = userContext;
             _registrationCode = Guid.NewGuid().ToString();
+
+            _context.OuterApi?.MockServer
+                .Given(Request.Create().UsingPatch().WithPath("/apprentices/*"))
+                .RespondWith(Response.Create().WithStatusCode(HttpStatusCode.OK));
         }
 
         [Given("the apprentice has not logged in")]
@@ -51,6 +55,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             GivenTheApprenticeHasNotCreatedTheirAccount();
         }
 
+        [Given("the apprentice has logged in but not accepted the terms of use")]
+        public void GivenTheApprenticeHasLoggedInButNotAcceptedTerms()
+        {
+            _context.Web.AuthoriseApprenticeWithoutTermsOfUse(_userContext.ApprenticeId);
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath("/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Apprenticeships = new object[0] { } }));
+        }
+
+
         [Given("the apprentice has logged in but not matched their account")]
         public void GivenTheApprenticeHasLoggedInButNotMatchedTheirAccount()
         {
@@ -67,7 +85,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("an unverified logged in user")]
         public void GivenAUserWithoutAccountHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUnverifiedUser(_userContext.ApprenticeId);
+            TestAuthenticationHandler.AddUserWithoutAccount(_userContext.ApprenticeId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
@@ -189,6 +207,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 FirstName = "Someone",
                 LastName = "Wurst",
                 DateOfBirth = new DateTime(2008, 08, 21),
+                TermsOfUseAccepted = true,
             };
 
             _context.OuterApi.MockServer.Given(
@@ -283,6 +302,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.FollowLocalRedirects();
         }
 
+        [When("the apprentice accepts the terms of use")]
+        public async Task WhenTheApprenticeAcceptsTheTermsOfUse()
+        {
+            await _context.Web.Post("TermsOfUse",
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "ApprenticeId", Guid.NewGuid().ToString() },
+                    { "TermsOfUseAccepted", "true" },
+                }));
+
+            await _context.Web.FollowLocalRedirects();
+        }
+
         [When("the apprentice updates their account with")]
         public async Task WhenTheApprenticeUpdatesTheirAccountWith(Table table)
         {
@@ -299,6 +331,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
                     { "EmailAddress", _postedRegistration?.EmailAddress },
+                    { "TermsOfUseAccepted", _apprentice?.TermsOfUseAccepted.ToString() },
                 }));
 
             await _context.Web.FollowLocalRedirects();
@@ -465,6 +498,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 Type = "family_name",
                 Value = lastName,
             });
+        }
+
+        [Then("the authentication includes the terms of use")]
+        public void TheAuthenticationIncludesTheTermsOfUse()
+        {
+            TestAuthenticationHandler.Authentications.Should().ContainSingle();
+            var claims = TestAuthenticationHandler.Authentications[0].Claims;
+            claims.Should().ContainEquivalentOf(new
+            {
+                Type = "TermsOfUseAccepted",
+                Value = "True",
+            });
+        }
+
+        [Then("the apprentice is shown the Terms of Use")]
+        public void TheApprenticeIsShownTheTermsOfUse()
+        {
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
         }
     }
 }
