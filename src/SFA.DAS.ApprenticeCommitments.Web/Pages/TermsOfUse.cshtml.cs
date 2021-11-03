@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 {
-
+    [HideNavigationBar]
     public class TermsOfUseModel : PageModel
     {
         private readonly AuthenticatedUser apprentice;
