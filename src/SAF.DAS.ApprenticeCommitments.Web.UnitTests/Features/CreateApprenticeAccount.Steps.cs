@@ -295,8 +295,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { "LastName", _postedRegistration.LastName },
                     { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
                     { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
-                    { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
+                     { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
                     { "EmailAddress", _postedRegistration?.EmailAddress },
+                    { "CanEditDateOfBirth", "true" },
                 }));
 
             await _context.Web.FollowLocalRedirects();
@@ -516,6 +517,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void TheApprenticeIsShownTheTermsOfUse()
         {
             _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
+        }
+
+        [Then("the DateOfBirth field is editable")]
+        public void ThenTheDateOfBirthFielIsEditable()
+        {
+            _context.ActionResult.LastPageResult.Model
+                .Should().BeOfType<AccountModel>()
+                .Which.CanEditDateOfBirth.Should().BeTrue();
         }
     }
 }

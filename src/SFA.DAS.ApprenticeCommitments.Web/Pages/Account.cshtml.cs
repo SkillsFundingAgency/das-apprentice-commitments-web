@@ -40,6 +40,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public bool IsCreating { get; private set; } = false;
 
+        [BindProperty]
         public bool CanEditDateOfBirth { get; set; } = false;
 
         public async Task<IActionResult> OnGetAsync(

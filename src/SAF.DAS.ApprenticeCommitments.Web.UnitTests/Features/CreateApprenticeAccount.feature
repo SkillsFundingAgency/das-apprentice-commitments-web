@@ -98,3 +98,4 @@ Scenario: The apprentice enters invalid identity information
 	| LastName      | Enter your last name     |
 	| DateOfBirth   | Enter your date of birth |
 	|               | Something went wrong     |
+	And the DateOfBirth field is editable
