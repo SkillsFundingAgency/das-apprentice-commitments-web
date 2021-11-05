@@ -1,6 +1,7 @@
 ﻿@page 
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.TermsOfUseModel
 @{
+    ViewData["Title"] = "Terms of use";
 }
 
 <div class="govuk-grid-row">
@@ -24,7 +25,7 @@
             <li>not allow anyone to confirm any data on your behalf</li>
             <li>not submit data on anyone else’s behalf</li>
             <li>sign out at the end of each session</li>
-            <li>adhere to the <a class="govuk-link" href="https://www.legislation.gov.uk/ukpga/1990/18/contents">computer misuse act</a> 1990</li>
+            <li>adhere to the <a class="govuk-link" href="https://www.legislation.gov.uk/ukpga/1990/18/contents" target="_blank" rel="noopener noreferrer">computer misuse act</a> 1990</li>
             <li>notify us of a change to your email address</li>
         </ul>
 
@@ -53,7 +54,7 @@
 
         <form method="post" id="terms-of-use">
             <input type="hidden" asp-for="TermsOfUseAccepted" value="true" />
-            <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+            <button class="govuk-button" data-module="govuk-button">Agree and continue</button>
         </form>
     </div>
 </div>
