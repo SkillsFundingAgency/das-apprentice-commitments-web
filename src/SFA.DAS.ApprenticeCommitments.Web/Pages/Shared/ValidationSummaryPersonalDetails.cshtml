@@ -27,6 +27,8 @@
                     {
                         var elementId = Html.GenerateIdFromName(ViewData.TemplateInfo.GetFullHtmlFieldName(stateItem.Key)) ?? stateItem.Key;
 
+                        if (elementId == "DateOfBirth") elementId = "DateOfBirth_Day";
+
                         foreach (var error in stateItem.Value.Errors)
                         {
                             <li class="govuk-error-summary__list">
