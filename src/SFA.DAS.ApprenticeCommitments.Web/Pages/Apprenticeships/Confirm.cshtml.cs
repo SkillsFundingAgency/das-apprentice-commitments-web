@@ -16,6 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         SectionsIncomplete,
         SectionsComplete,
         ApprenticeshipComplete,
+        Stopped
     }
 
     [RequiresIdentityConfirmed]
@@ -34,6 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public int DaysRemaining { get; set; }
         public bool Overdue => DaysRemaining <= 0;
+        public Apprenticeship displayedApprenticeship { get; set; }
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -116,6 +118,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed() ? true : (bool?)null;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
+            displayedApprenticeship = apprenticeship;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 
@@ -125,7 +128,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private ConfirmStatus ConfirmationStatus(Apprenticeship apprenticeship)
         {
-            if (apprenticeship.ConfirmedOn.HasValue)
+            if (apprenticeship.IsStopped)
+            {
+                return ConfirmStatus.Stopped;
+            }
+            else if (apprenticeship.ConfirmedOn.HasValue)
             {
                 return ConfirmStatus.ApprenticeshipComplete;
             }
