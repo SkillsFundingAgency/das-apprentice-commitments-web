@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public int DaysRemaining { get; set; }
         public bool Overdue => DaysRemaining <= 0;
-        public Apprenticeship displayedApprenticeship { get; set; }
+        public Apprenticeship displayedApprenticeship { get; set; } = null!;
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
