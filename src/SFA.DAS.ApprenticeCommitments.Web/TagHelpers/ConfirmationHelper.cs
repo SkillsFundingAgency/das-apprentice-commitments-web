@@ -57,14 +57,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
             output.Attributes.Add("class", "govuk-radios govuk-radios--inline");
             output.Content.SetHtmlContent(
                 $@"<div class=""govuk-radios__item"">
-                        <input class=""govuk-radios__input"" id=""confirm-yes"" name=""{For.Name}"" type=""radio"" value=""true"" {YesAttribute}>
-                        <label class=""govuk-label govuk-radios__label"" for=""confirm-yes"">
+                        <input class=""govuk-radios__input"" id=""{For.Name}"" name=""{For.Name}"" type=""radio"" value=""true"" {YesAttribute}>
+                        <label class=""govuk-label govuk-radios__label"" for=""{For.Name}"">
                             Yes
                         </label>
                     </div>
                     <div class=""govuk-radios__item"">
-                        <input class=""govuk-radios__input"" id=""confirm-no"" name=""{For.Name}"" type=""radio"" value=""false"">
-                        <label class=""govuk-label govuk-radios__label"" for=""confirm-no"">
+                        <input class=""govuk-radios__input"" id=""Not{For.Name}"" name=""{For.Name}"" type=""radio"" value=""false"">
+                        <label class=""govuk-label govuk-radios__label"" for=""Not{For.Name}"">
                             No
                         </label>
                     </div>");
