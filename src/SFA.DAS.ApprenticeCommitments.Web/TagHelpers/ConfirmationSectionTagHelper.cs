@@ -45,7 +45,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
             var encoded =
                 $@"<a href=""{url}"" class=""app-status-list__link {stateClass}"">" +
                 $@"<div class=""app-status-list__link-content"">" +
-                $@"<h3 class=""app-status-list__link-text"">{content}</h3>" +
+                $@"<p class=""app-status-list__link-text"">{content}</p>" +
                 $@"<strong class=""app-status-list__tag govuk-tag govuk-tag--{colourClass}"">{tag}</strong>" +
                 "</div>" +
                 "</a>";

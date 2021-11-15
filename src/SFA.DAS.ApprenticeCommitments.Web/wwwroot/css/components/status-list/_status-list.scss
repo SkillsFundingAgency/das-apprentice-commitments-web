@@ -94,10 +94,13 @@ li.app-status-list__list-item {
 
 .app-status-list__link-text {
     text-decoration: underline;
+    font-weight: $govuk-font-weight-bold;
+    font-size: 18px;
     margin: 0;
 
     @include govuk-media-query(tablet) {
         float: left;
+        font-size: 24px;
     }
 }
 
