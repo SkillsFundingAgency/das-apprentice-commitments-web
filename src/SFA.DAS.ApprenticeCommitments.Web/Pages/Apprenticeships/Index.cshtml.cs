@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
-using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.HashingService;
 using System.Threading.Tasks;
 
@@ -13,13 +12,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         private readonly ApprenticeApi _client;
         private readonly IHashingService _hashing;
-        private readonly NavigationUrlHelper _urlHelper;
 
-        public ApprenticeshipIndexModel(ApprenticeApi client, IHashingService hashing, NavigationUrlHelper urlHelper)
+        public ApprenticeshipIndexModel(ApprenticeApi client, IHashingService hashing)
         {
             _client = client;
             _hashing = hashing;
-            _urlHelper = urlHelper;
         }
 
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
@@ -36,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             if (apprenticeship == null) return RedirectToPage("/Account");
 
             if (apprenticeship.Apprenticeships.Count == 0)
-                return Redirect(_urlHelper.Generate(NavigationSection.Home, "Home?notification=ApprenticeshipDidNotMatch"));
+                return RedirectToPage("/CheckYourDetails");
 
             var firstApprenticeship = apprenticeship.Apprenticeships[0];
             var apprenticeshipId = _hashing.HashValue(firstApprenticeship.Id);

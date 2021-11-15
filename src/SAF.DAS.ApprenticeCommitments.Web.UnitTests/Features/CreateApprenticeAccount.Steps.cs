@@ -76,6 +76,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
+                    .WithPath("/apprentices/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new
+                    {
+                        FirstName = "Bob",
+                        LastName = "Bobbertson",
+                        DateOfBirth = new DateTime(2000, 01, 13)
+                    }));
+            _context.OuterApi.MockServer.Given(
+                Request.Create()
+                    .UsingGet()
                     .WithPath("/apprentices/*/apprenticeships"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
@@ -243,7 +255,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("the apprentice should be shown the Home page with a Not Matched notification")]
         public void ThenTheApprenticeShouldBeShownThePageWithNotMatched()
         {
-            ThenTheApprenticeShouldBeShownThePage("https://home/Home?notification=ApprenticeshipDidNotMatch");
+            _context.Web.Response.Should().Be2XXSuccessful();
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<CheckYourDetails>()
+                .Which.Should().BeEquivalentTo(new
+                {
+                    FirstName = "Bob",
+                    LastName = "Bobbertson",
+                    DateOfBirth = new DateTime(2000, 01, 13),
+                });
         }
 
         [Then(@"the apprentice should be shown the page ""(.*)""")]

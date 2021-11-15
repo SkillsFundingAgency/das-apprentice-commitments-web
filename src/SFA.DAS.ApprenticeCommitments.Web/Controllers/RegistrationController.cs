@@ -48,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             }
             catch
             {
-                return RedirectToNotice("ApprenticeshipDidNotMatch");
+                return RedirectToPage("/CheckYourDetails");
             }
         }
 
