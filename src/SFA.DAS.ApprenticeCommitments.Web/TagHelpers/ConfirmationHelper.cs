@@ -18,16 +18,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         }
     }
 
-    [HtmlTargetElement("form", Attributes = "confirmation-form")]
-    public class YesNoFormHelper : TagHelper
+
+    [HtmlTargetElement("yes-no-wrapper")]
+    public class YesNoWrapHelper : TagHelper
     {
         [ViewContext]
         public ViewContext ViewContext { get; set; } = null!;
-
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            output.TagName = "div";
+            output.Attributes.Add("class", "govuk-form-group");
+            output.PreContent.SetHtmlContent(@"<fieldset class=""govuk-fieldset"">");
+            output.PostContent.SetHtmlContent("</fieldset>");
+            
             if (ViewContext?.ModelState.IsValid == false)
-                output.Attributes.Add("class", "govuk-form-group--error");
+                output.Attributes.RemoveAll("class");
+                output.Attributes.Add("class", "govuk-form-group govuk-form-group--error");
         }
     }
 
@@ -36,12 +42,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
     {
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            output.TagName = "fieldset";
-            output.Attributes.Add("class", "govuk-fieldset");
-            output.PreContent.SetHtmlContent(@"<legend class=""govuk-fieldset__legend govuk-fieldset__legend--l""><h2 class=""govuk-fieldset__heading"">");
-            output.PostContent.SetHtmlContent("</h2></legend>");
+            output.TagName = "legend";
+            output.Attributes.Add("class", "govuk-fieldset__legend govuk-fieldset__legend--l");
+            output.PreContent.SetHtmlContent(@"<h2 class=""govuk-fieldset__heading"">");
+            output.PostContent.SetHtmlContent("</h2>");
         }
     }
+
+
 
     [HtmlTargetElement("yes-no-inputs")]
     public class YesNoInputsHelper : TagHelper
