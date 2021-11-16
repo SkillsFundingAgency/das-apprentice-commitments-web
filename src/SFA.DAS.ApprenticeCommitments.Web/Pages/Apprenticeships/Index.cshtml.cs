@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.HashingService;
+using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
@@ -12,11 +15,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
     {
         private readonly ApprenticeApi _client;
         private readonly IHashingService _hashing;
+        private readonly ILogger<ApprenticeshipIndexModel> _logger;
 
-        public ApprenticeshipIndexModel(ApprenticeApi client, IHashingService hashing)
+        public ApprenticeshipIndexModel(ApprenticeApi client, IHashingService hashing, ILogger<ApprenticeshipIndexModel> logger)
         {
             _client = client;
             _hashing = hashing;
+            _logger = logger;
         }
 
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
@@ -26,18 +31,49 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
-            if (HttpContext.Request.Query.ContainsKey("RegistrationCode"))
-                return RedirectToAction("Register", "Registration", new { RegistrationCode = HttpContext.Request.Query["RegistrationCode"] });
+            using var _ = _logger.BeginPropertyScope(("ApprenticeId", user.ApprenticeId));
 
-            var apprenticeship = await _client.TryGetApprenticeships(user.ApprenticeId);
-            if (apprenticeship == null) return RedirectToPage("/Account");
+            _logger.LogInformation("RedirectToLatestApprenticeship");
+
+            if (HttpContext.Request.Query.ContainsKey("RegistrationCode"))
+            {
+                _logger.LogInformation("RedirectToLatestApprenticeship - Found RegistrationCode {RegistrationCode}", HttpContext.Request.Query["RegistrationCode"]);
+                return RedirectToAction("Register", "Registration", new { RegistrationCode = HttpContext.Request.Query["RegistrationCode"] });
+            }
+
+            if (Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))
+            {
+                _logger.LogInformation("RedirectToLatestApprenticeship - *Would have* Found RegistrationCode {RegistrationCode}", HttpContext.Request.Query["RegistrationCode"]);
+            }
+
+                var apprenticeship = await _client.TryGetApprenticeships(user.ApprenticeId);
+            if (apprenticeship == null)
+            {
+                _logger.LogInformation("RedirectToLatestApprenticeship - No account found");
+                return RedirectToPage("/Account");
+            }
 
             if (apprenticeship.Apprenticeships.Count == 0)
+            {
+                _logger.LogInformation("RedirectToLatestApprenticeship - No apprenticeships found");
                 return RedirectToPage("/CheckYourDetails");
+            }
 
             var firstApprenticeship = apprenticeship.Apprenticeships[0];
             var apprenticeshipId = _hashing.HashValue(firstApprenticeship.Id);
             return RedirectToPage("Confirm", new { apprenticeshipId });
         }
+    }
+
+    public static class ExEx
+    {
+        public static IDisposable BeginPropertyScope(
+            this ILogger logger,
+            params ValueTuple<string, object>[] properties)
+        {
+            var dictionary = properties.ToDictionary(p => p.Item1, p => p.Item2);
+            return logger.BeginScope(dictionary);
+        }
+
     }
 }
