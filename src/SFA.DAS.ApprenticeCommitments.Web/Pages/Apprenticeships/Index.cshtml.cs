@@ -31,37 +31,31 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private async Task<IActionResult> RedirectToLatestApprenticeship(AuthenticatedUser user)
         {
-            using var _ = _logger.BeginPropertyScope(("ApprenticeId", user.ApprenticeId));
-
-            _logger.LogInformation("RedirectToLatestApprenticeship");
-
-            if (HttpContext.Request.Query.ContainsKey("RegistrationCode"))
+            using (_logger.BeginPropertyScope(("ApprenticeId", user.ApprenticeId)))
             {
-                _logger.LogInformation("RedirectToLatestApprenticeship - Found RegistrationCode {RegistrationCode}", HttpContext.Request.Query["RegistrationCode"]);
-                return RedirectToAction("Register", "Registration", new { RegistrationCode = HttpContext.Request.Query["RegistrationCode"] });
-            }
-
-            if (Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))
-            {
-                _logger.LogInformation("RedirectToLatestApprenticeship - *Would have* Found RegistrationCode {RegistrationCode}", HttpContext.Request.Query["RegistrationCode"]);
-            }
+                if (Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))
+                {
+                    _logger.LogInformation("RedirectToLatestApprenticeship - Found RegistrationCode {RegistrationCode}", registrationCode);
+                    return RedirectToAction("Register", "Registration", registrationCode);
+                }
 
                 var apprenticeship = await _client.TryGetApprenticeships(user.ApprenticeId);
-            if (apprenticeship == null)
-            {
-                _logger.LogInformation("RedirectToLatestApprenticeship - No account found");
-                return RedirectToPage("/Account");
-            }
+                if (apprenticeship == null)
+                {
+                    _logger.LogInformation("RedirectToLatestApprenticeship - No account found");
+                    return RedirectToPage("/Account");
+                }
 
-            if (apprenticeship.Apprenticeships.Count == 0)
-            {
-                _logger.LogInformation("RedirectToLatestApprenticeship - No apprenticeships found");
-                return RedirectToPage("/CheckYourDetails");
-            }
+                if (apprenticeship.Apprenticeships.Count == 0)
+                {
+                    _logger.LogInformation("RedirectToLatestApprenticeship - No apprenticeships found");
+                    return RedirectToPage("/CheckYourDetails");
+                }
 
-            var firstApprenticeship = apprenticeship.Apprenticeships[0];
-            var apprenticeshipId = _hashing.HashValue(firstApprenticeship.Id);
-            return RedirectToPage("Confirm", new { apprenticeshipId });
+                var firstApprenticeship = apprenticeship.Apprenticeships[0];
+                var apprenticeshipId = _hashing.HashValue(firstApprenticeship.Id);
+                return RedirectToPage("Confirm", new { apprenticeshipId });
+            }
         }
     }
 
