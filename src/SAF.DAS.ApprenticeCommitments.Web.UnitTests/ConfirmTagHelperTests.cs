@@ -24,7 +24,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
             await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
 
             var result = TagHelperOutput.Content.GetContent();
-            result.Should().Contain($@"<input class=""govuk-radios__input"" id=""confirm-yes"" name=""{name}"" type=""radio"" ");
+            result.Should().Contain($@"<input class=""govuk-radios__input"" id=""{name}"" name=""{name}"" type=""radio"" ");
         }
 
         [TestCase(true, "checked")]
