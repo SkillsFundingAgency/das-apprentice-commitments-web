@@ -113,7 +113,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
-            RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
+            RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed();
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
 
@@ -133,7 +133,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 apprenticeship.EmployerCorrect == true &&
                 apprenticeship.TrainingProviderCorrect == true &&
                 apprenticeship.ApprenticeshipDetailsCorrect == true &&
-                apprenticeship.RolesAndResponsibilitiesCorrect == true &&
+                apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed() &&
                 apprenticeship.HowApprenticeshipDeliveredCorrect == true)
             {
                 return ConfirmStatus.SectionsComplete;

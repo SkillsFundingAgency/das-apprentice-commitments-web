@@ -1,0 +1,22 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/rolesandresponsibilities/1"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilities.RolesAndResponsibilitiesForApprenticeModel
+@{ ViewData["Title"] = "Roles and Responsibilities - Your responsibilities as an apprentice"; }
+
+
+<div class="govuk-grid-row">
+    
+    <div class="govuk-grid-column-two-thirds">
+        
+        <partial name="ValidationSummary"/>
+
+        <h1 class="govuk-heading-l" id="roles-text">
+            Your responsibilities as an apprentice
+        </h1>
+        <partial name="_Apprentices"/>
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    </div>
+</div>
+
+<partial name="_SectionConfirmation" model="@Model"/>
+

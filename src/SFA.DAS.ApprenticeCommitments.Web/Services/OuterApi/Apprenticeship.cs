@@ -10,7 +10,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public string TrainingProviderName { get; set; } = null!;
         public bool? EmployerCorrect { get; set; }
         public bool? TrainingProviderCorrect { get; set; }
-        public bool? RolesAndResponsibilitiesCorrect { get; set; }
+        public RolesAndResponsibilitiesConfirmations RolesAndResponsibilitiesConfirmations { get; set; }
         public bool? ApprenticeshipDetailsCorrect { get; set; }
         public bool? HowApprenticeshipDeliveredCorrect { get; set; }
         public DateTime ConfirmBefore { get; set; }
@@ -33,5 +33,29 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         EmployerDetailsChanged = 1,
         ProviderDetailsChanged = 2,
         ApprenticeshipDetailsChanged = 4,
+    }
+
+    [Flags]
+    public enum RolesAndResponsibilitiesConfirmations
+    {
+        NoneConfirmed = 0,
+        ApprenticeRolesAndResponsibilitiesConfirmed = 1,
+        EmployerRolesAndResponsibilitiesConfirmed = 2,
+        ProviderRolesAndResponsibilitiesConfirmed = 4
+    }
+
+    public static class RolesAndResponsibilitiesConfirmationsExtensions
+    {
+        public static bool IsConfirmed(this RolesAndResponsibilitiesConfirmations confirmations)
+        {
+            if (confirmations.HasFlag(RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed) &&
+                confirmations.HasFlag(RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed) &&
+                confirmations.HasFlag(RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

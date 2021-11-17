@@ -1,0 +1,26 @@
+﻿@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilities.SectionConfirmationPageModel
+<form id="confirm-apprentice-responsibity" method="post">
+
+    <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
+
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                <span class="govuk-fieldset__heading">
+                    Confirmation
+                </span>
+            </legend>
+            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                <span asp-validation-for="SectionConfirmed" class="govuk-error-message"></span>
+                <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" asp-for="SectionConfirmed">
+                    <label class="govuk-label govuk-checkboxes__label" for="sectionConfirmed">
+                        I confirm I have read the roles and responsibilities.
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <button class="govuk-button" data-module="govuk-button" id="roles-responsibilities-confirm">Continue</button>
+</form>
