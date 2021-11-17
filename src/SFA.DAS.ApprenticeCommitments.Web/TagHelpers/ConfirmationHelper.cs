@@ -31,9 +31,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
             output.PreContent.SetHtmlContent(@"<fieldset class=""govuk-fieldset"">");
             output.PostContent.SetHtmlContent("</fieldset>");
             
-            if (ViewContext?.ModelState.IsValid == false)
+            if (ViewContext?.ModelState.IsValid == false) {
                 output.Attributes.RemoveAll("class");
                 output.Attributes.Add("class", "govuk-form-group govuk-form-group--error");
+            }
         }
     }
 
