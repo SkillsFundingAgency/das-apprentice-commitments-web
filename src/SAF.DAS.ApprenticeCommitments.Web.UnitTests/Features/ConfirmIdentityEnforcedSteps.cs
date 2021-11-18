@@ -88,8 +88,9 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("redirect the user to the home page with a NotMatched banner")]
         public void ThenRedirectTheUserToTheHomePageWithANotMatchedBanner()
         {
-            _context.Web.Response.Should().Be302Redirect()
-                .And.HaveHeader("Location").And.Match("https://home/Home?notification=ApprenticeshipDidNotMatch");
+            _context.Web.Response.Should().Be2XXSuccessful();
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<CheckYourDetails>();
         }
 
         [Then("redirect the user to the overview page")]
