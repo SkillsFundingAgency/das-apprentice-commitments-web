@@ -112,7 +112,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             RevisionId = apprenticeship.RevisionId;
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
-            ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
+            ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect == true ? true : (bool?)null;
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed() ? true : (bool?)null;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
