@@ -210,12 +210,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
-        [Given(@"the apprentice refuses to confirm their Roles and Responsibilities")]
-        public void GivenTheApprenticeRefusesToConfirmTheirRolesAndResponsibilities()
-        {
-            _rolesAndResponsibilitiesConfirmed = false;
-        }
-
         [Then(@"the user should be redirected to the cannot confirm apprenticeship page")]
         public void ThenTheUserShouldBeRedirectedToTheCannotConfirmApprenticeshipPage()
         {
@@ -223,12 +217,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.Should().NotBeNull();
             redirect.PageName.Should().Be("CannotConfirm");
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
-        }
-
-        [Given(@"the apprentice doesn't select an option")]
-        public void GivenTheApprenticeDoesnTSelectAnOption()
-        {
-            _rolesAndResponsibilitiesConfirmed = null;
         }
 
         [Then(@"the model should contain an error message")]
