@@ -74,19 +74,19 @@
 
 
 <ol class="govuk-list app-status-list">
-    <li confirmation-section asp-page="ConfirmYourEmployer" model="Model">
+    <li confirmation-section asp-page="ConfirmYourEmployer" model="Model" confirmation-status="@Model.EmployerConfirmation">
         Your employer
     </li>
-    <li confirmation-section asp-page="ConfirmYourTrainingProvider" model="Model">
+    <li confirmation-section asp-page="ConfirmYourTrainingProvider" model="Model" confirmation-status="@Model.TrainingProviderConfirmation">
         Your training provider
     </li>
-    <li confirmation-section asp-page="ConfirmYourApprenticeshipDetails" model="Model">
+    <li confirmation-section asp-page="ConfirmYourApprenticeshipDetails" model="Model" confirmation-status="@Model.ApprenticeshipConfirmed">
         Your apprenticeship details
     </li>
-    <li confirmation-section asp-page="HowYourApprenticeshipWillBeDelivered" model="Model">
+    <li confirmation-section asp-page="HowYourApprenticeshipWillBeDelivered" model="Model" confirmation-status="@Model.ApprenticeshipDetailsConfirmation">
         How your apprenticeship will be delivered
     </li>
-    <li confirmation-section asp-page="RolesAndResponsibilities/Index" model="Model">
+    <li confirmation-section asp-page="RolesAndResponsibilities/Index" model="Model" confirmation-status="@Model.RolesAndResponsibilitiesConfirmation">
         Roles and responsibilities
     </li>
 </ol>
