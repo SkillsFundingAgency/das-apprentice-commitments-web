@@ -9,6 +9,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
         public IActionResult LastActionResult { get; private set; }
         public ViewResult LastViewResult { get; private set; }
         public PageResult LastPageResult { get; private set; }
+        public RedirectToPageResult LastRedirectToPageResult { get; private set; } 
+
         public Exception LastException { get; private set; }
 
         public TestActionResult()
@@ -28,6 +30,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks
             else if (actionResult is PageResult pageResult)
             {
                 LastPageResult = pageResult;
+            }
+            else if (actionResult is RedirectToPageResult redirectResult)
+            {
+                LastRedirectToPageResult = redirectResult;
             }
         }
 
