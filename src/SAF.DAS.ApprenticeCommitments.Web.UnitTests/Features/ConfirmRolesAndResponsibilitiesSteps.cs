@@ -21,9 +21,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private HashedId _apprenticeshipId;
-        private long _revisionId;
-        private bool? _rolesAndResponsibilitiesConfirmed;
+        private readonly HashedId _apprenticeshipId;
+        private readonly long _revisionId;
         private bool _sectionConfirmed;
 
         public ConfirmRolesAndResponsibilitiesSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -49,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice has not verified their Roles and Responsibilities")]
         public void GivenTheApprenticeHasNotVerifiedTheirRolesAndResponsibilities()
         {
-            SetupApiConfirmation(RolesAndResponsibilitiesConfirmations.NoneConfirmed);
+            SetupApiConfirmation(RolesAndResponsibilitiesConfirmations.None);
         }
 
         [Given(@"the apprentice has confirmed the section (.*)")]

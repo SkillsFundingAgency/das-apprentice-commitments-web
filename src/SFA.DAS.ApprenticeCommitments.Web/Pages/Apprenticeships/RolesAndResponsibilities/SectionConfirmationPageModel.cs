@@ -66,7 +66,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
 
         protected async Task<IActionResult> SaveConfirmationStatus(RolesAndResponsibilitiesConfirmations rolesAndResponsibilitiesConfirmation)
         {
-            if (SectionConfirmed == false)
+            if (!SectionConfirmed)
             {
                 ModelState.AddModelError(nameof(SectionConfirmed), ConfirmationErrorMessage);
                 return new PageResult();

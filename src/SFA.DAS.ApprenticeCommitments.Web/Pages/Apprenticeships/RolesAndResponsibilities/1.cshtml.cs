@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
     [HideNavigationBar]
     public class RolesAndResponsibilitiesForApprenticeModel : SectionConfirmationPageModel
     {
-        private RolesAndResponsibilitiesConfirmations _rolesAndResponsibilitiesConfirmations =
+        private readonly RolesAndResponsibilitiesConfirmations _rolesAndResponsibilitiesConfirmations =
             RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed;
         public RolesAndResponsibilitiesForApprenticeModel(AuthenticatedUserClient client) : base(client, 1)
         { }

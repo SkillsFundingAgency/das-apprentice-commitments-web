@@ -6,7 +6,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-using StackExchange.Redis;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -143,7 +142,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 _ApprenticeshipDetailsConf =
                 _HowApprenticeshipWillBeDeliveredConf = false;
 
-            _RolesAndResponsibilitiesConf = RolesAndResponsibilitiesConfirmations.NoneConfirmed;
+            _RolesAndResponsibilitiesConf = RolesAndResponsibilitiesConfirmations.None;
         }
 
         [Then("the apprentice should not see the ready to confirm banner")]
