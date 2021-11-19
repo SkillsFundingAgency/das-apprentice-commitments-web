@@ -2,7 +2,6 @@
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -18,9 +17,10 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly RegisteredUserContext _userContext;
 
         public ConfirmIdentityEnforcedSteps(TestContext context, RegisteredUserContext userContext)
-        {
+         {
             _userContext = userContext;
             _context = context;
+            _context.ClearCookies();
         }
 
         [When("the user has not already confirmed their identity")]
