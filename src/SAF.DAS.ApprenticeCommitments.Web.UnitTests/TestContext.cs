@@ -2,6 +2,7 @@
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
 using System;
+using System.Net;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -14,6 +15,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         public IHashingService Hashing { get; set; }
         public SpecifiedTimeProvider Time { get; set; }
             = new SpecifiedTimeProvider(DateTimeOffset.UtcNow);
+
+        public void ClearCookies()
+        {
+            var address = new Uri(OuterApi.BaseAddress);
+            var cookies = Web.Cookies.GetCookies(address);
+            foreach (Cookie cookie in cookies) cookie.Expired = true;
+        }
     }
 
     public class RegisteredUserContext
