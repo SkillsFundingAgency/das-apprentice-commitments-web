@@ -53,10 +53,10 @@ Scenario: The apprentice is authenticated and is positively submitting each Role
 	Then apprentice is redirected to <NextPage>
 
 	Examples:
-	| Confirmation                                | Section | NextPage |
-	| ApprenticeRolesAndResponsibilitiesConfirmed | 1       | 2        |
-	| EmployerRolesAndResponsibilitiesConfirmed   | 2       | 3        |
-	| ProviderRolesAndResponsibilitiesConfirmed   | 3       | Index    |
+	| Confirmation                                | Section | NextPage               |
+	| ApprenticeRolesAndResponsibilitiesConfirmed | 1       | 2                      |
+	| EmployerRolesAndResponsibilitiesConfirmed   | 2       | 3                      |
+	| ProviderRolesAndResponsibilitiesConfirmed   | 3       | /Apprenticeships/Index |
 
 Scenario: The apprentice is authenticated and has already fully confirmed Roles and Responsibilities
 	Given the apprentice has logged in

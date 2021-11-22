@@ -36,7 +36,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
             get
             {
                 if (SectionPage == 3)
-                    return $"Index";
+                    return $"/Apprenticeships/Index";
                 return $"{SectionPage + 1}";
             }
         }
