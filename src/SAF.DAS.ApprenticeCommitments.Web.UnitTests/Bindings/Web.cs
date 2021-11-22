@@ -20,7 +20,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
     {
         private Fixture _fixture = new Fixture();
         public static HttpClient Client { get; set; }
-        public CookieContainer Cookies { get; set; }
+        public static CookieContainer Cookies { get; set; }
         public static Dictionary<string, string> Config { get; private set; }
         public static LocalWebApplicationFactory<ApplicationStartup> Factory { get; set; }
 
