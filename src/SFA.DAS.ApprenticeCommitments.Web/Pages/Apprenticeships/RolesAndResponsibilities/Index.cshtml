@@ -1,0 +1,25 @@
+﻿@page "/apprenticeships/{apprenticeshipId}/rolesandresponsibilities"
+@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilities.RolesAndResponsibilitiesModel
+@{ ViewData["Title"] = "Roles and Responsibilities"; }
+
+<div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l" id="roles-text">
+            Roles and responsibilities
+        </h1>
+        <p>Read through the roles and responsibilities for you, your employer and your training provider.</p>
+
+        <h2 class="govuk-heading-m">Your responsibilities as an apprentice</h2>
+        <partial name="_Apprentices" />
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+        <h2 class="govuk-heading-m">Your employer’s responsibilities</h2>
+        <partial name="_Employers" />
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+        <h2 class="govuk-heading-m">Your training provider’s responsibilities</h2>
+        <partial name="_Providers" />
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    </div>
+</div>

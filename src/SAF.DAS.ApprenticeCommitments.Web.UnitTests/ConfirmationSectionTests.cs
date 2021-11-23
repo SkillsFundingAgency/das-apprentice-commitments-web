@@ -35,9 +35,9 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
         }
 
         [Test, TestCustomisation]
-        public async Task Sets_complete_state_from_model(ConfirmationSectionTagHelper sut)
+        public async Task Sets_complete_state_from_confirmation_status(ConfirmationSectionTagHelper sut)
         {
-            sut.Model.EmployerConfirmation = true;
+            sut.ConfirmationStatus = true;
 
             sut.AspPage = "ConfirmYourEmployer";
             await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
@@ -50,7 +50,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
         [Test, TestCustomisation]
         public async Task Sets_incorrect_state_from_model(ConfirmationSectionTagHelper sut)
         {
-            sut.Model.EmployerConfirmation = false;
+            sut.ConfirmationStatus = false;
 
             sut.AspPage = "ConfirmYourEmployer";
             await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
@@ -63,7 +63,7 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests
         [Test, TestCustomisation]
         public async Task Sets_incomplete_state_from_model(ConfirmationSectionTagHelper sut)
         {
-            sut.Model.EmployerConfirmation = null;
+            sut.ConfirmationStatus = null;
 
             sut.AspPage = "ConfirmYourEmployer";
             await sut.ProcessAsync(TagHelperContext, TagHelperOutput);

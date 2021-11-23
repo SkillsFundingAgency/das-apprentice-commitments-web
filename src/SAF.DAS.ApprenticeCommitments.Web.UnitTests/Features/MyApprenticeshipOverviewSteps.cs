@@ -19,7 +19,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _RolesAndResponsibilitiesConf, _HowApprenticeshipWillBeDeliveredConf;
+        private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _HowApprenticeshipWillBeDeliveredConf;
+        private RolesAndResponsibilitiesConfirmations _RolesAndResponsibilitiesConf;
+
         private DateTime _confirmationDeadline;
         private ChangeOfCircumstanceNotifications _changeOfCircumstanceNotifications;
         private long _revisionId;
@@ -86,7 +88,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             EmployerCorrect = _EmployerConf,
                             TrainingProviderCorrect = _TrainingProviderConf,
                             ApprenticeshipDetailsCorrect = _ApprenticeshipDetailsConf,
-                            RolesAndResponsibilitiesCorrect = _RolesAndResponsibilitiesConf,
+                            RolesAndResponsibilitiesConfirmations = _RolesAndResponsibilitiesConf,
                             HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf,
                             ChangeOfCircumstanceNotifications = _changeOfCircumstanceNotifications,
                         }));
@@ -138,8 +140,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _EmployerConf =
                 _TrainingProviderConf =
                 _ApprenticeshipDetailsConf =
-                _RolesAndResponsibilitiesConf =
                 _HowApprenticeshipWillBeDeliveredConf = false;
+
+            _RolesAndResponsibilitiesConf = RolesAndResponsibilitiesConfirmations.None;
         }
 
         [Then("the apprentice should not see the ready to confirm banner")]
@@ -156,8 +159,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _EmployerConf =
                 _TrainingProviderConf =
                 _ApprenticeshipDetailsConf =
-                _RolesAndResponsibilitiesConf =
                 _HowApprenticeshipWillBeDeliveredConf = true;
+
+            _RolesAndResponsibilitiesConf = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed | 
+                                            RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed |
+                                            RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed;
         }
 
         [Then("the apprentice should see the ready to confirm banner")]

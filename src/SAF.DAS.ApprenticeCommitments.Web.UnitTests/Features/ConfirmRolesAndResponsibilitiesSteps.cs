@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
-using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilities;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -21,9 +21,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private HashedId _apprenticeshipId;
-        private long _revisionId;
-        private bool? _rolesAndResponsibilitiesConfirmed;
+        private readonly HashedId _apprenticeshipId;
+        private readonly long _revisionId;
+        private bool _sectionConfirmed;
 
         public ConfirmRolesAndResponsibilitiesSteps(TestContext context, RegisteredUserContext userContext) : base(context)
         {
@@ -48,16 +48,30 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice has not verified their Roles and Responsibilities")]
         public void GivenTheApprenticeHasNotVerifiedTheirRolesAndResponsibilities()
         {
-            SetupApiConfirmation(null);
+            SetupApiConfirmation(RolesAndResponsibilitiesConfirmations.None);
         }
 
-        [Given("the apprentice has negatively confirmed their Roles and Responsibilities")]
-        public void GivenTheApprenticeHasNegativelyConfirmedTheirRolesAndResponsibilities()
+        [Given(@"the apprentice has confirmed the section (.*)")]
+        public void GivenTheApprenticeHasConfirmedTheirApprenticeRolesAndResponsibilities(RolesAndResponsibilitiesConfirmations confirmations)
         {
-            SetupApiConfirmation(false);
+            SetupApiConfirmation(confirmations);
         }
 
-        private void SetupApiConfirmation(bool? confirmed)
+        [Given(@"the apprentice has verified their Roles and Responsibilities")]
+        public void GivenTheApprenticeHasVerifiedTheirRolesAndResponsibilities()
+        {
+            SetupApiConfirmation(RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed |
+                                 RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed |
+                                 RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed);
+        }
+
+        [Given("the apprentice has partly confirmed their Roles and Responsibilities")]
+        public void GivenTheApprenticeHasPartlyConfirmedTheirRolesAndResponsibilities()
+        {
+            SetupApiConfirmation(RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed);
+        }
+
+        private void SetupApiConfirmation(RolesAndResponsibilitiesConfirmations confirmations)
         {
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -69,14 +83,38 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         {
                             _apprenticeshipId.Id,
                             CommitmentStatementId = _revisionId,
-                            RolesAndResponsibilitiesCorrect = confirmed
+                            RolesAndResponsibilitiesConfirmations = confirmations
                         }));
         }
 
         [When(@"accessing the RolesAndResponsibilities page")]
         public async Task WhenAccessingTheRolesAndResponsibilitiesPage()
         {
-            await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities");
+            await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities/");
+        }
+
+
+        [When(@"accessing the confirm RolesAndResponsibilities\\(.*) page")]
+        public async Task WhenAccessingTheConfirmRolesAndResponsibilitiesPage(string section)
+        {
+            await _context.Web.Get($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities/{section}");
+        }
+
+        [Given(@"the apprentice is confirming the section with (.*)")]
+        public void GivenTheApprenticeIsConfirmingTheSection(bool confirmed)
+        {
+            _sectionConfirmed = confirmed;
+        }
+
+        [When(@"submitting the RolesAndResponsibilities\\(.*) page")]
+        public async Task WhenSubmittingTheRolesAndResponsibilitiesPage(string section)
+        {
+            await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities/{section}", 
+                new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { nameof(SectionConfirmationPageModel.RevisionId), _revisionId.ToString() },
+                    { nameof(SectionConfirmationPageModel.SectionConfirmed), _sectionConfirmed.ToString() }
+                }));
         }
 
         [Then("the response status code should be Ok")]
@@ -85,11 +123,51 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
+        [Then(@"the response status code should be Redirect")]
+        public void ThenTheResponseStatusCodeShouldBeRedirect()
+        {
+            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+        }
+
+        [Then(@"the redirect address is to the apprentice roles and responsibilities page")]
+        public void ThenTheRedirectAddressIsToTheApprenticeRolesAndResponsibilitiesPage()
+        {
+            var redirect = _context.ActionResult.LastRedirectToPageResult;
+            redirect.PageName.Should().Be("1");
+        }
+
         [Then(@"the apprentice should see the Roles and Responsibilities")]
         public void ThenTheApprenticeShouldSeeTheRolesAndResponsibilities()
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<RolesAndResponsibilitiesModel>();
+        }
+
+        [Then(@"the backlink will return to overview page")]
+        public void ThenTheBacklinkWillReturnToOverviewPage()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<RolesAndResponsibilitiesModel>().Which.Backlink.Should().Be($"/apprenticeships/{_apprenticeshipId.Hashed}");
+        }
+
+        [Then(@"the section confirmed checkbox should be already checked")]
+        public void ThenTheSectionConfirmedCheckboxShouldBeAlreadyChecked()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            var model = page.Model as SectionConfirmationPageModel;
+            model.Should().NotBeNull();
+            model.SectionConfirmed.Should().BeTrue();
+        }
+
+        [Then(@"backlink with return to (.*)")]
+        public void ThenBacklinkWithReturnTo(string backlink)
+        {
+            backlink = backlink.Replace("?", _apprenticeshipId.Hashed);
+
+            var page = _context.ActionResult.LastPageResult;
+            var model = page.Model as SectionConfirmationPageModel;
+            model.Should().NotBeNull();
+            model.Backlink.Should().Be(backlink);
         }
 
         [Then("the user should see the confirmation options")]
@@ -107,25 +185,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
         }
 
-        [Given(@"the apprentice confirms their Roles and Responsibilities")]
-        public void GivenTheApprenticeConfirmsTheirRolesAndResponsibilities()
-        {
-            _rolesAndResponsibilitiesConfirmed = true;
-        }
-
-        [When(@"submitting the RolesAndResponsibilities page")]
-        public async Task WhenSubmittingTheConfirmYourEmployerPage()
-        {
-            await _context.Web.Post($"/apprenticeships/{_apprenticeshipId.Hashed}/rolesandresponsibilities",
-                new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    { nameof(RolesAndResponsibilitiesModel.RevisionId), _revisionId.ToString() },
-                    { nameof(RolesAndResponsibilitiesModel.RolesAndResponsibilitiesConfirmed), _rolesAndResponsibilitiesConfirmed.ToString() }
-                }));
-        }
-
-        [Then(@"the apprenticeship is updated to show the a '(.*)' confirmation")]
-        public void ThenTheApprenticeshipIsUpdatedToShowTheConfirmation(bool confirm)
+        [Then(@"the (.*) should be saved")]
+        public void ThenTheShouldBeSaved(RolesAndResponsibilitiesConfirmations confirmation)
         {
             var updates = _context.OuterApi.MockServer.FindLogEntries(
                 Request.Create()
@@ -137,7 +198,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var post = updates.First();
 
             JsonConvert.DeserializeObject<ApprenticeshipConfirmationRequest>(post.RequestMessage.Body)
-                .Should().BeEquivalentTo(new { RolesAndResponsibilitiesCorrect = confirm });
+                .Should().BeEquivalentTo(new { RolesAndResponsibilitiesConfirmations = confirmation });
         }
 
         [Then(@"the user should be redirected back to the overview page")]
@@ -149,12 +210,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
-        [Given(@"the apprentice refuses to confirm their Roles and Responsibilities")]
-        public void GivenTheApprenticeRefusesToConfirmTheirRolesAndResponsibilities()
-        {
-            _rolesAndResponsibilitiesConfirmed = false;
-        }
-
         [Then(@"the user should be redirected to the cannot confirm apprenticeship page")]
         public void ThenTheUserShouldBeRedirectedToTheCannotConfirmApprenticeshipPage()
         {
@@ -164,18 +219,20 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             redirect.RouteValues["ApprenticeshipId"].Should().Be(_apprenticeshipId.Hashed);
         }
 
-        [Given(@"the apprentice doesn't select an option")]
-        public void GivenTheApprenticeDoesnTSelectAnOption()
-        {
-            _rolesAndResponsibilitiesConfirmed = null;
-        }
-
         [Then(@"the model should contain an error message")]
         public void ThenTheModelShouldContainAnErrorMessage()
         {
             var model = _context.ActionResult.LastPageResult.Model.As<RolesAndResponsibilitiesModel>();
             model.Should().NotBeNull();
             model.ModelState["RolesAndResponsibilitiesConfirmed"].Errors.Count.Should().Be(1);
+        }
+
+        [Then(@"apprentice is redirected to (.*)")]
+        public void ThenApprenticeIsRedirectedTo(string nextPage)
+        {
+            var redirect = _context.ActionResult.LastActionResult as RedirectToPageResult;
+            redirect.Should().NotBeNull();
+            redirect.PageName.Should().Be(nextPage);
         }
     }
 }
