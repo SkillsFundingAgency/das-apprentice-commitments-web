@@ -18,19 +18,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         }
     }
 
-    [HtmlTargetElement("form", Attributes = "confirmation-form")]
-    public class YesNoFormHelper : TagHelper
-    {
-        [ViewContext]
-        public ViewContext ViewContext { get; set; } = null!;
-
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-        {
-            if (ViewContext?.ModelState.IsValid == false)
-                output.Attributes.Add("class", "govuk-form-group--error");
-        }
-    }
-
     [HtmlTargetElement("yes-no-header")]
     public class YesNoHeaderHelper : TagHelper
     {
