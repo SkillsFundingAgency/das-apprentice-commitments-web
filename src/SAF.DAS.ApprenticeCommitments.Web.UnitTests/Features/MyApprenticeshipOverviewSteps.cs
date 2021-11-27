@@ -19,12 +19,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
         private HashedId _apprenticeshipId;
-        private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _HowApprenticeshipWillBeDeliveredConf, _IsStopped;
+        private bool _EmployerConf, _TrainingProviderConf, _ApprenticeshipDetailsConf, _HowApprenticeshipWillBeDeliveredConf, _isStopped;
         private RolesAndResponsibilitiesConfirmations _RolesAndResponsibilitiesConf;
         private DateTime _confirmationDeadline;
         private ChangeOfCircumstanceNotifications _changeOfCircumstanceNotifications;
         private long _revisionId;
-        private DateTime? _StoppedReceivedOn = null;
+        private DateTime? _stoppedReceivedOn = null;
 
 
         public MyApprenticeOverviewSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -92,8 +92,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             RolesAndResponsibilitiesConfirmations = _RolesAndResponsibilitiesConf,
                             HowApprenticeshipDeliveredCorrect = _HowApprenticeshipWillBeDeliveredConf,
                             ChangeOfCircumstanceNotifications = _changeOfCircumstanceNotifications,
-                            StoppedReceivedOn = _StoppedReceivedOn,
-                            IsStopped = _IsStopped
+                            StoppedReceivedOn = _stoppedReceivedOn,
+                            IsStopped = _isStopped
                         }));
 
             _context.OuterApi.MockServer
@@ -172,8 +172,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprenticeship is stopped")]
         public void WhenTheApprenciceshipIsStopped()
         {
-            _StoppedReceivedOn = DateTime.Now;
-            _IsStopped = true;
+            _stoppedReceivedOn = DateTime.Now;
+            _isStopped = true;
         }
 
         [Then("the apprentice should see the ready to confirm banner")]
@@ -229,8 +229,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ConfirmApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.displayedApprenticeship.IsStopped.Should().BeTrue();
-            model.displayedApprenticeship.StoppedReceivedOn.Should().NotBeNull();
+            model.DisplayedApprenticeship.IsStopped.Should().BeTrue();
+            model.DisplayedApprenticeship.StoppedReceivedOn.Should().NotBeNull();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public int DaysRemaining { get; set; }
         public bool Overdue => DaysRemaining <= 0;
-        public Apprenticeship displayedApprenticeship { get; set; } = null!;
+        public Apprenticeship DisplayedApprenticeship { get; set; } = null!;
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -118,7 +118,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed() ? true : (bool?)null;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
-            displayedApprenticeship = apprenticeship;
+            DisplayedApprenticeship = apprenticeship;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 
