@@ -1,22 +1,10 @@
 ﻿@model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilities.SectionConfirmationPageModel
-@{
-    bool IsInvalid(string propertyName)
-    {
-        return ViewData.ModelState[propertyName]?.ValidationState ==
-               Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid;
-    }
-
-    string FormGroupValidationClass(string propertyName)
-    {
-        return IsInvalid(propertyName) ? "govuk-form-group--error" : "";
-    }
-}
 <form id="form-section-confirmation-Id" method="post">
 
     <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
     
     <div class="govuk-form-group">
-        <div class="@FormGroupValidationClass("SectionConfirmed")">
+        <div validation-row-status property-name="SectionConfirmed">
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                     <span class="govuk-fieldset__heading">
