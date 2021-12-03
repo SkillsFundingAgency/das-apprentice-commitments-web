@@ -43,20 +43,22 @@
             </div>
         </div>
 
-        <form confirmation-form asp-show="@Model.ShowForm" method="post">
-            <yes-no-header>
-                Is @Model.EmployerName your employer?
-            </yes-no-header>
-
+        <form asp-show="@Model.ShowForm" method="post">
             <div class="govuk-form-group">
-                <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
-                <yes-no-inputs asp-for="Confirmed" ></yes-no-inputs>
+                <div validation-row-status property-name="Confirmed">
+
+                    <yes-no-header>
+                        Is @Model.EmployerName your employer?
+                    </yes-no-header>
+
+                    <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
+                    <yes-no-inputs asp-for="Confirmed"></yes-no-inputs>
+                </div>
             </div>
-            
             <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-            
-            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
-            <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
+
+            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId"/>
+            <input type="hidden" name="EmployerName" value="@Model.EmployerName"/>
         </form>
 
         <form asp-hide="@Model.ShowForm" action="@Model.Backlink">
