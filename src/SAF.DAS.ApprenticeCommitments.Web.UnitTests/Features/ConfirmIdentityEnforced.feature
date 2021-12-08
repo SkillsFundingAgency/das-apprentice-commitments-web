@@ -1,5 +1,5 @@
 ﻿@outerApi
-Feature: CreateAccountEnforced
+Feature: ConfirmIdentityEnforced
 	Force a user to create their account if they try to access an apprentices
 	portal page but have not created an account
 

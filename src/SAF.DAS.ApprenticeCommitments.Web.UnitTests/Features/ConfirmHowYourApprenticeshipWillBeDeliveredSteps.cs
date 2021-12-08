@@ -1,20 +1,20 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using SAF.DAS.ApprenticeCommitments.Web.UnitTests;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
     [Scope(Feature = "ConfirmHowYourApprenticeshipWillBeDelivered")]

@@ -1,13 +1,12 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using System.Threading.Tasks;
+using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using SAF.DAS.ApprenticeCommitments.Web.UnitTests;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
     [Scope(Feature = "CannotConfirm")]

@@ -1,7 +1,7 @@
-﻿using SAF.DAS.ApprenticeCommitments.Web.UnitTests;
+﻿using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
 {
     [Binding]
     [Scope(Tag = "outerApi")]

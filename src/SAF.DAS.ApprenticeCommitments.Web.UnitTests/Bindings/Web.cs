@@ -1,20 +1,19 @@
-using AutoFixture;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Mvc.Testing.Handlers;
-using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.ApprenticeCommitments.Web.Services;
-using SFA.DAS.ApprenticeCommitments.Web.Startup;
-using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
-using SFA.DAS.HashingService;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using SAF.DAS.ApprenticeCommitments.Web.UnitTests;
+using AutoFixture;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing.Handlers;
+using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticeCommitments.Web.Startup;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
+using SFA.DAS.HashingService;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
 {
     [Binding]
     public class Web

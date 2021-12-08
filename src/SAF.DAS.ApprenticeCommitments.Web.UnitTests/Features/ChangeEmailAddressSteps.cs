@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
-using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
 using TechTalk.SpecFlow;
 
 namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
