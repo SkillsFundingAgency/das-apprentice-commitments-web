@@ -294,7 +294,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public async Task GivenTheApprenticeHasARegistrationCode()
         {
             await _context.Web.Get($"Register/{_registrationCode}");
-            _context.Web.Response.Should().Be302Redirect();//.And.Match;
+            _context.Web.Response.Should().Be302Redirect();
         }
 
         //[When("the apprentice creates their account with")]
@@ -396,27 +396,27 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         //    });
         //}
 
-        [Given("the API will accept the account")]
-        public void WhenTheApiAcceptsTheAccount()
-        {
-            _context.OuterApi.MockServer.Given(
-                Request.Create()
-                    .UsingPost()
-                    .WithPath("/apprentices"))
-                .RespondWith(Response.Create()
-                    .WithStatusCode(200));
-        }
+        //[Given("the API will accept the account")]
+        //public void WhenTheApiAcceptsTheAccount()
+        //{
+        //    _context.OuterApi.MockServer.Given(
+        //        Request.Create()
+        //            .UsingPost()
+        //            .WithPath("/apprentices"))
+        //        .RespondWith(Response.Create()
+        //            .WithStatusCode(200));
+        //}
 
-        [Given("the API will accept the account update")]
-        public void GivenTheAPIWillAcceptTheAccountUpdate()
-        {
-            _context.OuterApi.MockServer.Given(
-                Request.Create()
-                    .UsingPatch()
-                    .WithPath("/apprentices/*"))
-                .RespondWith(Response.Create()
-                    .WithStatusCode(200));
-        }
+        //[Given("the API will accept the account update")]
+        //public void GivenTheAPIWillAcceptTheAccountUpdate()
+        //{
+        //    _context.OuterApi.MockServer.Given(
+        //        Request.Create()
+        //            .UsingPatch()
+        //            .WithPath("/apprentices/*"))
+        //        .RespondWith(Response.Create()
+        //            .WithStatusCode(200));
+        //}
 
         [Given("the API will match the apprenticeship")]
         public void WhenTheApiAcceptsTheMatch()
@@ -440,22 +440,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .WithStatusCode(400));
         }
 
-        [Given("the API will reject the identity with the following errors")]
-        public void WhenTheApiRejectsTheIdentity(Table table)
-        {
-            var errors = new
-            {
-                Errors = table.Rows.ToDictionary(
-                    row => string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
-                    row => new[] { row["Error Message"] })
-            };
+        //[Given("the API will reject the identity with the following errors")]
+        //public void WhenTheApiRejectsTheIdentity(Table table)
+        //{
+        //    var errors = new
+        //    {
+        //        Errors = table.Rows.ToDictionary(
+        //            row => string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
+        //            row => new[] { row["Error Message"] })
+        //    };
 
-            _context.OuterApi.MockServer
-                .Given(Request.Create().WithPath("/apprentices"))
-                .RespondWith(Response.Create()
-                    .WithStatusCode(HttpStatusCode.BadRequest)
-                    .WithBodyAsJson(errors));
-        }
+        //    _context.OuterApi.MockServer
+        //        .Given(Request.Create().WithPath("/apprentices"))
+        //        .RespondWith(Response.Create()
+        //            .WithStatusCode(HttpStatusCode.BadRequest)
+        //            .WithBodyAsJson(errors));
+        //}
 
         //[Then("verification is not successful")]
         //public void ThenTheVerificationIsNotSuccessful()
@@ -495,39 +495,38 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then(@"the registration code should be ""(.*)""")]
         public void ThenTheRegistrationCodeShouldBe(string code)
         {
-            //_context.ActionResult.LastPageResult
-            //    .Model.As<AccountModel>()
-            //    .RegistrationCode.Should().Be(code);
+            var cookie = _context.Web.Cookies.GetCookies(_context.Web.BaseAddress).FirstOrDefault(x=>x.Name == "RegistrationCode");
+            cookie.Value.Should().Be(code);
         }
 
-        [Then(@"the authentication includes the apprentice's names: ""(.*)"" and ""(.*)""")]
-        public void TheAuthenticationIncludesTheApprenticesNames(string firstName, string lastName)
-        {
-            TestAuthenticationHandler.Authentications.Should().ContainSingle();
-            var claims = TestAuthenticationHandler.Authentications[0].Claims;
-            claims.Should().ContainEquivalentOf(new
-            {
-                Type = "given_name",
-                Value = firstName,
-            });
-            claims.Should().ContainEquivalentOf(new
-            {
-                Type = "family_name",
-                Value = lastName,
-            });
-        }
+        //[Then(@"the authentication includes the apprentice's names: ""(.*)"" and ""(.*)""")]
+        //public void TheAuthenticationIncludesTheApprenticesNames(string firstName, string lastName)
+        //{
+        //    TestAuthenticationHandler.Authentications.Should().ContainSingle();
+        //    var claims = TestAuthenticationHandler.Authentications[0].Claims;
+        //    claims.Should().ContainEquivalentOf(new
+        //    {
+        //        Type = "given_name",
+        //        Value = firstName,
+        //    });
+        //    claims.Should().ContainEquivalentOf(new
+        //    {
+        //        Type = "family_name",
+        //        Value = lastName,
+        //    });
+        //}
 
-        [Then("the authentication includes the terms of use")]
-        public void TheAuthenticationIncludesTheTermsOfUse()
-        {
-            TestAuthenticationHandler.Authentications.Should().ContainSingle();
-            var claims = TestAuthenticationHandler.Authentications[0].Claims;
-            claims.Should().ContainEquivalentOf(new
-            {
-                Type = "TermsOfUseAccepted",
-                Value = "True",
-            });
-        }
+        //[Then("the authentication includes the terms of use")]
+        //public void TheAuthenticationIncludesTheTermsOfUse()
+        //{
+        //    TestAuthenticationHandler.Authentications.Should().ContainSingle();
+        //    var claims = TestAuthenticationHandler.Authentications[0].Claims;
+        //    claims.Should().ContainEquivalentOf(new
+        //    {
+        //        Type = "TermsOfUseAccepted",
+        //        Value = "True",
+        //    });
+        //}
 
         //[Then("the apprentice is shown the Terms of Use")]
         //public void TheApprenticeIsShownTheTermsOfUse()
