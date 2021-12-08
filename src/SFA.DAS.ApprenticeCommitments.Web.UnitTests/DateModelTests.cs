@@ -67,12 +67,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         [TestCase(2020, 99, 01, "`99` is not a valid month")]
         [TestCase(0000, 01, 01, "`0000` is not a valid year")]
         [TestCase(2020, 02, 30, "`30` is not a valid day in `2020-02`")]
-
-        public void Invalid_models_Date_property_throws_exception(
+        public void Invalid_models_Date_property_returns_date_default(
             int year, int month, int day, string message)
         {
             var sut = new DateModel { Day = day, Month = month, Year = year };
-            sut.Invoking(x => x.Date).Should().Throw<Exception>().WithMessage(message);
+            sut.Date.Should().Be(default);
         }
     }
 }
