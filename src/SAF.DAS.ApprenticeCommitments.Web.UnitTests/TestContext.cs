@@ -3,6 +3,7 @@ using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.HashingService;
 using System;
 using System.Net;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {

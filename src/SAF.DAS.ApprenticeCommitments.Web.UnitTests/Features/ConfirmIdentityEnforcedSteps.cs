@@ -77,13 +77,13 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 .And.HaveHeader("Location").And.Match("https://home/Home");
         }
 
-        [Then("redirect the user to the TermsOfUse page")]
-        public void ThenRedirectTheUserToTermsOfUse()
-        {
-            _context.Web.Response.Should().Be2XXSuccessful();
-            _context.ActionResult.LastPageResult.Should().NotBeNull();
-            _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
-        }
+        //[Then("redirect the user to the TermsOfUse page")]
+        //public void ThenRedirectTheUserToTermsOfUse()
+        //{
+        //    _context.Web.Response.Should().Be2XXSuccessful();
+        //    _context.ActionResult.LastPageResult.Should().NotBeNull();
+        //    _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
+        //}
 
         [Then("redirect the user to the home page with a NotMatched banner")]
         public void ThenRedirectTheUserToTheHomePageWithANotMatchedBanner()
@@ -101,13 +101,13 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmApprenticeshipModel>();
         }
 
-        [Then("redirect the user to the Account page")]
-        public void ThenRedirectTheUserToTheAccountPage()
-        {
-            _context.Web.Response.Should().Be2XXSuccessful();
-            _context.ActionResult.LastPageResult.Should().NotBeNull();
-            _context.ActionResult.LastPageResult.Model.Should().BeOfType<AccountModel>();
-        }
+        //[Then("redirect the user to the Account page")]
+        //public void ThenRedirectTheUserToTheAccountPage()
+        //{
+        //    _context.Web.Response.Should().Be2XXSuccessful();
+        //    _context.ActionResult.LastPageResult.Should().NotBeNull();
+        //    _context.ActionResult.LastPageResult.Model.Should().BeOfType<AccountModel>();
+        //}
 
         [Then("store the registration code in a cookie")]
         public void ThenStoreTheRegistrationCodeInACookie()

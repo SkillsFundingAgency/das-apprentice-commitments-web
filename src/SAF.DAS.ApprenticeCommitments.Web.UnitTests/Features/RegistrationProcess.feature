@@ -1,20 +1,20 @@
-﻿#@outerApi
-#Feature: CreateApprenticeAccount
-#	As an apprentice who wants to view my commitment statements
-#	If I haven't confirmed my identity
-#
-#Scenario: The apprentice has just created a login account
-#	Given the apprentice has logged in but not created their account
-#	When accessing the "Register/bob" page 
-#	Then the apprentice should see the personal details page
-#	And the registration code should be "bob"
-#
-#Scenario: The apprentice loads the registration page
-#	Given the apprentice has logged in but not created their account
-#	When accessing the "Register/bob" page
-#	Then the apprentice should see the personal details page
-#	#And the apprentice marks the "bob" registration as seen
-#
+﻿@outerApi
+Feature: RegistrationProcess
+	As an apprentice who wants to view my commitment statements
+	If I haven't confirmed my identity
+
+Scenario: The apprentice has just created a login, but not an apprentice account
+	Given the apprentice has logged in but not created their account
+	When accessing the "Register/bob" page 
+	Then the apprentice should be redirected to the personal details page
+	And the registration code should be "bob"
+
+Scenario: The apprentice loads the registration page
+	Given the apprentice has logged in but not created their account
+	When accessing the "Register/bob" page
+	Then the apprentice should be redirected to the personal details page
+	And the apprentice marks the "bob" registration as seen
+
 #Scenario: The registration is not seen if there is no code
 #	Given the apprentice has logged in but not created their account
 #	When accessing the "Register" page

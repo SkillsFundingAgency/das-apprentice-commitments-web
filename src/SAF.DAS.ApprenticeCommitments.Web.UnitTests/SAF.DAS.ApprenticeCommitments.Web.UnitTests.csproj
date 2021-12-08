@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\CreateApprenticeAccount - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.17.0" />
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.17.0" />
     <PackageReference Include="AutoFixture.NUnit3" Version="4.17.0" />
@@ -21,6 +25,19 @@
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.50" />
     <PackageReference Include="WireMock.Net" Version="1.4.20" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeCommitments.Web\SFA.DAS.ApprenticeCommitments.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Features\RegistrationProcess.feature.cs">
+      <DependentUpon>RegistrationProcess.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="Features\RegistrationProcess.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
 </Project>

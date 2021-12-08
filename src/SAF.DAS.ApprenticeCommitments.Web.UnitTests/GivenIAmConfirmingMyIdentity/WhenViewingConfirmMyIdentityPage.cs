@@ -10,29 +10,29 @@ namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.GivenIAmConfirmingMyIdenti
 {
     public class WhenViewingConfirmMyIdentityPage
     {
-        [Test, PageAutoData]
-        public void Throws_when_the_registration_claim_is_missing(
-            AccountModel sut,
-            ClaimsPrincipal user)
-        {
-            sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
-               .Should().ThrowAsync<Exception>().WithMessage("There is no `apprentice_id` claim.");
-        }
+        //[Test, PageAutoData]
+        //public void Throws_when_the_registration_claim_is_missing(
+        //    AccountModel sut,
+        //    ClaimsPrincipal user)
+        //{
+        //    sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
+        //       .Should().ThrowAsync<Exception>().WithMessage("There is no `apprentice_id` claim.");
+        //}
 
-        [Test, PageAutoData]
-        public void Throws_when_the_registration_claim_is_not_a_guid(
-            AccountModel sut,
-            ClaimsPrincipal user,
-            string notAGuid)
-        {
-            user.AddIdentity(new ClaimsIdentity(new[]
-            {
-                new Claim("apprentice_id", notAGuid)
-            }));
+        //[Test, PageAutoData]
+        //public void Throws_when_the_registration_claim_is_not_a_guid(
+        //    AccountModel sut,
+        //    ClaimsPrincipal user,
+        //    string notAGuid)
+        //{
+        //    user.AddIdentity(new ClaimsIdentity(new[]
+        //    {
+        //        new Claim("apprentice_id", notAGuid)
+        //    }));
 
-            sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
-               .Should().ThrowAsync<Exception>()
-               .WithMessage($"`{notAGuid}` in claim `apprentice_id` is not a valid identifier");
-        }
+        //    sut.Invoking(x => x.OnGetAsync(new AuthenticatedUser(user)))
+        //       .Should().ThrowAsync<Exception>()
+        //       .WithMessage($"`{notAGuid}` in claim `apprentice_id` is not a valid identifier");
+        //}
     }
 }
