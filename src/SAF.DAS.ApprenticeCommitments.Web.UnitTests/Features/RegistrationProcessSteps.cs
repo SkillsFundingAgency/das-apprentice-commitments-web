@@ -1,21 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using SFA.DAS.ApprenticePortal.SharedUi.Menu;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests;
+using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 
-namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
+namespace SAF.DAS.ApprenticeCommitments.Web.UnitTests.Features
 {
     [Binding]
     public class RegistrationProcessSteps : StepsBase
@@ -63,7 +62,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .WithStatusCode(200)
                     .WithBodyAsJson(new { Apprenticeships = new object[0] { } }));
         }
-
 
         [Given("the apprentice has logged in but not matched their account")]
         public void GivenTheApprenticeHasLoggedInButNotMatchedTheirAccount()
@@ -155,7 +153,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     }));
         }
 
-        // used
         [Then("the apprentice should be redirected to the personal details page")]
         public void ThenTheApprenticeShouldSeeThePersonalDetailsPage()
         {
@@ -163,25 +160,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             var redirect = _context.ActionResult.LastRedirectResult;
             redirect.Url.Should().EndWith("//account/Account");
         }
-
-        //[Then("the apprentice sees their previously entered details")]
-        //public void ThenTheApprenticeSeesTheirPreviouslyEnteredDetails()
-        //{
-        //    var page = _context.ActionResult.LastPageResult;
-        //    page.Should().NotBeNull();
-        //    page.Model.Should().BeOfType<AccountModel>()
-        //        .Which.Should().BeEquivalentTo(new
-        //        {
-        //            _apprentice.FirstName,
-        //            _apprentice.LastName,
-        //            DateOfBirth = new
-        //            {
-        //                _apprentice.DateOfBirth.Year,
-        //                _apprentice.DateOfBirth.Month,
-        //                _apprentice.DateOfBirth.Day,
-        //            }
-        //        });
-        //}
 
         [Then(@"the apprentice marks the ""(.*)"" registration as seen")]
         public void ThenTheApprenticeMarksTheRegistrationAsSeen(string registrationCode)
@@ -297,28 +275,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.Web.Response.Should().Be302Redirect();
         }
 
-        //[When("the apprentice creates their account with")]
-        //public async Task WhenTheApprenticeCreatesTheirAccountWith(Table table)
-        //{
-        //    _postedRegistration = table.CreateInstance(() => new AccountModel(null, null));
-        //    _postedRegistration.DateOfBirth =
-        //        new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
-
-        //    var response = await _context.Web.Post("Account?handler=Register",
-        //        new FormUrlEncodedContent(new Dictionary<string, string>
-        //        {
-        //            { "FirstName", _postedRegistration.FirstName },
-        //            { "LastName", _postedRegistration.LastName },
-        //            { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
-        //            { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
-        //             { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
-        //            { "EmailAddress", _postedRegistration?.EmailAddress },
-        //            { "CanEditDateOfBirth", "true" },
-        //        }));
-
-        //    await _context.Web.FollowLocalRedirects();
-        //}
-
         [When("the apprentice accepts the terms of use")]
         public async Task WhenTheApprenticeAcceptsTheTermsOfUse()
         {
@@ -331,28 +287,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
 
             await _context.Web.FollowLocalRedirects();
         }
-
-        //[When("the apprentice updates their account with")]
-        //public async Task WhenTheApprenticeUpdatesTheirAccountWith(Table table)
-        //{
-        //    _postedRegistration = table.CreateInstance(() => new AccountModel(null, null));
-        //    _postedRegistration.DateOfBirth =
-        //        new DateModel(DateTime.Parse(table.Rows[0]["Date of Birth"]));
-
-        //    var response = await _context.Web.Post("Account",
-        //        new FormUrlEncodedContent(new Dictionary<string, string>
-        //        {
-        //            { "FirstName", _postedRegistration.FirstName },
-        //            { "LastName", _postedRegistration.LastName },
-        //            { "DateOfBirth.Day", _postedRegistration?.DateOfBirth?.Day.ToString() },
-        //            { "DateOfBirth.Month", _postedRegistration?.DateOfBirth?.Month.ToString() },
-        //            { "DateOfBirth.Year", _postedRegistration?.DateOfBirth?.Year.ToString() },
-        //            { "EmailAddress", _postedRegistration?.EmailAddress },
-        //            { "TermsOfUseAccepted", _apprentice?.TermsOfUseAccepted.ToString() },
-        //        }));
-
-        //    await _context.Web.FollowLocalRedirects();
-        //}
 
         [Then("verification is successful")]
         public void ThenTheVerificationIsSuccessful()
@@ -369,54 +303,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 .UsingPatch());
 
             posts.Should().NotBeEmpty();
-
-            //var post = posts.First();
         }
-
-        //[Then("the apprentice account is created")]
-        //public void ThenTheVerificationIsSuccessfulSent()
-        //{
-        //    var posts = _context.OuterApi.MockServer.FindLogEntries(
-        //    Request.Create()
-        //        .WithPath("/apprentices")
-        //        .UsingPost());
-
-        //    posts.Should().NotBeEmpty();
-
-        //    var post = posts.First();
-
-        //    post.RequestMessage.Path.Should().Be("/apprentices");
-        //    var reg = JsonConvert.DeserializeObject<Apprentice>(post.RequestMessage.Body);
-        //    reg.Should().BeEquivalentTo(new
-        //    {
-        //        _userContext.ApprenticeId,
-        //        _postedRegistration.FirstName,
-        //        _postedRegistration.LastName,
-        //        DateOfBirth = _postedRegistration.DateOfBirth.Date,
-        //    });
-        //}
-
-        //[Given("the API will accept the account")]
-        //public void WhenTheApiAcceptsTheAccount()
-        //{
-        //    _context.OuterApi.MockServer.Given(
-        //        Request.Create()
-        //            .UsingPost()
-        //            .WithPath("/apprentices"))
-        //        .RespondWith(Response.Create()
-        //            .WithStatusCode(200));
-        //}
-
-        //[Given("the API will accept the account update")]
-        //public void GivenTheAPIWillAcceptTheAccountUpdate()
-        //{
-        //    _context.OuterApi.MockServer.Given(
-        //        Request.Create()
-        //            .UsingPatch()
-        //            .WithPath("/apprentices/*"))
-        //        .RespondWith(Response.Create()
-        //            .WithStatusCode(200));
-        //}
 
         [Given("the API will match the apprenticeship")]
         public void WhenTheApiAcceptsTheMatch()
@@ -440,106 +327,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .WithStatusCode(400));
         }
 
-        //[Given("the API will reject the identity with the following errors")]
-        //public void WhenTheApiRejectsTheIdentity(Table table)
-        //{
-        //    var errors = new
-        //    {
-        //        Errors = table.Rows.ToDictionary(
-        //            row => string.IsNullOrWhiteSpace(row["Property Name"]) ? null : row["Property Name"],
-        //            row => new[] { row["Error Message"] })
-        //    };
-
-        //    _context.OuterApi.MockServer
-        //        .Given(Request.Create().WithPath("/apprentices"))
-        //        .RespondWith(Response.Create()
-        //            .WithStatusCode(HttpStatusCode.BadRequest)
-        //            .WithBodyAsJson(errors));
-        //}
-
-        //[Then("verification is not successful")]
-        //public void ThenTheVerificationIsNotSuccessful()
-        //{
-        //    _context.ActionResult.LastPageResult.Model.Should().BeOfType<AccountModel>()
-        //        .Which.ModelState.IsValid.Should().BeFalse();
-        //}
-
-        //[Then("the apprentice should see the following error messages")]
-        //public void ThenTheApprenticeShouldSeeTheFollowingErrorMessages(Table table)
-        //{
-        //    var messages = table.CreateSet<(string PropertyName, string ErrorMessage)>();
-
-        //    foreach (var (PropertyName, ErrorMessage) in messages)
-        //    {
-        //        _context.ActionResult.LastPageResult
-        //            .Model.As<AccountModel>()
-        //            .ModelState[PropertyName]
-        //            .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
-        //    }
-        //}
-
-        //[Then("the apprentice should see the following extra error messages")]
-        //public void ThenTheApprenticeShouldSeeTheFollowingExtraErrorMessages(Table table)
-        //{
-        //    var messages = table.Rows.Select(x => x[0]);
-
-        //    foreach (var ErrorMessage in messages)
-        //    {
-        //        _context.ActionResult.LastPageResult
-        //            .Model.As<AccountModel>()
-        //            .ModelState[""]
-        //            .Errors.Should().ContainEquivalentOf(new { ErrorMessage });
-        //    }
-        //}
-
         [Then(@"the registration code should be ""(.*)""")]
         public void ThenTheRegistrationCodeShouldBe(string code)
         {
             var cookie = _context.Web.Cookies.GetCookies(_context.Web.BaseAddress).FirstOrDefault(x=>x.Name == "RegistrationCode");
             cookie.Value.Should().Be(code);
         }
-
-        //[Then(@"the authentication includes the apprentice's names: ""(.*)"" and ""(.*)""")]
-        //public void TheAuthenticationIncludesTheApprenticesNames(string firstName, string lastName)
-        //{
-        //    TestAuthenticationHandler.Authentications.Should().ContainSingle();
-        //    var claims = TestAuthenticationHandler.Authentications[0].Claims;
-        //    claims.Should().ContainEquivalentOf(new
-        //    {
-        //        Type = "given_name",
-        //        Value = firstName,
-        //    });
-        //    claims.Should().ContainEquivalentOf(new
-        //    {
-        //        Type = "family_name",
-        //        Value = lastName,
-        //    });
-        //}
-
-        //[Then("the authentication includes the terms of use")]
-        //public void TheAuthenticationIncludesTheTermsOfUse()
-        //{
-        //    TestAuthenticationHandler.Authentications.Should().ContainSingle();
-        //    var claims = TestAuthenticationHandler.Authentications[0].Claims;
-        //    claims.Should().ContainEquivalentOf(new
-        //    {
-        //        Type = "TermsOfUseAccepted",
-        //        Value = "True",
-        //    });
-        //}
-
-        //[Then("the apprentice is shown the Terms of Use")]
-        //public void TheApprenticeIsShownTheTermsOfUse()
-        //{
-        //    _context.ActionResult.LastPageResult.Model.Should().BeOfType<TermsOfUseModel>();
-        //}
-
-        //[Then("the DateOfBirth field is editable")]
-        //public void ThenTheDateOfBirthFielIsEditable()
-        //{
-        //    _context.ActionResult.LastPageResult.Model
-        //        .Should().BeOfType<AccountModel>()
-        //        .Which.CanEditDateOfBirth.Should().BeTrue();
-        //}
     }
 }
