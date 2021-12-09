@@ -3,16 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
 {
     [AllowAnonymous]
     public class RegistrationControllerInitial : Controller
     {
+        private readonly DomainHelper _domainHelper;
+
+        public RegistrationControllerInitial(DomainHelper domainHelper)
+        {
+            _domainHelper = domainHelper;
+        }
+
         [HttpGet("/register/{registrationCode}")]
         public IActionResult Register(string registrationCode)
         {
-            Response.Cookies.Append("RegistrationCode", registrationCode);
+            Response.Cookies.Append("RegistrationCode", registrationCode, new CookieOptions() {Domain = _domainHelper.ParentDomain});
             return RedirectToAction("Register", "Registration");
         }
     }
