@@ -36,18 +36,9 @@
     <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
     <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
   </ItemGroup>
-
-
-  <ItemGroup>
-    <Content Update="wwwroot\lib\govuk-frontend\**" CopyToPublishDirectory="Never" />
-  </ItemGroup>
   
   <Target Name="ToolRestore" BeforeTargets="PreBuildEvent">
     <Exec Command="dotnet tool restore" StandardOutputImportance="high" />
-  </Target>
-
-  <Target Name="PreBuild" AfterTargets="ToolRestore">
-    <Exec Command="dotnet tool run webcompiler -r wwwroot/css wwwroot/js" StandardOutputImportance="high" />
   </Target>
   
 </Project>
