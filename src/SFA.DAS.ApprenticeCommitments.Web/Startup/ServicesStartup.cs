@@ -34,7 +34,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 domain = ".apprenticeships.education.gov.uk";
             }
 
-            services.AddSingleton<DomainHelper>(x => new DomainHelper(domain));
+            services.AddSingleton(new DomainHelper(domain));
             return services;
         }
 

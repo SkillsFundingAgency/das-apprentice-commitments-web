@@ -20,7 +20,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         [HttpGet("/register/{registrationCode}")]
         public IActionResult Register(string registrationCode)
         {
-            Response.Cookies.Append("RegistrationCode", registrationCode, new CookieOptions() { Domain = _domainHelper.ParentDomain, Secure = _domainHelper.Secure, HttpOnly = true});
+            Response.Cookies.Append("RegistrationCode", registrationCode, new CookieOptions
+            {
+                Domain = _domainHelper.ParentDomain, 
+                Secure = _domainHelper.Secure,
+                HttpOnly = true
+            });
             return RedirectToAction("Register", "Registration");
         }
     }
