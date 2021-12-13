@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SFA.DAS.ApprenticeCommitments.Web.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -72,13 +72,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 new Claim("apprentice_id", guid.ToString()),
             };
             var identity = new ClaimsIdentity(claims, "Test1");
+            var principal = new ClaimsPrincipal(identity);
+
             if (status >= AccountStatus.AccountCreated)
-                identity.AddAccountCreatedClaim();
+                principal.AddAccountCreatedClaim();
 
             if (status >= AccountStatus.TermsAccepted)
-                identity.AddTermsOfUseAcceptedClaim();
+                principal.AddTermsOfUseAcceptedClaim();
 
-            var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test2");
 
             return AuthenticateResult.Success(ticket);

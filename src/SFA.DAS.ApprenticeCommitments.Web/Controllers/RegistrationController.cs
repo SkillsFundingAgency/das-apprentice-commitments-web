@@ -4,6 +4,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
 {
@@ -47,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         [HttpGet("/register")]
         public async Task<IActionResult> Register()
         {
-            if (UserAccountCreatedClaim.UserMustCreateAccount(HttpContext))
+            if (!_user.HasCreatedAccount)
                 return Redirect(_urlHelper.Generate(NavigationSection.PersonalDetails));
 
             if (!Request.Cookies.TryGetValue("RegistrationCode", out var registrationCode))

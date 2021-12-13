@@ -5,9 +5,9 @@ using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-using SFA.DAS.ApprenticePortal.SharedUi.Identity;
 using System;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {

@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {

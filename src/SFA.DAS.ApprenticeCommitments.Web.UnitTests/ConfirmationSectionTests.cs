@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -82,7 +82,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 fixture.Register((DefaultHttpContext http, RouteData route) =>
                     new ActionContext(http, route, new PageActionDescriptor()));
                 fixture.Register((ActionContext a) => new PageContext(a));
-                fixture.Inject(AuthenticatedUser.FakeUser);
+                fixture.Inject(TestHelpers.FakeLocalUserFullyVerified);
                 fixture.Customize(new AutoMoqCustomization());
                 return fixture;
             }
