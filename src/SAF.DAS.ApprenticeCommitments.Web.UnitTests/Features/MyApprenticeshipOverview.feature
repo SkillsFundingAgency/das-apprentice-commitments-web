@@ -68,3 +68,10 @@ Scenario: The apprentice is shown the change of circumstances notification
 	| false            | false            | true                   | The details of your apprenticeship                          |
 	| false            | true             | true                   | Your employer and apprenticeship details                    |
 
+Scenario: The apprentice's apprenticeship is stopped
+	Given the apprentice has logged in
+	And the apprenticeship is stopped
+	And the apprentice will navigate to the overview page
+	When accessing the overview page
+	Then the response status code should be Ok
+	And the apprenticeship should be stopped

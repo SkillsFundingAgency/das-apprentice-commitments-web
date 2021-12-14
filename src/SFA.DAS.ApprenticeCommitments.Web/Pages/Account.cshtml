@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = Model.IsCreating ? "Create My apprenticeship account" : "Change your personal details";
 
+    ViewBag.ValidationOrder = "FirstName,LastName,DateOfBirth";
+
     var ctaName = Model.IsCreating ? "Continue" : "Save and update";
 
     bool IsInvalid(string propertyName) =>

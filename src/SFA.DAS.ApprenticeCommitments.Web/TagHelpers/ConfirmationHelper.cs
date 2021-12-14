@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 
@@ -15,19 +14,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
             output.TagName = "div";
             output.Attributes.Add("class", "app-notification-banner app-notification-banner--with-icon app-notification-banner--success");
             output.Content.SetHtmlContent($@"<span class=""app-notification-banner__icon das-text--success-icon""></span>{content}");
-        }
-    }
-
-    [HtmlTargetElement("form", Attributes = "confirmation-form")]
-    public class YesNoFormHelper : TagHelper
-    {
-        [ViewContext]
-        public ViewContext ViewContext { get; set; } = null!;
-
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-        {
-            if (ViewContext?.ModelState.IsValid == false)
-                output.Attributes.Add("class", "govuk-form-group--error");
         }
     }
 
