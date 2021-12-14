@@ -79,7 +79,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Then("redirect the user to the TermsOfUse page")]
         public void ThenRedirectTheUserToTermsOfUse()
         {
-            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+            _context.Web.Response.Should().Be302Redirect();
             _context.ActionResult.LastRedirectResult.Url.Should().EndWith("//account/TermsOfUse");
         }
 
