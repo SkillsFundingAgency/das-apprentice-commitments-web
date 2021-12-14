@@ -10,6 +10,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using System;
 using System.Collections.Generic;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -39,7 +40,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             {
                 services
                     .AddAuthentication("TestScheme")
-                    .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("TestScheme", _ => { });
+                    .AddScheme<AuthenticationSchemeOptions, AuthenticationHandlerForTesting>("TestScheme", _ => { });
                 services.AddTransient((_) => _timeProvider());
             });
 

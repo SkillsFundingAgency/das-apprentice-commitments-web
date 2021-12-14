@@ -12,6 +12,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;
 using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -82,7 +83,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 fixture.Register((DefaultHttpContext http, RouteData route) =>
                     new ActionContext(http, route, new PageActionDescriptor()));
                 fixture.Register((ActionContext a) => new PageContext(a));
-                fixture.Inject(TestHelpers.FakeLocalUserFullyVerified);
+                fixture.Inject(AuthenticatedUsersForTesting.FakeLocalUserFullyVerified);
                 fixture.Customize(new AutoMoqCustomization());
                 return fixture;
             }

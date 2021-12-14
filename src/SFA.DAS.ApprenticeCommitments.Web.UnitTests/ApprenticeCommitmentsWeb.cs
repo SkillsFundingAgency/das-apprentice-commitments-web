@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -31,14 +32,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
         public void AuthoriseApprentice(Guid apprenticeId)
         {
-            TestAuthenticationHandler.AddUserWithFullAccount(apprenticeId);
+            AuthenticationHandlerForTesting.AddUserWithFullAccount(apprenticeId);
             Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(apprenticeId.ToString());
         }
 
         internal void AuthoriseApprenticeWithoutTermsOfUse(Guid apprenticeId)
         {
-            TestAuthenticationHandler.AddUserWithoutTerms(apprenticeId);
+            AuthenticationHandlerForTesting.AddUserWithoutTerms(apprenticeId);
             Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(apprenticeId.ToString());
         }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.HashingService;
 using TechTalk.SpecFlow;
 
@@ -69,7 +70,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
 
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook, Config, Cookies);
             _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();
-            TestAuthenticationHandler.Authentications.Clear();
+            AuthenticationHandlerForTesting.Authentications.Clear();
         }
 
         [AfterScenario()]

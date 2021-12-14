@@ -8,6 +8,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeCommitments.Web.Pages;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -89,7 +90,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("an unverified logged in user")]
         public void GivenAUserWithoutAccountHasLoggedIn()
         {
-            TestAuthenticationHandler.AddUserWithoutAccount(_userContext.ApprenticeId);
+            AuthenticationHandlerForTesting.AddUserWithoutAccount(_userContext.ApprenticeId);
             _context.Web.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(_userContext.ApprenticeId.ToString());
         }
