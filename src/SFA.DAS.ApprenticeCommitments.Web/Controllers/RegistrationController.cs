@@ -37,12 +37,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         private readonly AuthenticatedUser _user;
         private readonly ApprenticeApi _registrations;
         private readonly NavigationUrlHelper _urlHelper;
+        private readonly DomainHelper _domainHelper;
 
-        public RegistrationController(AuthenticatedUser user, ApprenticeApi registrations, NavigationUrlHelper urlHepler)
+        public RegistrationController(AuthenticatedUser user, ApprenticeApi registrations, NavigationUrlHelper urlHelper, DomainHelper domainHelper)
         {
             _user = user;
             _registrations = registrations;
-            _urlHelper = urlHepler;
+            _urlHelper = urlHelper;
+            _domainHelper = domainHelper;
         }
 
         [HttpGet("/register")]
@@ -57,7 +59,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             try
             {
                 await _registrations.MatchApprenticeToApprenticeship(registrationCode, _user.ApprenticeId);
-                Response.Cookies.Delete("RegistrationCode");
+                Response.Cookies.Delete("RegistrationCode", new CookieOptions
+                {
+                    Domain = _domainHelper.ParentDomain
+                });
                 return RedirectToNotice("ApprenticeshipMatched");
             }
             catch
