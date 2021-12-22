@@ -56,7 +56,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
                 (int)Response.StatusCode >= 300 &&
                 (int)Response.StatusCode <= 400)
             {
-                if (!Response.Headers.Location.ToString().StartsWith('/')) break;
+                if (!Response.Headers.Location.ToString().StartsWith('/') && !Response.Headers.Location.ToString().ToLower().StartsWith("http://localhost")) 
+                    break;
 
                 if (Response.StatusCode == HttpStatusCode.RedirectKeepVerb)
                 {
