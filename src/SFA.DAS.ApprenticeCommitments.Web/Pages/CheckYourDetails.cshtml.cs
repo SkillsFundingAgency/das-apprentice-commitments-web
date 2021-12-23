@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
+using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages

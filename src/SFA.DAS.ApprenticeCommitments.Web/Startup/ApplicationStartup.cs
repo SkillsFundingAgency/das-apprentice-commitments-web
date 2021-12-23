@@ -32,7 +32,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AddAuthentication(appConfig.Authentication, Environment)
                 .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
                 .AddHashingService(appConfig.Hashing)
-                .RegisterServices()
+                .RegisterServices(Environment)
                 .AddControllers();
 
             services.AddSharedUi(appConfig, options =>

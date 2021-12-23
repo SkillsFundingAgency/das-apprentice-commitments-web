@@ -5,6 +5,8 @@ using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.HashingService;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -14,12 +16,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         private readonly ApprenticeApi _client;
         private readonly IHashingService _hashing;
         private readonly ILogger<ApprenticeshipIndexModel> _logger;
+        private readonly NavigationUrlHelper _urlHelper;
 
-        public ApprenticeshipIndexModel(ApprenticeApi client, IHashingService hashing, ILogger<ApprenticeshipIndexModel> logger)
+        public ApprenticeshipIndexModel(ApprenticeApi client, IHashingService hashing, ILogger<ApprenticeshipIndexModel> logger, NavigationUrlHelper urlHelper)
         {
             _client = client;
             _hashing = hashing;
             _logger = logger;
+            _urlHelper = urlHelper;
         }
 
         public async Task<IActionResult> OnGet([FromServices] AuthenticatedUser user)
@@ -38,7 +42,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 }
 
                 var apprenticeship = await _client.TryGetApprenticeships(user.ApprenticeId);
-                if (apprenticeship == null) return RedirectToPage("/Account");
+                if (apprenticeship == null) return Redirect(_urlHelper.Generate(NavigationSection.PersonalDetails));
 
                 if (apprenticeship.Apprenticeships.Count == 0)
                     return RedirectToPage("/CheckYourDetails");
