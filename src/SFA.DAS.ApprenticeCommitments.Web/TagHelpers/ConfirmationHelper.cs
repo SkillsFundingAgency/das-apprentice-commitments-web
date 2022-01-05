@@ -21,19 +21,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
     [HtmlTargetElement("yes-no-wrapper")]
     public class YesNoWrapHelper : TagHelper
     {
-        [ViewContext]
-        public ViewContext ViewContext { get; set; } = null!;
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "div";
             output.Attributes.Add("class", "govuk-form-group");
             output.PreContent.SetHtmlContent(@"<fieldset class=""govuk-fieldset"">");
             output.PostContent.SetHtmlContent("</fieldset>");
-            
-            if (ViewContext?.ModelState.IsValid == false) {
-                output.Attributes.RemoveAll("class");
-                output.Attributes.Add("class", "govuk-form-group govuk-form-group--error");
-            }
         }
     }
 
