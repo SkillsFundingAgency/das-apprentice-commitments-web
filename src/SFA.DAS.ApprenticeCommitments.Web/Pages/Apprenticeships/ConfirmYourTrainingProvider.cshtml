@@ -50,15 +50,11 @@
         </div>
 
         <form asp-show="@Model.ShowForm" method="post">
-                <yes-no-wrapper>
-                    <yes-no-header>Is @Model.TrainingProviderName your training provider?</yes-no-header>
-                    <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
-                    <yes-no-inputs asp-for="Confirmed" yes-checked="@(Model.Confirmed == true)"></yes-no-inputs>
-                </yes-no-wrapper>
-
+            <yes-no-wrapper property-name="Confirmed">
+                <yes-no-header>Is @Model.TrainingProviderName your training provider?</yes-no-header>
                 <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
                 <yes-no-inputs asp-for="Confirmed" yes-checked="@(Model.Confirmed == true)"></yes-no-inputs>
-            
+            </yes-no-wrapper>
             <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
             <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId"/>
             <input type="hidden" name="TrainingProviderName" value="@Model.TrainingProviderName"/>

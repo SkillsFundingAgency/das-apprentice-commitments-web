@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 {
@@ -21,12 +23,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
     [HtmlTargetElement("yes-no-wrapper")]
     public class YesNoWrapHelper : TagHelper
     {
+        [ViewContext]
+        public ViewContext ViewContext { get; set; } = null!;
+        public string PropertyName { get; set; } = null!;
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "div";
             output.Attributes.Add("class", "govuk-form-group");
             output.PreContent.SetHtmlContent(@"<fieldset class=""govuk-fieldset"">");
             output.PostContent.SetHtmlContent("</fieldset>");
+            
+            if (PropertyIsInvalid()) {
+                output.Attributes.RemoveAll("class");
+                output.Attributes.Add("class", "govuk-form-group govuk-form-group--error");
+            }
+        }
+        bool PropertyIsInvalid()
+        {
+            return ViewContext?.ModelState[PropertyName]?.ValidationState == ModelValidationState.Invalid;
         }
     }
 
