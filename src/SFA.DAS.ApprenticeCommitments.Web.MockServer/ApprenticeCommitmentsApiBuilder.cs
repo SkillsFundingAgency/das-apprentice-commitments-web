@@ -41,6 +41,27 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 HasCompletedVerification = true,
             };
             var response = JsonConvert.SerializeObject(data, DefaultSerializerSettings);
+            
+            _server.Given(
+                Request.Create()
+                    .WithPath("/apprentices/*")
+                    .UsingPatch())
+                .RespondWith(
+                    Response.Create().WithStatusCode(HttpStatusCode.OK));
+
+            _server.Given(
+                Request.Create()
+                    .WithPath("/apprentices")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create().WithStatusCode(HttpStatusCode.OK));
+
+            _server.Given(
+                Request.Create()
+                    .WithPath("/apprenticeships")
+                    .UsingPost())
+                .RespondWith(
+                    Response.Create().WithStatusCode(HttpStatusCode.OK));
 
             _server.Given(
                 Request.Create()
