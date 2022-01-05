@@ -19,6 +19,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         public string? AspPage { get; set; }
         public ConfirmApprenticeshipModel? Model { get; set; }
 
+        public bool? ConfirmationStatus { get; set; }
+
         public ConfirmationSectionTagHelper(ISimpleUrlHelper urlFactory)
         {
             _urlFactory = urlFactory;
@@ -32,9 +34,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
             var url = _urlFactory.Page(ViewContext, AspPage, new { Model.ApprenticeshipId });
 
-            var state = StateOf(AspPage);
-
-            var (stateClass, colourClass, tag) = state switch
+            var (stateClass, colourClass, tag) = ConfirmationStatus switch
             {
                 true => ("complete", "green", "Complete"),
                 false => ("incorrect", "red", "Waiting for<br/>correction"),
@@ -53,13 +53,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
             output.Attributes.RemoveAll("confirmation-section");
             output.Attributes.Add("class", "app-status-list__list-item");
             output.Content.SetHtmlContent(encoded);
-        }
-
-        private bool? StateOf(string aspPage)
-        {
-            var name = $"{aspPage.Replace("Confirm", "").Replace("Your", "")}Confirmation";
-            var value = Model?.GetType().GetProperty(name);
-            return value?.GetValue(Model) as bool?;
         }
     }
 }

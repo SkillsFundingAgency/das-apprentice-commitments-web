@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
@@ -131,6 +131,25 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     Response.Create()
                         .WithStatusCode(HttpStatusCode.Accepted));
 
+            return this;
+        }
+
+        public ApprenticeCommitmentsApiBuilder WithUserAccount()
+        {
+            _server.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath("/apprentices/*"))
+                .RespondWith(Response.Create()
+                    .WithBodyAsJson(new Apprentice
+                    {
+                        FirstName = "Bob",
+                        LastName = "Bobbertson",
+                        DateOfBirth = new DateTime(2000, 01, 13),
+                        ApprenticeId = Guid.NewGuid(),
+                        Email = "bob@bobbertson.com",
+                        TermsOfUseAccepted = true,
+                    }));
             return this;
         }
 

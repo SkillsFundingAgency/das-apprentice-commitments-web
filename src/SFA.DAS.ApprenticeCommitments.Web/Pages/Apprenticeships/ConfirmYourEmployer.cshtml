@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <form confirmation-form asp-show="@Model.ShowForm" method="post">
+        <form asp-show="@Model.ShowForm" method="post">
             <yes-no-wrapper>
                 <yes-no-header>
                     Is @Model.EmployerName your employer?
@@ -53,9 +53,9 @@
             </yes-no-wrapper>
             
             <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-            
-            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
-            <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
+
+            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId"/>
+            <input type="hidden" name="EmployerName" value="@Model.EmployerName"/>
         </form>
 
         <form asp-hide="@Model.ShowForm" action="@Model.Backlink">

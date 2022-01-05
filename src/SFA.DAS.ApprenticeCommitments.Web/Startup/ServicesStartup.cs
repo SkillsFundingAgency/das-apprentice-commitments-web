@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
@@ -11,13 +13,28 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
     public static class ServicesStartup
     {
         public static IServiceCollection RegisterServices(
-            this IServiceCollection services)
+            this IServiceCollection services,
+            IWebHostEnvironment environment)
         {
             services.AddTransient<ApprenticeApi>();
             services.AddTransient<AuthenticatedUserClient>();
             services.AddTransient<ISimpleUrlHelper, AspNetCoreSimpleUrlHelper>();
             services.AddScoped<ITimeProvider, UtcTimeProvider>();
             services.AddTransient<IMenuVisibility, MenuVisibility>();
+            services.AddDomainHelper(environment);
+
+            return services;
+        }
+
+        private static IServiceCollection AddDomainHelper(this IServiceCollection services, IWebHostEnvironment environment)
+        {
+            var domain = ".localhost";
+            if (!environment.IsDevelopment())
+            {
+                domain = ".apprenticeships.education.gov.uk";
+            }
+
+            services.AddSingleton(new DomainHelper(domain));
             return services;
         }
 

@@ -1,0 +1,54 @@
+﻿
+<div class="govuk-width-container" id="dashboard-section">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">My apprenticeship</h1>
+
+            <div class="govuk-warning-text">
+                  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                  <strong class="govuk-warning-text__text">
+                      <span class="govuk-warning-text__assistive">Warning</span>
+                      @Model.DisplayedApprenticeship.EmployerName has stopped your @Model.DisplayedApprenticeship.CourseName apprenticeship. If you are continuing your apprenticeship with another employer or training provider, you will receive an email to confirm this.
+                  </strong>
+              </div>
+
+            <h2 class="govuk-heading-m">@Model.DisplayedApprenticeship.CourseName Apprenticeship</h2>
+
+            <div class="govuk-!-padding-bottom-2">
+                <table class="govuk-table data-table">
+                    <caption></caption>
+                    <tbody class="govuk-table__body">
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Employer</th>
+                            <td class="govuk-table__cell">@Model.DisplayedApprenticeship.EmployerName</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Provider</th>
+                            <td class="govuk-table__cell">@Model.DisplayedApprenticeship.TrainingProviderName</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Level</th>
+                            <td class="govuk-table__cell">@Model.DisplayedApprenticeship.CourseLevel</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Estimated duration</th>
+                            <td class="govuk-table__cell">@Model.DisplayedApprenticeship.CourseDuration month(s)<br /></td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Planned start date</th>
+                            <td class="govuk-table__cell">@Model.DisplayedApprenticeship.PlannedStartDate.ToString("MMMM yyyy")</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Date stopped</th>
+                            <td class="govuk-table__cell">@Model.DisplayedApprenticeship.StoppedReceivedOn.ToString("MMMM yyyy")</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Status</th>
+                            <td class="govuk-table__cell"><span class="govuk-tag govuk-tag--inactive">Stopped</span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

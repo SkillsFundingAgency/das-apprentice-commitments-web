@@ -5,9 +5,9 @@ using SFA.DAS.ApprenticeCommitments.Web.Exceptions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
-using SFA.DAS.ApprenticePortal.SharedUi.Identity;
 using System;
 using System.Threading.Tasks;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
@@ -16,6 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         SectionsIncomplete,
         SectionsComplete,
         ApprenticeshipComplete,
+        Stopped
     }
 
     [RequiresIdentityConfirmed]
@@ -34,6 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public int DaysRemaining { get; set; }
         public bool Overdue => DaysRemaining <= 0;
+        public Apprenticeship DisplayedApprenticeship { get; set; } = null!;
 
         public bool? EmployerConfirmation { get; set; } = null;
         public bool? TrainingProviderConfirmation { get; set; } = null;
@@ -113,9 +115,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             EmployerConfirmation = apprenticeship.EmployerCorrect;
             TrainingProviderConfirmation = apprenticeship.TrainingProviderCorrect;
             ApprenticeshipDetailsConfirmation = apprenticeship.ApprenticeshipDetailsCorrect;
-            RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesCorrect;
+            RolesAndResponsibilitiesConfirmation = apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed() ? true : (bool?)null;
             HowApprenticeshipWillBeDeliveredConfirmation = apprenticeship.HowApprenticeshipDeliveredCorrect;
             ChangeNotifications = apprenticeship.ChangeOfCircumstanceNotifications;
+            DisplayedApprenticeship = apprenticeship;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
 
@@ -125,7 +128,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private ConfirmStatus ConfirmationStatus(Apprenticeship apprenticeship)
         {
-            if (apprenticeship.ConfirmedOn.HasValue)
+            if (apprenticeship.IsStopped)
+            {
+                return ConfirmStatus.Stopped;
+            }
+            else if (apprenticeship.ConfirmedOn.HasValue)
             {
                 return ConfirmStatus.ApprenticeshipComplete;
             }
@@ -133,7 +140,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 apprenticeship.EmployerCorrect == true &&
                 apprenticeship.TrainingProviderCorrect == true &&
                 apprenticeship.ApprenticeshipDetailsCorrect == true &&
-                apprenticeship.RolesAndResponsibilitiesCorrect == true &&
+                apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed() &&
                 apprenticeship.HowApprenticeshipDeliveredCorrect == true)
             {
                 return ConfirmStatus.SectionsComplete;
