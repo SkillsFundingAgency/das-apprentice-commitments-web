@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.HashingService;
 using System.Threading.Tasks;
 using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.SharedUi.Filters;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
