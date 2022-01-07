@@ -8,6 +8,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Threading.Tasks;
 using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.SharedUi.Filters;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
