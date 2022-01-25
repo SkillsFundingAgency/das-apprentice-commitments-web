@@ -80,7 +80,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenRedirectTheUserToTermsOfUse()
         {
             _context.Web.Response.Should().Be302Redirect();
-            _context.ActionResult.LastRedirectResult.Url.Should().EndWith("//account/TermsOfUse");
+            _context.ActionResult.LastRedirectResult.Url.Should().EndWith("//account/AcceptTermsOfUse");
         }
 
         [Then("redirect the user to the home page with a NotMatched banner")]
