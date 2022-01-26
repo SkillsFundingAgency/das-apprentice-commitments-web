@@ -19,35 +19,35 @@
             You can now change your answer
         </notification-banner>
 
-        <h2 class="govuk-heading-l">@Model.TrainingProviderName</h2>
+        <h2 class="govuk-heading-m">@Model.TrainingProviderName</h2>
 
-        <div class="govuk-body">
-            <details class="govuk-details" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Help if you do not recognise your training provider's name
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    @Model.TrainingProviderName is your training provider's legal name registered with Companies House.
-                    You may know them by their trading name instead.
-                </div>
-            </details>
-
-            <p>
-                Your off-the-job training will be <strong>at least 20% of your normal working hours</strong> spent learning new knowledge,
-                skills and behaviours for your apprenticeship. Your off-the-job training will be managed by your training provider.
-            </p>
-
-            <h3>Things you need to know</h3>
-            <div class="govuk-inset-text">
-                <p class="govuk-body">Before starting your apprenticeship your training provider should have:</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>told you if you'll have any training delivered by another training provider</li>
-                    <li>given you a day-to-day contact who will support you through your apprenticeship</li>
-                </ul>
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Help if you do not recognise your training provider's name
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                @Model.TrainingProviderName is your training provider's legal name registered with Companies House.
+                You may know them by their trading name instead.
             </div>
+        </details>
+
+        <p class="govuk-body">
+            Your off-the-job training will be <strong>at least 20% of your normal working hours</strong> spent learning new knowledge,
+            skills and behaviours for your apprenticeship. Your off-the-job training will be managed by your training provider.
+        </p>
+
+        <h3 class="govuk-heading-s">Things you need to know</h3>
+
+        <div class="govuk-inset-text">
+            <p class="govuk-body">Before starting your apprenticeship your training provider should have:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>told you if you'll have any training delivered by another training provider</li>
+                <li>given you a day-to-day contact who will support you through your apprenticeship</li>
+            </ul>
         </div>
+ 
 
         <form asp-show="@Model.ShowForm" method="post">
             <yes-no-wrapper property-name="Confirmed">

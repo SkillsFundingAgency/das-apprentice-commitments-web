@@ -50,9 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "legend";
-            output.Attributes.Add("class", "govuk-fieldset__legend govuk-fieldset__legend--l");
-            output.PreContent.SetHtmlContent(@"<h2 class=""govuk-fieldset__heading"">");
-            output.PostContent.SetHtmlContent("</h2>");
+            output.Attributes.Add("class", "govuk-fieldset__legend govuk-fieldset__legend--m");
         }
     }
 
