@@ -1,7 +1,7 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/cannotconfirm/{entity?}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.CannotConfirmApprenticeshipModel
 @{
-    ViewData["Title"] = "Can’t confirm your apprenticeship";
+    ViewData["Title"] = "Can't confirm your apprenticeship";
 
     var heading = string.Empty;
 
@@ -20,7 +20,7 @@
             break;
 
         default:
-            heading = "You can’t confirm your apprenticeship yet.";
+            heading = "You can't confirm your apprenticeship yet.";
             break;
     }
 }
@@ -33,7 +33,7 @@
 
         <div asp-show="@(Model.Entity == "Employer")">
             <p>
-                To change these details you need to speak to your training provider. You’ll be alerted when your employer has been corrected.
+                To change these details you need to speak to your training provider. You'll be alerted when your employer has been corrected.
             </p>
             <p>
                 You should come back to confirm the rest of your apprenticeship details when your employer has been corrected.
@@ -42,7 +42,7 @@
 
         <div asp-show="@(Model.Entity == "Provider")">
             <p>
-                To change these details you need to speak to your employer. You’ll be alerted when your training provider has been corrected.
+                To change these details you need to speak to your employer. You'll be alerted when your training provider has been corrected.
             </p>
             <p>
                 You should come back to confirm the rest of your apprenticeship details when your training provider has been corrected.
@@ -51,7 +51,7 @@
 
         <div asp-show="@(Model.Entity == "ApprenticeshipDetails")">
             <p>
-                To change these details you need to speak to your training provider. You’ll be alerted when your apprenticeship details have been corrected.
+                To change these details you need to speak to your training provider. You'll be alerted when your apprenticeship details have been corrected.
             </p>
             <p>
                 You should come back to confirm the rest of your apprenticeship details when your apprenticeship details have been corrected.
