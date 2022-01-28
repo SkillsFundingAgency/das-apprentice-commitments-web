@@ -9,7 +9,7 @@
 
         <partial name="ValidationSummary" />
 
-        <h1 class="govuk-heading-xl">@ViewData["Title"] </h1>
+        <h1 class="govuk-heading-l">@ViewData["Title"] </h1>
 
         <notification-banner asp-hide="@Model.ShowForm">
             You have confirmed these are the details of your apprenticeship
@@ -24,11 +24,11 @@
         </p>
 
         <p>
-            <strong>It's important to check these details</strong> because you’ll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.
+            <strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.
         </p>
 
         <table class="govuk-table data-table">
-            <caption></caption>
+            <caption class="govuk-visually-hidden">Apprenticeship details</caption>
             <tbody class="govuk-table__body">
                 <tr class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">Apprenticeship</th>
@@ -67,7 +67,7 @@
         </ul>
 
         <div class="govuk-inset-text">
-            The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and training provider.
+            <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and training provider.</p>
         </div>
 
         <form asp-show="@Model.ShowForm" method="post">
