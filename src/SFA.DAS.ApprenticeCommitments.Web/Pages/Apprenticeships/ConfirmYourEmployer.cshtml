@@ -34,7 +34,13 @@
 
         <h3 class="govuk-heading-s">Things you need to know</h3>
         <div class="govuk-inset-text">
-            <p class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
+            <p asp-normal-delivery="@Model" class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
+            
+            <p asp-abnormal-delivery="@Model" class="govuk-body">
+                This is a portable flexi-job apprenticeship and you will move between different jobs during the apprenticeship.
+            </p>
+            <p asp-abnormal-delivery="@Model" class="govuk-body">Before starting with each employer, they should have given you a:</p>
+
             <ul class="govuk-list govuk-list--bullet">
                 <li>copy of your apprenticeship agreement signed by you and them, if you have not received this agreement please speak to your employer</li>
                 <li>day-to-day contact or manager who will support you through your apprenticeship</li>

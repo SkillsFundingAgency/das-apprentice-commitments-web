@@ -6,7 +6,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 {
-    public class ApprenticeshipRevisionPageModel : PageModel, IHasBackLink
+    public class ApprenticeshipRevisionPageModel : PageModel, IHasBackLink, IHaveDeliveryModel
     {
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
