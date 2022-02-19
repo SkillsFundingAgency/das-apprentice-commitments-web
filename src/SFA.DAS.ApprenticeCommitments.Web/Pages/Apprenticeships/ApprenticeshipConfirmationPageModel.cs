@@ -30,6 +30,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         {
             var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
             RevisionId = apprenticeship.RevisionId;
+            DeliveryModel = apprenticeship.DeliveryModel;
             LoadApprenticeship(apprenticeship);
             CanChangeAnswer = Confirmed == true && !apprenticeship.IsCompleted();
         }

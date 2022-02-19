@@ -16,6 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime ConfirmBefore { get; set; }
         public DateTime? ConfirmedOn { get; set; }
         public DateTime? LastViewed { get; set; }
+        public DeliveryModel DeliveryModel { get; set; }
         public string CourseName { get; set; } = null!;
         public int CourseLevel { get; set; }
         public string? CourseOption { get; set; } = null!;
@@ -26,6 +27,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime? StoppedReceivedOn { get; set; }
         public bool IsStopped { get; set; }
         public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
+    }
+
+    public enum DeliveryModel
+    {
+        Normal = 0,
+        Flexible = 1,
     }
 
     [Flags]

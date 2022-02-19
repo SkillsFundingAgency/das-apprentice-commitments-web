@@ -22,9 +22,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
     {
         private readonly TestContext _context;
         private readonly RegisteredUserContext _userContext;
-        private HashedId _apprenticeshipId;
-        private long _revisionId;
-        private string _employerName;
+        private readonly HashedId _apprenticeshipId;
+        private readonly long _revisionId;
+        private readonly string _employerName;
+        private string _deliveryModel;
         private bool? _employerNameConfirmed;
 
         public ConfirmYourEmployerSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -34,6 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
             _revisionId = 6612;
             _employerName = "My Test Company";
+            _deliveryModel = DeliveryModel.Normal.ToString();
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -84,6 +86,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                         {
                             _apprenticeshipId.Id,
                             CommitmentStatementId = _revisionId,
+                            DeliveryModel = _deliveryModel,
                             EmployerName = _employerName,
                             EmployerCorrect = confirmed,
                             TrainingProviderCorrect = everythingConfirmed,
@@ -92,6 +95,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             HowApprenticeshipDeliveredCorrect = everythingConfirmed,
                             ConfirmedOn = everythingConfirmed == true ? (DateTime?)DateTime.Now : null
                         }));
+        }
+
+        [Given(@"the apprentice is on a flexi-job apprenticeship")]
+        public void GivenTheApprenticeIsOnAFlexi_JobApprenticeship()
+        {
+            _deliveryModel = DeliveryModel.Flexible.ToString();
         }
 
         [Given("the apprentice confirms their employer")]
@@ -141,6 +150,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.EmployerName.Should().Be(_employerName);
+        }
+
+        [Then(@"the delivery model is ""(.*)""")]
+        public void ThenTheDeliveryModelIs(string deliveryModel)
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.DeliveryModel.ToString().Should().Be(_deliveryModel);
         }
 
         [Then("the user should see the confirmation options")]
