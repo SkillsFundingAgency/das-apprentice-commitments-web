@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public DeliveryModel DeliveryModel { get; set; }
 
-        public string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
+        public virtual string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
 
         protected async Task<Apprenticeship> OnGetAsync(AuthenticatedUserClient _client)
         {
