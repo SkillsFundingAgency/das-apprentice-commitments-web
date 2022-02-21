@@ -35,6 +35,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         {
             if (AspNormalDelivery?.DeliveryModel != DeliveryModel.Normal)
                 output.SuppressOutput();
+        
+            output.RemoveTagHelperTag();
         }
 
     }
@@ -48,7 +50,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         {
             if (AspAbnormalDelivery?.DeliveryModel == DeliveryModel.Normal)
                 output.SuppressOutput();
-        }
 
+            output.RemoveTagHelperTag();
+        }
+    }
+
+    public static class TagHelperExtensions
+    {
+        public static void RemoveTagHelperTag(this TagHelperOutput output)
+        {
+            // By convention, we use the tag name "x" when we only create a tag to
+            // access the tag helper functionality
+            if (output.TagName == "x")
+                output.TagName = "";
+        }
     }
 }

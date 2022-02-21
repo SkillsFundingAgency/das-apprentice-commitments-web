@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RestEase.HttpClientFactory;
+using SFA.DAS.ApprenticeCommitments.Web.Helpers;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticeCommitments.Web.TagHelpers;

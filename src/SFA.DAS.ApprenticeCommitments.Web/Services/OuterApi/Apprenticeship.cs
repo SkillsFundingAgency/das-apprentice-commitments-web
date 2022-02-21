@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
@@ -31,7 +32,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 
     public enum DeliveryModel
     {
+        [Display(Name = "Normal")]
         Normal = 0,
+        
+        [Display(Name = "Portable flexi-job")]
         Flexible = 1,
     }
 
