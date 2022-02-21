@@ -1,4 +1,5 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/howyourapprenticeshipwillbedelivered"
+@using SFA.DAS.ApprenticeCommitments.Web.Helpers
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.HowYourApprenticeshipWillBeDeliveredModel
 @{
     ViewData["Title"] = "How your apprenticeship will be delivered";
@@ -16,18 +17,23 @@
             You have read through how your apprenticeship will be delivered
         </div>
 
-        <p>Your apprenticeship will be delivered in two parts:</p>
+        <p>Your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship will be delivered in two parts:</p>
         <ul class="govuk-list govuk-list--bullet">
-            <li>a training period</li>
+            <li>a training period <x asp-abnormal-delivery="@Model">when you will move between different jobs</x></li>
             <li>an end-point assessment</li>
         </ul>
 
         <h2 class="govuk-heading-m">Your training period</h2>
 
         <p>
-            <strong>Your employer</strong> will give you hands-on experience in your chosen
+            <strong>Your employer<x asp-abnormal-delivery="@Model">s</x></strong> will give you hands-on experience in your chosen
             occupation. They'll provide you with training and supervision to help you develop
             the skills you need to perform the role you've been employed to do.
+        </p>
+
+        <p asp-abnormal-delivery="@Model">
+            <strong>Each individual employer</strong> will help you develop some of the skills required for your apprenticeship. 
+            When a job ends, you’ll need to find a new job to develop more of the required skills.
         </p>
 
         <p>
@@ -39,7 +45,8 @@
         </p>
 
         <p>
-            <strong>Your training plan</strong> agreed between you and your training provider.
+            <strong>Your training plan</strong> is agreed between you and your training provider<x asp-abnormal-delivery="@Model">, 
+            with input from your employers at the start of each job</x>.
             The plan will set out a training schedule for your off-the-job training. Your
             training plan will include:
         </p>
