@@ -12,8 +12,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
     {
         private const string TagContent = "some text";
 
-        [TestCase(DeliveryModel.Normal, TagContent)]
-        [TestCase(DeliveryModel.Flexible, "")]
+        [TestCase(DeliveryModel.Regular, TagContent)]
+        [TestCase(DeliveryModel.PortableFlexiJob, "")]
         public async Task Normal(DeliveryModel deliveryModel, string expected)
         {
             TagHelperOutput.Content.Append("some text");
@@ -27,8 +27,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             TagHelperOutput.Content.GetContent().Should().Be(expected);
         }
 
-        [TestCase(DeliveryModel.Flexible, TagContent)]
-        [TestCase(DeliveryModel.Normal, "")]
+        [TestCase(DeliveryModel.PortableFlexiJob, TagContent)]
+        [TestCase(DeliveryModel.Regular, "")]
         public async Task Abnormal(DeliveryModel deliveryModel, string expected)
         {
             TagHelperOutput.Content.Append("some text");

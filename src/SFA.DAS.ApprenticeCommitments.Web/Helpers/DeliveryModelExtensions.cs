@@ -7,7 +7,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Helpers
         public static string? AbnormalDisplayName(this DeliveryModel deliveryModel)
             => deliveryModel switch
             {
-                DeliveryModel.Normal => null,
+                DeliveryModel.Regular => null,
                 _ => deliveryModel.DisplayName()
             };
     }

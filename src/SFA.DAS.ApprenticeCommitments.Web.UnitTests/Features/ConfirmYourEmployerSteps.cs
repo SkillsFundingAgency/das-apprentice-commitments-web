@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _apprenticeshipId = HashedId.Create(1235, _context.Hashing);
             _revisionId = 6612;
             _employerName = "My Test Company";
-            _deliveryModel = DeliveryModel.Normal.ToString();
+            _deliveryModel = DeliveryModel.Regular.ToString();
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -100,7 +100,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given(@"the apprentice is on a flexi-job apprenticeship")]
         public void GivenTheApprenticeIsOnAFlexi_JobApprenticeship()
         {
-            _deliveryModel = DeliveryModel.Flexible.ToString();
+            _deliveryModel = DeliveryModel.PortableFlexiJob.ToString();
         }
 
         [Given("the apprentice confirms their employer")]

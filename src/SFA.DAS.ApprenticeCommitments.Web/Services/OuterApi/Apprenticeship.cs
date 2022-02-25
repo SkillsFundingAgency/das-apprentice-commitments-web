@@ -33,10 +33,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
     public enum DeliveryModel
     {
         [Display(Name = "Normal")]
-        Normal = 0,
+        Regular = 0,
         
         [Display(Name = "Portable flexi-job")]
-        Flexible = 1,
+        PortableFlexiJob = 1,
     }
 
     [Flags]

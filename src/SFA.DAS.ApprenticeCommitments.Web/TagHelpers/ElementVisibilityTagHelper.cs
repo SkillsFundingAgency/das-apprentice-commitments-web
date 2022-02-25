@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (AspNormalDelivery?.DeliveryModel != DeliveryModel.Normal)
+            if (AspNormalDelivery?.DeliveryModel != DeliveryModel.Regular)
                 output.SuppressOutput();
         
             output.RemoveTagHelperTag();
@@ -48,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (AspAbnormalDelivery?.DeliveryModel == DeliveryModel.Normal)
+            if (AspAbnormalDelivery?.DeliveryModel == DeliveryModel.Regular)
                 output.SuppressOutput();
 
             output.RemoveTagHelperTag();
