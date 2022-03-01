@@ -5,10 +5,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Helpers
 {
     public static class HasDeliveryModelExtensions
     {
-        public static bool IsNormalDelivery(this IHaveDeliveryModel deliveryModel)
+        public static bool IsRegularDelivery(this IHaveDeliveryModel deliveryModel)
             => deliveryModel.DeliveryModel == DeliveryModel.Regular;
 
-        public static bool IsAbnormalDelivery(this IHaveDeliveryModel deliveryModel)
-            => !IsNormalDelivery(deliveryModel);
+        public static bool IsIrregularDelivery(this IHaveDeliveryModel deliveryModel)
+            => !IsRegularDelivery(deliveryModel);
     }
 }

@@ -14,7 +14,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
         [TestCase(DeliveryModel.Regular, TagContent)]
         [TestCase(DeliveryModel.PortableFlexiJob, "")]
-        public async Task Normal(DeliveryModel deliveryModel, string expected)
+        public async Task Regular(DeliveryModel deliveryModel, string expected)
         {
             TagHelperOutput.Content.Append("some text");
             var sut = new NormalDeliveryModelTagHelper
@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
         [TestCase(DeliveryModel.PortableFlexiJob, TagContent)]
         [TestCase(DeliveryModel.Regular, "")]
-        public async Task Abnormal(DeliveryModel deliveryModel, string expected)
+        public async Task Irregular(DeliveryModel deliveryModel, string expected)
         {
             TagHelperOutput.Content.Append("some text");
             var sut = new AbnormalDeliveryModelTagHelper
