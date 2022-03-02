@@ -156,7 +156,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheDeliveryModelIs(string deliveryModel)
         {
             var page = _context.ActionResult.LastPageResult;
-            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.DeliveryModel.ToString().Should().Be(_deliveryModel);
+            page.Model.Should().BeOfType<ConfirmYourEmployerModel>().Which.DeliveryModel.ToString().Should().Be(deliveryModel);
         }
 
         [Then("the user should see the confirmation options")]
