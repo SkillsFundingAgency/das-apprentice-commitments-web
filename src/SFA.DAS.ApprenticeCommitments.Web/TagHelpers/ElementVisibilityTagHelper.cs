@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
         }
     }
 
-    [HtmlTargetElement(Attributes = "asp-normal-delivery")]
+    [HtmlTargetElement(Attributes = "asp-regular-delivery")]
     public class NormalDeliveryModelTagHelper : TagHelper
     {
         public IHaveDeliveryModel? AspNormalDelivery { get; set; }
@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
 
     }
     
-    [HtmlTargetElement(Attributes = "asp-abnormal-delivery")]
+    [HtmlTargetElement(Attributes = "asp-irregular-delivery")]
     public class AbnormalDeliveryModelTagHelper : TagHelper
     {
         public IHaveDeliveryModel? AspAbnormalDelivery { get; set; }

@@ -21,8 +21,8 @@
         </notification-banner>
 
         <p>
-            These are the details that your <x asp-abnormal-delivery="@Model">current</x> employer and 
-            <x asp-abnormal-delivery="@Model">your</x> training provider have agreed with you and have given to us.
+            These are the details that your <x asp-irregular-delivery="@Model">current</x> employer and 
+            <x asp-irregular-delivery="@Model">your</x> training provider have agreed with you and have given to us.
         </p>
 
         <p>
@@ -32,7 +32,7 @@
         <table class="govuk-table data-table">
             <caption class="govuk-visually-hidden">Apprenticeship details</caption>
             <tbody class="govuk-table__body">
-                <tr asp-abnormal-delivery="@Model" class="govuk-table__row">
+                <tr asp-irregular-delivery="@Model" class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">Delivery model</th>
                     <td class="govuk-table__cell">@Model.DeliveryModel.DisplayName()</td>
                 </tr>
@@ -60,10 +60,10 @@
         </table>
 
         <h2 class="govuk-heading-m">
-            Things you need to know <x asp-abnormal-delivery="@Model">about a portable flexi-job apprenticeship</x>
+            Things you need to know <x asp-irregular-delivery="@Model">about a portable flexi-job apprenticeship</x>
         </h2>
 
-        <p asp-abnormal-delivery="@Model">
+        <p asp-irregular-delivery="@Model">
             During your portable flexi-job apprenticeship, you will find different jobs and may move between employers.
             Each job will last a minimum of 3 months and you may return to the same employer multiple times throughout your apprenticeship. 
         </p>
@@ -73,14 +73,14 @@
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>include the time you will spend in off-the-job training <x asp-abnormal-delivery="@Model">across all employers</x></li>
+            <li>include the time you will spend in off-the-job training <x asp-irregular-delivery="@Model">across all employers</x></li>
             <li>not include when your end point assessment will take place</li>
         </ul>
 
         <div class="govuk-inset-text">
             <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with 
-               <x asp-normal-delivery="@Model">your employer and training provider.</x>
-               <x asp-abnormal-delivery="@Model">each employer and your training provider.</x>
+               <x asp-regular-delivery="@Model">your employer and training provider.</x>
+               <x asp-irregular-delivery="@Model">each employer and your training provider.</x>
         </div>
 
         <form asp-show="@Model.ShowForm" method="post">
