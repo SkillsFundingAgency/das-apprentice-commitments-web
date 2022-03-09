@@ -29,11 +29,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
     [HtmlTargetElement(Attributes = "asp-regular-delivery")]
     public class NormalDeliveryModelTagHelper : TagHelper
     {
-        public IHaveDeliveryModel? AspNormalDelivery { get; set; }
+        public IHaveDeliveryModel? AspRegularDelivery { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (AspNormalDelivery?.DeliveryModel != DeliveryModel.Regular)
+            if (AspRegularDelivery?.DeliveryModel != DeliveryModel.Regular)
                 output.SuppressOutput();
         
             output.RemoveTagHelperTag();
@@ -44,11 +44,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
     [HtmlTargetElement(Attributes = "asp-irregular-delivery")]
     public class AbnormalDeliveryModelTagHelper : TagHelper
     {
-        public IHaveDeliveryModel? AspAbnormalDelivery { get; set; }
+        public IHaveDeliveryModel? AspIrregularDelivery { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (AspAbnormalDelivery?.DeliveryModel == DeliveryModel.Regular)
+            if (AspIrregularDelivery?.DeliveryModel == DeliveryModel.Regular)
                 output.SuppressOutput();
 
             output.RemoveTagHelperTag();

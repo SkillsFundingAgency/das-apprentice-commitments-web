@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             TagHelperOutput.Content.Append("some text");
             var sut = new NormalDeliveryModelTagHelper
             {
-                AspNormalDelivery = new DeliveryModelContainer(deliveryModel),
+                AspRegularDelivery = new DeliveryModelContainer(deliveryModel),
             };
 
             await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
@@ -34,7 +34,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             TagHelperOutput.Content.Append("some text");
             var sut = new AbnormalDeliveryModelTagHelper
             {
-                AspAbnormalDelivery = new DeliveryModelContainer(deliveryModel),
+                AspIrregularDelivery = new DeliveryModelContainer(deliveryModel),
             };
 
             await sut.ProcessAsync(TagHelperContext, TagHelperOutput);
