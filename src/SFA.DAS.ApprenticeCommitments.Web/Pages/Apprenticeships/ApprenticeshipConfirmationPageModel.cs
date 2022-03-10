@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGetChangeAnswer()
         {
-            await OnGetAsync(_client);
+            await OnGetAsync();
             if (CanChangeAnswer)
             {
                 ChangingAnswer = true;
