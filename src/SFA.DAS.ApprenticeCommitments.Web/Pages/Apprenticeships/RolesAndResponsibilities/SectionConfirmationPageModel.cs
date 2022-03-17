@@ -1,27 +1,22 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndResponsibilities
 {
-    public class SectionConfirmationPageModel : PageModel, IHasBackLink
+    public class SectionConfirmationPageModel : ApprenticeshipRevisionPageModel
     {
         protected readonly AuthenticatedUserClient Client;
         protected readonly byte SectionPage;
 
         protected const string ConfirmationErrorMessage = "Please confirm that you have read the roles and responsibilities";
 
-        [BindProperty(SupportsGet = true)]
-        public HashedId ApprenticeshipId { get; set; }
-        [BindProperty]
-        public long RevisionId { get; set; }
         [BindProperty]
         public bool SectionConfirmed { get; set; }
 
-        public string Backlink
+        public override string Backlink
         {
             get
             {
@@ -49,7 +44,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
 
         protected async Task<IActionResult> GetConfirmationSection(RolesAndResponsibilitiesConfirmations rolesAndResponsibilitiesConfirmation)
         {
-            var apprenticeship = await Client.GetApprenticeship(ApprenticeshipId.Id);
+            var apprenticeship = await OnGetAsync(Client);
 
             if (apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed())
             {

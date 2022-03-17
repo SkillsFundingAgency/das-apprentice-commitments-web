@@ -9,7 +9,16 @@ Scenario: The apprentice is authenticated and should see the Employer's Name
 	When accessing the ConfirmYourEmployer page
 	Then the response status code should be Ok
 	And the apprentice should see the employer's name
+	And the delivery model is "Regular"
 	And the link is pointing to the confirm page
+
+Scenario: The flexi-job apprentice is authenticated and should see the delivery model details
+	Given the apprentice has logged in
+	And the apprentice is on a flexi-job apprenticeship
+	And the apprentice has not verified their employer
+	When accessing the ConfirmYourEmployer page
+	Then the response status code should be Ok
+	And the delivery model is "PortableFlexiJob"
 
 Scenario: The apprentice is authenticated and confirms the employer
 	Given the apprentice has logged in

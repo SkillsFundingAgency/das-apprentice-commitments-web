@@ -21,7 +21,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
 
         public async Task<IActionResult> OnGet()
         {
-            var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
+            var apprenticeship = await OnGetAsync(_client);
 
             if (!apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed())
             {
