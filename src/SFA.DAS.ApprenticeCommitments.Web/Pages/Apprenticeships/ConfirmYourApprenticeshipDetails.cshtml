@@ -1,4 +1,5 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
+@using SFA.DAS.ApprenticeCommitments.Web.Helpers
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
 @{
     ViewData["Title"] = "Confirm the details of your apprenticeship";
@@ -9,7 +10,7 @@
 
         <partial name="ValidationSummary" />
 
-        <h1 class="govuk-heading-l">@ViewData["Title"] </h1>
+        <h1 class="govuk-heading-l">Confirm the details of your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship</h1>
 
         <notification-banner asp-hide="@Model.ShowForm">
             You have confirmed these are the details of your apprenticeship
@@ -20,7 +21,8 @@
         </notification-banner>
 
         <p>
-            These are the details that your employer and training provider have agreed with you and have given to us.
+            These are the details that your <x asp-irregular-delivery="@Model">current</x> employer and 
+            <x asp-irregular-delivery="@Model">your</x> training provider have agreed with you and have given to us.
         </p>
 
         <p>
@@ -30,6 +32,10 @@
         <table class="govuk-table data-table">
             <caption class="govuk-visually-hidden">Apprenticeship details</caption>
             <tbody class="govuk-table__body">
+                <tr asp-irregular-delivery="@Model" class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Delivery model</th>
+                    <td class="govuk-table__cell">@Model.DeliveryModel.DisplayName()</td>
+                </tr>
                 <tr class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">Apprenticeship</th>
                     <td class="govuk-table__cell">@Model.CourseName</td>
@@ -54,20 +60,27 @@
         </table>
 
         <h2 class="govuk-heading-m">
-            Things you need to know
+            Things you need to know <x asp-irregular-delivery="@Model">about a portable flexi-job apprenticeship</x>
         </h2>
+
+        <p asp-irregular-delivery="@Model">
+            During your portable flexi-job apprenticeship, you will find different jobs and may move between employers.
+            Each job will last a minimum of 3 months and you may return to the same employer multiple times throughout your apprenticeship. 
+        </p>
 
         <p>
             Your planned training start date and estimated duration should:
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>include the time you will spend in off-the-job training</li>
+            <li>include the time you will spend in off-the-job training <x asp-irregular-delivery="@Model">across all employers</x></li>
             <li>not include when your end point assessment will take place</li>
         </ul>
 
         <div class="govuk-inset-text">
-            <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and training provider.</p>
+            <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with 
+               <x asp-regular-delivery="@Model">your employer and training provider.</x>
+               <x asp-irregular-delivery="@Model">each employer and your training provider.</x>
         </div>
 
         <form asp-show="@Model.ShowForm" method="post">

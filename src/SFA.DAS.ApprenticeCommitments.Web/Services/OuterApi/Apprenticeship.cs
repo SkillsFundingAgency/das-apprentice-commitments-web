@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 {
@@ -16,6 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime ConfirmBefore { get; set; }
         public DateTime? ConfirmedOn { get; set; }
         public DateTime? LastViewed { get; set; }
+        public DeliveryModel DeliveryModel { get; set; }
         public string CourseName { get; set; } = null!;
         public int CourseLevel { get; set; }
         public string? CourseOption { get; set; } = null!;
@@ -26,6 +28,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime? StoppedReceivedOn { get; set; }
         public bool IsStopped { get; set; }
         public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
+    }
+
+    public enum DeliveryModel
+    {
+        [Display(Name = "Regular")]
+        Regular = 0,
+        
+        [Display(Name = "Portable flexi-job")]
+        PortableFlexiJob = 1,
     }
 
     [Flags]
