@@ -1,4 +1,4 @@
-﻿@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
+@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
 @using SFA.DAS.ApprenticeCommitments.Web.Helpers
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
 @{
@@ -55,6 +55,10 @@
                 <tr class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">Estimated duration</th>
                     <td class="govuk-table__cell">@Model.CourseDuration months</td>
+                </tr>
+                <tr asp-irregular-delivery="@Model" class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Job end date</th>
+                    <td class="govuk-table__cell">@Model.EmploymentEndDate?.ToString("MMMM yyyy")</td>
                 </tr>
             </tbody>
         </table>
