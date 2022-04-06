@@ -28,6 +28,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty]
         public DateTime PlannedEndDate { get; set; }
+        
+        public DateTime? EmploymentEndDate { get; set; }
 
         public YourApprenticeshipDetails(AuthenticatedUserClient client) : base("ApprenticeshipDetails", client)
         {
@@ -41,6 +43,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             CourseDuration = apprenticeship.CourseDuration;
             PlannedStartDate = apprenticeship.PlannedStartDate;
             PlannedEndDate = apprenticeship.PlannedEndDate;
+            EmploymentEndDate = apprenticeship.EmploymentEndDate;
             Confirmed = apprenticeship.ApprenticeshipDetailsCorrect;
         }
 

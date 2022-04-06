@@ -1,4 +1,4 @@
-﻿@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
+@page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
 @using SFA.DAS.ApprenticeCommitments.Web.Helpers
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
 @{
@@ -48,14 +48,32 @@
                     <th scope="row" class="govuk-table__header">Option</th>
                     <td class="govuk-table__cell">@Model.CourseOption</td>
                 </tr>
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">Planned start date for training</th>
-                    <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
-                </tr>
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">Estimated duration</th>
-                    <td class="govuk-table__cell">@Model.CourseDuration months</td>
-                </tr>
+
+                <x asp-regular-delivery="@Model" >
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned start date for training</th>
+                        <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Estimated duration</th>
+                        <td class="govuk-table__cell">@Model.CourseDuration months</td>
+                    </tr>
+                </x>
+
+                <x asp-irregular-delivery="@Model" >
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned training start date</th>
+                        <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned training end date</th>
+                        <td class="govuk-table__cell">@Model.PlannedEndDate.ToString("MMMM yyyy")</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Job end date</th>
+                        <td class="govuk-table__cell">@Model.EmploymentEndDate?.ToString("MMMM yyyy")</td>
+                    </tr>
+                </x>
             </tbody>
         </table>
 
