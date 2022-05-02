@@ -9,13 +9,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             ApprenticeCommitmentsApiBuilder.Create(5121)
                 .WithRegistrationFirstSeenOn()
                 .WithUsersFirstLogin()
+                .WithUserAccount()
                 .WithUsersApprenticeships()
                 .WithEmployerConfirmation()
                 .WithTrainingProviderConfirmation()
                 .WithApprenticeshipDetailsConfirmation()
                 .WithHowApprenticeshipWillBeDeliveredConfirmation()
                 .WithRolesAndResponsibilitiesConfirmation()
-                .WithUserAccount()
                 .Build();
 
             Console.WriteLine("Press any key to stop the servers");
