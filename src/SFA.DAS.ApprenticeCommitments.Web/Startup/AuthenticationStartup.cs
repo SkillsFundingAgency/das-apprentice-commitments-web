@@ -31,8 +31,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            IdentityModelEventSource.ShowPII = true;
-
             services.AddApprenticeAuthentication(config.MetadataAddress, environment);
 
             services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
