@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Logging;
-using System.IdentityModel.Tokens.Jwt;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
