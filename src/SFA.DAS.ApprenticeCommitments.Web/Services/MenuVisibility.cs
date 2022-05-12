@@ -6,5 +6,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
     internal class MenuVisibility : IMenuVisibility
     {
         public async Task<bool> ShowConfirmMyApprenticeship() => true;
+
+        public async Task<bool> ShowApprenticeFeedback() => true;
     }
 }
