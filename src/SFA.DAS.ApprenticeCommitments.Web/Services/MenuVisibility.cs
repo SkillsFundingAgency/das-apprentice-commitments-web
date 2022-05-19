@@ -26,11 +26,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
                 var apprentice = await client.GetApprentice(authenticatedUser.ApprenticeId);
                 var apprenticeship = (await client.GetApprenticeships(authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
 
-                var isStopped = apprenticeship?.IsStopped == true;
                 var isConfirmed = apprenticeship?.ConfirmedOn.HasValue ?? false;
                 var isPrivateBeta = apprentice?.IsPrivateBetaUser == true;
 
-                return isPrivateBeta && isConfirmed && !isStopped;
+                return isPrivateBeta && isConfirmed;
             }
             catch
             {
