@@ -50,6 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"ApplicationUrls:ApprenticeAccountsUrl", "https://account/"},
                     {"ApplicationUrls:ApprenticeCommitmentsUrl", "http://localhost/"},
                     {"ApplicationUrls:ApprenticeLoginUrl", "https://login/"},
+                    {"ApplicationUrls:ApprenticeFeedbackUrl", "https://feedback/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
                     {"Hashing:AllowedHashstringCharacters", "abcdefgh12345678"},
                     {"Hashing:Hashstring", "testing"},

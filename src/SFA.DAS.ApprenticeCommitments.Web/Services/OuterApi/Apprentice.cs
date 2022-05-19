@@ -11,5 +11,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public string Email { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
         public bool TermsOfUseAccepted { get; set; }
+        public bool IsPrivateBetaUser { get; set; }
     }
 }
