@@ -23,9 +23,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         {
             try
             {
-                var apprentice = await client.GetApprentice(authenticatedUser.ApprenticeId);
                 var apprenticeship = (await client.GetApprenticeships(authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
-
                 var isConfirmed = apprenticeship?.ConfirmedOn.HasValue ?? false;
                 
                 return isConfirmed;
