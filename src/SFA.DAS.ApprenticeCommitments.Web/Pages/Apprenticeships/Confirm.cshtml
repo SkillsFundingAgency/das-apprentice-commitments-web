@@ -116,7 +116,7 @@
 
 *@
         <li class="app-status-list__list-item">
-            <a asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" asp-page="transactioncomplete" class="app-status-list__link @stateClass">
+            <a asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" asp-page="/Apprenticeships/TransactionComplete" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link @stateClass">
                 <div class="app-status-list__link-content">
                     <p class="app-status-list__link-text">Confirm your apprenticeship</p>
                     <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
