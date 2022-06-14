@@ -94,6 +94,47 @@
         <li confirmation-section asp-page="RolesAndResponsibilities/Index" model="Model" confirmation-status="@Model.RolesAndResponsibilitiesConfirmation">
             Roles and responsibilities
         </li>
+
+        @{
+            var (canComplete, stateClass, colourClass, tag) = @Model.Status switch
+            {
+                ConfirmStatus.ApprenticeshipComplete => (true, "complete", "green", "Complete"),
+                ConfirmStatus.SectionsComplete => (true, "", "yellow", "Incomplete"),
+                _ => (false, "inactive", "grey", "Incomplete"),
+            };
+
+        }
+
+        @*<li class="app-status-list__list-item">
+            <a href="/apprenticeships/VB4N44/rolesandresponsibilities" class="app-status-list__link complete">
+                <div class="app-status-list__link-content">
+                    <p class="app-status-list__link-text">Roles and responsibilities</p>
+                    <strong class="app-status-list__tag govuk-tag govuk-tag--green">Complete</strong>
+                </div>
+            </a>
+        </li>
+
+*@
+        <li class="app-status-list__list-item">
+            <a asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" asp-page="transactioncomplete" class="app-status-list__link @stateClass">
+                <div class="app-status-list__link-content">
+                    <p class="app-status-list__link-text">Confirm your apprenticeship</p>
+                    <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
+                </div>
+            </a>
+            <a asp-show="@Model.Status == ConfirmStatus.SectionsComplete" asp-page="confirm" class="app-status-list__link @stateClass">
+                <div class="app-status-list__link-content">
+                    <p class="app-status-list__link-text">Confirm your apprenticeship</p>
+                    <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
+                </div>
+            </a>
+            <div asp-hide="canComplete" href="{url}" class="app-status-list__link @stateClass">
+                <div class="app-status-list__link-content">
+                    <p class="app-status-list__link-text">Confirm your apprenticeship</p>
+                    <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
+                </div>
+            </div>
+        </li>
     </ol>
 </div>
 
