@@ -160,6 +160,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             return Math.Max(0, daysRemaining.Days);
         }
 
+        public Task<IActionResult> OnGetFinalConfirmation()
+            => OnPostConfirm();
+
         public async Task<IActionResult> OnPostConfirm()
         {
             await _client.ConfirmApprenticeship(

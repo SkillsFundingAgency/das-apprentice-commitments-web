@@ -1,4 +1,4 @@
-﻿@page "/apprenticeships/{apprenticeshipId}"
+@page "/apprenticeships/{apprenticeshipId}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @using SFA.DAS.ApprenticePortal.SharedUi.Menu
 @{
@@ -66,17 +66,6 @@
     </div>
 </div>
 
-<div asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" class="govuk-!-margin-bottom-5">
-    <h1 class="govuk-heading-l">Your apprenticeship details</h1>
-    <div class="app-notification-banner app-notification-banner--success">
-        <div class="app-notification-banner--icon-content-wrap">
-            <span class="app-notification-banner__icon das-text--success-icon"></span>
-            You have completed the confirmation of your apprenticeship.  Your employer and training provider will contact you shortly.
-        </div>
-    </div>
-</div>
-
-
 <div asp-show="@Model.Status != ConfirmStatus.Stopped">
     <ol class="govuk-list app-status-list">
         <li confirmation-section asp-page="ConfirmYourEmployer" model="Model" confirmation-status="@Model.EmployerConfirmation">
@@ -96,11 +85,11 @@
         </li>
 
         @{
-            var (canComplete, stateClass, colourClass, tag) = @Model.Status switch
+            var (confirmPage, handler, stateClass, colourClass, tag) = @Model.Status switch
             {
-                ConfirmStatus.ApprenticeshipComplete => (true, "complete", "green", "Complete"),
-                ConfirmStatus.SectionsComplete => (true, "", "yellow", "Incomplete"),
-                _ => (false, "inactive", "grey", "Incomplete"),
+                ConfirmStatus.ApprenticeshipComplete => ("TransactionComplete", null, "complete", "green", "Complete"),
+                ConfirmStatus.SectionsComplete => ("Confirm", "FinalConfirmation", "", "yellow", "Incomplete"),
+                _ => ("Confirm", "FinalConfirmation", "inactive", "grey", "Incomplete"),
             };
 
         }
@@ -116,24 +105,12 @@
 
 *@
         <li class="app-status-list__list-item">
-            <a asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" asp-page="/Apprenticeships/TransactionComplete" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="app-status-list__link @stateClass">
+            <a class="app-status-list__link @stateClass"  asp-page="@confirmPage" asp-page-handler="@handler" asp-route-apprenticeshipId="@Model.ApprenticeshipId">
                 <div class="app-status-list__link-content">
                     <p class="app-status-list__link-text">Confirm your apprenticeship</p>
                     <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
                 </div>
             </a>
-            <a asp-show="@Model.Status == ConfirmStatus.SectionsComplete" asp-page="confirm" class="app-status-list__link @stateClass">
-                <div class="app-status-list__link-content">
-                    <p class="app-status-list__link-text">Confirm your apprenticeship</p>
-                    <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
-                </div>
-            </a>
-            <div asp-hide="canComplete" href="{url}" class="app-status-list__link @stateClass">
-                <div class="app-status-list__link-content">
-                    <p class="app-status-list__link-text">Confirm your apprenticeship</p>
-                    <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
-                </div>
-            </div>
         </li>
     </ol>
 </div>
