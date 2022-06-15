@@ -1,4 +1,4 @@
-﻿@page "/apprenticeships/{apprenticeshipId}"
+@page "/apprenticeships/{apprenticeshipId}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @using SFA.DAS.ApprenticePortal.SharedUi.Menu
 @{
@@ -68,6 +68,17 @@
         </form>
     </div>
 </div>
+
+<div asp-show="@Model.Status == ConfirmStatus.ApprenticeshipComplete" class="govuk-!-margin-bottom-5">
+    <h1 class="govuk-heading-l">Your apprenticeship details</h1>
+    <div class="app-notification-banner app-notification-banner--success">
+        <div class="app-notification-banner--icon-content-wrap">
+            <span class="app-notification-banner__icon das-text--success-icon"></span>
+            You have completed the confirmation of your apprenticeship.  Your employer and training provider will contact you shortly.
+        </div>
+    </div>
+</div>
+
 
 <div asp-show="@Model.Status != ConfirmStatus.Stopped">
     <ol class="govuk-list app-status-list">
