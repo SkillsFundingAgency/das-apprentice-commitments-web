@@ -103,6 +103,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task OnGetAsync()
         {
+            await PopulatePage();
+
+            _logger.LogInformation($"Marking apprenticeship as viewed {_authenticatedUser.ApprenticeId}, {ApprenticeshipId.Id}");
+            await _client.UpdateRevisionLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId);
+        }
+
+        private async Task PopulatePage()
+        {
             if (ApprenticeshipId == default)
                 throw new PropertyNullException(nameof(ApprenticeshipId));
 
@@ -122,9 +130,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             DisplayedApprenticeship = apprenticeship;
 
             ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
-
-            _logger.LogInformation($"Marking apprenticeship as viewed {_authenticatedUser.ApprenticeId}, {ApprenticeshipId.Id}");
-            await _client.UpdateRevisionLastViewed(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId);
         }
 
         private ConfirmStatus ConfirmationStatus(Apprenticeship apprenticeship)
@@ -165,6 +170,16 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         public async Task<IActionResult> OnPostConfirm()
         {
+            var apprenticeship = await _client
+                .GetApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
+
+            if(ConfirmationStatus(apprenticeship) != ConfirmStatus.SectionsComplete)
+            {
+                ModelState.TryAddModelError("ConfirmYourApprenticeship", "You must complete all the previous sections before you can confirm your apprenticeship.");
+                await PopulatePage();
+                return Page();
+            }
+
             await _client.ConfirmApprenticeship(
                 _authenticatedUser.ApprenticeId, ApprenticeshipId.Id, RevisionId,
                 new ApprenticeshipConfirmationRequest(true));

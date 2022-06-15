@@ -5,6 +5,9 @@
     ViewData["Title"] = "Confirm my apprenticeship details";
 }
 
+<partial name="ValidationSummary" />
+
+
 <div asp-show="@Model.Status == ConfirmStatus.Stopped">
     <partial name="Stopped" />
 </div>
