@@ -1,4 +1,4 @@
-@page "/apprenticeships/{apprenticeshipId}"
+﻿@page "/apprenticeships/{apprenticeshipId}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @using SFA.DAS.ApprenticePortal.SharedUi.Menu
 @{
@@ -97,16 +97,6 @@
 
         }
 
-        @*<li class="app-status-list__list-item">
-            <a href="/apprenticeships/VB4N44/rolesandresponsibilities" class="app-status-list__link complete">
-                <div class="app-status-list__link-content">
-                    <p class="app-status-list__link-text">Roles and responsibilities</p>
-                    <strong class="app-status-list__tag govuk-tag govuk-tag--green">Complete</strong>
-                </div>
-            </a>
-        </li>
-
-*@
         <li class="app-status-list__list-item">
             <a class="app-status-list__link @stateClass"  asp-page="@confirmPage" asp-page-handler="@handler" asp-route-apprenticeshipId="@Model.ApprenticeshipId">
                 <div class="app-status-list__link-content">
