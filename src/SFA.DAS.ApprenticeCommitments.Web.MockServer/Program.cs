@@ -16,6 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 .WithHowApprenticeshipWillBeDeliveredConfirmation()
                 .WithRolesAndResponsibilitiesConfirmation()
                 .WithUserAccount()
+                .WithMyApprenticeship()
                 .Build();
 
             Console.WriteLine("Press any key to stop the servers");

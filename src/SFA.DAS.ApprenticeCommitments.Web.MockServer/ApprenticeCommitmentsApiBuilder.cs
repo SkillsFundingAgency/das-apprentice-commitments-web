@@ -140,6 +140,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .UsingGet()
                     .WithPath("/apprentices/*"))
+                    .AtPriority(100)
                 .RespondWith(Response.Create()
                     .WithBodyAsJson(new Apprentice
                     {
@@ -159,6 +160,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .UsingGet()
                     .WithPath($"/apprentices/*/apprenticeships"))
+                    .AtPriority(10)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
@@ -201,6 +203,38 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
             return this;
         }
+
+        public ApprenticeCommitmentsApiBuilder WithMyApprenticeship()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/apprentices/*/apprenticeships/*/latest-confirmed-details")
+                )
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new
+                    {
+                        Id = 1235,
+                        EmployerName = "My Mock company",
+                        TrainingProviderName = "My Mock trainer",
+                        CourseName = "My confirmed apprenticeship course",
+                        CourseOption = (string)null,
+                        CourseLevel = 3,
+                        PlannedStartDate = new DateTime(2021, 03, 12),
+                        PlannedEndDate = new DateTime(2022, 09, 15),
+                        EmploymentPlannedEndDate = new DateTime(2022, 02, 15),
+                        DeliveryModel = DeliveryModel.PortableFlexiJob,
+                        DurationInMonths = 19,
+                        EmployerCorrect = true,
+                        TrainingProviderCorrect = true,
+                        ConfirmedOn = new DateTime(2022, 03, 01)
+                    }));
+
+            return this;
+        }
+
+
 
         public ApprenticeCommitmentsApiBuilder WithEmployerConfirmation()
         {

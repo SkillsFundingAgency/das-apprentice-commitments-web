@@ -29,6 +29,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         [Get("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}")]
         Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeid, [Path] long apprenticeshipid);
 
+        [Get("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/latest-confirmed-details")]
+        Task<Apprenticeship> GetMyApprenticeship([Path] Guid apprenticeid, [Path] long apprenticeshipid);
+
+
         [Patch("/apprentices/{apprenticeid}/apprenticeships/{apprenticeshipid}/revisions/{revisionId}/confirmations")]
         Task ConfirmApprenticeship(
                  [Path] Guid apprenticeid, [Path] long apprenticeshipid, [Path] long revisionId,
