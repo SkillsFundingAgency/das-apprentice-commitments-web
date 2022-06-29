@@ -242,8 +242,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             return this;
         }
 
-
-
         public ApprenticeCommitmentsApiBuilder WithEmployerConfirmation()
         {
             _server.Given(
