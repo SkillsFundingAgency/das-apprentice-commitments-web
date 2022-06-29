@@ -9,6 +9,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             ApprenticeCommitmentsApiBuilder.Create(5121)
                 .WithRegistrationFirstSeenOn()
                 .WithUsersFirstLogin()
+                .WithUserAccount()
                 .WithUsersApprenticeships()
                 .WithEmployerConfirmation()
                 .WithTrainingProviderConfirmation()

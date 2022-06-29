@@ -3,10 +3,12 @@ using Newtonsoft.Json.Serialization;
 using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
 using System.Net;
+using WireMock.Logging;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
+using WireMock.Settings;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 {
@@ -18,7 +20,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
         public ApprenticeCommitmentsApiBuilder(int port)
         {
-            _server = WireMockServer.StartWithAdminInterface(port, true);
+            _server = WireMockServer.Start(new WireMockServerSettings
+            {
+                Port = port,
+                UseSSL = true,
+                StartAdminInterface = true,
+                Logger = new WireMockConsoleLogger(),
+            });
         }
 
         public static ApprenticeCommitmentsApiBuilder Create(int port)
