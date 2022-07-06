@@ -38,6 +38,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         
         [Display(Name = "Portable flexi-job")]
         PortableFlexiJob = 1,
+
+        [Display(Name = "Flexi-job Agency")]
+        FlexiJobAgency = 2,
     }
 
     [Flags]
@@ -47,6 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         EmployerDetailsChanged = 1,
         ProviderDetailsChanged = 2,
         ApprenticeshipDetailsChanged = 4,
+        DeliveryModelDetailsChanged = 5,
     }
 
     [Flags]
