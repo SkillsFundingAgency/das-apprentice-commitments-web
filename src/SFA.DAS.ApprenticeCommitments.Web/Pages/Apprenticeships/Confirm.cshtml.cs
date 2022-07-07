@@ -51,7 +51,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private string BuildChangeNotificationMessage()
         {
-            if (ChangeNotifications == ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged || ChangeNotifications == ChangeOfCircumstanceNotifications.DeliveryModelDetailsChanged)
+            if (ChangeNotifications == ChangeOfCircumstanceNotifications.DeliveryModelDetailsChanged)
+            {
+                return "The details of your apprenticeship have changed. Please review and confirm the changes.";
+            }
+
+            if (ChangeNotifications == ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged)
             {
                 return "The details of your apprenticeship have been corrected. Please review and confirm the changes to your apprenticeship details.";
             }
