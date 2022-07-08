@@ -37,7 +37,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         Regular = 0,
         
         [Display(Name = "Portable flexi-job")]
-        PortableFlexiJob = 1
+        PortableFlexiJob = 1,
     }
 
     [Flags]
