@@ -148,7 +148,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .UsingGet()
                     .WithPath("/apprentices/*"))
-                    .AtPriority(100)
+                    .AtPriority(3)
                 .RespondWith(Response.Create()
                     .WithBodyAsJson(new Apprentice
                     {
@@ -168,7 +168,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .UsingGet()
                     .WithPath($"/apprentices/*/apprenticeships"))
-                    .AtPriority(10)
+                    .AtPriority(2)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
@@ -182,8 +182,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             _server.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/apprentices/*/apprenticeships/1235")
-                         )
+                    .WithPath($"/apprentices/*/apprenticeships/1235"))
+                    .AtPriority(1)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
@@ -198,14 +198,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         PlannedEndDate = new DateTime(2022, 09, 15),
                         DurationInMonths = 19,
                         ConfirmBefore = DateTime.UtcNow.AddDays(12).AddDays(1),
+                        ConfirmedOn = (DateTime?)null,
                         EmployerCorrect = true,
                         TrainingProviderCorrect = false,
+                        RolesAndResponsibilitiesConfirmations = (int?)null,
+                        ApprenticeshipDetailsCorrect = (bool?)null,
+                        HowApprenticeshipDeliveredCorrect = (bool?)null,
                     }));
 
             _server
                 .Given(Request.Create()
                     .UsingPatch()
                     .WithPath("/apprentices/*/apprenticeships/*"))
+                    .AtPriority(3)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200));
 
