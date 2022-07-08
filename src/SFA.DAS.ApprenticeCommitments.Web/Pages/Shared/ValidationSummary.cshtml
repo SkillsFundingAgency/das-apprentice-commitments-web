@@ -13,9 +13,18 @@
 
                     foreach (var error in stateItem.Value.Errors)
                     {
-                        <li>
-                            <a href="#@elementId">@error.ErrorMessage</a>
-                        </li>
+                        @if (@error.ErrorMessage.StartsWith("You must complete all the previous"))
+                        {
+                            <li>
+                                <p class="govuk-error-message">@error.ErrorMessage</p>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="#@elementId">@error.ErrorMessage</a>
+                            </li>                        
+                        }
                     }
                 }
             </ul>
