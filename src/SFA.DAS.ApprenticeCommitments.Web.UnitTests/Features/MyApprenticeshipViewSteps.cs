@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.OuterApi.MockServer.Given(
                      Request.Create()
                          .UsingGet()
-                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/latest-confirmed-details"))
+                         .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/confirmed/latest"))
                     .RespondWith(Response.Create()
                         .WithStatusCode(200)
                         .WithBodyAsJson(_apprenticeship)
@@ -57,7 +57,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.OuterApi.MockServer.Given(
                     Request.Create()
                         .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/latest-confirmed-details"))
+                        .WithPath($"/apprentices/*/apprenticeships/{_apprenticeshipId.Id}/confirmed/latest"))
                 .RespondWith(Response.Create()
                     .WithStatusCode(404)
                 );
