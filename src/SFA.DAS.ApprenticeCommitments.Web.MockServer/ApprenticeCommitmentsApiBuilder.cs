@@ -217,7 +217,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             _server.Given(
                     Request.Create()
                         .UsingGet()
-                        .WithPath($"/apprentices/*/apprenticeships/*/latest-confirmed-details")
+                        .WithPath($"/apprentices/*/apprenticeships/*/confirmed/latest")
                 )
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
