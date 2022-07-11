@@ -70,7 +70,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         public void ThenTheResponseStatusCodeShouldBeRedirect()
         {
             _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/apprenticeships/g3312g");
+            _context.Web.Response.Headers.Location.Should().Be("/apprenticeships/MLBB8M");
         }
 
         [Then(@"the apprentice should see the overview page for their apprenticeship")]

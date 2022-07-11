@@ -55,27 +55,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             await _context.Web.FollowLocalRedirects();
         }
 
-        [When("the user attempts to land on personalised page (.*)")]
-        public async Task GivenTheUserAttemptsToLandOnAnyPersonalizedApprenticeshipPortalPage(string page)
-        {
-            await _context.Web.Get($"Apprenticeships/{_context.Hashing.HashValue(_userContext.ApprenticeId)}/{page}");
-            await _context.Web.FollowLocalRedirects();
-        }
-
-        [Then("redirect the user to the Confirm ID page")]
-        public void ThenRedirectTheUserToTheConfirmIDPage()
-        {
-            _context.Web.Response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _context.Web.Response.Headers.Location.Should().Be("/Register");
-        }
-
-        [Then("redirect the user to the home page")]
-        public void ThenRedirectTheUserToTheHomePage()
-        {
-            _context.Web.Response.Should().Be302Redirect()
-                .And.HaveHeader("Location").And.Match("https://home/Home");
-        }
-
         [Then("redirect the user to the TermsOfUse page")]
         public void ThenRedirectTheUserToTermsOfUse()
         {

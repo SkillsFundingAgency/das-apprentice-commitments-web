@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using System.Net;
+using SFA.DAS.Encoding;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -25,13 +26,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             var appConfig = Configuration.Get<ApplicationConfiguration>();
+            var encodingConfig = Configuration.Get<EncodingConfig>();
 
             services
                 .AddApplicationInsightsTelemetry()
                 .AddDataProtection(appConfig.ConnectionStrings, Environment)
                 .AddAuthentication(appConfig.Authentication, Environment)
                 .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
-                .AddHashingService(appConfig.Hashing)
+                .AddSingleton<IEncodingService>(new EncodingService(encodingConfig))
                 .RegisterServices(Environment)
                 .AddControllers();
 
