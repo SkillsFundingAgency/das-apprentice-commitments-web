@@ -45,17 +45,7 @@ local appsettings.development.json file:
     "MetadataAddress": "https://localhost:5001"
   },
   "ApprenticeCommitmentsApi": {
-    //Endpoints
     "ApiBaseUrl": "https://localhost:5121"
-    //API
-    //"ApiBaseUrl": "https://localhost:5501"    
-  },
-  "Hashing": {
-    "AllowedHashstringCharacters": "abcdefgh12345678",
-    "Hashstring": "testing"
-  },
-  "GoogleAnalytics": {
-    "GoogleTagManagerId": "xxx"
   },
   "ApplicationUrls": {
     "ApprenticeHomeUrl": "https://localhost:44398",
