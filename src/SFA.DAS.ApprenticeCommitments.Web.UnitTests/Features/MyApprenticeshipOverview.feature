@@ -66,7 +66,7 @@ Scenario: The apprentice is shown the change of circumstances notification
 	| true             | true             | true                   | Your training provider, employer and apprenticeship details |
 	| false            | true             | false                  | Your employer details                                       |
 	| false            | false            | true                   | The details of your apprenticeship                          |
-	| false            | true             | true                   | Your employer and apprenticeship details                    |
+	| false            | true             | true                   | The details of your apprenticeship                    		 |
 
 Scenario: The apprentice's apprenticeship is stopped
 	Given the apprentice has logged in
