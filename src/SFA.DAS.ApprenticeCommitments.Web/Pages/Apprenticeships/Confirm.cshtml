@@ -13,22 +13,7 @@
 </div>
 
 <div asp-show="@Model.Status == ConfirmStatus.SectionsIncomplete">
-    <h1 class="govuk-heading-l">Confirm my apprenticeship details</h1>
 
-    <p>Read through each section below to confirm your apprenticeship. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
-
-    <div asp-show="!@Model.ShowChangeNotification" class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">Warning</span>
-            <span asp-hide="@Model.Overdue">
-                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details
-            </span>
-            <span asp-show="@Model.Overdue">
-                You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
-            </span>
-        </strong>
-    </div>
     <div asp-show="@Model.ShowChangeNotification" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
         <div class="govuk-notification-banner__header">
             <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
@@ -49,6 +34,24 @@
             </p>
         </div>
     </div>
+
+    <h1 class="govuk-heading-l">Confirm my apprenticeship details</h1>
+
+    <p>Read through each section below to confirm your apprenticeship. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
+
+    <div asp-show="!@Model.ShowChangeNotification" class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            <span asp-hide="@Model.Overdue">
+                You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details
+            </span>
+            <span asp-show="@Model.Overdue">
+                You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
+            </span>
+        </strong>
+    </div>
+
 
     <p>Your answers will save automatically, so you can leave and come back if you need to.</p>
 

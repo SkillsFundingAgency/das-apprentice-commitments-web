@@ -51,42 +51,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         private string BuildChangeNotificationMessage()
         {
-            if (ChangeNotifications == ChangeOfCircumstanceNotifications.DeliveryModelDetailsChanged)
+            if (ChangeNotifications != ChangeOfCircumstanceNotifications.None)
             {
-                return "The details of your apprenticeship have changed. Please review and confirm the changes.";
+                return "The details of your apprenticeship have been updated. Please review and confirm the changes.";
             }
-
-            if (ChangeNotifications == ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged)
-            {
-                return "The details of your apprenticeship have been corrected. Please review and confirm the changes to your apprenticeship details.";
-            }
-            
-            var message = "Your ";
-            switch (ChangeNotifications)
-            {
-                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
-                    message += "training provider, employer and apprenticeship";
-                    break;
-                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
-                    message += "training provider and employer";
-                    break;
-                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
-                    message += "training provider and apprenticeship";
-                    break;
-                case ChangeOfCircumstanceNotifications.EmployerDetailsChanged | ChangeOfCircumstanceNotifications.ApprenticeshipDetailsChanged:
-                    message += "employer and apprenticeship";
-                    break;
-                case ChangeOfCircumstanceNotifications.ProviderDetailsChanged:
-                    message += "training provider";
-                    break;
-                case ChangeOfCircumstanceNotifications.EmployerDetailsChanged:
-                    message += "employer";
-                    break;
-                default:
-                    throw new ApplicationException($"ChangeNotification Type {ChangeNotifications} not found");
-            }
-
-            return message + " details have been corrected. Please review and confirm the changes to your apprenticeship details.";
+            return String.Empty;
         }
 
         public bool ApprenticeshipConfirmed => Status == ConfirmStatus.ApprenticeshipComplete;

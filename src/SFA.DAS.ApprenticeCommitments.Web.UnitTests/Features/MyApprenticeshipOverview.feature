@@ -61,12 +61,12 @@ Scenario: The apprentice is shown the change of circumstances notification
 
 		Examples: 
 	| Provider Changed | Employer Changed | Apprenticeship Changed | Expected Message Starts Like                                |
-	| true             | false            | false                  | Your training provider details                              |
-	| true             | true             | false                  | Your training provider and employer details                 |
-	| true             | true             | true                   | Your training provider, employer and apprenticeship details |
-	| false            | true             | false                  | Your employer details                                       |
-	| false            | false            | true                   | The details of your apprenticeship                          |
-	| false            | true             | true                   | The details of your apprenticeship                    		 |
+	| true             | false            | false                  | The details of your apprenticeship have been updated        |
+	| true             | true             | false                  | The details of your apprenticeship have been updated        |
+	| true             | true             | true                   | The details of your apprenticeship have been updated        |
+	| false            | true             | false                  | The details of your apprenticeship have been updated        |
+	| false            | false            | true                   | The details of your apprenticeship have been updated        |
+	| false            | true             | true                   | The details of your apprenticeship have been updated        |
 
 Scenario: The apprentice's apprenticeship is stopped
 	Given the apprentice has logged in
