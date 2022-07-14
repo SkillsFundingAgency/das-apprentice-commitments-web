@@ -53,7 +53,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-third">
             <h2 class="govuk-heading-s">
-                <a asp-page="/Apprenticeships/RolesAndResponsibilities/Index" class="govuk-link" asp-route-apprenticeshipId="@Model.ApprenticeshipId">
+                <a asp-page="/Apprenticeships/RolesAndResponsibilities/Index" class="govuk-link" asp-route-apprenticeshipId="@Model.ApprenticeshipId" asp-route-revisionId="@Model.RevisionId">
                     Roles and responsibilities
                 </a>
             </h2>
@@ -64,7 +64,7 @@
         </div>
         <div class="govuk-grid-column-one-third">
             <h2 class="govuk-heading-s">
-                <a asp-page="/Apprenticeships/HowYourApprenticeshipWillBeDelivered" asp-route-apprenticeshipId="@Model.ApprenticeshipId" class="govuk-link">
+                <a asp-page="/Apprenticeships/HowYourApprenticeshipWillBeDelivered" asp-route-apprenticeshipId="@Model.ApprenticeshipId" asp-route-revisionId="@Model.RevisionId" class="govuk-link">
                     How your apprenticeship will be delivered
                 </a>
             </h2>
