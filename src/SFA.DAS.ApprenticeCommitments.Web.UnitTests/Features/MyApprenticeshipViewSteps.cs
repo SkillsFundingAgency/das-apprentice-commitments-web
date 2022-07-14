@@ -88,5 +88,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.Should().NotBeNull();
             model.LatestConfirmedApprenticeship.Should().BeEquivalentTo(_apprenticeship);
         }
+
+        [Then(@"the revisionId should be specified")]
+        public void ThenTheRevisionIdShouldBeSpecified()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
+            model.RevisionId.Should().Be(_apprenticeship.RevisionId);
+        }
+
     }
 }

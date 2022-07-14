@@ -178,7 +178,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context.ActionResult.LastPageResult
                 .Model.Should().BeOfType<ConfirmYourEmployerModel>().Which
-                .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
+                .Backlink.Should().Be(Urls.ConfirmMyApprenticshipPage(_apprenticeshipId));
         }
 
         [Then("the user should be redirected back to the overview page")]
