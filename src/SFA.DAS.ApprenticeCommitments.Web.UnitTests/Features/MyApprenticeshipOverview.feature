@@ -67,7 +67,13 @@ Scenario: The apprentice is shown the change of circumstances notification
 	| false            | true             | false                  | false					| The details of your apprenticeship have been updated        |
 	| false            | false            | true                   | false					| The details of your apprenticeship have been updated        |
 	| false            | true             | true                   | false					| The details of your apprenticeship have been updated        |
+	| true             | false            | false                  | true					| The details of your apprenticeship have been updated        |
+	| true             | true             | false                  | true					| The details of your apprenticeship have been updated        |
+	| true             | true             | true                   | true					| The details of your apprenticeship have been updated        |
+	| false            | true             | false                  | true					| The details of your apprenticeship have been updated        |
+	| false            | false            | true                   | true					| The details of your apprenticeship have been updated        |
 	| false            | true             | true                   | true					| The details of your apprenticeship have been updated        |
+
 
 Scenario: The apprentice's apprenticeship is stopped
 	Given the apprentice has logged in
