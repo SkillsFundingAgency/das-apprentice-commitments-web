@@ -48,6 +48,29 @@
                     </tbody>
                 </table>
             </div>
+
+            @if (@Model.LatestConfirmedApprenticeship.Revisions != null && @Model.LatestConfirmedApprenticeship.Revisions.Count > 0)
+            {
+                <h2 class="govuk-heading-m govuk-!-padding-top-3">My apprenticeship timeline</h2>
+
+                <ul class="das-timeline">
+                    @foreach (var revision in @Model.LatestConfirmedApprenticeship.Revisions)
+                    {
+                        <li class="das-timeline__item">
+                        
+                        <h2 class="das-timeline__title">
+                                @revision.Heading
+                            </h2>
+                            <p>@revision.Description</p>
+                            <p class="das-timeline__date">
+                                @if (@revision.RevisionDate.HasValue)
+                                    @revision.RevisionDate.Value.ToString("dd MMM yyyy")
+                            </p>
+                        </li>
+                    }
+                </ul>
+            }
+
         </div>
     </div>
     @*
