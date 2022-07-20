@@ -18,6 +18,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
         internal Task<Apprenticeship> GetApprenticeship(long id)
             => client.GetApprenticeship(authenticatedUser.ApprenticeId, id);
 
+        internal Task<Apprenticeship> GetApprenticeshipRevision(long apprenticeshipId, long revisionId)
+            => client.GetApprenticeshipRevision(authenticatedUser.ApprenticeId, apprenticeshipId, revisionId);
+
         internal Task ConfirmApprenticeship(long apprenticeshipId, long revisionId, ApprenticeshipConfirmationRequest confirmations)
             => client.ConfirmApprenticeship(authenticatedUser.ApprenticeId, apprenticeshipId, revisionId, confirmations);
     }

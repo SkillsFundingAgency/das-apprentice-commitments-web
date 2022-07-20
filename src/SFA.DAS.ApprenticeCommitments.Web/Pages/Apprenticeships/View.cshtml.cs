@@ -20,6 +20,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty(SupportsGet = true)]
         public HashedId ApprenticeshipId { get; set; }
+        public long? RevisionId { get; set; }
         public Apprenticeship LatestConfirmedApprenticeship { get; set; } = null!;
 
         public ViewMyApprenticeshipModel(IOuterApiClient client, ITimeProvider time, AuthenticatedUser authenticatedUser, ILogger<ViewMyApprenticeshipModel> logger)
@@ -40,6 +41,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 var apprenticeship =
                     await _client.GetMyApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
                 LatestConfirmedApprenticeship = apprenticeship;
+                RevisionId = apprenticeship.RevisionId;
             }
             catch (RestEase.ApiException e)
             {

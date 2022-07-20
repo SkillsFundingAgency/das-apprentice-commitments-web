@@ -186,7 +186,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                     .AtPriority(1)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new
+                    .WithBodyAsJson(new Apprenticeship
                     {
                         Id = 1235,
                         EmployerName = "My Mock company",
@@ -201,16 +201,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         ConfirmedOn = (DateTime?)null,
                         EmployerCorrect = true,
                         TrainingProviderCorrect = false,
-                        RolesAndResponsibilitiesConfirmations = (int?)null,
-                        ApprenticeshipDetailsCorrect = (bool?)null,
-                        HowApprenticeshipDeliveredCorrect = (bool?)null,
+                        RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                        ApprenticeshipDetailsCorrect = (bool?)true,
+                        HowApprenticeshipDeliveredCorrect = (bool?)true,
+                        RevisionId = 9008
                     }));
 
             _server
                 .Given(Request.Create()
                     .UsingPatch()
                     .WithPath("/apprentices/*/apprenticeships/*"))
-                    .AtPriority(3)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200));
 
@@ -224,9 +226,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         .UsingGet()
                         .WithPath($"/apprentices/*/apprenticeships/*/confirmed/latest")
                 )
+                .AtPriority(1)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new
+                    .WithBodyAsJson(new Apprenticeship
                     {
                         Id = 1235,
                         EmployerName = "My Mock company",
@@ -236,16 +239,59 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         CourseLevel = 3,
                         PlannedStartDate = new DateTime(2021, 03, 12),
                         PlannedEndDate = new DateTime(2022, 09, 15),
-                        EmploymentPlannedEndDate = new DateTime(2022, 02, 15),
+                        EmploymentEndDate = new DateTime(2022, 02, 15),
                         DeliveryModel = DeliveryModel.PortableFlexiJob,
                         DurationInMonths = 19,
                         EmployerCorrect = true,
                         TrainingProviderCorrect = true,
-                        ConfirmedOn = new DateTime(2022, 03, 01)
+                        RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                        ApprenticeshipDetailsCorrect = true,
+                        HowApprenticeshipDeliveredCorrect = true,
+                        RevisionId = 9009
                     }));
 
             return this;
         }
+
+        public ApprenticeCommitmentsApiBuilder WithMyApprenticeshipAndSpecificRevision()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/apprentices/*/apprenticeships/*/revisions/9009")
+                )
+                .AtPriority(1)
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new Apprenticeship
+                    {
+                        Id = 1235,
+                        EmployerName = "My Previous Mock company",
+                        TrainingProviderName = "My Mock trainer",
+                        CourseName = "My confirmed apprenticeship course",
+                        CourseOption = (string)null,
+                        CourseLevel = 3,
+                        PlannedStartDate = new DateTime(2021, 03, 12),
+                        PlannedEndDate = new DateTime(2022, 09, 15),
+                        EmploymentEndDate = new DateTime(2022, 02, 15),
+                        DeliveryModel = DeliveryModel.PortableFlexiJob,
+                        DurationInMonths = 19,
+                        EmployerCorrect = true,
+                        TrainingProviderCorrect = true,
+                        RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed 
+                                                                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed 
+                                                                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                        ApprenticeshipDetailsCorrect = true,
+                        HowApprenticeshipDeliveredCorrect = true,
+                        ConfirmedOn = new DateTime(2022, 03, 01),
+                        RevisionId = 9009
+                    }));
+
+            return this;
+        }
+
 
         public ApprenticeCommitmentsApiBuilder WithEmployerConfirmation()
         {

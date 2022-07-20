@@ -12,6 +12,7 @@ Scenario: The apprentice is authenticated and should see the view page
 	When accessing the view page
 	Then the response status code should be Ok
 	And the apprentice should see the apprenticeship view page for the apprenticeship
+	And the revisionId should be specified
 
 Scenario: The apprentice is authenticated but cannot see view page as no confirmed apprenticeship exists
 	Given the apprentice has logged in
