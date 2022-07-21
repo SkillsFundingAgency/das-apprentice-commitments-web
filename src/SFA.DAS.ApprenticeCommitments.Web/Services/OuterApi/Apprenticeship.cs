@@ -30,7 +30,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime? StoppedReceivedOn { get; set; }
         public bool IsStopped { get; set; }
         public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
-        public List<Revision> Revisions { get; set; } = null!;
+        public List<Timeline> Timelines { get; set; } = null!;
     }
 
     public enum DeliveryModel

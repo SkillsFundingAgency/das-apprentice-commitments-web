@@ -48,29 +48,6 @@
                     </tbody>
                 </table>
             </div>
-
-            @if (@Model.LatestConfirmedApprenticeship.Revisions != null && @Model.LatestConfirmedApprenticeship.Revisions.Count > 0)
-            {
-                <h2 class="govuk-heading-m govuk-!-padding-top-3">My apprenticeship timeline</h2>
-
-                <ul class="das-timeline">
-                    @foreach (var revision in @Model.LatestConfirmedApprenticeship.Revisions)
-                    {
-                        <li class="das-timeline__item">
-                        
-                        <h2 class="das-timeline__title">
-                                @revision.Heading
-                            </h2>
-                            <p>@revision.Description</p>
-                            <p class="das-timeline__date">
-                                @if (@revision.RevisionDate.HasValue)
-                                    @revision.RevisionDate.Value.ToString("dd MMM yyyy")
-                            </p>
-                        </li>
-                    }
-                </ul>
-            }
-
         </div>
     </div>
     <div class="govuk-grid-row">
@@ -97,4 +74,30 @@
             <hr class="govuk-section-break govuk-section-break--visible  govuk-section-break--l" />
         </div>
     </div>
+
+    @if (@Model.LatestConfirmedApprenticeship.Timelines != null && @Model.LatestConfirmedApprenticeship.Timelines.Count > 0)
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-m govuk-!-padding-top-3">My apprenticeship timeline</h2>
+
+                <ul class="das-timeline">
+                    @foreach (var timeline in @Model.LatestConfirmedApprenticeship.Timelines)
+                    {
+                        <li class="das-timeline__item">
+                        
+                        <h2 class="das-timeline__title">
+                                @timeline.Heading
+                            </h2>
+                            <p>@timeline.Description</p>
+                            <p class="das-timeline__date">
+                                @if (@timeline.RevisionDate.HasValue)
+                                    @timeline.RevisionDate.Value.ToString("dd MMM yyyy")
+                            </p>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
 </div>

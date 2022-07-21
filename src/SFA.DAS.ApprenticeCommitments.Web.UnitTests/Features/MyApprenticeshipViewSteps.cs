@@ -66,19 +66,19 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         [Given("the apprentice has changed employer")]
         public void GivenTheApprenticeHasChangedEmployer()
         {
-            _apprenticeship.Revisions.Add(new Revision("You started with a new employer", "From a to b", DateTime.Now));
+            _apprenticeship.Timelines.Add(new Timeline("You started with a new employer", "From a to b", DateTime.Now));
         }
 
         [Given("the apprentice has changed provider")]
         public void GivenTheApprenticeHasChangedProvider()
         {
-            _apprenticeship.Revisions.Add(new Revision("You started with a new training provider", "From a to b", DateTime.Now));
+            _apprenticeship.Timelines.Add(new Timeline("You started with a new training provider", "From a to b", DateTime.Now));
         }
 
         [Given("the apprentice has changed delivery model")]
         public void GivenTheApprenticeHasChangedDeliveryModel()
         {
-            _apprenticeship.Revisions.Add(new Revision("Delivery model changed", "From a to b", DateTime.Now));
+            _apprenticeship.Timelines.Add(new Timeline("Delivery model changed", "From a to b", DateTime.Now));
         }
 
         [When("accessing the view page")]
@@ -112,7 +112,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.LatestConfirmedApprenticeship.Revisions.Any(x => x.Heading == "You started with a new employer").Should().BeTrue();
+            model.LatestConfirmedApprenticeship.Timelines.Any(x => x.Heading == "You started with a new employer").Should().BeTrue();
         }
 
         [Then("the response should indicate a change of provider")]
@@ -120,7 +120,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.LatestConfirmedApprenticeship.Revisions.Any(x => x.Heading == "You started with a new training provider").Should().BeTrue();
+            model.LatestConfirmedApprenticeship.Timelines.Any(x => x.Heading == "You started with a new training provider").Should().BeTrue();
         }
 
         [Then("the response should indicate a change of delivery model")]
@@ -128,7 +128,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
             model.Should().NotBeNull();
-            model.LatestConfirmedApprenticeship.Revisions.Any(x => x.Heading == "Delivery model changed").Should().BeTrue();
+            model.LatestConfirmedApprenticeship.Timelines.Any(x => x.Heading == "Delivery model changed").Should().BeTrue();
         }
 
         [Then(@"the revisionId should be specified")]
