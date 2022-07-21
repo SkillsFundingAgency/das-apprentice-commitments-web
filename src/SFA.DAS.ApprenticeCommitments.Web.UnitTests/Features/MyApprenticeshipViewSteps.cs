@@ -130,5 +130,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.Should().NotBeNull();
             model.LatestConfirmedApprenticeship.Revisions.Any(x => x.Heading == "Delivery model changed").Should().BeTrue();
         }
+
+        [Then(@"the revisionId should be specified")]
+        public void ThenTheRevisionIdShouldBeSpecified()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
+            model.RevisionId.Should().Be(_apprenticeship.RevisionId);
+        }
     }
 }
