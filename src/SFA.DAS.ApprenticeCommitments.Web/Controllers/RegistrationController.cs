@@ -67,7 +67,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
             {
                 _logger.LogInformation("Starting registration of {RegistrationId} to apprentice {ApprenticeId}", registrationCode, _user.ApprenticeId);
 
-                await _registrations.MatchApprenticeToApprenticeship(registrationCode, _user.ApprenticeId);
+                await _registrations.MatchApprenticeToApprenticeship(registrationCode!, _user.ApprenticeId);
                 Response.Cookies.Delete("RegistrationCode", new CookieOptions
                 {
                     Domain = _domainHelper.ParentDomain

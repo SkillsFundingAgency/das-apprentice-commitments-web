@@ -13,7 +13,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
         {
             // This page is called from the login service link once a new user has entetred a password
             // It ensures that any already logged in user is first logged out
-            if (User?.Identity.IsAuthenticated == true)
+            if (User?.Identity?.IsAuthenticated == true)
             {
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
