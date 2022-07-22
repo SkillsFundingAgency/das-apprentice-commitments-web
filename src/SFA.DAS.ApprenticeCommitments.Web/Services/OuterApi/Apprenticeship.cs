@@ -50,6 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         EmployerDetailsChanged = 1,
         ProviderDetailsChanged = 2,
         ApprenticeshipDetailsChanged = 4,
+        DeliveryModelDetailsChanged = 5,
     }
 
     [Flags]
