@@ -37,7 +37,7 @@
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Planned training end date</th>
-                        <td class="govuk-table__cell">@Model.LatestConfirmedApprenticeship.PlannedStartDate.ToString("MMMM yyyy")</td>
+                        <td class="govuk-table__cell">@Model.LatestConfirmedApprenticeship.PlannedEndDate.ToString("MMMM yyyy")</td>
                     </tr>
                     <tr asp-show="@showEmploymentFields" class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Current job end date</th>
@@ -60,7 +60,7 @@
                 </a>
             </h2>
             <p class="govuk-hint">
-                You can read through the roles and responsibilities for you, your employer and your training provider
+                You can read through the roles and responsibilities for you, your employer and your training provider.
             </p>
             <hr class="govuk-section-break govuk-section-break--visible  govuk-section-break--l" />
         </div>
