@@ -21,7 +21,6 @@
     {
         <li>discussed my training plan with my current employer and my training provider</li>
         <li>told my current employer and my training provider about any learning needs or health issues I have</li>
-
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
     {
@@ -38,6 +37,7 @@
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
     {
+        <li>understood that this is a portable flexi-job apprenticeship and that I will move between different jobs during my apprenticeship</li>
         <li>understood the roles of my employers and training provider during my apprenticeship</li>
         <li>understood that at least 20% of my normal working hours will be off-the-job training</li>
     }
@@ -72,6 +72,13 @@
 
     <li>attend all my off-the-job training and provide evidence of my recorded hours where needed</li>
     <li>complete all of my learning activities, assignments and exams</li>
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+    {    
+        <li>share my learning and progress to date with each new employer</li>
+        <li>find my next job when the current job ends, until I am ready to complete my end-point assessment</li>
+    }
+
     <li>tell my employer in advance when I cannot attend work</li>
     <li>tell my training provider in advance when I cannot attend my off-the-job training</li>
     <li>agree with my employer and training provider when I am ready to complete my end-point assessment</li>
