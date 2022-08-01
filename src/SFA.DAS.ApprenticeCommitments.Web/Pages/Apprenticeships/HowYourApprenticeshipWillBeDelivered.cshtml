@@ -19,12 +19,10 @@
             You have read through how your apprenticeship will be delivered
         </div>
 
-        <p>Your apprenticeship will be delivered in two parts:</p>
-
-
-
         @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
         {
+            <p>Your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship will be delivered in two parts:</p>
+
             <ul class="govuk-list govuk-list--bullet">
                 <li>a training period</li>
                 <li>an end-point assessment</li>
@@ -55,6 +53,8 @@
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
         {
+            <p>Your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship will be delivered in two parts:</p>
+
             <ul class="govuk-list govuk-list--bullet">
                 <li>a training period when you will move between different jobs</li>
                 <li>an end-point assessment</li>
@@ -90,6 +90,8 @@
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
         {
+            <p>Your apprenticeship will be delivered in two parts:</p>
+
             <ul class="govuk-list govuk-list--bullet">
                 <li>a training period where you may move between different placements</li>
                 <li>an end-point assessment</li>
