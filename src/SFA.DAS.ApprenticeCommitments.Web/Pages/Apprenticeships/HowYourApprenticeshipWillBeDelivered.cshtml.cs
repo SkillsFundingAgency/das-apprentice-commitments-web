@@ -20,9 +20,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             _client = client;
         }
 
-        public async Task OnGet()
+        public async Task OnGet(long? revisionId = null)
         {
-            var apprenticeship = await OnGetAsync(_client);
+            var apprenticeship = await OnGetAsync(_client, revisionId);
 
             if (apprenticeship.HowApprenticeshipDeliveredCorrect == true)
                 ConfirmedHowApprenticeshipDelivered = true;

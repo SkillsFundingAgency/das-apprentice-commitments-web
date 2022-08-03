@@ -4,6 +4,7 @@
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.HowYourApprenticeshipWillBeDeliveredModel
 @{
     ViewData["Title"] = "How your apprenticeship will be delivered";
+    var showContinueButton = Model.ConfirmedHowApprenticeshipDelivered.HasValue && !Model.ExplicitRevision;
 }
 
 <div class="govuk-grid-row">
@@ -147,7 +148,7 @@
             <button class="govuk-button" data-module="govuk-button" id="apprentice-delivered-confirm">Continue</button>
         </form>
 
-        <form asp-show="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" action="@Model.Backlink">
+        <form asp-show="@showContinueButton" action="@Model.Backlink">
             <button class="govuk-button">Continue</button>
         </form>
 

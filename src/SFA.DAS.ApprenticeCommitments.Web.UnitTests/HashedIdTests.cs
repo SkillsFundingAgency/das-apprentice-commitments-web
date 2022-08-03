@@ -1,8 +1,9 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Collections.Generic;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
-using SFA.DAS.HashingService;
+using SFA.DAS.Encoding;
 using static SFA.DAS.ApprenticeCommitments.Web.UnitTests.EqualityTests;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
@@ -10,21 +11,36 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
     public class HashedIdTests
     {
         private const string alphabet = "abcdefgh12345678";
-        public static IHashingService Hashing = new HashingService.HashingService(alphabet, "testing");
+
+        public static IEncodingService Hashing = new EncodingService(new EncodingConfig
+        {
+            Encodings = new List<Encoding.Encoding>
+            {
+                new Encoding.Encoding
+                {
+                    Alphabet = alphabet, 
+                    EncodingType = "ApprenticeshipId",
+                    MinHashLength = 6, 
+                    Salt = "Salt"
+                }
+            }
+        });
 
         public static HashedId NewHashedId(string value)
             => HashedId.Create(value, Hashing);
 
         public static HashedId NewHashedId(long value)
-            => HashedId.Create(Hashing.HashValue(value), Hashing);
+            => HashedId.Create(Hashing.Encode(value, EncodingType.ApprenticeshipId), Hashing);
 
-        [TestCase(1, "42g87g")]
+        [TestCase(1, "4b8bg8")]
         public void Create_from_id(long id, string hash)
-            => NewHashedId(id).Should().BeEquivalentTo(new
+        {
+            NewHashedId(id).Should().BeEquivalentTo(new
             {
                 Id = id,
                 Hashed = hash,
             });
+        }
 
         [TestCaseSource(nameof(ValidIds))]
         public void Create_from_hash(long id, string hash)
@@ -76,10 +92,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 
         private static readonly object[] ValidIds =
         {
-            new object[] { 1, Hashing.HashValue(1)},
-            new object[] { 1234, Hashing.HashValue(1234) },
-            new object[] { 9999, Hashing.HashValue(9999) },
-            new object[] { 9999999999, Hashing.HashValue(9999999999) },
+            new object[] { 1, Hashing.Encode(1, EncodingType.ApprenticeshipId)},
+            new object[] { 1234, Hashing.Encode(1234, EncodingType.ApprenticeshipId) },
+            new object[] { 9999, Hashing.Encode(9999, EncodingType.ApprenticeshipId) },
+            new object[] { 999999, Hashing.Encode(999999, EncodingType.ApprenticeshipId) },
         };
     }
 }

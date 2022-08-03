@@ -121,6 +121,53 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     .WithStatusCode(200));
         }
 
+        [Given(@"the apprentice has logged in and the apprentice has confirmed their latest apprenticeship")]
+        public void GivenTheApprenticeHasLoggedInAndTheApprenticeHasConfirmedTheirLatestApprenticeship()
+        {
+            GivenTheApprenticeHasLoggedIn();
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath("/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Apprenticeships = new[] { new { Id = 1, ConfirmedOn = DateTime.Now, IsStopped = false } } }));
+
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath("/apprentices/*/apprenticeships/*/confirmed/latest"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Id = 1, ConfirmedOn = DateTime.Now, IsStopped = false }));
+        }
+
+        [Given(@"the apprentice has logged in, the apprentice has confirmed their latest apprenticeship, but it has since been stopped")]
+        public void GivenTheApprenticeHasLoggedInTheApprenticeHasConfirmedTheirLatestApprenticeshipButItHasSinceBeenStopped()
+        {
+            GivenTheApprenticeHasLoggedIn();
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath("/apprentices/*/apprenticeships"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Apprenticeships = new[] { new { Id = 1, IsStopped = true} } }));
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new { Id = 1 }));
+            _context.OuterApi.MockServer.Given(
+                    Request.Create()
+                        .UsingAnyMethod()
+                        .WithPath("/apprentices/*/apprenticeships/*"))
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200));
+        }
+
         [Given("the apprentice has not created their account")]
         public void GivenTheApprenticeHasNotCreatedTheirAccount()
         {
