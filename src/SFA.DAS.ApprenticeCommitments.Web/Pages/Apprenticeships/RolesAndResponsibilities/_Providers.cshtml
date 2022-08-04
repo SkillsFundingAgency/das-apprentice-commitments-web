@@ -1,4 +1,6 @@
-﻿<p>
+﻿@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+
+<p>
     The roles and responsibilities set out what is expected of your training provider.
 </p>
 <p>
@@ -21,7 +23,17 @@
 <ul class="govuk-list govuk-list--bullet">
     <li>manage the quality and delivery of your off-the-job training and making sure it is logged </li>
     <li asp-irregular-delivery="@Model">support you in finding jobs as you progress through your apprenticeship</li>
-    <li>take responsibility for regular progress reviews between all parties usually every 12 weeks</li>
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.Regular) || Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+    {
+        <li>take responsibility for regular progress reviews between all parties usually every 12 weeks</li>
+    }
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+    {
+        <li>take responsibility for regular progress reviews between all parties every 12 weeks</li>
+    }
+
     <li asp-irregular-delivery="@Model">make sure that you and each employer can see a summary of your learning and progress to date</li>
     <li>make sure that you and your employer know how to raise concerns or complaints about the apprenticeship training</li>
     <li asp-irregular-delivery="@Model">maintain contact with you if you are on an extended break in learning</li>
