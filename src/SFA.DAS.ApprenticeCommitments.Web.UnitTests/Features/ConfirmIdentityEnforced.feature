@@ -8,17 +8,6 @@ Scenario: Redirect to Account from index
 	When the user attempts to land on Apprenticeships index page
 	Then redirect the user to the Account page
 
-Scenario Outline: Redirect to Account from subpages
-	Given the apprentice has logged in but not created their account
-	When the user attempts to land on personalised page <page>
-	Then redirect the user to the Account page
-
-	Examples: 
-	| page                        |
-	| ConfirmYourEmployer         |
-	| ConfirmYourTrainingProvider |
-	| YourApprenticeshipDetails   |
-
 Scenario: Redirect to account from apprenticeships when there is registration code
 	Given the apprentice has logged in but not created their account
 	When the user attempts to land on the Register page with a registration code
@@ -45,13 +34,12 @@ Scenario: Redirect to Terms Of Use from index
 	When the user attempts to land on Apprenticeships index page
 	Then redirect the user to the TermsOfUse page
 
-Scenario Outline: Redirect to Terms Of Use from subpages
-	Given the apprentice has logged in but not accepted the terms of use
-	When the user attempts to land on personalised page <page>
-	Then redirect the user to the TermsOfUse page
+Scenario: Redirect to my apprenticeship from root when the latest apprenticeship has been confirmed 
+	Given the apprentice has logged in and the apprentice has confirmed their latest apprenticeship
+	When the user attempts to land on root index page
+	Then redirect the user to the my apprenticeship page
 
-	Examples: 
-	| page                        |
-	| ConfirmYourEmployer         |
-	| ConfirmYourTrainingProvider |
-	| YourApprenticeshipDetails   |
+Scenario: Redirect to overview from root when latest apprenticeship has been confirmed but then stopped 
+	Given the apprentice has logged in, the apprentice has confirmed their latest apprenticeship, but it has since been stopped
+	When the user attempts to land on root index page
+	Then redirect the user to the overview page

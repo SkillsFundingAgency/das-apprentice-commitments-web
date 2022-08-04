@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.HashingService;
+using SFA.DAS.Encoding;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
@@ -10,10 +10,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
         public long Id { get; }
         public string Hashed { get; }
 
-        public static HashedId Create(int id, IHashingService hashing)
-            => new HashedId(id, hashing.HashValue(id));
+        public static HashedId Create(int id, IEncodingService hashing)
+            => new HashedId(id, hashing.Encode(id, EncodingType.ApprenticeshipId));
 
-        public static HashedId Create(string hashed, IHashingService hashing)
+        public static HashedId Create(string hashed, IEncodingService hashing)
         {
             return TryCreate(hashed, hashing, out var hashedId)
                 ? hashedId
@@ -21,10 +21,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
         }
 
         public static bool TryCreate(
-            string hashed, IHashingService hashing,
+            string hashed, IEncodingService hashing,
             [MaybeNullWhen(false)] out HashedId hashedId)
         {
-            if (hashing.TryDecodeValue(hashed, out var id))
+            if (hashing.TryDecode(hashed, EncodingType.ApprenticeshipId, out var id))
             {
                 hashedId = new HashedId(id, hashed);
                 return true;
