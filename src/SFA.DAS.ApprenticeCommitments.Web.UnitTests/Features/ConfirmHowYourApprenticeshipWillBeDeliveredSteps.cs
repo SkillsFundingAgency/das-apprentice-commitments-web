@@ -103,7 +103,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context.ActionResult.LastPageResult
                 .Model.Should().BeOfType<HowYourApprenticeshipWillBeDeliveredModel>().Which
-                .Backlink.Should().Be(Urls.MyApprenticshipPage(_apprenticeshipId));
+                .Backlink.Should().Be(Urls.ConfirmMyApprenticshipPage(_apprenticeshipId));
         }
 
         [When(@"submitting the HowYourApprenticeshipWillBeDelivered page")]

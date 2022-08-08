@@ -13,7 +13,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public AuthenticationServiceConfiguration Authentication { get; set; }
         public DataProtectionConnectionStrings ConnectionStrings { get; set; }
         public OuterApiConfiguration ApprenticeCommitmentsApi { get; set; }
-        public HashingConfiguration Hashing { get; set; }
         public ZenDeskConfiguration Zendesk { get; set; }
         public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; }
         public NavigationSectionUrls ApplicationUrls { get; set; }
