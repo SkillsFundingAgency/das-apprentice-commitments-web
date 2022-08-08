@@ -10,7 +10,7 @@ using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.Startup;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
-using SFA.DAS.HashingService;
+using SFA.DAS.Encoding;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
@@ -52,8 +52,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"ApplicationUrls:ApprenticeLoginUrl", "https://login/"},
                     {"ApplicationUrls:ApprenticeFeedbackUrl", "https://feedback/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
-                    {"Hashing:AllowedHashstringCharacters", "abcdefgh12345678"},
-                    {"Hashing:Hashstring", "testing"},
+                    {"Encodings:0:EncodingType","ApprenticeshipId"},
+                    {"Encodings:0:Salt","SFA: digital apprenticeship service"},
+                    {"Encodings:0:MinHashLength","6"},
+                    {"Encodings:0:Alphabet","46789BCDFGHJKLMNPRSTVWXY"},
                     {"ZenDesk:ZendeskSectionId", _fixture.Create<string>()},
                     {"ZenDesk:ZendeskSnippetKey", _fixture.Create<string>()},
                     {"ZenDesk:ZendeskCobrowsingSnippetKey", _fixture.Create<string>()},
@@ -70,7 +72,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
             }
 
             _context.Web = new ApprenticeCommitmentsWeb(Client, ActionResultHook, Config, Cookies);
-            _context.Hashing = Factory.Services.GetRequiredService<IHashingService>();
+            _context.Hashing = Factory.Services.GetRequiredService<IEncodingService>();
             AuthenticationHandlerForTesting.Authentications.Clear();
         }
 
