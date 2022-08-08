@@ -33,13 +33,13 @@
     @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
     {
         <li>understood the roles of my employer and training provider during my apprenticeship</li>
-        <li>understood that at least 20% of my normal working hours will be off-the-job training</li>
+        <li>understood that I need to complete the off-the-job training hours stated in my training plan during my normal working hours</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
     {
         <li>understood that this is a portable flexi-job apprenticeship and that I will move between different jobs during my apprenticeship</li>
         <li>understood the roles of my employers and training provider during my apprenticeship</li>
-        <li>understood that at least 20% of my normal working hours will be off-the-job training</li>
+        <li>understood that I need to complete the off-the-job training hours stated in my training plan during my normal working hours</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
     {
@@ -59,11 +59,11 @@
 
     @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
     {
-        <li>take part in regular progress reviews with my employer and training provider usually every 12 weeks</li>
+        <li>take part in regular progress reviews with my employer and training provider every 12 weeks</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
     {
-        <li>take part in regular progress reviews with my employer and training provider usually every 12 weeks</li>
+        <li>take part in regular progress reviews with my employer and training provider every 12 weeks</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
     {
