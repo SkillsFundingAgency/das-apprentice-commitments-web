@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.ApprenticeCommitments.Web.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
 {
@@ -13,15 +14,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
     public class RegistrationControllerInitial : Controller
     {
         private readonly DomainHelper _domainHelper;
+        private readonly ILogger<RegistrationControllerInitial> _logger;
 
-        public RegistrationControllerInitial(DomainHelper domainHelper)
+        public RegistrationControllerInitial(DomainHelper domainHelper, ILogger<RegistrationControllerInitial> logger)
         {
             _domainHelper = domainHelper;
+            _logger = logger;
         }
 
         [HttpGet("/register/{registrationCode}")]
         public IActionResult Register(string registrationCode)
         {
+            _logger.LogInformation("Starting registration of {RegistrationId}", registrationCode);
             Response.Cookies.Append("RegistrationCode", registrationCode, new CookieOptions
             {
                 Domain = _domainHelper.ParentDomain, 
@@ -39,13 +43,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
         private readonly ApprenticeApi _registrations;
         private readonly NavigationUrlHelper _urlHelper;
         private readonly DomainHelper _domainHelper;
+        private readonly ILogger<RegistrationController> _logger;
 
-        public RegistrationController(AuthenticatedUser user, ApprenticeApi registrations, NavigationUrlHelper urlHelper, DomainHelper domainHelper)
+        public RegistrationController(AuthenticatedUser user, ApprenticeApi registrations, NavigationUrlHelper urlHelper, DomainHelper domainHelper, ILogger<RegistrationController> logger)
         {
             _user = user;
             _registrations = registrations;
             _urlHelper = urlHelper;
             _domainHelper = domainHelper;
+            _logger = logger;
         }
 
         [HttpGet("/register")]
@@ -59,6 +65,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Controllers
 
             try
             {
+                _logger.LogInformation("Starting registration of {RegistrationId} to apprentice {ApprenticeId}", registrationCode, _user.ApprenticeId);
+
                 await _registrations.MatchApprenticeToApprenticeship(registrationCode, _user.ApprenticeId);
                 Response.Cookies.Delete("RegistrationCode", new CookieOptions
                 {
