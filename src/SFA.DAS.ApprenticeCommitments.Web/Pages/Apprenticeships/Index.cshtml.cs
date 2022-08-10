@@ -49,7 +49,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
                 var firstApprenticeship = apprenticeship.Apprenticeships[0];
                 var apprenticeshipId = _hashing.Encode(firstApprenticeship.Id, EncodingType.ApprenticeshipId);
-                return RedirectToPage("Confirm", new { apprenticeshipId });
+
+                if (firstApprenticeship.IsStopped || firstApprenticeship.ConfirmedOn == null)
+                {
+                    return RedirectToPage("Confirm", new { apprenticeshipId });
+                }
+                return RedirectToPage("View", new { apprenticeshipId });
             }
         }
     }

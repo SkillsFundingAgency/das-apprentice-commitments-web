@@ -10,8 +10,10 @@
 <div class="govuk-width-container" id="dashboard-section">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">My apprenticeship</h1>
-            <em>@Model.LatestConfirmedApprenticeship.CourseName</em>
+            <h1 class="govuk-heading-l">
+                My apprenticeship
+                <span class="govuk-caption-m">@Model.LatestConfirmedApprenticeship.CourseName</span>
+            </h1>
 
             <div class="govuk-!-padding-bottom-2">
                 <table class="govuk-table data-table">
@@ -35,7 +37,7 @@
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Planned training end date</th>
-                        <td class="govuk-table__cell">@Model.LatestConfirmedApprenticeship.PlannedStartDate.ToString("MMMM yyyy")</td>
+                        <td class="govuk-table__cell">@Model.LatestConfirmedApprenticeship.PlannedEndDate.ToString("MMMM yyyy")</td>
                     </tr>
                     <tr asp-show="@showEmploymentFields" class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Current job end date</th>
@@ -58,7 +60,7 @@
                 </a>
             </h2>
             <p class="govuk-hint">
-                You can read through the roles and responsibilities for you, your employer and your training provider
+                You can read through the roles and responsibilities for you, your employer and your training provider.
             </p>
             <hr class="govuk-section-break govuk-section-break--visible  govuk-section-break--l" />
         </div>

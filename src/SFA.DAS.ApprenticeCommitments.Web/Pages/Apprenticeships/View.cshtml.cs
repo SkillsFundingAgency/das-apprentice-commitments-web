@@ -36,6 +36,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 throw new PropertyNullException(nameof(ApprenticeshipId));
 
             _logger.LogInformation("Getting confirmed apprenticeship {apprenticeshipId}", ApprenticeshipId.Id);
+            SetMenuWelcomeText();
             try
             {
                 var apprenticeship =
@@ -49,6 +50,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                 _logger.LogError("No confirmed apprenticeship found for {id}", ApprenticeshipId.Id);
                 throw;
             }
+        }
+
+        private void SetMenuWelcomeText()
+        {
+            ViewData[ApprenticePortal.SharedUi.ViewDataKeys.MenuWelcomeText] = $"Welcome, {User.FullName()}";
         }
     }
 }

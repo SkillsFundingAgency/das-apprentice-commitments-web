@@ -78,6 +78,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _context.ActionResult.LastPageResult.Model.Should().BeOfType<ConfirmApprenticeshipModel>();
         }
 
+        [Then(@"redirect the user to the my apprenticeship page")]
+        public void ThenRedirectTheUserToTheMyApprenticeshipPage()
+        {
+            _context.Web.Response.Should().Be2XXSuccessful();
+            _context.ActionResult.LastPageResult.Should().NotBeNull();
+            _context.ActionResult.LastPageResult.Model.Should().BeOfType<ViewMyApprenticeshipModel>();
+        }
+
         [Then("redirect the user to the Account page")]
         public void ThenRedirectTheUserToTheAccountPage()
         {
