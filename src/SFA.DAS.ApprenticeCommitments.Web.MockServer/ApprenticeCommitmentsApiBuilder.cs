@@ -148,6 +148,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .UsingGet()
                     .WithPath("/apprentices/*"))
+                    .AtPriority(3)
                 .RespondWith(Response.Create()
                     .WithBodyAsJson(new Apprentice
                     {
@@ -167,6 +168,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                 Request.Create()
                     .UsingGet()
                     .WithPath($"/apprentices/*/apprenticeships"))
+                    .AtPriority(2)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithBodyAsJson(new
@@ -180,11 +182,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
             _server.Given(
                 Request.Create()
                     .UsingGet()
-                    .WithPath($"/apprentices/*/apprenticeships/1235")
-                         )
+                    .WithPath($"/apprentices/*/apprenticeships/1235"))
+                    .AtPriority(1)
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
-                    .WithBodyAsJson(new
+                    .WithBodyAsJson(new Apprenticeship
                     {
                         Id = 1235,
                         EmployerName = "My Mock company",
@@ -196,8 +198,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                         PlannedEndDate = new DateTime(2022, 09, 15),
                         DurationInMonths = 19,
                         ConfirmBefore = DateTime.UtcNow.AddDays(12).AddDays(1),
+                        ConfirmedOn = (DateTime?)null,
                         EmployerCorrect = true,
                         TrainingProviderCorrect = false,
+                        RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                        ApprenticeshipDetailsCorrect = (bool?)true,
+                        HowApprenticeshipDeliveredCorrect = (bool?)true,
+                        RevisionId = 9008
                     }));
 
             _server
@@ -209,6 +218,80 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
 
             return this;
         }
+
+        public ApprenticeCommitmentsApiBuilder WithMyApprenticeship()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/apprentices/*/apprenticeships/*/confirmed/latest")
+                )
+                .AtPriority(1)
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new Apprenticeship
+                    {
+                        Id = 1235,
+                        EmployerName = "My Mock company",
+                        TrainingProviderName = "My Mock trainer",
+                        CourseName = "My confirmed apprenticeship course",
+                        CourseOption = (string)null,
+                        CourseLevel = 3,
+                        PlannedStartDate = new DateTime(2021, 03, 12),
+                        PlannedEndDate = new DateTime(2022, 09, 15),
+                        EmploymentEndDate = new DateTime(2022, 02, 15),
+                        DeliveryModel = DeliveryModel.PortableFlexiJob,
+                        DurationInMonths = 19,
+                        EmployerCorrect = true,
+                        TrainingProviderCorrect = true,
+                        RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed
+                                                                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                        ApprenticeshipDetailsCorrect = true,
+                        HowApprenticeshipDeliveredCorrect = true,
+                        RevisionId = 9009
+                    }));
+
+            return this;
+        }
+
+        public ApprenticeCommitmentsApiBuilder WithMyApprenticeshipAndSpecificRevision()
+        {
+            _server.Given(
+                    Request.Create()
+                        .UsingGet()
+                        .WithPath($"/apprentices/*/apprenticeships/*/revisions/9009")
+                )
+                .AtPriority(1)
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(new Apprenticeship
+                    {
+                        Id = 1235,
+                        EmployerName = "My Previous Mock company",
+                        TrainingProviderName = "My Mock trainer",
+                        CourseName = "My confirmed apprenticeship course",
+                        CourseOption = (string)null,
+                        CourseLevel = 3,
+                        PlannedStartDate = new DateTime(2021, 03, 12),
+                        PlannedEndDate = new DateTime(2022, 09, 15),
+                        EmploymentEndDate = new DateTime(2022, 02, 15),
+                        DeliveryModel = DeliveryModel.PortableFlexiJob,
+                        DurationInMonths = 19,
+                        EmployerCorrect = true,
+                        TrainingProviderCorrect = true,
+                        RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed 
+                                                                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed 
+                                                                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                        ApprenticeshipDetailsCorrect = true,
+                        HowApprenticeshipDeliveredCorrect = true,
+                        ConfirmedOn = new DateTime(2022, 03, 01),
+                        RevisionId = 9009
+                    }));
+
+            return this;
+        }
+
 
         public ApprenticeCommitmentsApiBuilder WithEmployerConfirmation()
         {

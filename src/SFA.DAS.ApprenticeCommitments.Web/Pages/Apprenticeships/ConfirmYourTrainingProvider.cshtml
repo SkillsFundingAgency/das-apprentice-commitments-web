@@ -1,4 +1,5 @@
 @page "/apprenticeships/{apprenticeshipid}/confirmyourtrainingprovider"
+@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmYourTrainingModel
 @{
     ViewData["Title"] = "Confirm your training provider";
@@ -33,10 +34,21 @@
             </div>
         </details>
 
-        <p class="govuk-body">
-            Your off-the-job training will be <strong>at least 20% of your normal working hours</strong> spent learning new knowledge,
-            skills and behaviours for your apprenticeship. Your off-the-job training will be managed by your training provider.
-        </p>
+        @if (!Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+        {
+            <p class="govuk-body">
+                Your off-the-job training, as agreed in your training plan, will be delivered during your 
+                normal working hours. You'll spend this time learning new knowledge, skills and 
+                behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
+            </p>
+        }
+
+        @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+        {
+            <p class="govuk-body">
+                Your off-the-job training, as agreed in your training plan, will be delivered during your normal working hours. You'll spend this time learning new knowledge, skills and behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
+            </p>
+        }
 
         <h3 class="govuk-heading-s">Things you need to know</h3>
 
@@ -47,7 +59,7 @@
                 <li>given you a day-to-day contact who will support you through your apprenticeship</li>
             </ul>
         </div>
- 
+
 
         <form asp-show="@Model.ShowForm" method="post">
             <yes-no-wrapper property-name="Confirmed">
@@ -56,8 +68,8 @@
                 <yes-no-inputs asp-for="Confirmed" yes-checked="@(Model.Confirmed == true)"></yes-no-inputs>
             </yes-no-wrapper>
             <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId"/>
-            <input type="hidden" name="TrainingProviderName" value="@Model.TrainingProviderName"/>
+            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
+            <input type="hidden" name="TrainingProviderName" value="@Model.TrainingProviderName" />
         </form>
 
         <form asp-hide="@Model.ShowForm" action="@Model.Backlink">

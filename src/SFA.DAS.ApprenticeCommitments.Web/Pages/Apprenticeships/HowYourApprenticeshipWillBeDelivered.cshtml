@@ -1,8 +1,10 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/howyourapprenticeshipwillbedelivered"
 @using SFA.DAS.ApprenticeCommitments.Web.Helpers
+@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.HowYourApprenticeshipWillBeDeliveredModel
 @{
     ViewData["Title"] = "How your apprenticeship will be delivered";
+    var showContinueButton = Model.ConfirmedHowApprenticeshipDelivered.HasValue && !Model.ExplicitRevision;
 }
 
 <div class="govuk-grid-row">
@@ -17,41 +19,104 @@
             You have read through how your apprenticeship will be delivered
         </div>
 
-        <p>Your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship will be delivered in two parts:</p>
+        @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
+        {
+            <p>Your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship will be delivered in two parts:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>a training period</li>
+                <li>an end-point assessment</li>
+            </ul>
+
+            <h2 class="govuk-heading-m">Your training period</h2>
+
+            <p>
+                <strong>Your employer</strong> will give you hands-on experience in your chosen
+                occupation. They'll provide you with training and supervision to help you develop
+                the skills you need to perform the role you've been employed to do.
+            </p>
+
+            <p>
+                <strong>Your training provider</strong> is responsible for your off-the-job training. 
+                Your required hours for off-the-job training are stated in your training plan as agreed by you, 
+                your provider and your employer. You'll spend this time learning new knowledge, 
+                skills and behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
+            </p>
+
+            <p>
+                <strong>Your training plan</strong> is agreed between you your training provider and your employer.
+                The plan will set out a training schedule for your off-the-job training. 
+                Your training plan will include:
+            </p>
+        }
+
+        @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+        {
+            <p>Your @Model.DeliveryModel.AbnormalDisplayName()?.ToLower() apprenticeship will be delivered in two parts:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>a training period when you will move between different jobs</li>
+                <li>an end-point assessment</li>
+            </ul>
+
+            <h2 class="govuk-heading-m">Your training period</h2>
+
+            <p>
+                <strong>Your employers</strong> will give you hands-on experience in your chosen
+                occupation. They'll provide you with training and supervision to help you develop
+                the skills you need to perform the role you've been employed to do.
+            </p>
+
+            <p>
+                <strong>Each individual employer</strong> will help you develop some of the skills required for your apprenticeship.
+                When a job ends, you'll need to find a new job to develop more of the required skills.
+            </p>
+
+            <p>
+                <strong>Your training provider</strong> is responsible for your off-the-job training. Your required hours for 
+                off-the-job training are stated in your training plan as agreed by you, your provider and each employer. 
+                You'll spend this time learning new knowledge, skills and behaviours for your apprenticeship. 
+                Your training provider will manage your off-the-job training.
+            </p>
+
+            <p>
+                <strong>Your training plan</strong> is agreed between you and your training provider, with input from your 
+                employers at the start of each job. The plan will set out a training schedule for your off-the-job training. 
+                Your training plan will include:
+            </p>
+        }
+
+        @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+        {
+            <p>Your apprenticeship will be delivered in two parts:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>a training period where you may move between different placements</li>
+                <li>an end-point assessment</li>
+            </ul>
+
+            <h2 class="govuk-heading-m">Your training period</h2>
+
+            <p>
+                <strong>Your employer</strong> will arrange placements where you will gain hands-on experience in your chosen occupation.
+            </p>
+
+            <p>
+                <strong>Each placement</strong> will help you develop some of the skills required for your apprenticeship.
+            </p>
+
+            <p>
+                <strong>Your required hours</strong> for off-the-job training are stated in your training plan as agreed by you, your provider and your employer. You'll spend this time learning new knowledge, skills and behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
+            </p>
+
+            <p>
+                <strong>Your training plan</strong> is agreed between you and your training provider. The plan will set out a training schedule for your off-the-job training. Your training plan will include:
+            </p>
+        }
+
+
         <ul class="govuk-list govuk-list--bullet">
-            <li>a training period <x asp-irregular-delivery="@Model">when you will move between different jobs</x></li>
-            <li>an end-point assessment</li>
-        </ul>
-
-        <h2 class="govuk-heading-m">Your training period</h2>
-
-        <p>
-            <strong>Your employer<x asp-irregular-delivery="@Model">s</x></strong> will give you hands-on experience in your chosen
-            occupation. They'll provide you with training and supervision to help you develop
-            the skills you need to perform the role you've been employed to do.
-        </p>
-
-        <p asp-irregular-delivery="@Model">
-            <strong>Each individual employer</strong> will help you develop some of the skills required for your apprenticeship. 
-            When a job ends, you’ll need to find a new job to develop more of the required skills.
-        </p>
-
-        <p>
-            <strong>Your training provider</strong> is responsible for your off-the-job
-            training. Your off-the-job training will be at least
-            <strong>20% of your normal working hours</strong> spent learning new knowledge,
-            skills and behaviours for your apprenticeship. Your off-the-job training will be
-            managed by your training provider.
-        </p>
-
-        <p>
-            <strong>Your training plan</strong> is agreed between you and your training provider<x asp-irregular-delivery="@Model">, 
-            with input from your employers at the start of each job</x>.
-            The plan will set out a training schedule for your off-the-job training. Your
-            training plan will include:
-        </p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>the delivery of the knowledge skills and behaviours required for your apprenticeship</li>
+            <li>the delivery of the knowledge, skills and behaviours required for your apprenticeship</li>
             <li>how and when your off-the-job training will be delivered</li>
             <li>English and maths qualifications, if you have not already achieved these</li>
             <li>regular progress reviews with your employer and training provider</li>
@@ -81,7 +146,7 @@
             <button class="govuk-button" data-module="govuk-button" id="apprentice-delivered-confirm">Continue</button>
         </form>
 
-        <form asp-show="@Model.ConfirmedHowApprenticeshipDelivered.HasValue" action="@Model.Backlink">
+        <form asp-show="@showContinueButton" action="@Model.Backlink">
             <button class="govuk-button">Continue</button>
         </form>
 

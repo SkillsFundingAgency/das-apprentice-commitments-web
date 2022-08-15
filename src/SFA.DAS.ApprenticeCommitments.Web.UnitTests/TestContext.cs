@@ -2,7 +2,7 @@
 using System.Net;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticeCommitments.Web.UnitTests.Hooks;
-using SFA.DAS.HashingService;
+using SFA.DAS.Encoding;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
 {
@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
         public MockApi OuterApi { get; set; }
         public TestActionResult ActionResult { get; set; }
         public string IdentityServiceUrl { get; } = "https://identity";
-        public IHashingService Hashing { get; set; }
+        public IEncodingService Hashing { get; set; }
         public SpecifiedTimeProvider Time { get; set; }
             = new SpecifiedTimeProvider(DateTimeOffset.UtcNow);
 
