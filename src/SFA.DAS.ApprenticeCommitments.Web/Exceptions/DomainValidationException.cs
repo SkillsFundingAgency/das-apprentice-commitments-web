@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
 
             if (Errors.Count == 0)
             {
-                Errors = new List<ErrorItem> { new ErrorItem { ErrorMessage = errors.Detail } };
+                Errors = new List<ErrorItem> { new ErrorItem { ErrorMessage = errors.Detail ?? "" } };
             }
         }
 
