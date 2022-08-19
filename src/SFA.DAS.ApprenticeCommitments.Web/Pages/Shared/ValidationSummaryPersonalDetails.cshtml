@@ -18,7 +18,7 @@
                 {
                     if (stateItem.Key == "PersonalDetails")
                     {
-                        foreach (var error in stateItem.Value.Errors)
+                        foreach (var error in stateItem.Value?.Errors ?? new())
                         {
                             <li>
                                 <div class="govuk-!-font-weight-bold">@error.ErrorMessage</div>
@@ -31,7 +31,7 @@
 
                         if (elementId == "DateOfBirth") elementId = "DateOfBirth_Day";
 
-                        foreach (var error in stateItem.Value.Errors)
+                        foreach (var error in stateItem.Value?.Errors ?? new())
                         {
                             <li class="govuk-error-summary__list">
                                 <a href="#@elementId">@error.ErrorMessage</a>

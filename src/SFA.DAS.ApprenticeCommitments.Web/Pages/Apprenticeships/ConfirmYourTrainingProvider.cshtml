@@ -37,15 +37,16 @@
         @if (!Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
         {
             <p class="govuk-body">
-                Your off-the-job training will be <strong>at least 20% of your normal working hours</strong> spent learning new knowledge,
-                skills and behaviours for your apprenticeship. Your off-the-job training will be managed by your training provider.
+                Your off-the-job training, as agreed in your training plan, will be delivered during your 
+                normal working hours. You'll spend this time learning new knowledge, skills and 
+                behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
             </p>
         }
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
         {
             <p class="govuk-body">
-                Your off-the-job training, as agreed in your training plan, will be delivered during your normal working hours. You’ll spend this time learning new knowledge, skills and behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
+                Your off-the-job training, as agreed in your training plan, will be delivered during your normal working hours. You'll spend this time learning new knowledge, skills and behaviours for your apprenticeship. Your training provider will manage your off-the-job training.
             </p>
         }
 

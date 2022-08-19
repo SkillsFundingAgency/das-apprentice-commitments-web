@@ -21,7 +21,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
             var valueProvider = bindingContext.ValueProvider.GetValue(modelName);
             if (valueProvider == ValueProviderResult.None) return Task.CompletedTask;
 
-            var value = valueProvider.FirstValue;
+            var value = valueProvider.FirstValue ?? "";
             if (HashedId.TryCreate(value, _hasher, out var result))
             {
                 bindingContext.Result = ModelBindingResult.Success(result);
