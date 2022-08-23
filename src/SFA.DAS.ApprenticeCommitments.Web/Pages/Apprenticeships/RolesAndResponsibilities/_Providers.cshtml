@@ -1,4 +1,6 @@
-﻿<p>
+﻿@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+
+<p>
     The roles and responsibilities set out what is expected of your training provider.
 </p>
 <p>
@@ -7,7 +9,12 @@
 
 <ul class="govuk-list govuk-list--bullet">
     <li>a copy of the apprenticeship agreement signed by you and your employer</li>
-    <li asp-irregular-delivery="@Model">discussed with you how your portable flexi-job apprenticeship will be delivered</li>
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+    {
+        <li>discussed with you how your portable flexi-job apprenticeship will be delivered</li>
+    }
+
     <li>discussed your training plan with you and your employer and ensured it accounts for prior learning, English and maths needs and additional learning support</li>
     <li>told you and your employer your apprenticeship training start and end dates</li>
     <li>explained how off-the-job training will be delivered</li>
@@ -20,9 +27,24 @@
 </p>
 <ul class="govuk-list govuk-list--bullet">
     <li>manage the quality and delivery of your off-the-job training and making sure it is logged </li>
-    <li asp-irregular-delivery="@Model">support you in finding jobs as you progress through your apprenticeship</li>
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+    {
+        <li>support you in finding jobs as you progress through your apprenticeship</li>
+    }
+
     <li>take responsibility for regular progress reviews between all parties every 12 weeks</li>
-    <li asp-irregular-delivery="@Model">make sure that you and each employer can see a summary of your learning and progress to date</li>
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+    {
+        <li>make sure that you and each employer can see a summary of your learning and progress to date</li>
+    }
+
     <li>make sure that you and your employer know how to raise concerns or complaints about the apprenticeship training</li>
-    <li asp-irregular-delivery="@Model">maintain contact with you if you are on an extended break in learning</li>
+
+    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+    {
+        <li>maintain contact with you if you are on an extended break in learning</li>
+    }
+
 </ul>
