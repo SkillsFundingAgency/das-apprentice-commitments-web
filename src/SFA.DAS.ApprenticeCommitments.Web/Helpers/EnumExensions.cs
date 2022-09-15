@@ -21,7 +21,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Helpers
         private static DisplayAttribute? GetDisplayAttribute(Enum enumValue)
             => enumValue.GetType()
                     .GetMember(enumValue.ToString())
-                    .FirstOrDefault()
+                    .First()
                     .GetCustomAttribute<DisplayAttribute>();
     }
 }

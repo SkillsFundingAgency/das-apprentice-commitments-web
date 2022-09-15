@@ -16,12 +16,22 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
         public long RevisionId { get; set; }
 
         public DeliveryModel DeliveryModel { get; set; }
+        public bool ExplicitRevision { get; set; }
 
-        public virtual string Backlink => $"/apprenticeships/{ApprenticeshipId.Hashed}";
-
-        protected async Task<Apprenticeship> OnGetAsync(AuthenticatedUserClient _client)
+        public virtual string Backlink
         {
-            var apprenticeship = await _client.GetApprenticeship(ApprenticeshipId.Id);
+            get
+            {
+                if(ExplicitRevision)
+                    return $"/apprenticeships/{ApprenticeshipId.Hashed}/view";
+                return $"/apprenticeships/{ApprenticeshipId.Hashed}";
+            }
+        }
+
+        protected async Task<Apprenticeship> OnGetAsync(AuthenticatedUserClient _client, long? revisionId = null)
+        {
+            ExplicitRevision = revisionId.HasValue;
+            var apprenticeship = revisionId == null ? await _client.GetApprenticeship(ApprenticeshipId.Id) : await _client.GetApprenticeshipRevision(ApprenticeshipId.Id, revisionId.Value);
             RevisionId = apprenticeship.RevisionId;
             DeliveryModel = apprenticeship.DeliveryModel;
             return apprenticeship;

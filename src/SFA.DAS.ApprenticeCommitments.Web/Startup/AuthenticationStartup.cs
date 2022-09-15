@@ -48,7 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AllowAnonymousToPage("/Accountnew"));
             services.AddScoped<AuthenticatedUser>();
             services.AddScoped(s => s
-                .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
+                .GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
 
             return services;
         }

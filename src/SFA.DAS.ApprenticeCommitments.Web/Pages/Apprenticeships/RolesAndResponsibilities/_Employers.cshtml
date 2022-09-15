@@ -1,4 +1,6 @@
-﻿<p>
+﻿@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+
+<p>
     The roles and responsibilities set out what is expected of your employer.
 </p>
 
@@ -6,21 +8,61 @@
     <strong>They have:</strong>
 </p>
 
-<ul class="govuk-list govuk-list--bullet">
+@if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
+{
+    <ul class="govuk-list govuk-list--bullet">
+        <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
+        <li>contributed to a training plan with you and your training provider</li>
+        <li>committed to working with you and your training provider to support your learning needs</li>
+    </ul>
 
-    <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
-    <li>contributed to a training plan with you and your training provider</li>
-    <li>committed to working with you and your training provider to support your learning needs</li>
-    <li asp-irregular-delivery="@Model">agreed your employment start and end dates with a minimum duration of 3 months</li>
-</ul>
+    <p>
+        <strong>They will: </strong>
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>enable you to complete your off-the-job training during your normal working hours as defined in your training plan</li>
+        <li>take part in regular progress reviews with you and your training provider every 12 weeks</li>
+        <li>work with you and your training provider to resolve any concerns or complaints</li>
+        <li>carry out an end of employment review when your job ends</li>
+    </ul>
+}
 
-<p>
-    <strong>They will: </strong>
-</p>
-<ul class="govuk-list govuk-list--bullet">
-    <li>enable you to complete your off-the-job training during your normal working hours, which will be <strong>at least 20% of your working hours</strong></li>
-    <li>take part in regular progress reviews with you and your training provider usually every 12 weeks</li>
-    <li>work with you and your training provider to resolve any concerns or complaints</li>
-    <li>carry out an end of employment review when your job ends</li>
-</ul>
+@if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+{
+    <ul class="govuk-list govuk-list--bullet">
+        <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
+        <li>contributed to a training plan with you and your training provider</li>
+        <li>committed to working with you and your training provider to support your learning needs</li>
+        <li>agreed your employment start and end dates with a minimum duration of 3 months</li>
+    </ul>
 
+    <p>
+        <strong>They will: </strong>
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>enable you to complete your off-the-job training during your normal working hours as defined in your training plan</li>
+        <li>take part in regular progress reviews with you and your training provider every 12 weeks</li>
+        <li>work with you and your training provider to resolve any concerns or complaints</li>
+        <li>carry out an end of employment review when your job ends</li>
+    </ul>
+}
+
+@if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+{
+    <ul class="govuk-list govuk-list--bullet">
+        <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
+        <li>contributed to a training plan with you and your training provider</li>
+        <li>committed to working with you and your training provider to support your learning needs</li>
+    </ul>
+
+    <p>
+        <strong>They will: </strong>
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>find placements to enable you to complete all or part of your apprenticeship training</li>
+        <li>enable you to complete your off-the-job training during your normal working hours as defined in your training plan</li>
+        <li>take part in regular progress reviews with you and your training provider every 12 weeks</li>
+        <li>work with you and your training provider to resolve any concerns or complaints</li>
+        <li>carry out an end of employment review when your job ends</li>
+    </ul>
+}

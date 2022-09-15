@@ -1,15 +1,37 @@
-﻿@page "/apprenticeships/{apprenticeshipId}"
+@page "/apprenticeships/{apprenticeshipId}"
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmApprenticeshipModel
 @using SFA.DAS.ApprenticePortal.SharedUi.Menu
 @{
     ViewData["Title"] = "Confirm my apprenticeship details";
 }
 
+<partial name="ValidationSummary" />
+
+
 <div asp-show="@Model.Status == ConfirmStatus.Stopped">
     <partial name="Stopped" />
 </div>
 
 <div asp-show="@Model.Status == ConfirmStatus.SectionsIncomplete">
+
+    <div asp-show="@Model.ShowChangeNotification" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Important
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p class="govuk-notification-banner__heading">
+                @Model.ChangeNotificationsMessage
+            </p>
+            <p class="govuk-notification-banner__heading">
+                <span asp-show="@Model.Overdue">
+                    You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
+                </span>
+            </p>
+        </div>
+    </div>
+
     <h1 class="govuk-heading-l">Confirm my apprenticeship details</h1>
 
     <p>Read through each section below to confirm your apprenticeship. If you ever need to check on the details of your apprenticeship, you can come back here.</p>
@@ -26,26 +48,7 @@
             </span>
         </strong>
     </div>
-    <div asp-show="@Model.ShowChangeNotification" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                Important
-            </h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <p class="govuk-notification-banner__heading">
-                @Model.ChangeNotificationsMessage
-            </p>
-            <p class="govuk-notification-banner__heading">
-                <span asp-hide="@Model.Overdue">
-                    You have @Model.Pluralise(@Model.DaysRemaining, "day") to confirm your apprenticeship details.
-                </span>
-                <span asp-show="@Model.Overdue">
-                    You must confirm your apprenticeship. Your confirmation is overdue and your employer and provider have been informed.
-                </span>
-            </p>
-        </div>
-    </div>
+
 
     <p>Your answers will save automatically, so you can leave and come back if you need to.</p>
 
@@ -59,10 +62,7 @@
             <span class="app-notification-banner__icon das-text--success-icon"></span>
             Your apprenticeship is now ready to confirm
         </div>
-        <form asp-page-handler="confirm" method="post">
-            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
-            <button class="govuk-button govuk-!-margin-top-4 govuk-!-margin-bottom-0">Confirm my apprenticeship</button>
-        </form>
+     
     </div>
 </div>
 
@@ -93,6 +93,25 @@
         </li>
         <li confirmation-section asp-page="RolesAndResponsibilities/Index" model="Model" confirmation-status="@Model.RolesAndResponsibilitiesConfirmation">
             Roles and responsibilities
+        </li>
+
+        @{
+            var (confirmPage, handler, stateClass, colourClass, tag) = @Model.Status switch
+            {
+                ConfirmStatus.ApprenticeshipComplete => ("TransactionComplete", null, "complete", "green", "Complete"),
+                ConfirmStatus.SectionsComplete => ("Confirm", "FinalConfirmation", "", "yellow", "Incomplete"),
+                _ => ("Confirm", "FinalConfirmation", "inactive", "grey", "Incomplete"),
+            };
+
+        }
+
+        <li class="app-status-list__list-item">
+            <a class="app-status-list__link @stateClass"  asp-page="@confirmPage" asp-page-handler="@handler" asp-route-apprenticeshipId="@Model.ApprenticeshipId">
+                <div class="app-status-list__link-content">
+                    <p class="app-status-list__link-text">Confirm your apprenticeship</p>
+                    <strong class="app-status-list__tag govuk-tag govuk-tag--@colourClass">@tag</strong>
+                </div>
+            </a>
         </li>
     </ol>
 </div>

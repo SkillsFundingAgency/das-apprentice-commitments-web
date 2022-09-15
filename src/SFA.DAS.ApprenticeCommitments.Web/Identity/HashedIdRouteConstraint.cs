@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using SFA.DAS.HashingService;
+using SFA.DAS.Encoding;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Identity
 {
     internal class HashedIdRouteConstraint : IRouteConstraint
     {
-        private readonly IHashingService _hasher;
+        private readonly IEncodingService _hasher;
 
-        public HashedIdRouteConstraint(IHashingService hasher) => _hasher = hasher;
+        public HashedIdRouteConstraint(IEncodingService hasher) => _hasher = hasher;
 
-        public bool Match(HttpContext httpContext, IRouter route, string routeKey,
+        public bool Match(HttpContext? httpContext, IRouter? route, string routeKey, 
             RouteValueDictionary values, RouteDirection routeDirection)
         {
-            if (!values.TryGetValue(routeKey, out object value)) return false;
+            if (!values.TryGetValue(routeKey, out var value)) return false;
             if (!(value is string possibleHash)) return false;
-            return _hasher.TryDecodeValue(possibleHash, out _);
+            return _hasher.TryDecode(possibleHash, EncodingType.ApprenticeshipId, out _);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@page "/apprenticeships/{apprenticeshipId}/confirmyouremployer"
+@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.ConfirmYourEmployerModel
 @{
     ViewData["Title"] = "Confirm your employer";
@@ -20,7 +21,7 @@
         </notification-banner>
 
         <h2 class="govuk-heading-m">@Model.EmployerName</h2>
-        
+
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
@@ -34,12 +35,24 @@
 
         <h3 class="govuk-heading-s">Things you need to know</h3>
         <div class="govuk-inset-text">
-            <p asp-regular-delivery="@Model" class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
-            
-            <p asp-irregular-delivery="@Model" class="govuk-body">
-                This is a portable flexi-job apprenticeship and you will move between different jobs during the apprenticeship.
-            </p>
-            <p asp-irregular-delivery="@Model" class="govuk-body">Before starting with each employer, they should have given you a:</p>
+
+            @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
+            {
+                <p class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
+            }
+
+            @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+            {
+                <p class="govuk-body">This is a portable flexi-job apprenticeship and you will move between different jobs during the apprenticeship.</p>
+                <p class="govuk-body">Before starting with each employer, they should have given you a:</p>
+            }
+
+            @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+            {
+                <p class="govuk-body">Your employer is a flexi-job apprenticeship agency and they will pay your wages. As an agency, they will arrange placements with organisations to complete your apprenticeship training and assessment.</p>
+                <p class="govuk-body">You may have several placements during your apprenticeship.</p>
+                <p class="govuk-body">Before starting your apprenticeship your employer should have given you a:</p>
+            }
 
             <ul class="govuk-list govuk-list--bullet">
                 <li>copy of your apprenticeship agreement signed by you and them, if you have not received this agreement please speak to your employer</li>
@@ -53,11 +66,11 @@
                     Is @Model.EmployerName your employer?
                 </yes-no-header>
                 <span asp-validation-for="Confirmed" class="govuk-error-message"></span>
-                <yes-no-inputs asp-for="Confirmed" ></yes-no-inputs>
+                <yes-no-inputs asp-for="Confirmed"></yes-no-inputs>
             </yes-no-wrapper>
             <button class="govuk-button" data-module="govuk-button" id="employer-provider-confirm">Confirm</button>
-            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId"/>
-            <input type="hidden" name="EmployerName" value="@Model.EmployerName"/>
+            <input type="hidden" asp-for="RevisionId" value="@Model.RevisionId" />
+            <input type="hidden" name="EmployerName" value="@Model.EmployerName" />
         </form>
 
         <form asp-hide="@Model.ShowForm" action="@Model.Backlink">

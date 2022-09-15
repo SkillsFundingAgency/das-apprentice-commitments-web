@@ -16,6 +16,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.TagHelpers
             => this.factory = factory;
 
         public string Page(ActionContext context, string pageName, object values)
-            => factory.GetUrlHelper(context).Page(pageName, values);
+            => factory.GetUrlHelper(context).Page(pageName, values) ?? "";
     }
 }
