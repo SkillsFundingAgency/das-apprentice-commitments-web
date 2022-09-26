@@ -8,14 +8,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
     internal class MenuVisibility : IMenuVisibility
     {
-        private readonly IOuterApiClient client;
-        private readonly AuthenticatedUser authenticatedUser;
+        private readonly IOuterApiClient _client;
+        private readonly AuthenticatedUser _authenticatedUser;
         private Apprenticeship? _apprenticeship;
 
         public MenuVisibility(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
-            this.client = client;
-            this.authenticatedUser = authenticatedUser;
+            _client = client;
+            _authenticatedUser = authenticatedUser;
         }
 
         public async Task<bool> ShowConfirmMyApprenticeship() => true;
@@ -50,7 +50,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             if(_apprenticeship != null)
                 return _apprenticeship;
 
-            _apprenticeship = (await client.GetApprenticeships(authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
+            _apprenticeship = (await _client.GetApprenticeships(_authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
             return _apprenticeship;
         }
     }
