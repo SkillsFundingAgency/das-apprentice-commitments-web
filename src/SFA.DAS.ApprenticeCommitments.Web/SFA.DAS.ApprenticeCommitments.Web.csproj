@@ -24,7 +24,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.0" />
     <PackageReference Include="RestEase" Version="1.5.7" />
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.7" />
-    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.63-prerelease-4" />
+    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.65-prerelease-4" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Encoding" Version="1.1.76" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />

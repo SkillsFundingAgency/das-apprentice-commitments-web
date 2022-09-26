@@ -10,6 +10,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
     {
         private readonly IOuterApiClient client;
         private readonly AuthenticatedUser authenticatedUser;
+        private Apprenticeship? _apprenticeship;
 
         public MenuVisibility(IOuterApiClient client, AuthenticatedUser authenticatedUser)
         {
@@ -19,19 +20,38 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 
         public async Task<bool> ShowConfirmMyApprenticeship() => true;
 
-        public async Task<bool> ShowApprenticeFeedback()
+        public Task<bool> ShowApprenticeFeedback() => LatestApprenticeshipIsConfirmed();
+
+        public async Task<ConfirmMyApprenticeshipTitleStatus> ConfirmMyApprenticeshipTitleStatus()
+        {
+            if (!await LatestApprenticeshipIsConfirmed())
+                return ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsConfirmed;
+            return ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsRequiringConfirmation;
+        } 
+
+        private async Task<bool> LatestApprenticeshipIsConfirmed()
         {
             try
             {
-                var apprenticeship = (await client.GetApprenticeships(authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
-                var isConfirmed = apprenticeship?.ConfirmedOn.HasValue ?? false;
-                
+                var latest = await GetLatestApprenticeship();
+
+                var isConfirmed = latest?.ConfirmedOn.HasValue ?? false;
+
                 return isConfirmed;
             }
             catch
             {
                 return false;
             }
+        }
+
+        private async Task<Apprenticeship?> GetLatestApprenticeship()
+        {
+            if(_apprenticeship != null)
+                return _apprenticeship;
+
+            _apprenticeship = (await client.GetApprenticeships(authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
+            return _apprenticeship;
         }
     }
 }
