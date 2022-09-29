@@ -24,7 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 
         public async Task<ConfirmMyApprenticeshipTitleStatus> ConfirmMyApprenticeshipTitleStatus()
         {
-            if (!await LatestApprenticeshipIsConfirmed())
+            if (await LatestApprenticeshipIsConfirmed())
                 return ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsConfirmed;
             return ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsRequiringConfirmation;
         } 
