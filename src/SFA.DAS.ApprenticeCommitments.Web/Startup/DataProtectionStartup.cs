@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             {
                 services.AddDistributedMemoryCache();
                 services.AddDataProtection()
-                    .SetApplicationName("apprentice-commitments");
+                    .SetApplicationName("portal");
             }
             else if (!environment.IsDevelopment() && configuration != null)
             {
