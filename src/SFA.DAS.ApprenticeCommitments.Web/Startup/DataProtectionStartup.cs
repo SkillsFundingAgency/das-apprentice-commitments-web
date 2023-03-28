@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
                 services.AddDataProtection()
-                    .SetApplicationName("apprentice-commitments")
+                    .SetApplicationName("portal")
                     .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
             }
 
