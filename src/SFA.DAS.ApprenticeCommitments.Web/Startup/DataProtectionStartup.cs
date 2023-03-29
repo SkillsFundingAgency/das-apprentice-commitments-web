@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             {
                 services.AddDistributedMemoryCache();
                 services.AddDataProtection()
-                    .SetApplicationName("portal");
+                    .SetApplicationName("apprentice-portal");
             }
             else if (!environment.IsDevelopment() && configuration != null)
             {
@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
                 services.AddDataProtection()
-                    .SetApplicationName("portal")
+                    .SetApplicationName("apprentice-portal")
                     .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
             }
 
