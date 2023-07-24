@@ -1,7 +1,7 @@
 ﻿@using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 
 <p>
-    The roles and responsibilities set out what is expected of your employer.
+    These roles and responsibilities set out what is expected of your employer.
 </p>
 
 <p>
@@ -11,28 +11,30 @@
 @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
 {
     <ul class="govuk-list govuk-list--bullet">
-        <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
+        <li>agreed and provided you with a signed copy of your apprenticeship agreement</li>
         <li>contributed to a training plan with you and your training provider</li>
-        <li>committed to working with you and your training provider to support your learning needs</li>
+        <li>committed to work with you and your training provider to support your learning needs</li>
+        <li>agreed with you and your training provider any reductions in training you might have due to prior learning</li>
     </ul>
 
     <p>
         <strong>They will: </strong>
     </p>
     <ul class="govuk-list govuk-list--bullet">
-        <li>enable you to complete your off-the-job training during your normal working hours as defined in your training plan</li>
-        <li>take part in regular progress reviews with you and your training provider every 12 weeks</li>
+        <li>enable you to complete your off-the-job training during the working hours defined in your training plan</li>
+        <li>take part in progress reviews with you and your training provider every 12 weeks</li>
         <li>work with you and your training provider to resolve any concerns or complaints</li>
-        <li>carry out an end of employment review when your job ends</li>
+        <li>carry out end of employment review when your job ends</li>
     </ul>
 }
 
 @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
 {
     <ul class="govuk-list govuk-list--bullet">
-        <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
+        <li>agreed and provided you with a signed copy of your apprenticeship agreement</li>
         <li>contributed to a training plan with you and your training provider</li>
-        <li>committed to working with you and your training provider to support your learning needs</li>
+        <li>committed to work with you and your training provider to support your learning needs</li>
+        <li>agreed with you and your training provider any reductions in training you might have due to prior learning</li>
         <li>agreed your employment start and end dates with a minimum duration of 3 months</li>
     </ul>
 
@@ -40,19 +42,20 @@
         <strong>They will: </strong>
     </p>
     <ul class="govuk-list govuk-list--bullet">
-        <li>enable you to complete your off-the-job training during your normal working hours as defined in your training plan</li>
-        <li>take part in regular progress reviews with you and your training provider every 12 weeks</li>
+        <li>enable you to complete your off-the-job training during the working hours defined in your training plan</li>
+        <li>take part in progress reviews with you and your training provider every 12 weeks</li>
         <li>work with you and your training provider to resolve any concerns or complaints</li>
-        <li>carry out an end of employment review when your job ends</li>
+        <li>carry out end of employment review when your job ends</li>
     </ul>
 }
 
 @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
 {
     <ul class="govuk-list govuk-list--bullet">
-        <li>signed and provided you with a copy of your apprenticeship agreement that you agreed together</li>
+        <li>agreed and provided you with a signed copy of your apprenticeship agreement</li>
         <li>contributed to a training plan with you and your training provider</li>
-        <li>committed to working with you and your training provider to support your learning needs</li>
+        <li>committed to work with you and your training provider to support your learning needs</li>
+        <li>agreed with you and your training provider any reductions in training you might have due to prior learning</li>
     </ul>
 
     <p>
@@ -60,9 +63,9 @@
     </p>
     <ul class="govuk-list govuk-list--bullet">
         <li>find placements to enable you to complete all or part of your apprenticeship training</li>
-        <li>enable you to complete your off-the-job training during your normal working hours as defined in your training plan</li>
-        <li>take part in regular progress reviews with you and your training provider every 12 weeks</li>
+        <li>enable you to complete your off-the-job training during the working hours defined in your training plan</li>
+        <li>take part in progress reviews with you and your training provider every 12 weeks</li>
         <li>work with you and your training provider to resolve any concerns or complaints</li>
-        <li>carry out an end of employment review when your job ends</li>
+        <li>carry out end of employment review when your job ends</li>
     </ul>
 }
