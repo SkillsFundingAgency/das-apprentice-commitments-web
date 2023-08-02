@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using SFA.DAS.ApprenticeCommitments.Web.Extension;
 using SFA.DAS.Configuration.AzureTableStorage;
 using System;
