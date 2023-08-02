@@ -32,7 +32,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                     configBuilder.AddJsonFile("appsettings.development.json", true);
                 }
             });
-
             return hostBuilder;
         }
 
