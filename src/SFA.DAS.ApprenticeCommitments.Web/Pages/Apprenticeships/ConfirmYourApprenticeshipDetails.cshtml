@@ -145,89 +145,95 @@
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
         {
-            <h2 class="govuk-heading-m">
+            <h2 class="govuk-heading-s">
                 Things you need to know
             </h2>
 
-            <p>
-                Your planned training start date and estimated duration should:
-            </p>
+            <div class="govuk-inset-text">
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>include the time you will spend in off-the-job training</li>
-                <li>not include when your end point assessment will take place</li>
-            </ul>
+                <p>
+                    Your planned training start date and estimated duration should:
+                </p>
 
-            <p>
-                You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have: 
-            </p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>include the time you will spend in off-the-job training</li>
+                    <li>not include when your end point assessment will take place</li>
+                </ul>
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>relevant training, like an IT course</li>
-                <li>a relevant qualification, like an NVQ in a relevant field</li>
-                <li>experience in relevant industry or sector</li>
-                <li>additional learning needs</li>
-            </ul>
+                <p>
+                    You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have: 
+                </p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>relevant training, like an IT course</li>
+                    <li>a relevant qualification, like an NVQ in a relevant field</li>
+                    <li>experience in relevant industry or sector</li>
+                    <li>additional learning needs</li>
+                </ul>
+            </div>
         }
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
         {
 
-            <h2 class="govuk-heading-m">
+            <h2 class="govuk-heading-s">
                 Things you need to know about a portable flexi-job apprenticeship
             </h2>
 
-            <p>
-                During your portable flexi-job apprenticeship, you will find different jobs and may move between employers.
-                Each job will last a minimum of 3 months and you may return to the same employer multiple times throughout your apprenticeship.
-            </p>
+            <div class="govuk-inset-text">
+                <p>
+                    During your portable flexi-job apprenticeship, you will find different jobs and may move between employers.
+                    Each job will last a minimum of 3 months and you may return to the same employer multiple times throughout your apprenticeship.
+                </p>
 
-            <p>
-                Your planned training start date and estimated duration should:
-            </p>
+                <p>
+                    Your planned training start date and estimated duration should:
+                </p>
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>include the time you will spend in off-the-job training across all employers</li>
-                <li>not include when your end point assessment will take place</li>
-            </ul>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>include the time you will spend in off-the-job training across all employers</li>
+                    <li>not include when your end point assessment will take place</li>
+                </ul>
 
-            <p>
-                You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have:
-            </p>
+                <p>
+                    You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have:
+                </p>
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>relevant training, like an IT course</li>
-                <li>a relevant qualification, like an NVQ in a relevant field</li>
-                <li>experience in relevant industry or sector</li>
-                <li>additional learning needs</li>
-            </ul>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>relevant training, like an IT course</li>
+                    <li>a relevant qualification, like an NVQ in a relevant field</li>
+                    <li>experience in relevant industry or sector</li>
+                    <li>additional learning needs</li>
+                </ul>
+            </div>                
         }
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
         {
-            <h2 class="govuk-heading-m">
+            <h2 class="govuk-heading-s">
                 Things you need to know about a flexi-job agency apprenticeship
             </h2>
+            <div class="govuk-inset-text">
+                <p>During your apprenticeship, you may move between different placements found by your employer.</p>
 
-            <p>During your apprenticeship, you may move between different placements found by your employer.</p>
+                <p>Your planned training start date and estimated duration should:</p>
 
-            <p>Your planned training start date and estimated duration should:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>include the time you will spend in off-the-job training across all placements</li>
+                    <li>not include when your end point assessment will take place</li>
+                </ul>
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>include the time you will spend in off-the-job training across all placements</li>
-                <li>not include when your end point assessment will take place</li>
-            </ul>
+                <p>
+                    You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have: 
+                </p>
 
-            <p>
-                You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have: 
-            </p>
-
-            <ul class="govuk-list govuk-list--bullet">
-                <li>relevant training, like an IT course</li>
-                <li>a relevant qualification, like an NVQ in a relevant field</li>
-                <li>experience in relevant industry or sector</li>
-                <li>additional learning needs</li>
-            </ul>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>relevant training, like an IT course</li>
+                    <li>a relevant qualification, like an NVQ in a relevant field</li>
+                    <li>experience in relevant industry or sector</li>
+                    <li>additional learning needs</li>
+                </ul>
+            </div>
         }
 
         <form asp-show="@Model.ShowForm" method="post">
