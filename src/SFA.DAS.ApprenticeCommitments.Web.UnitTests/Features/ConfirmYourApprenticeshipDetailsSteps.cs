@@ -30,6 +30,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         private readonly int _courseDuration;
         private readonly DateTime _plannedStartDate;
         private readonly DateTime _plannedEndDate;
+        private readonly bool? _recognisePriorLearning;
         private bool? _confirmedApprenticeshipDetails;
 
         public ConfirmYourApprenticeshipDetailsSteps(TestContext context, RegisteredUserContext userContext) : base(context)
@@ -45,6 +46,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             _courseDuration = 19;
             _plannedStartDate = new DateTime(2021, 03, 12);
             _plannedEndDate = new DateTime(2022, 09, 15);
+            _recognisePriorLearning = true;
 
             _context.OuterApi.MockServer.Given(
                      Request.Create()
@@ -89,6 +91,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                             CourseDuration = _courseDuration,
                             PlannedStartDate = _plannedStartDate,
                             PlannedEndDate = _plannedEndDate,
+                            RecognisePriorLearning = _recognisePriorLearning,
                             ApprenticeshipDetailsCorrect = confirmed,
                         }));
         }
@@ -130,6 +133,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                     { nameof(YourApprenticeshipDetails.CourseDuration) , _courseDuration.ToString() },
                     { nameof(YourApprenticeshipDetails.PlannedStartDate) , _plannedStartDate.ToString("o")},
                     { nameof(YourApprenticeshipDetails.PlannedEndDate) , _plannedEndDate.ToString("o") },
+                    { nameof(YourApprenticeshipDetails.RecognisePriorLearning) , _recognisePriorLearning.ToString() },
                     { nameof(YourApprenticeshipDetails.Confirmed), _confirmedApprenticeshipDetails.ToString() }
                 }));
         }
@@ -180,6 +184,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             var page = _context.ActionResult.LastPageResult;
             page.Model.Should().BeOfType<YourApprenticeshipDetails>().Which.PlannedEndDate.Should().Be(_plannedEndDate);
+        }
+
+        [Then("the apprentice should see the Prior Learning section")]
+        public void ThenTheApprenticeShouldSeeThePriorLearningSection()
+        {
+            var page = _context.ActionResult.LastPageResult;
+            page.Model.Should().BeOfType<YourApprenticeshipDetails>().Which.RecognisePriorLearning.Should().Be(_recognisePriorLearning);
         }
 
         [Then("the user should see the confirmation options")]
