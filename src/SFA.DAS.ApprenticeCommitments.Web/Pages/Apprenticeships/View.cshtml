@@ -17,7 +17,7 @@
 
             <div class="govuk-!-padding-bottom-2">
                 <table class="govuk-table data-table">
-                    <caption></caption>
+                    <caption class="govuk-table__caption govuk-table__caption--m">Training details</caption>
                     <tbody class="govuk-table__body">
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Current employer</th>
@@ -50,6 +50,24 @@
                     </tbody>
                 </table>
             </div>
+
+            @if (Model.LatestConfirmedApprenticeship.RecognisePriorLearning != null)
+            {
+                <div class="govuk-!-padding-bottom-2">
+                    <h2 class="govuk-heading-m">Prior learning details</h2>
+
+                    @if (Model.LatestConfirmedApprenticeship.RecognisePriorLearning == true)
+                    {
+                        <p>Based on your initial assessment with them, your training provider has informed us that <strong>you have relevant prior learning.</strong></p>
+                    }
+
+                    @if (Model.LatestConfirmedApprenticeship.RecognisePriorLearning == false)
+                    {
+                        <p>Based on your initial assessment with them, your training provider has informed us that <strong>you do not have relevant prior learning.</strong></p>
+                    }
+                </div>
+            }
+
         </div>
     </div>
     <div class="govuk-grid-row">
