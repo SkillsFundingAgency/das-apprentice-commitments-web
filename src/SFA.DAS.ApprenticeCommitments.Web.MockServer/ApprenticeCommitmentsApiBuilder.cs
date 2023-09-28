@@ -206,6 +206,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.MockServer
                                                                 | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
                         ApprenticeshipDetailsCorrect = (bool?)true,
                         HowApprenticeshipDeliveredCorrect = (bool?)true,
+                        RecognisePriorLearning = false,
                         RevisionId = 9008
                     }));
 
