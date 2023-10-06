@@ -8,24 +8,29 @@
     <strong>I have:</strong>
 </p>
 
-
 <ul class="govuk-list govuk-list--bullet">
     <li>read and signed my apprenticeship agreement</li>
 
     @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
     {
         <li>discussed my training plan with my employer and training provider</li>
+        <li>told my employer and training provider about any prior learning I have which might make me competent in part of the apprenticeship training</li>
+        <li>agreed with my employer and training provider any reductions in training I might have due to my prior learning</li>
         <li>told my employer and training provider about any learning needs or health issues I have</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
-    {
+        {
         <li>discussed my training plan with my current employer and my training provider</li>
+        <li>told my current employer and my training provider about any prior learning I have which might make me competent in part of the apprenticeship training</li>
+        <li>agreed with my current employer and my training provider any reductions in training I might have due to my prior learning</li>
         <li>told my current employer and my training provider about any learning needs or health issues I have</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
     {
-        <li>discussed my training plan with my employer and my training provider</li>
-        <li>told my employer and my training provider about any learning needs or health issues I have</li>
+        <li>discussed my training plan with my employer and training provider</li>
+        <li>told my employer and training provider about any prior learning I have which might make me competent in part of the apprenticeship training</li>
+        <li>agreed with my employer and training provider any reductions in training I might have due to my prior learning</li>
+        <li>told my employer and training provider about any learning needs or health issues I have</li>
     }
 
     <li>been told when my apprenticeship training starts and ends</li>
@@ -37,18 +42,18 @@
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
     {
-        <li>understood that this is a portable flexi-job apprenticeship and that I will move between different jobs during my apprenticeship</li>
+        <li>understood that this is a portable-flexi-job apprenticeship and that I will move between different jobs during my apprenticeship</li>
         <li>understood the roles of my employers and training provider during my apprenticeship</li>
         <li>understood that I need to complete the off-the-job training hours stated in my training plan during my normal working hours</li>
     }
     @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
     {
         <li>understood that this is a flexi-job agency apprenticeship and that I may move between different placements during my apprenticeship</li>
-        <li>understood the role of my employer and training provider during my apprenticeship</li>
+        <li>understood the roles of my employer and training provider during my apprenticeship</li>
         <li>understood that I need to complete the off-the-job training hours stated in my training plan</li>
     }
 
-    <li>understood that I will be assessed by an end-point assessor at the end of my apprenticeship training</li>
+    <li>understood that I will be assessed by an end-point assessor at the end of my apprenticeship</li>
 </ul>
 
 <p>
@@ -57,21 +62,9 @@
 
 <ul class="govuk-list govuk-list--bullet">
 
-    @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
-    {
-        <li>take part in regular progress reviews with my employer and training provider every 12 weeks</li>
-    }
-    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
-    {
-        <li>take part in regular progress reviews with my employer and training provider every 12 weeks</li>
-    }
-    @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
-    {
-        <li>take part in regular progress reviews with my employer and training provider every 12 weeks</li>
-    }
-
-    <li>attend all my off-the-job training and provide evidence of my recorded hours where needed</li>
-    <li>complete all of my learning activities, assignments and exams</li>
+    <li>take part in progress reviews with my employer and training provider every 12 weeks</li>
+    <li>attend all my off-the-job training and provide evidence of my recorded hours if needed</li>
+    <li>complete all my learning activities, assignments and exams</li>
 
     @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
     {    
@@ -80,20 +73,9 @@
     }
 
     <li>tell my employer in advance when I cannot attend work</li>
-    <li>tell my training provider in advance when I cannot attend my off-the-job training</li>
-    <li>agree with my employer and training provider when I am ready to complete my end-point assessment</li>
+    <li>tell my training provider in advance when I cannot attend off-the-job training</li>
+    <li>agree with my employer and training provider when I am ready for my end-point assessment</li>
 
-    @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
-    {
-        <li>raise any concerns or complaints through my employer and training providers</li>
-    }
-    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
-    {
-        <li>raise any concerns or complaints through my employer and training providers</li>
-    }
-    @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
-    {
-        <li>raise any concerns or complaints through my employer and training provider</li>
-    }
+    <li>raise any concerns or complaints through my employer and training provider</li>   
 
 </ul>

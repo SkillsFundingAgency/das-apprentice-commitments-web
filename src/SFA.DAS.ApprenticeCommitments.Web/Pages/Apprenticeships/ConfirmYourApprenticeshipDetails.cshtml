@@ -28,50 +28,31 @@
             <p><strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.</p>
 
             <table class="govuk-table data-table">
-                <caption class="govuk-visually-hidden">Apprenticeship details</caption>
+                <caption class="govuk-table__caption govuk-table__caption--m">Training Details</caption>
                 <tbody class="govuk-table__body">
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Apprenticeship</th>
-                        <td class="govuk-table__cell">@Model.CourseName</td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Level</th>
-                        <td class="govuk-table__cell">@Model.CourseLevel</td>
-                    </tr>
-                    <tr asp-show="Model.CourseOption != null" class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Option</th>
-                        <td class="govuk-table__cell">@Model.CourseOption</td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Planned start date for training</th>
-                        <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
-                    </tr>
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Estimated duration</th>
-                        <td class="govuk-table__cell">@Model.CourseDuration months</td>
-                    </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Apprenticeship</th>
+                    <td class="govuk-table__cell">@Model.CourseName</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Level</th>
+                    <td class="govuk-table__cell">@Model.CourseLevel</td>
+                </tr>
+                <tr asp-show="Model.CourseOption != null" class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Option</th>
+                    <td class="govuk-table__cell">@Model.CourseOption</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Planned start date for training</th>
+                    <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Estimated duration</th>
+                    <td class="govuk-table__cell">@Model.CourseDuration months</td>
+                </tr>
                 </tbody>
             </table>
-
-            <h2 class="govuk-heading-m">
-                Things you need to know
-            </h2>
-
-            <p>
-                Your planned training start date and estimated duration should:
-            </p>
-
-            <ul class="govuk-list govuk-list--bullet">
-                <li>include the time you will spend in off-the-job training</li>
-                <li>not include when your end point assessment will take place</li>
-            </ul>
-
-            <div class="govuk-inset-text">
-                <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and training provider.</p>
-            </div>
         }
-
-
         @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
         {
             <p>These are the details that your current employer and your training provider have agreed with you and have given to us.</p>
@@ -79,7 +60,7 @@
             <p><strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.</p>
 
             <table class="govuk-table data-table">
-                <caption class="govuk-visually-hidden">Apprenticeship details</caption>
+                <caption class="govuk-table__caption govuk-table__caption--m">Training Details</caption>
                 <tbody class="govuk-table__body">
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Delivery model</th>
@@ -111,31 +92,7 @@
                     </tr>
                 </tbody>
             </table>
-
-            <h2 class="govuk-heading-m">
-                Things you need to know about a portable flexi-job apprenticeship
-            </h2>
-
-            <p>
-                During your portable flexi-job apprenticeship, you will find different jobs and may move between employers.
-                Each job will last a minimum of 3 months and you may return to the same employer multiple times throughout your apprenticeship.
-            </p>
-
-            <p>
-                Your planned training start date and estimated duration should:
-            </p>
-
-            <ul class="govuk-list govuk-list--bullet">
-                <li>include the time you will spend in off-the-job training across all employers</li>
-                <li>not include when your end point assessment will take place</li>
-            </ul>
-
-            <div class="govuk-inset-text">
-                <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with each employer and your training provider.</p>
-            </div>
         }
-
-
         @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
         {
             <p>These are the details that your employer and your training provider have agreed with you and have given to us.</p>
@@ -143,7 +100,7 @@
             <p><strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.</p>
 
             <table class="govuk-table data-table">
-                <caption class="govuk-visually-hidden">Apprenticeship details</caption>
+                <caption class="govuk-table__caption govuk-table__caption--m">Training Details</caption>
                 <tbody class="govuk-table__body">
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Delivery model</th>
@@ -167,22 +124,115 @@
                     </tr>
                 </tbody>
             </table>
+        }
+    
+        @if (Model.RecognisePriorLearning != null)
+        {
+            <div class="govuk-!-padding-bottom-2">
+                <h2 class="govuk-heading-m">Prior learning details</h2>
 
-            <h2 class="govuk-heading-m">
-                Things you need to know about a flexi-job agency apprenticeship
+                @if (Model.RecognisePriorLearning == true)
+                {
+                    <p>Based on your initial assessment with them, your training provider has informed us that <strong>you have relevant prior learning.</strong></p>
+                }
+
+                @if (Model.RecognisePriorLearning == false)
+                {
+                    <p>Based on your initial assessment with them, your training provider has informed us that <strong>you do not have relevant prior learning.</strong></p>
+                }
+            </div>
+        }
+
+        @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
+        {
+            <h2 class="govuk-heading-s">
+                Things you need to know
             </h2>
 
-            <p>During your apprenticeship, you may move between different placements found by your employer.</p>
+            <div class="govuk-inset-text">
 
-            <p>Your planned training start date and estimated duration should:</p>
+                <p>
+                    Your planned training start date and estimated duration should:
+                </p>
 
-            <ul class="govuk-list govuk-list--bullet">
-                <li>include the time you will spend in off-the-job training across all placements</li>
-                <li>not include when your end point assessment will take place</li>
-            </ul>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>include the time you will spend in off-the-job training</li>
+                    <li>not include when your end point assessment will take place</li>
+                </ul>
+
+                <p>
+                    You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have: 
+                </p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>relevant training, like an IT course</li>
+                    <li>a relevant qualification, like an NVQ in a relevant field</li>
+                    <li>experience in relevant industry or sector</li>
+                    <li>additional learning needs</li>
+                </ul>
+            </div>
+        }
+
+        @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
+        {
+
+            <h2 class="govuk-heading-s">
+                Things you need to know about a portable flexi-job apprenticeship
+            </h2>
 
             <div class="govuk-inset-text">
-                <p>The estimated duration of your apprenticeship may change during your apprenticeship after discussions with your employer and your training provider.</p>
+                <p>
+                    During your portable flexi-job apprenticeship, you will find different jobs and may move between employers.
+                    Each job will last a minimum of 3 months and you may return to the same employer multiple times throughout your apprenticeship.
+                </p>
+
+                <p>
+                    Your planned training start date and estimated duration should:
+                </p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>include the time you will spend in off-the-job training across all employers</li>
+                    <li>not include when your end point assessment will take place</li>
+                </ul>
+
+                <p>
+                    You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have:
+                </p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>relevant training, like an IT course</li>
+                    <li>a relevant qualification, like an NVQ in a relevant field</li>
+                    <li>experience in relevant industry or sector</li>
+                    <li>additional learning needs</li>
+                </ul>
+            </div>                
+        }
+
+        @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
+        {
+            <h2 class="govuk-heading-s">
+                Things you need to know about a flexi-job agency apprenticeship
+            </h2>
+            <div class="govuk-inset-text">
+                <p>During your apprenticeship, you may move between different placements found by your employer.</p>
+
+                <p>Your planned training start date and estimated duration should:</p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>include the time you will spend in off-the-job training across all placements</li>
+                    <li>not include when your end point assessment will take place</li>
+                </ul>
+
+                <p>
+                    You should have had an initial assessment with your training provider and employer. During this assessment you might have agreed adjustments, if you have: 
+                </p>
+
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>relevant training, like an IT course</li>
+                    <li>a relevant qualification, like an NVQ in a relevant field</li>
+                    <li>experience in relevant industry or sector</li>
+                    <li>additional learning needs</li>
+                </ul>
             </div>
         }
 
@@ -202,6 +252,8 @@
             <input type="hidden" name="CourseDuration" value="@Model.CourseDuration" />
             <input type="hidden" name="PlannedStartDate" value="@Model.PlannedStartDate" />
             <input type="hidden" name="PlannedEndDate" value="@Model.PlannedEndDate" />
+            <input type="hidden" name="EmploymentEndDate" value="@Model.EmploymentEndDate" />
+            <input type="hidden" name="RecognisePriorLearning" value="@Model.RecognisePriorLearning" />
         </form>
 
         <form asp-hide="@Model.ShowForm" action="@Model.Backlink">

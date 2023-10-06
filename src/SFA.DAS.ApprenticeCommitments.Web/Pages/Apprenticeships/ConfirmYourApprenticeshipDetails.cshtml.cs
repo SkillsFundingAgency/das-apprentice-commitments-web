@@ -28,8 +28,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty]
         public DateTime PlannedEndDate { get; set; }
-        
+
+        [BindProperty]
         public DateTime? EmploymentEndDate { get; set; }
+
+        [BindProperty]
+        public bool? RecognisePriorLearning { get; set; }
 
         public YourApprenticeshipDetails(AuthenticatedUserClient client) : base("ApprenticeshipDetails", client)
         {
@@ -45,6 +49,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             PlannedEndDate = apprenticeship.PlannedEndDate;
             EmploymentEndDate = apprenticeship.EmploymentEndDate;
             Confirmed = apprenticeship.ApprenticeshipDetailsCorrect;
+            RecognisePriorLearning = apprenticeship.RecognisePriorLearning;
         }
 
         public override ApprenticeshipConfirmationRequest CreateUpdate(bool confirmed)

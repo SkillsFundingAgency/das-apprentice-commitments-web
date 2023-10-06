@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using SFA.DAS.ApprenticeCommitments.Web.Extension;
 using SFA.DAS.Configuration.AzureTableStorage;
+using System;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -24,10 +25,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                         options.PreFixConfigurationKeys = false;
                     });
                 }
-                configBuilder.AddJsonFile("appsettings.development.json", true);
 
+                if (!config.IsAcceptanceTest())
+                {
+                    configBuilder.AddJsonFile("appsettings.development.json", true);
+                }
             });
-
             return hostBuilder;
         }
 

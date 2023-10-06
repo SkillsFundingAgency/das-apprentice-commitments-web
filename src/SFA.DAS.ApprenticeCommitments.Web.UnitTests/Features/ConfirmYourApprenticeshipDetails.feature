@@ -14,6 +14,7 @@ Scenario: The apprentice is authenticated and should see the Apprenticeship deta
 	And the apprentice should see the duration in months
 	And the apprentice should see the planned start date
 	And the apprentice should see the planned end date
+	And the apprentice should see the Prior Learning section
 	And the link is pointing to the confirm page
 
 Scenario: The apprentice is authenticated and confirms their apprenticeship details
@@ -45,6 +46,7 @@ Scenario: The apprentice is authenticated and presses the Confirm actions withou
 	And the apprentice should see the duration in months
 	And the apprentice should see the planned start date
 	And the apprentice should see the planned end date
+	And the apprentice should see the Prior Learning section
 	And the link is pointing to the confirm page
 
 Scenario: The apprentice is authenticated and has negatively confirmed
