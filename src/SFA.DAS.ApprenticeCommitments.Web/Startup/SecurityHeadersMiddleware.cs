@@ -21,11 +21,11 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             context.Response.Headers.AddIfNotPresent(
                 "Content-Security-Policy",
                 new StringValues(
-                    $"script-src 'self' 'unsafe-inline' 'unsafe-eval' { dasCdn} https://www.googletagmanager.com https://tagmanager.google.com https://www.google-analytics.com https://ssl.google-analytics.com https://*.zdassets.com https://*.zopim.com https://*.rcrsv.io; " +
+                    $"script-src 'self' 'unsafe-inline' 'unsafe-eval' { dasCdn} https://www.googletagmanager.com https://tagmanager.google.com https://*.google-analytics.com https://*.zdassets.com https://*.zopim.com https://*.rcrsv.io; " +
                     $"style-src 'self' 'unsafe-inline' {dasCdn} https://tagmanager.google.com https://fonts.googleapis.com https://*.rcrsv.io ; " +
-                    $"img-src {dasCdn} www.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com https://www.google-analytics.com ; " +
+                    $"img-src {dasCdn} www.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com https://*.google-analytics.com ; " +
                     $"font-src {dasCdn} https://fonts.gstatic.com https://*.rcrsv.io data: ;" +
-                    "connect-src https://www.google-analytics.com https://*.zendesk.com https://*.zdassets.com wss://*.zopim.com https://*.rcrsv.io ;"));
+                    "connect-src https://*.google-analytics.com https://*.zendesk.com https://*.zdassets.com wss://*.zopim.com https://*.rcrsv.io ;"));
 
             await next(context);
         }
