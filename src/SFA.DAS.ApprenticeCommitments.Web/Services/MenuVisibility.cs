@@ -1,8 +1,8 @@
-﻿using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.ApprenticePortal.SharedUi.Services;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services
 {
@@ -27,7 +27,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             if (await LatestApprenticeshipIsConfirmed())
                 return ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsConfirmed;
             return ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsRequiringConfirmation;
-        } 
+        }
 
         private async Task<bool> LatestApprenticeshipIsConfirmed()
         {
@@ -47,11 +47,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
 
         private async Task<Apprenticeship?> GetLatestApprenticeship()
         {
-            if(_apprenticeship != null)
+            if (_apprenticeship != null)
                 return _apprenticeship;
 
             _apprenticeship = (await _client.GetApprenticeships(_authenticatedUser.ApprenticeId))?.Apprenticeships.FirstOrDefault();
             return _apprenticeship;
         }
+
+        public Task<bool> ShowApprenticeAan() => Task.FromResult(true);
     }
 }
