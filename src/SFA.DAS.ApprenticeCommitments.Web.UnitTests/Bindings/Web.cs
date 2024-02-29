@@ -51,6 +51,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"ApplicationUrls:ApprenticeCommitmentsUrl", "http://localhost/"},
                     {"ApplicationUrls:ApprenticeLoginUrl", "https://login/"},
                     {"ApplicationUrls:ApprenticeFeedbackUrl", "https://feedback/"},
+                    {"ApplicationUrls:ApprenticeAanUrl", "https://AAN/"},
                     {"ApprenticeCommitmentsApi:SubscriptionKey", ""},
                     {"Encodings:0:EncodingType","ApprenticeshipId"},
                     {"Encodings:0:Salt","SFA: digital apprenticeship service"},
