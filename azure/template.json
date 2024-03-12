@@ -59,6 +59,9 @@
             "type": "string",
             "defaultValue": "[subscription().subscriptionId]"
         },
+        "logAnalyticsWorkspaceName": {
+            "type": "string"
+        },
         "loggingRedisConnectionString": {
             "type": "securestring"
         },
