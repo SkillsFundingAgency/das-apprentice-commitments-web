@@ -42,6 +42,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 options.EnableZendesk();
                 options.EnableGoogleAnalytics();
                 options.SetCurrentNavigationSection(NavigationSection.ConfirmMyApprenticeship);
+                options.SetUseGovSignIn(appConfig.UseGovSignIn);
             });
 
             services.AddRazorPages();

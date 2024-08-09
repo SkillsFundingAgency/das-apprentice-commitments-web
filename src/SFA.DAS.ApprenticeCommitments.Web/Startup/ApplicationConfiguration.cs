@@ -16,5 +16,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
         public ZenDeskConfiguration Zendesk { get; set; }
         public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; }
         public NavigationSectionUrls ApplicationUrls { get; set; }
+        public bool UseGovSignIn { get; set; }
+        public bool UseStubAuth { get; set; }
     }
 }
