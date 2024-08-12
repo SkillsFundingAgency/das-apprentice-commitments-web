@@ -359,3 +359,5 @@ appsettings.Development.json
 **/wwwroot/css/site.css
 src/SFA.DAS.ApprenticeCommitments.Web/wwwroot/lib/govuk-frontend/
 .DS_Store
+
+src/.idea/.idea.SFA.DAS.ApprenticeCommitments.Web/.idea/
