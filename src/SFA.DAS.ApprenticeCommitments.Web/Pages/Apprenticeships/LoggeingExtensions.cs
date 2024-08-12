@@ -11,7 +11,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             params ValueTuple<string, object>[] properties)
         {
             var dictionary = properties.ToDictionary(p => p.Item1, p => p.Item2);
-            return logger.BeginScope(dictionary);
+            return logger.BeginScope(dictionary)!;
         }
 
     }
