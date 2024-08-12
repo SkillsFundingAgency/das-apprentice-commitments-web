@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using System.Net;
+using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.Encoding;
+using SFA.DAS.GovUK.Auth.Services;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -30,13 +32,23 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 
             services
                 .AddApplicationInsightsTelemetry()
-                .AddDataProtection(appConfig.ConnectionStrings, Environment)
-                .AddAuthentication(appConfig.Authentication, Environment)
-                .AddOuterApi(appConfig.ApprenticeCommitmentsApi)
+                .AddDataProtection(appConfig!.ConnectionStrings, Environment)
+                .AddOuterApi(appConfig!.ApprenticeCommitmentsApi)
                 .AddSingleton<IEncodingService>(new EncodingService(encodingConfig))
                 .RegisterServices(Environment)
                 .AddControllers();
-
+            
+            services.AddTransient<ICustomClaims, ApprenticeAccountPostAuthenticationClaimsHandler>();
+            if (appConfig.UseGovSignIn)
+            {
+                services.AddGovLoginAuthentication(appConfig.ApplicationUrls,Configuration);
+            }
+            else
+            {
+                services.AddAuthentication(appConfig!.Authentication, Environment);    
+            }
+            
+            
             services.AddSharedUi(appConfig, options =>
             {
                 options.EnableZendesk();

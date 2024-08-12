@@ -38,6 +38,15 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services
             }
         }
 
+        public async Task<Apprentice> PutApprentice(string email, string govUkIdentifier)
+        {
+            return await _client.PutApprentice(new PutApprenticeAccount
+            {
+                Email = email,
+                GovUkIdentifier = govUkIdentifier
+            });
+        }
+
         internal Task RegistrationSeen(string registrationCode, DateTime seenOn)
             => _client.RegistrationFirstSeenOn(registrationCode,
                    new RegistrationFirstSeenOnRequest { SeenOn = seenOn });

@@ -14,7 +14,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             {
                 var config = configBuilder.Build();
 
-                if (!config["EnvironmentName"].Equals("DEV", StringComparison.InvariantCultureIgnoreCase))
+                if (!config["EnvironmentName"]!.Equals("DEV", StringComparison.InvariantCultureIgnoreCase))
                 {
                     configBuilder.AddAzureTableStorage(options =>
                     {
@@ -40,9 +40,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             var config = configBuilder.Build();
             return
                 (
-                    config["ConfigNames"],
-                    config["ConfigurationStorageConnectionString"],
-                    config["EnvironmentName"]
+                    config["ConfigNames"]!,
+                    config["ConfigurationStorageConnectionString"]!,
+                    config["EnvironmentName"]!
                 );
         }
     }

@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.ApprenticeCommitments.Web.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -35,6 +37,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
 
             return services;
+        }
+        
+        public static void AddGovLoginAuthentication(
+            this IServiceCollection services,
+            NavigationSectionUrls config,
+            IConfiguration configuration)
+        {
+            services.AddGovLoginAuthentication(configuration);
+            services.AddApplicationAuthorisation();
+            services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
+            services.AddTransient((_) => config);
         }
 
         private static IServiceCollection AddApplicationAuthorisation(
