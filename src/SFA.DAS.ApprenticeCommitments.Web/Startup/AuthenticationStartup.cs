@@ -59,6 +59,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
                 .AuthorizeFolder("/")
                 .AllowAnonymousToPage("/ping")
                 .AllowAnonymousToPage("/Accountnew"));
+            services.AddControllersWithViews();
             services.AddScoped<AuthenticatedUser>();
             services.AddScoped(s => s
                 .GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
