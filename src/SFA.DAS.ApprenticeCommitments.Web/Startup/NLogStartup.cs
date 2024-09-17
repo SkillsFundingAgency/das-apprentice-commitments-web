@@ -1,5 +1,6 @@
 ﻿using NLog.Web;
 using System;
+using NLog;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Startup
 {
@@ -11,7 +12,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             {
                 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 var configFileName = environment == "Development" ? "nlog.Development.config" : "nlog.config";
-                NLogBuilder.ConfigureNLog(configFileName);
+                LogManager.Setup().LoadConfigurationFromAppSettings(configFileName);
             }
             catch
             {

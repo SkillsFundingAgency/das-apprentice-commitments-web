@@ -12,7 +12,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Identity
         }
 
         protected InvalidHashedIdException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

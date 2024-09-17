@@ -24,7 +24,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
         }
 
         protected DomainValidationException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
             _ = info ?? throw new ArgumentNullException(nameof(info));
             Errors = info.GetValue(nameof(Errors), typeof(List<ErrorItem>)) as List<ErrorItem>

@@ -343,7 +343,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests
             string compoundMessage =
                 string.Join(Environment.NewLine, errors);
 
-            Assert.IsTrue(allTestsPass,
+            Assert.That(allTestsPass, Is.True,
                           "Some tests have failed:\n" +
                           compoundMessage);
         }

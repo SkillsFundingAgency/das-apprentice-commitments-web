@@ -24,7 +24,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages
 
         public string FirstName { get; private set; } = null!;
         public string LastName { get; private set; } = null!;
-        public DateTime DateOfBirth { get; private set; }
+        public DateTime? DateOfBirth { get; private set; }
 
         public async Task<ActionResult> OnGet(
             [FromServices] AuthenticatedUser user)

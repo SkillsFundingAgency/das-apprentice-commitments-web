@@ -19,6 +19,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
 
         [Get("/apprentices/{id}")]
         Task<Apprentice> GetApprentice([Path] Guid id);
+        
+        [Put("/apprentices")]
+        Task<Apprentice> PutApprentice([Body] PutApprenticeAccount request);
 
         [Post("/apprenticeships")]
         Task ClaimApprenticeship([Body] ApprenticeshipAssociation association);

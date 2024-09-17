@@ -13,7 +13,6 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Exceptions
         public override string Message => $"Property '{PropertyName}'must not be null";
 
         protected PropertyNullException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
             _ = info ?? throw new ArgumentNullException(nameof(info));
             PropertyName = info.GetValue(nameof(PropertyName), typeof(string)) as string

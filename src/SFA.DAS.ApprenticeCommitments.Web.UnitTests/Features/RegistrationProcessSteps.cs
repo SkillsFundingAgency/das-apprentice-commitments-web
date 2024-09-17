@@ -54,6 +54,13 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
         {
             _context.Web.AuthoriseApprenticeWithoutTermsOfUse(_userContext.ApprenticeId);
             _context.OuterApi.MockServer.Given(
+            Request.Create()
+                .UsingGet()
+                .WithPath("/apprentices/*"))
+                .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithBodyAsJson(new { Apprentice = new { TermsOfUseAccepted = false } }));
+            _context.OuterApi.MockServer.Given(
                 Request.Create()
                     .UsingGet()
                     .WithPath("/apprentices/*/apprenticeships"))
