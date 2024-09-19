@@ -45,8 +45,18 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             IConfiguration configuration)
         {
             services.AddGovLoginAuthentication(configuration);
-            services.AddApplicationAuthorisation();
             services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
+            services.AddHttpContextAccessor();
+            services.AddAuthorization();
+
+            services.AddRazorPages(o => o.Conventions
+                .AuthorizeFolder("/")
+                .AllowAnonymousToPage("/ping")
+                .AllowAnonymousToPage("/Accountnew")
+                .AllowAnonymousToPage("/account-details")
+            );
+            services.AddControllersWithViews();
+            services.AddScoped<AuthenticatedUser>();
             services.AddTransient((_) => config);
         }
 
@@ -58,12 +68,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             services.AddRazorPages(o => o.Conventions
                 .AuthorizeFolder("/")
                 .AllowAnonymousToPage("/ping")
-                .AllowAnonymousToPage("/Accountnew"));
+                .AllowAnonymousToPage("/Accountnew")
+                .AllowAnonymousToPage("/account-details")
+            );
             services.AddControllersWithViews();
             services.AddScoped<AuthenticatedUser>();
             services.AddScoped(s => s
                 .GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
-
+            services.AddHttpContextAccessor();
             return services;
         }
     }
