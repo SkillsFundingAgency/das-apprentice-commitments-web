@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
-using Newtonsoft.Json.Linq;
+﻿using AutoFixture;
+using FluentAssertions;
 using SFA.DAS.ApprenticeCommitments.Web.Identity;
 using SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships;
+using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoFixture;
-using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
 using TechTalk.SpecFlow;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -63,6 +63,24 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
                 );
         }
 
+        [Given("the apprentice has changed employer")]
+        public void GivenTheApprenticeHasChangedEmployer()
+        {
+            _apprenticeship.Timelines.Add(new Timeline("You started with a new employer", "From a to b", DateTime.Now));
+        }
+
+        [Given("the apprentice has changed provider")]
+        public void GivenTheApprenticeHasChangedProvider()
+        {
+            _apprenticeship.Timelines.Add(new Timeline("You started with a new training provider", "From a to b", DateTime.Now));
+        }
+
+        [Given("the apprentice has changed delivery model")]
+        public void GivenTheApprenticeHasChangedDeliveryModel()
+        {
+            _apprenticeship.Timelines.Add(new Timeline("Delivery model changed", "From a to b", DateTime.Now));
+        }
+
         [When("accessing the view page")]
         public async Task WhenAccessingTheViewPage()
         {
@@ -89,12 +107,35 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Features
             model.LatestConfirmedApprenticeship.Should().BeEquivalentTo(_apprenticeship);
         }
 
+        [Then("the response should indicate a change of employer")]
+        public void ThenTheResponseShouldIndicateAChangeOfEmployer()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.LatestConfirmedApprenticeship.Timelines.Any(x => x.Heading == "You started with a new employer").Should().BeTrue();
+        }
+
+        [Then("the response should indicate a change of provider")]
+        public void ThenTheResponseShouldIndicateAChangeOfProvider()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.LatestConfirmedApprenticeship.Timelines.Any(x => x.Heading == "You started with a new training provider").Should().BeTrue();
+        }
+
+        [Then("the response should indicate a change of delivery model")]
+        public void ThenTheResponseShouldIndicateAChangeOfDeliveryModel()
+        {
+            var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
+            model.Should().NotBeNull();
+            model.LatestConfirmedApprenticeship.Timelines.Any(x => x.Heading == "Delivery model changed").Should().BeTrue();
+        }
+
         [Then(@"the revisionId should be specified")]
         public void ThenTheRevisionIdShouldBeSpecified()
         {
             var model = _context.ActionResult.LastPageResult.Model.As<ViewMyApprenticeshipModel>();
             model.RevisionId.Should().Be(_apprenticeship.RevisionId);
         }
-
     }
 }
