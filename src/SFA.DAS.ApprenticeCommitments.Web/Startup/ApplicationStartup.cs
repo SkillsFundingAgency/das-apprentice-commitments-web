@@ -31,7 +31,10 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Startup
             var encodingConfig = Configuration.Get<EncodingConfig>();
 
             services
-                .AddApplicationInsightsTelemetry()
+                .AddTelemetryRegistration(Configuration)
+                .AddApplicationInsightsTelemetry();
+
+            services
                 .AddDataProtection(appConfig!.ConnectionStrings, Environment)
                 .AddOuterApi(appConfig!.ApprenticeCommitmentsApi)
                 .AddSingleton<IEncodingService>(new EncodingService(encodingConfig))
