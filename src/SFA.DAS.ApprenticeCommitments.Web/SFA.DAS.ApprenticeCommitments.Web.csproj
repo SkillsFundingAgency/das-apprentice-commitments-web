@@ -20,19 +20,15 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
-    <PackageReference Include="NLog.Schema" Version="5.3.2" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.11" />
     <PackageReference Include="RestEase" Version="1.6.4" />
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.6.4" />
     <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.84-prerelease-2" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Encoding" Version="1.1.76" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
-
-    <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
-
     <PackageReference Include="StackExchange.Redis" Version="2.8.0" />
     <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.2.0" />
   </ItemGroup>
   
   <Target Name="ToolRestore" BeforeTargets="PreBuildEvent">
@@ -44,9 +40,6 @@
     </Content>
     <Content Update="appsettings.Development.json">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 </Project>
