@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
@@ -30,6 +31,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public bool IsStopped { get; set; }
         public bool? RecognisePriorLearning { get; set; }
         public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
+        public List<Timeline> Timelines { get; set; } = null!;
     }
 
     public enum DeliveryModel
