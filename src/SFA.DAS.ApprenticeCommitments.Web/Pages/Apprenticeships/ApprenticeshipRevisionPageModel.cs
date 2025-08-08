@@ -14,7 +14,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty]
         public long RevisionId { get; set; }
-
+        
         public DeliveryModel DeliveryModel { get; set; }
         public bool ExplicitRevision { get; set; }
 

@@ -31,6 +31,13 @@
                         <th scope="row" class="govuk-table__header">Level</th>
                         <td class="govuk-table__cell">@Model.LatestConfirmedApprenticeship.CourseLevel</td>
                     </tr>
+                    @if (Utilities.IsValidApprenticeshipType(Model.LatestConfirmedApprenticeship.ApprenticeshipType))
+                    {
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Type</th>
+                            <td class="govuk-table__cell">@Utilities.GetApprenticeshipTypeDescription(Model.LatestConfirmedApprenticeship.ApprenticeshipType)</td>
+                        </tr>
+                    }
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Planned training start date</th>
                         <td class="govuk-table__cell">@Model.LatestConfirmedApprenticeship.PlannedStartDate.ToString("MMMM yyyy")</td>

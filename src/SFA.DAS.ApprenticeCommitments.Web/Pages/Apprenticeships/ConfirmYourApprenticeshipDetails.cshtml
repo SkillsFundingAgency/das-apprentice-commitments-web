@@ -1,6 +1,7 @@
 @page "/apprenticeships/{apprenticeshipId}/yourapprenticeshipdetails"
 @using SFA.DAS.ApprenticeCommitments.Web.Helpers
 @using SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi;
+@using SFA.DAS.ApprenticeCommitments.Web.Models;
 @model SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.YourApprenticeshipDetails
 @{
     ViewData["Title"] = "Confirm the details of your apprenticeship";
@@ -23,9 +24,9 @@
 
         @if (Model.DeliveryModel.Equals(DeliveryModel.Regular))
         {
-            <p>These are the details that your employer and training provider have agreed with you and have given to us.</p>
+            <p>These are the details that your employer and training provider have agreed with you and have passed on to us.</p>
 
-            <p><strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.</p>
+            <p>We need you to check and confirm these details are correct.</p>
 
             <table class="govuk-table data-table">
                 <caption class="govuk-table__caption govuk-table__caption--m">Training Details</caption>
@@ -38,6 +39,13 @@
                     <th scope="row" class="govuk-table__header">Level</th>
                     <td class="govuk-table__cell">@Model.CourseLevel</td>
                 </tr>
+                @if (Utilities.IsValidApprenticeshipType(Model.ApprenticeshipType))
+                {
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Type</th>
+                        <td class="govuk-table__cell">@Utilities.GetApprenticeshipTypeDescription(Model.ApprenticeshipType)</td>
+                    </tr>
+                } 
                 <tr asp-show="Model.CourseOption != null" class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">Option</th>
                     <td class="govuk-table__cell">@Model.CourseOption</td>
@@ -55,9 +63,9 @@
         }
         @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
         {
-            <p>These are the details that your current employer and your training provider have agreed with you and have given to us.</p>
+            <p>These are the details that your current employer and your training provider have agreed with you and have passed on to us.</p>
 
-            <p><strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.</p>
+            <p>We need you to check and confirm these details are correct.</p>
 
             <table class="govuk-table data-table">
                 <caption class="govuk-table__caption govuk-table__caption--m">Training Details</caption>
@@ -74,6 +82,13 @@
                         <th scope="row" class="govuk-table__header">Level</th>
                         <td class="govuk-table__cell">@Model.CourseLevel</td>
                     </tr>
+                    @if (Utilities.IsValidApprenticeshipType(Model.ApprenticeshipType))
+                    {
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Type</th>
+                            <td class="govuk-table__cell">@Utilities.GetApprenticeshipTypeDescription(Model.ApprenticeshipType)</td>
+                        </tr>
+                    }
                     <tr asp-show="Model.CourseOption != null" class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Option</th>
                         <td class="govuk-table__cell">@Model.CourseOption</td>
@@ -95,9 +110,9 @@
         }
         @if (Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
         {
-            <p>These are the details that your employer and your training provider have agreed with you and have given to us.</p>
+            <p>These are the details that your employer and training provider have agreed with you and have passed on to us.</p>
 
-            <p><strong>It's important to check these details</strong> because you'll be assessed on the knowledge, skills and behaviours you will have learnt on your apprenticeship.</p>
+            <p>We need you to check and confirm these details are correct.</p>
 
             <table class="govuk-table data-table">
                 <caption class="govuk-table__caption govuk-table__caption--m">Training Details</caption>
@@ -114,6 +129,13 @@
                         <th scope="row" class="govuk-table__header">Level</th>
                         <td class="govuk-table__cell">@Model.CourseLevel</td>
                     </tr>
+                    @if (Utilities.IsValidApprenticeshipType(Model.ApprenticeshipType))
+                    {
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Type</th>
+                            <td class="govuk-table__cell">@Utilities.GetApprenticeshipTypeDescription(Model.ApprenticeshipType)</td>
+                        </tr>
+                    }
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Planned training start date</th>
                         <td class="govuk-table__cell">@Model.PlannedStartDate.ToString("MMMM yyyy")</td>
