@@ -15,11 +15,6 @@
     {
         <li>discussed with you how your portable flexi-job apprenticeship will be delivered</li>
     }
-
-    @if (!Model.DeliveryModel.Equals(DeliveryModel.FlexiJobAgency))
-    {
-        <li>discussed your training plan with you and your employer</li>
-    }
     
     <li>ensured that your training plan accounts for prior learning, English and maths needs, and additional learning support</li>
     <li>told you and your employer your apprenticeship training start and end dates</li>
@@ -49,10 +44,5 @@
     }
 
     <li>let you and your employer know how to raise concerns or complaints about your training</li>
-
-    @if (Model.DeliveryModel.Equals(DeliveryModel.PortableFlexiJob))
-    {
-        <li>maintain contact with you if you are on an extended break in learning</li>
-    }
 
 </ul>
