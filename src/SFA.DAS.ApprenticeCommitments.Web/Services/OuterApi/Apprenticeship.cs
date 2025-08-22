@@ -29,6 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Services.OuterApi
         public DateTime? StoppedReceivedOn { get; set; }
         public bool IsStopped { get; set; }
         public bool? RecognisePriorLearning { get; set; }
+        public int? ApprenticeshipType { get; set; }
         public ChangeOfCircumstanceNotifications ChangeOfCircumstanceNotifications { get; set; }
     }
 

@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             _logger = logger;
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             if (ApprenticeshipId == default)
                 throw new PropertyNullException(nameof(ApprenticeshipId));
@@ -42,12 +42,17 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
                     await _client.GetMyApprenticeship(_authenticatedUser.ApprenticeId, ApprenticeshipId.Id);
                 LatestConfirmedApprenticeship = apprenticeship;
                 RevisionId = apprenticeship.RevisionId;
+                
+                // Return the page if successful
+                return Page();
             }
             catch (RestEase.ApiException e)
             {
                 _logger.LogError(e, "RestEase API exception");
                 _logger.LogError("No confirmed apprenticeship found for {id}", ApprenticeshipId.Id);
-                throw;
+                
+                // Redirect to the base apprenticeship URL
+                return Redirect("/");
             }
         }
 

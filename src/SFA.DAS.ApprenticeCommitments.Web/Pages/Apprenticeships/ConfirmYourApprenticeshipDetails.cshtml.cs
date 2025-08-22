@@ -16,9 +16,12 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty]
         public int CourseLevel { get; set; }
+        
+        [BindProperty]
+        public string? CourseOption { get; set; }        
 
         [BindProperty]
-        public string? CourseOption { get; set; }
+        public int? ApprenticeshipType { get; set; }
 
         [BindProperty]
         public int CourseDuration { get; set; }
@@ -50,6 +53,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
             EmploymentEndDate = apprenticeship.EmploymentEndDate;
             Confirmed = apprenticeship.ApprenticeshipDetailsCorrect;
             RecognisePriorLearning = apprenticeship.RecognisePriorLearning;
+            ApprenticeshipType = apprenticeship.ApprenticeshipType;
         }
 
         public override ApprenticeshipConfirmationRequest CreateUpdate(bool confirmed)

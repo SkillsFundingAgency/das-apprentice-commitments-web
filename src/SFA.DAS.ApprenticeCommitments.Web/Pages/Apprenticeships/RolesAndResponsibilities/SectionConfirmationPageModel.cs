@@ -15,6 +15,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
 
         [BindProperty]
         public bool SectionConfirmed { get; set; }
+        
+        [BindProperty]
+        public int? ApprenticeshipType { get; set; } = null!;         
 
         public override string Backlink
         {
@@ -45,6 +48,7 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
         protected async Task<IActionResult> GetConfirmationSection(RolesAndResponsibilitiesConfirmations rolesAndResponsibilitiesConfirmation)
         {
             var apprenticeship = await OnGetAsync(Client);
+            ApprenticeshipType = apprenticeship.ApprenticeshipType;
 
             if (apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed())
             {

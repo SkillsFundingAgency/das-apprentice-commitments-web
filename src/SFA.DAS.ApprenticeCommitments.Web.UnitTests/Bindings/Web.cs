@@ -60,6 +60,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.UnitTests.Bindings
                     {"ZenDesk:ZendeskSectionId", _fixture.Create<string>()},
                     {"ZenDesk:ZendeskSnippetKey", _fixture.Create<string>()},
                     {"ZenDesk:ZendeskCobrowsingSnippetKey", _fixture.Create<string>()},
+                    {"GovUkOidcConfiguration:BaseUrl", "https://dummy-govuk-url"},
+                    {"GovUkOidcConfiguration:ClientId", "test-client-id"},
+                    {"GovUkOidcConfiguration:KeyVaultIdentifier", "test-keyvault-id"},
                 };
 
                 ActionResultHook = new Hook<IActionResult>();

@@ -14,6 +14,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
         [BindProperty]
         public bool? ConfirmedHowApprenticeshipDelivered { get; set; } = null!;
+        
+        [BindProperty]
+        public int? ApprenticeshipType { get; set; } = null!;        
 
         public HowYourApprenticeshipWillBeDeliveredModel(AuthenticatedUserClient client)
         {
@@ -26,6 +29,8 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships
 
             if (apprenticeship.HowApprenticeshipDeliveredCorrect == true)
                 ConfirmedHowApprenticeshipDelivered = true;
+            
+            ApprenticeshipType = apprenticeship.ApprenticeshipType;
         }
 
         public async Task<IActionResult> OnPost()

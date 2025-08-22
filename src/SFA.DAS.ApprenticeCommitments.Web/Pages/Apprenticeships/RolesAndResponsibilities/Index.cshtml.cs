@@ -14,6 +14,9 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
         [BindProperty]
         public bool? RolesAndResponsibilitiesConfirmed { get; set; } = null!;
 
+        [BindProperty]
+        public int? ApprenticeshipType { get; set; } = null!;               
+        
         public RolesAndResponsibilitiesModel(AuthenticatedUserClient client)
         {
             _client = client;
@@ -22,12 +25,14 @@ namespace SFA.DAS.ApprenticeCommitments.Web.Pages.Apprenticeships.RolesAndRespon
         public async Task<IActionResult> OnGet(long? revisionId = null)
         {
             var apprenticeship = await OnGetAsync(_client, revisionId);
-
+            ApprenticeshipType = apprenticeship.ApprenticeshipType;
+            
             if (!apprenticeship.RolesAndResponsibilitiesConfirmations.IsConfirmed())
             {
                 return new RedirectToPageResult("1", new { ApprenticeshipId });
             }
-
+            
+            
             return Page();
         }
     }
