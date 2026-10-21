@@ -49,7 +49,7 @@ public class ServicesController(IStubAuthenticationService stubAuthenticationSer
     }
 
     [HttpGet]
-    [Authorize]
+    [AllowAnonymous]
     [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
     public IActionResult StubSignedIn([FromQuery] string returnUrl)
     {
